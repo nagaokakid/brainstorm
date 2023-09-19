@@ -1,0 +1,16 @@
+# Ignore compiled Python files
+__pycache__/
+*.pyc
+
+# Ignore the virtual environment directory (if you're using one)
+venv/
+
+# Ignore database files (SQLite, PostgreSQL, etc.)
+db.sqlite3
+
+# Ignore local settings (settings/local.py)
+brainstorm/settings/local.py
+
+# Ignore media and static files (you can deploy them separately)
+media/
+static/
