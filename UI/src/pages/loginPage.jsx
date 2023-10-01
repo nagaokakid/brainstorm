@@ -1,7 +1,8 @@
-import "../styles/loginPage.css"
-import LogRes from "../components/logRes"
+import "../styles/LoginPage.css"
+import LogRes from "../components/LogRes"
 
-function loginPage() {
+function LoginPage()
+{
     return (
         <>
             <div className="pageContainer">
@@ -16,4 +17,4 @@ function loginPage() {
     )
 }
 
-export default loginPage
+export default LoginPage
