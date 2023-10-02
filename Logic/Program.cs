@@ -1,4 +1,5 @@
 
+using Logic.Hubs;
 using Logic.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -54,6 +55,9 @@ namespace Logic
                 .RequireAuthenticatedUser()
                 .Build();
             });
+
+            builder.Services.AddSignalR();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -70,6 +74,7 @@ namespace Logic
 
 
             app.MapControllers();
+            app.MapHub<ChatRoomHub>("/realtime/chatroom");
 
             app.Run();
         }
