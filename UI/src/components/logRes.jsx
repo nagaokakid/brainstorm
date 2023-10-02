@@ -60,7 +60,7 @@ function LogRes()
         {
             if (Email, Id, Password, RePassword === "")
             {
-                alert("Please complte the form");
+                alert("Please complete the form");
                 return;
             }
             else if
