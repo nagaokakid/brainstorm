@@ -5,11 +5,13 @@ function LoginPage()
 {
     return (
         <>
-            <div className="pageContainer">
-                <div className="memberContainer">
-                    <LogRes/>
+            <div className="PageContainer">
+                <div className="MemberContainer">
+                    <div className="FormContainer">
+                        <LogRes/>
+                    </div>
                 </div>
-                <div className="guestContainer">
+                <div className="GuestContainer">
 
                 </div>
             </div>

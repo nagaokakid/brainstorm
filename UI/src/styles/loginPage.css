@@ -4,7 +4,7 @@
     padding: 0;
 }
 
-.pageContainer
+.PageContainer
 {
     position: absolute;
     width: 100%;
@@ -14,20 +14,40 @@
     background-color: antiquewhite;
 }
 
-.memberContainer
+.MemberContainer
 {
     width: 50%;
     height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
 }
 
-.guestContainer
+.FormContainer
+{
+    width: 550px;
+    height: 600px;
+    background-color: aliceblue;
+    border-radius: 15px;
+    box-shadow: 0px 0px 25px 5px gray;
+}
+
+@media screen and (max-width: 1300px)
+{
+    .FormContainer
+    {
+        width: 400px;
+        height: 600px;
+    }
+}
+
+.GuestContainer
 {
     width: 50%;
     height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
 }
