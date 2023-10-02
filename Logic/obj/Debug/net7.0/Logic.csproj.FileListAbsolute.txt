@@ -31,3 +31,11 @@ D:\C# Library\API_4350\Logic\obj\Debug\net7.0\refint\Logic.dll
 D:\C# Library\API_4350\Logic\obj\Debug\net7.0\Logic.pdb
 D:\C# Library\API_4350\Logic\obj\Debug\net7.0\Logic.genruntimeconfig.cache
 D:\C# Library\API_4350\Logic\obj\Debug\net7.0\ref\Logic.dll
+D:\C# Library\API_4350\Logic\bin\Debug\net7.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+D:\C# Library\API_4350\Logic\bin\Debug\net7.0\Microsoft.IdentityModel.Abstractions.dll
+D:\C# Library\API_4350\Logic\bin\Debug\net7.0\Microsoft.IdentityModel.JsonWebTokens.dll
+D:\C# Library\API_4350\Logic\bin\Debug\net7.0\Microsoft.IdentityModel.Logging.dll
+D:\C# Library\API_4350\Logic\bin\Debug\net7.0\Microsoft.IdentityModel.Protocols.dll
+D:\C# Library\API_4350\Logic\bin\Debug\net7.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+D:\C# Library\API_4350\Logic\bin\Debug\net7.0\Microsoft.IdentityModel.Tokens.dll
+D:\C# Library\API_4350\Logic\bin\Debug\net7.0\System.IdentityModel.Tokens.Jwt.dll
