@@ -22,7 +22,7 @@ namespace Logic.Services
             this.config = config;
         }
 
-        public async Task<RegisterUserResponse> RegisterUser(RegisterUserRequest registerUser)
+        public async Task<RegisterLoginResponse> RegisterUser(RegisterUserRequest registerUser)
         {
             // make sure username does not exist
             var exists = databaseService.DoesUserExist(registerUser.Username);
@@ -34,10 +34,11 @@ namespace Logic.Services
             if (newUser != null)
             {
                 // return registered user
-                return new RegisterUserResponse
+                return new RegisterLoginResponse
                 {
                     Id = newUser.Id,
-                    Name = newUser.FirstName,
+                    FirstName = newUser.FirstName,
+                    LastName = newUser.LastName,
                     Token = CreateToken(newUser),
                 };
             }
@@ -67,6 +68,28 @@ namespace Logic.Services
                 );
 
             return new JwtSecurityTokenHandler().WriteToken(securityToken);
+        }
+
+        public async Task<RegisterLoginResponse> LoginUser(LoginUserRequest loginRequest)
+        {
+            // make sure the request is not null or empty
+            if(loginRequest == null || string.IsNullOrEmpty(loginRequest.Username) || string.IsNullOrEmpty(loginRequest.Password))
+            {
+                throw new UnauthorizedUser();
+            }
+
+            // verify username and password
+            var user = await databaseService.GetUser(loginRequest);
+            if (user == null) throw new UnauthorizedUser();
+
+            // return logged in user
+            return new RegisterLoginResponse
+            {
+                Id = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Token = CreateToken(user)
+            };
         }
     }
 }
