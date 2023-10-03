@@ -27,13 +27,12 @@ function LogRes()
 
     const RequestHandle = (value) =>
     {
-        const Email = document.getElementById('Email').value;
-        const Id = document.getElementById('Id').value;
+        const Username = document.getElementById('Id').value;
         const Password = document.getElementById('Password').value;
         const RePassword = document.getElementById('RePassword').value;
         if (value === 1)
         {
-            if (Email, Password === "")
+            if (Username, Password === "")
             {
                 alert("Please complete the form");
                 return;
@@ -46,7 +45,7 @@ function LogRes()
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ Email, Password }),
+                    body: JSON.stringify({ Username, Password }),
                 }).then(response => response.json()).then(data =>
                     {
                         console.log('Success:', data);
@@ -58,7 +57,7 @@ function LogRes()
         }
         else if (value === 2)
         {
-            if (Email, Id, Password, RePassword === "")
+            if (Username, Password, RePassword === "")
             {
                 alert("Please complete the form");
                 return;
@@ -77,7 +76,7 @@ function LogRes()
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ Email, Id, Password}),
+                    body: JSON.stringify({ Username, Password}),
                 }).then(response => response.json()).then(data =>
                     {
                         console.log('Success:', data);
@@ -107,14 +106,13 @@ function LogRes()
                 <MDBTabsContent>
                     <MDBTabsPane show={justifyActive === 'tab1'}>
                         <h3 className='SignInTitle'>Sign In:</h3>
-                        <MDBInput wrapperClass='mb-4' label='Email address' id='Email' type='email' />
+                        <MDBInput wrapperClass='mb-4' label='Username' id='Username' type='text' />
                         <MDBInput wrapperClass='mb-4' label='Password' id='Password' type='password' />
                         <MDBBtn className="mb-4 w-100" onClick={() => RequestHandle(1)}>Sign in</MDBBtn>
                     </MDBTabsPane>
                     <MDBTabsPane show={justifyActive === 'tab2'}>
                         <h3 className='RegisterTitle'>Create Account:</h3>
-                        <MDBInput wrapperClass='mb-4' label='Email address' id='Email' type='email' />
-                        <MDBInput wrapperClass='mb-4' label='Username' id='Id' type='text' />
+                        <MDBInput wrapperClass='mb-4' label='Username' id='Username' type='text' />
                         <MDBInput wrapperClass='mb-4' label='Password' id='Password' type='password' />
                         <MDBInput wrapperClass='mb-4' label='Re-Password' id='RePassword' type='password' />
                         <MDBBtn className="mb-4 w-100" onClick={() => RequestHandle(2)}>Sign up</MDBBtn>
