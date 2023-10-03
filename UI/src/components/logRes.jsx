@@ -35,7 +35,7 @@ function LogRes()
         {
             if (Email, Password === "")
             {
-                alert("Please complte the form");
+                alert("Please complete the form");
                 return;
             }
             else
