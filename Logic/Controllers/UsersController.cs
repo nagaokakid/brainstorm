@@ -20,7 +20,7 @@ namespace Logic.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task<ActionResult<RegisterUserResponse>> RegisterUser(RegisterUserRequest registerUser)
+        public async Task<ActionResult<RegisterLoginResponse>> RegisterUser(RegisterUserRequest registerUser)
         {
             try
             {
@@ -35,6 +35,24 @@ namespace Logic.Controllers
             catch (Exception)
             {
                 // Server error
+                return StatusCode(500);
+            }
+        }
+
+        [HttpPost("login")]
+        [AllowAnonymous]
+        public async Task<ActionResult<RegisterLoginResponse>> LoginUser(LoginUserRequest loginUserRequest)
+        {
+            try
+            {
+                return await authService.LoginUser(loginUserRequest);
+            }
+            catch(UnauthorizedUser)
+            {
+                return Unauthorized();
+            }
+            catch(Exception)
+            {
                 return StatusCode(500);
             }
         }
