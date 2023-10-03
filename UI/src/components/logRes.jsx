@@ -66,7 +66,7 @@ function LogRes()
             else if
             (Password !== RePassword)
             {
-                alert("Password and Re-Password are not the same");
+                alert("Passwords do not match");
                 return;
             }
             else
