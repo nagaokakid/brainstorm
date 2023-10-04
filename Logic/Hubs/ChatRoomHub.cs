@@ -16,15 +16,6 @@ namespace Logic.Hubs
             this.databaseService = databaseService;
         }
 
-        public async Task CreateChatRoom(string userId, string chatRoomName, string description)
-        {
-            // create room
-            ChatRoom newChatRoom = await databaseService.NewChatroom(userId, chatRoomName, description);
-
-            // add user to new group
-            await Groups.AddToGroupAsync(Context.ConnectionId, newChatRoom.Id);
-        }
-
         public async Task JoinChatRoom(int chatRoomCode)
         {
             // get room for chatRoomCode
@@ -51,7 +42,7 @@ namespace Logic.Hubs
             OutgoingChatRoomMessage outMessage = new OutgoingChatRoomMessage
             {
                 ChatRoomId = incomingMsg.ChatRoomId,
-                FromFirstLastname = fromUser.FirstName + " " + fromUser.LastName,
+                FromFirstLastName = fromUser.FirstName + " " + fromUser.LastName,
                 Message = incomingMsg.Message,
                 Timestamp = DateTime.Now,
             };
