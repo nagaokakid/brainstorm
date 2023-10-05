@@ -1,8 +1,10 @@
-﻿namespace Logic.Models
+﻿using Logic.DTOs.User;
+
+namespace Logic.Models
 {
     public class ChatRoomMessage
     {
-        public User From { get; set; }
+        public FriendlyUserInfo From { get; set; }
         public string Message { get; set; }
         public DateTime Timestamp { get; set; }
     }

@@ -71,14 +71,14 @@ namespace Logic.Services
             }
         }
 
-        private List<FriendlyUserResponse> GetList(List<string> memberIds)
+        private List<FriendlyUserInfo> GetList(List<string> memberIds)
         {
-            List<FriendlyUserResponse> result = new();
+            List<FriendlyUserInfo> result = new();
 
             foreach (var memberId in memberIds)
             {
                 var found = users.Find(x => x.Id == memberId);
-                result.Add(new FriendlyUserResponse
+                result.Add(new FriendlyUserInfo
                 {
                     FirstName = found.FirstName,
                     LastName = found.LastName,

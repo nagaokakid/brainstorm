@@ -10,6 +10,6 @@ namespace Logic.DTOs.ChatRoom
         public string Description { get; set; }
         public int JoinCode { get; set; }
         public List<ChatRoomMessage> Messages { get; set; }
-        public List<FriendlyUserResponse> GroupMembers { get; set; }
+        public List<FriendlyUserInfo> GroupMembers { get; set; }
     }
 }

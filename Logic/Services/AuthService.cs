@@ -36,7 +36,7 @@ namespace Logic.Services
                 // return registered user
                 return new RegisterLoginResponse
                 {
-                    Id = newUser.Id,
+                    UserId = newUser.Id,
                     FirstName = newUser.FirstName,
                     LastName = newUser.LastName,
                     Token = CreateToken(newUser),
@@ -85,7 +85,7 @@ namespace Logic.Services
             // return logged in user
             return new RegisterLoginResponse
             {
-                Id = user.Id,
+                UserId = user.Id,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Token = CreateToken(user)

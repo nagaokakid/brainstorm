@@ -1,4 +1,5 @@
 ﻿using Logic.DTOs.Messages;
+using Logic.DTOs.User;
 using Logic.Models;
 using Logic.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -10,14 +11,19 @@ namespace Logic.Hubs
     public class ChatRoomHub : Hub
     {
         private readonly DatabaseService databaseService;
+        private readonly OnlineUserService onlineUserService;
 
-        public ChatRoomHub(DatabaseService databaseService)
+        public ChatRoomHub(DatabaseService databaseService, OnlineUserService onlineUserService)
         {
             this.databaseService = databaseService;
+            this.onlineUserService = onlineUserService;
         }
-
-        public async Task JoinChatRoom(int chatRoomCode)
+        [AllowAnonymous]
+        public async Task JoinChatRoom(string userId, int chatRoomCode)
         {
+            // add to online user list
+            await onlineUserService.AddOnlineUser(userId, Context.ConnectionId);
+
             // get room for chatRoomCode
             var chatRoom = await databaseService.GetRoomByJoinCode(chatRoomCode);
 
@@ -33,6 +39,26 @@ namespace Logic.Hubs
             }
         }
 
+        public async Task SendMessageDirectly(DirectMessage directMessage)
+        {
+            // make sure user is online
+            OnlineUser? online = onlineUserService.GetOnlineUser(directMessage.ToUserId);
+            if(online != null)
+            {
+                await Clients.Client(online.ConnectionId).SendAsync("ReceiveDirectMessage", directMessage);
+            }
+
+            // if user is offline, add message to DB
+        }
+        public override Task OnDisconnectedAsync(Exception? exception)
+        {
+            return base.OnDisconnectedAsync(exception);
+        }
+        public override Task OnConnectedAsync()
+        {
+            var result = Context.ConnectionId;
+            return base.OnConnectedAsync();
+        }
         public async Task SendChatRoomMessage(IncomingChatRoomMessage incomingMsg)
         {
             // get user
@@ -53,7 +79,7 @@ namespace Logic.Hubs
             // add message to chatroom
             await databaseService.AddMessageToChatRoom(incomingMsg.ChatRoomId, new ChatRoomMessage
             {
-                From = fromUser,
+                From = new FriendlyUserInfo { Id = fromUser.Id, FirstName = fromUser.FirstName, LastName = fromUser.LastName},
                 Message = incomingMsg.Message,
                 Timestamp = outMessage.Timestamp,
             });

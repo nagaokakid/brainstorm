@@ -2,6 +2,7 @@
 using Logic.Exceptions;
 using Logic.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Logic.Controllers
@@ -26,7 +27,7 @@ namespace Logic.Controllers
             {
                 // register user
                 var user = await authService.RegisterUser(registerUser);
-                return Created($"/api/users/{user.Id}", user);
+                return Created($"/api/users/{user.UserId}", user);
             }
             catch(UserExists e)
             {
