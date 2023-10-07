@@ -10,7 +10,7 @@ using MongoDB.Driver;
 // Generic class to represent a collection of T type objects (User, ChatRoom, Message, etc.)
 public class MongoRepository<T> where T : class
 {
-    private readonly IMongoCollection<T> collection;
+    private IMongoCollection<T> collection;
 
     public MongoRepository(MongoContext context, string collectionName)
     {
@@ -25,29 +25,27 @@ public class MongoRepository<T> where T : class
     public async Task<T> GetById(string id)
     {
         var objectId = new ObjectId(id);
-        return await collection.Find(item => item.Id.Equals(objectId)).FirstOrDefaultAsync();
+        var filter = Builders<T>.Filter.Eq("_id", objectId);
+        return await collection.Find(filter).FirstOrDefaultAsync();
     }
 
-    public async Task<IEnumerable<T>> Find(Expression<Func<T, bool>> filter)
+    public async Task Create(T document)
     {
-        return await collection.Find(filter).ToListAsync();
+        await collection.InsertOneAsync(document);
     }
 
-    public async Task Create(T entity)
-    {
-        await collection.InsertOneAsync(entity);
-    }
-
-    public async Task Update(string id, T entity)
+    public async Task Update(string id, T document)
     {
         var objectId = new ObjectId(id);
-        await collection.ReplaceOneAsync(item => item.Id.Equals(objectId), entity);
+        var filter = Builders<T>.Filter.Eq("_id", objectId);
+        await collection.ReplaceOneAsync(filter, document);
     }
 
     public async Task Delete(string id)
     {
         var objectId = new ObjectId(id);
-        await collection.DeleteOneAsync(item => item.Id.Equals(objectId));
+        var filter = Builders<T>.Filter.Eq("_id", objectId);
+        await collection.DeleteOneAsync(filter);
     }
 }
 
