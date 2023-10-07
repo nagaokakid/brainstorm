@@ -2,7 +2,6 @@
 using Logic.Exceptions;
 using Logic.Services;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Logic.Controllers
@@ -27,9 +26,9 @@ namespace Logic.Controllers
             {
                 // register user
                 var user = await authService.RegisterUser(registerUser);
-                return Created($"/api/users/{user.UserId}", user);
+                return Created($"/api/users/{user.UserInfo.UserId}", user);
             }
-            catch(UserExists e)
+            catch (UserExists e)
             {
                 return BadRequest(e.Message);
             }
@@ -48,11 +47,11 @@ namespace Logic.Controllers
             {
                 return await authService.LoginUser(loginUserRequest);
             }
-            catch(UnauthorizedUser)
+            catch (UnauthorizedUser)
             {
                 return Unauthorized();
             }
-            catch(Exception)
+            catch (Exception)
             {
                 return StatusCode(500);
             }

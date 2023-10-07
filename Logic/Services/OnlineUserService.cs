@@ -5,41 +5,36 @@ namespace Logic.Services
 {
     public class OnlineUserService
     {
-        private readonly DatabaseService databaseService;
         private ConcurrentDictionary<string, OnlineUser> onlineUsers;
-        public OnlineUserService(DatabaseService databaseService)
+        public OnlineUserService()
         {
             onlineUsers = new();
-            this.databaseService = databaseService;
         }
 
-        public async Task AddOnlineUser(string userId, string connectionId)
+        public async Task Add(FriendlyUserInfo userInfo, string connectionId)
         {
-            if (!onlineUsers.ContainsKey(userId))
+            onlineUsers.AddOrUpdate(userInfo.UserId, new OnlineUser
             {
-                var user = await databaseService.GetUser(userId);
+                UserInfo = userInfo,
+                ConnectionId = connectionId,
+            },
 
-                onlineUsers.AddOrUpdate(userId, new OnlineUser
-                {
-                    UserId = userId,
-                    ConnectionId = connectionId,
-                    FirstName = user.FirstName,
-                    LastName = user.LastName,
-                },
+            // called if key exists
+            (key, value) => value
 
-                (key, value) => value
-                );
-            }
+            );
         }
 
-        public void RemoveOnlineUser(string userId)
+        public void Remove(string connectionId)
         {
-            onlineUsers.Remove(userId, out OnlineUser? removedUser);
+            var result = onlineUsers.Where(x => x.Value.ConnectionId == connectionId).FirstOrDefault();
+
+            onlineUsers.Remove(result.Key, out OnlineUser? removedUser);
         }
 
-        public OnlineUser? GetOnlineUser(string toUserId)
+        public OnlineUser? Get(string userId)
         {
-            var result = onlineUsers.TryGetValue(toUserId, out var user);
+            onlineUsers.TryGetValue(userId, out var user);
             return user;
         }
     }

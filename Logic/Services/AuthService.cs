@@ -12,11 +12,13 @@ namespace Logic.Services
     public class AuthService
     {
         private readonly DatabaseService databaseService;
+        private readonly ChatRoomService chatRoomService;
         private readonly IConfiguration config;
 
-        public AuthService(DatabaseService databaseService, IConfiguration config)
+        public AuthService(DatabaseService databaseService, ChatRoomService chatRoomService, IConfiguration config)
         {
             this.databaseService = databaseService;
+            this.chatRoomService = chatRoomService;
 
             // configuration settings for the api
             this.config = config;
@@ -36,9 +38,12 @@ namespace Logic.Services
                 // return registered user
                 return new RegisterLoginResponse
                 {
-                    UserId = newUser.Id,
-                    FirstName = newUser.FirstName,
-                    LastName = newUser.LastName,
+                    UserInfo = new FriendlyUserInfo()
+                    {
+                        UserId = newUser.Id,
+                        FirstName = newUser.FirstName,
+                        LastName = newUser.LastName,
+                    },
                     Token = CreateToken(newUser),
                 };
             }
@@ -73,7 +78,7 @@ namespace Logic.Services
         public async Task<RegisterLoginResponse> LoginUser(LoginUserRequest loginRequest)
         {
             // make sure the request is not null or empty
-            if(loginRequest == null || string.IsNullOrEmpty(loginRequest.Username) || string.IsNullOrEmpty(loginRequest.Password))
+            if (loginRequest == null || string.IsNullOrEmpty(loginRequest.Username) || string.IsNullOrEmpty(loginRequest.Password))
             {
                 throw new UnauthorizedUser();
             }
@@ -85,10 +90,14 @@ namespace Logic.Services
             // return logged in user
             return new RegisterLoginResponse
             {
-                UserId = user.Id,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Token = CreateToken(user)
+                UserInfo = new FriendlyUserInfo
+                {
+                    UserId = user.Id,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                },
+                Token = CreateToken(user),
+                ChatRooms = chatRoomService.GetChatRooms(user.ChatroomIds)
             };
         }
     }

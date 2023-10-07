@@ -19,6 +19,8 @@ namespace Logic
             builder.Services.AddScoped<AuthService>();
             builder.Services.AddSingleton<DatabaseService>();
             builder.Services.AddSingleton<OnlineUserService>();
+            builder.Services.AddSingleton<DirectMessageService>();
+            builder.Services.AddSingleton<ChatRoomService>();
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -106,6 +108,7 @@ namespace Logic
 
             app.MapControllers();
             app.MapHub<ChatRoomHub>("/chatroom").AllowAnonymous();
+            app.MapHub<DirectMessagingHub>("/direct").AllowAnonymous();
 
             app.Run();
         }
