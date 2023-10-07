@@ -3,3 +3,15 @@ C:\Users\Akira Cooper\source\repos\brainstorm\Database\obj\Debug\net7.0\Database
 C:\Users\Akira Cooper\source\repos\brainstorm\Database\obj\Debug\net7.0\Database.AssemblyInfoInputs.cache
 C:\Users\Akira Cooper\source\repos\brainstorm\Database\obj\Debug\net7.0\Database.AssemblyInfo.cs
 C:\Users\Akira Cooper\source\repos\brainstorm\Database\obj\Debug\net7.0\Database.csproj.CoreCompileInputs.cache
+D:\C# Library\API_4350\Database\obj\Debug\net7.0\Database.GeneratedMSBuildEditorConfig.editorconfig
+D:\C# Library\API_4350\Database\obj\Debug\net7.0\Database.AssemblyInfoInputs.cache
+D:\C# Library\API_4350\Database\obj\Debug\net7.0\Database.AssemblyInfo.cs
+D:\C# Library\API_4350\Database\obj\Debug\net7.0\Database.csproj.CoreCompileInputs.cache
+D:\C# Library\API_4350\Database\bin\Debug\net7.0\Database.deps.json
+D:\C# Library\API_4350\Database\bin\Debug\net7.0\Database.dll
+D:\C# Library\API_4350\Database\bin\Debug\net7.0\Database.pdb
+D:\C# Library\API_4350\Database\obj\Debug\net7.0\Database.csproj.AssemblyReference.cache
+D:\C# Library\API_4350\Database\obj\Debug\net7.0\Database.dll
+D:\C# Library\API_4350\Database\obj\Debug\net7.0\refint\Database.dll
+D:\C# Library\API_4350\Database\obj\Debug\net7.0\Database.pdb
+D:\C# Library\API_4350\Database\obj\Debug\net7.0\ref\Database.dll

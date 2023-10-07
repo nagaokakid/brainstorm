@@ -1,6 +1,9 @@
-﻿using Logic.DTOs.User;
+﻿using Database.CollectionContracts;
+using Database.Data;
+using Logic.DTOs.ChatRoom;
+using Logic.DTOs.Messages;
+using Logic.DTOs.User;
 using Logic.Exceptions;
-using Logic.Models;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -11,44 +14,50 @@ namespace Logic.Services
     // This class takes care of registering, signing in, and signing out a user
     public class AuthService
     {
-        private readonly UserService databaseService;
-        private readonly ChatRoomService chatRoomService;
+        private readonly IUserCollection userCollection;
+        private readonly IChatRoomCollection chatRoomCollection;
         private readonly IConfiguration config;
+        private readonly UserService userService;
 
-        public AuthService(UserService databaseService, ChatRoomService chatRoomService, IConfiguration config)
+        public AuthService(IUserCollection userCollection, IChatRoomCollection chatRoomCollection, IConfiguration config, UserService userService)
         {
-            this.databaseService = databaseService;
-            this.chatRoomService = chatRoomService;
+            this.userCollection = userCollection;
+            this.chatRoomCollection = chatRoomCollection;
 
             // configuration settings for the api
             this.config = config;
+            this.userService = userService;
         }
 
         public async Task<RegisterLoginResponse> RegisterUser(RegisterUserRequest registerUser)
         {
             // make sure username does not exist
-            var exists = databaseService.DoesUserExist(registerUser.Username);
+            var exists = await userCollection.DoesUsernameExist(registerUser.Username);
             if (exists) throw new UserExists();
 
             // create user
-            var newUser = await databaseService.CreateUser(registerUser);
-
-            if (newUser != null)
+            var newUser = new User
             {
-                // return registered user
-                return new RegisterLoginResponse
-                {
-                    UserInfo = new FriendlyUserInfo()
-                    {
-                        UserId = newUser.Id,
-                        FirstName = newUser.FirstName,
-                        LastName = newUser.LastName,
-                    },
-                    Token = CreateToken(newUser),
-                };
-            }
+                Id = Guid.NewGuid().ToString(),
+                Username = registerUser.Username,
+                Password = registerUser.Password,
+                FirstName = registerUser.FirstName,
+                LastName = registerUser.LastName,
+                ChatroomIds = new List<string>()
+            };
+            await userCollection.Add(newUser);
 
-            throw new Exception("Server error");
+            // return registered user
+            return new RegisterLoginResponse
+            {
+                UserInfo = new FriendlyUserInfo()
+                {
+                    UserId = newUser.Id,
+                    FirstName = newUser.FirstName,
+                    LastName = newUser.LastName,
+                },
+                Token = CreateToken(newUser),
+            };
         }
 
         // creates the jwt bearer token
@@ -84,8 +93,7 @@ namespace Logic.Services
             }
 
             // verify username and password
-            var user = await databaseService.GetUser(loginRequest);
-            if (user == null) throw new UnauthorizedUser();
+            var user = await userCollection.Get(loginRequest.Username, loginRequest.Password) ?? throw new UnauthorizedUser();
 
             // return logged in user
             return new RegisterLoginResponse
@@ -97,8 +105,36 @@ namespace Logic.Services
                     LastName = user.LastName,
                 },
                 Token = CreateToken(user),
-                ChatRooms = chatRoomService.GetChatRooms(user.ChatroomIds)
+                ChatRooms = await GetFriendlyChatRooms(user.ChatroomIds)
             };
+        }
+
+        private async Task<List<FriendlyChatRoom>> GetFriendlyChatRooms(List<string> chatRoomIds)
+        {
+            var result = new List<FriendlyChatRoom>();
+            foreach (var room in chatRoomIds)
+            {
+                var found = await chatRoomCollection.GetById(room);
+                if (found == null) throw new ChatRoomNotFound();
+
+                result.Add(new FriendlyChatRoom
+                {
+                    Id = found.Id,
+                    Title = found.Title,
+                    Description = found.Description,
+                    Messages = found.Messages.Select(x => new MessageInfo
+                    {
+                        ChatRoomId = found.Id,
+                        Message = x.Message,
+                        Timestamp = x.Timestamp,
+                        FromUserInfo = userService.GetFriendly(x.FromUserId).Result
+                    }).ToList(),
+                    JoinCode = found.JoinCode,
+                    Members = await userService.GetList(found.MemberIds)
+                });
+            }
+
+            return result;
         }
     }
 }

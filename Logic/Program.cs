@@ -1,4 +1,6 @@
 
+using Database.CollectionContracts;
+using Database.Collections;
 using Logic.Hubs;
 using Logic.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -17,16 +19,19 @@ namespace Logic
 
             // Add services to the container.
             builder.Services.AddScoped<AuthService>();
-            builder.Services.AddSingleton<UserService>();
-            builder.Services.AddSingleton<OnlineUserService>();
-            builder.Services.AddSingleton<DirectMessageService>();
-            builder.Services.AddSingleton<ChatRoomService>();
+            builder.Services.AddScoped<UserService>();
+            builder.Services.AddScoped<OnlineUserService>();
+            builder.Services.AddScoped<DirectMessageService>();
+            builder.Services.AddScoped<ChatRoomService>();
+            builder.Services.AddSingleton<IUserCollection, UserCollection>();
+            builder.Services.AddSingleton<IDirectMessageCollection, DirectMessageCollection>();
+            builder.Services.AddSingleton<IChatRoomCollection, ChatRoomCollection>();
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
 
-            // the following code comes from the following stackoverflow link
+            // the following code for jwt in swagger comes from the following stackoverflow link
             // https://stackoverflow.com/questions/43447688/setting-up-swagger-asp-net-core-using-the-authorization-headers-bearer
             builder.Services.AddSwaggerGen(setup =>
             {

@@ -1,21 +1,24 @@
-﻿using Logic.DTOs.User;
+﻿using Database.CollectionContracts;
+using Database.Data;
+using Logic.DTOs.User;
 using Logic.Exceptions;
-using Logic.Models;
 
 namespace Logic.Services
 {
-    // This class has all functionality relating to database access
     public class UserService
     {
-        private List<User> users = new();
+        private readonly IUserCollection userCollection;
 
-        // stub
-        public bool DoesUserExist(string username)
+        public UserService(IUserCollection userCollection)
         {
-            return users.Find(x => x.Username == username) != null;
+            this.userCollection = userCollection;
         }
 
-        // stub
+        public async Task<bool> DoesUsernameExist(string username)
+        {
+            return await userCollection.DoesUsernameExist(username);
+        }
+
         public async Task<User?> CreateUser(RegisterUserRequest registerUser)
         {
             var user = new User
@@ -28,40 +31,48 @@ namespace Logic.Services
                 ChatroomIds = new List<string>()
             };
 
-            users.Add(user);
+            await userCollection.Add(user);
 
             return user;
         }
 
-        // stub to get user from DB
+
         public async Task<User> GetUser(LoginUserRequest loginRequest)
         {
             // look for username and password in DB
-            var foundUser = users.Find(x => x.Username == loginRequest.Username && x.Password == loginRequest.Password);
+            var foundUser = await userCollection.Get(loginRequest.Username, loginRequest.Password);
             if (foundUser == null) throw new UnauthorizedUser();
 
             return foundUser;
         }
 
-        // stub to get user from DB
         public async Task<User?> GetUser(string userId)
         {
-            return users.Find(x => x.Id == userId);
+            return await userCollection.Get(userId);
         }
 
-        public List<FriendlyUserInfo> GetList(List<string> memberIds)
+        public async Task<FriendlyUserInfo> GetFriendly(string userId)
+        {
+            var found = await userCollection.Get(userId);
+            if (found != null)
+            {
+                return new FriendlyUserInfo
+                {
+                    UserId = found.Id,
+                    FirstName = found.FirstName,
+                    LastName = found.LastName,
+                };
+            }
+
+            throw new UserExists();
+        }
+        public async Task<List<FriendlyUserInfo>> GetList(List<string> memberIds)
         {
             List<FriendlyUserInfo> result = new();
 
             foreach (var memberId in memberIds)
             {
-                var found = users.Find(x => x.Id == memberId);
-                result.Add(new FriendlyUserInfo
-                {
-                    UserId = found.Id,
-                    FirstName = found.FirstName,
-                    LastName = found.LastName,
-                });
+                result.Add(await GetFriendly(memberId));
             }
 
             return result;
