@@ -1,62 +1,55 @@
 ﻿using Logic.DTOs.Messages;
 using Logic.Models;
 using Logic.Services;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 
 namespace Logic.Hubs
 {
-    [Authorize]
     public class ChatRoomHub : Hub
     {
-        private readonly DatabaseService databaseService;
+        private readonly ChatRoomService chatRoomService;
 
-        public ChatRoomHub(DatabaseService databaseService)
+        public ChatRoomHub(ChatRoomService chatRoomService)
         {
-            this.databaseService = databaseService;
+            this.chatRoomService = chatRoomService;
         }
 
-        public async Task JoinChatRoom(int chatRoomCode)
+        public async Task JoinChatRoom(int joinCode)
         {
             // get room for chatRoomCode
-            var chatRoom = await databaseService.GetRoomByJoinCode(chatRoomCode);
+            var result = await chatRoomService.GetRoomByJoinCode(joinCode);
 
             // add member to group
-            if (chatRoom != null)
+            if (result != null)
             {
-                await Groups.AddToGroupAsync(Context.ConnectionId, chatRoom.Id);
-            }
-            // join code for room not found
-            else
-            {
-                await Clients.Caller.SendAsync("roomNotFound", "Incorrect code");
+                await Groups.AddToGroupAsync(Context.ConnectionId, result.Id);
             }
         }
-
-        public async Task SendChatRoomMessage(IncomingChatRoomMessage incomingMsg)
+        public async Task SendChatRoomMessage(MessageInfo msg)
         {
-            // get user
-            User fromUser = await databaseService.GetUser(incomingMsg.FromUserId);
-
-            // outgoing message
-            OutgoingChatRoomMessage outMessage = new OutgoingChatRoomMessage
+            if (msg.ChatRoomId != null)
             {
-                ChatRoomId = incomingMsg.ChatRoomId,
-                FromFirstLastName = fromUser.FirstName + " " + fromUser.LastName,
-                Message = incomingMsg.Message,
-                Timestamp = DateTime.Now,
-            };
+                msg.Timestamp = DateTime.Now;
 
-            // send message to everyone in the chatRoom except the sender
-            await Clients.GroupExcept(incomingMsg.ChatRoomId, new List<string>() { Context.ConnectionId }).SendAsync("ReceiveChatRoomMessage", outMessage);
+                // send message to everyone in the chatRoom
+                await Clients.Group(msg.ChatRoomId).SendAsync("ReceiveChatRoomMessage", msg);
 
-            // add message to chatroom
-            await databaseService.AddMessageToChatRoom(incomingMsg.ChatRoomId, new ChatRoomMessage
-            {
-                From = fromUser,
-                Message = incomingMsg.Message,
-                Timestamp = outMessage.Timestamp,
-            });
+                // add message to chatroom
+                await chatRoomService.AddMessageToChatRoom(msg.ChatRoomId, new ChatRoomMessage
+                {
+                    From = msg.FromUserInfo,
+                    Message = msg.Message,
+                    Timestamp = msg.Timestamp,
+                });
+            }
+        }
+        public override Task OnDisconnectedAsync(Exception? exception)
+        {
+            return base.OnDisconnectedAsync(exception);
+        }
+        public override Task OnConnectedAsync()
+        {
+            return base.OnConnectedAsync();
         }
     }
 }

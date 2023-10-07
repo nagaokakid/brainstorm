@@ -1,7 +1,5 @@
 ﻿using Logic.DTOs.ChatRoom;
-using Logic.Models;
 using Logic.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Logic.Controllers
@@ -10,11 +8,11 @@ namespace Logic.Controllers
     [ApiController]
     public class ChatRoomController : ControllerBase
     {
-        private readonly DatabaseService databaseService;
+        private readonly ChatRoomService chatRoomService;
 
-        public ChatRoomController(DatabaseService databaseService)
+        public ChatRoomController(ChatRoomService chatRoomService)
         {
-            this.databaseService = databaseService;
+            this.chatRoomService = chatRoomService;
         }
 
         [HttpPost]
@@ -22,7 +20,7 @@ namespace Logic.Controllers
         {
             try
             {
-                return await databaseService.CreateChatRoom(request);
+                return await chatRoomService.CreateChatRoom(request);
             }
             catch (Exception)
             {

@@ -17,7 +17,10 @@ namespace Logic
 
             // Add services to the container.
             builder.Services.AddScoped<AuthService>();
-            builder.Services.AddSingleton<DatabaseService>();
+            builder.Services.AddSingleton<UserService>();
+            builder.Services.AddSingleton<OnlineUserService>();
+            builder.Services.AddSingleton<DirectMessageService>();
+            builder.Services.AddSingleton<ChatRoomService>();
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -56,7 +59,7 @@ namespace Logic
             // allow all cors
             builder.Services.AddCors(x =>
             {
-                x.AddPolicy("AllowAll", allow => allow.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod());
+                x.AddPolicy("AllowAll", allow => allow.AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin());
             });
 
             // setup project for authentication
@@ -104,7 +107,8 @@ namespace Logic
 
 
             app.MapControllers();
-            app.MapHub<ChatRoomHub>("/realtime/chatroom");
+            app.MapHub<ChatRoomHub>("/chatroom").AllowAnonymous();
+            app.MapHub<DirectMessagingHub>("/direct").AllowAnonymous();
 
             app.Run();
         }
