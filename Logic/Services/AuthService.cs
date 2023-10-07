@@ -11,11 +11,11 @@ namespace Logic.Services
     // This class takes care of registering, signing in, and signing out a user
     public class AuthService
     {
-        private readonly DatabaseService databaseService;
+        private readonly UserService databaseService;
         private readonly ChatRoomService chatRoomService;
         private readonly IConfiguration config;
 
-        public AuthService(DatabaseService databaseService, ChatRoomService chatRoomService, IConfiguration config)
+        public AuthService(UserService databaseService, ChatRoomService chatRoomService, IConfiguration config)
         {
             this.databaseService = databaseService;
             this.chatRoomService = chatRoomService;

@@ -8,9 +8,9 @@ namespace Logic.Services
     {
 
         private List<ChatRoom> rooms = new();
-        private readonly DatabaseService databaseService;
+        private readonly UserService databaseService;
 
-        public ChatRoomService(DatabaseService databaseService)
+        public ChatRoomService(UserService databaseService)
         {
             this.databaseService = databaseService;
         }

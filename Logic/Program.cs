@@ -17,7 +17,7 @@ namespace Logic
 
             // Add services to the container.
             builder.Services.AddScoped<AuthService>();
-            builder.Services.AddSingleton<DatabaseService>();
+            builder.Services.AddSingleton<UserService>();
             builder.Services.AddSingleton<OnlineUserService>();
             builder.Services.AddSingleton<DirectMessageService>();
             builder.Services.AddSingleton<ChatRoomService>();

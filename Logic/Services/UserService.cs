@@ -5,7 +5,7 @@ using Logic.Models;
 namespace Logic.Services
 {
     // This class has all functionality relating to database access
-    public class DatabaseService
+    public class UserService
     {
         private List<User> users = new();
 
