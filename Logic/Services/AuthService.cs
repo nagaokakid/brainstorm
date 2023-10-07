@@ -1,5 +1,4 @@
 ﻿using Database.CollectionContracts;
-using Database.Data;
 using Logic.DTOs.ChatRoom;
 using Logic.DTOs.Messages;
 using Logic.DTOs.User;
@@ -31,37 +30,18 @@ namespace Logic.Services
 
         public async Task<RegisterLoginResponse> RegisterUser(RegisterUserRequest registerUser)
         {
-            // make sure username does not exist
-            var exists = await userCollection.DoesUsernameExist(registerUser.Username);
-            if (exists) throw new UserExists();
-
-            // create user
-            var newUser = new User
-            {
-                Id = Guid.NewGuid().ToString(),
-                Username = registerUser.Username,
-                Password = registerUser.Password,
-                FirstName = registerUser.FirstName,
-                LastName = registerUser.LastName,
-                ChatroomIds = new List<string>()
-            };
-            await userCollection.Add(newUser);
+            var user = await userService.CreateUser(registerUser);
 
             // return registered user
             return new RegisterLoginResponse
             {
-                UserInfo = new FriendlyUserInfo()
-                {
-                    UserId = newUser.Id,
-                    FirstName = newUser.FirstName,
-                    LastName = newUser.LastName,
-                },
-                Token = CreateToken(newUser),
+                UserInfo = user,
+                Token = CreateToken(user),
             };
         }
 
         // creates the jwt bearer token
-        private string CreateToken(User newUser)
+        private string CreateToken(FriendlyUserInfo newUser)
         {
             // create jwt token
             var symmetricKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config.GetValue<string>("JwtSettings:Key")));
@@ -69,7 +49,7 @@ namespace Logic.Services
 
             var claims = new List<Claim>
             {
-                  new Claim(JwtRegisteredClaimNames.Sub, newUser.Id),
+                  new Claim(JwtRegisteredClaimNames.Sub, newUser.UserId),
                   new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             };
 
@@ -94,17 +74,18 @@ namespace Logic.Services
 
             // verify username and password
             var user = await userCollection.Get(loginRequest.Username, loginRequest.Password) ?? throw new UnauthorizedUser();
+            var friendly = new FriendlyUserInfo
+            {
+                UserId = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+            };
 
             // return logged in user
             return new RegisterLoginResponse
             {
-                UserInfo = new FriendlyUserInfo
-                {
-                    UserId = user.Id,
-                    FirstName = user.FirstName,
-                    LastName = user.LastName,
-                },
-                Token = CreateToken(user),
+                UserInfo = friendly,
+                Token = CreateToken(friendly),
                 ChatRooms = await GetFriendlyChatRooms(user.ChatroomIds)
             };
         }

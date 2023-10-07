@@ -14,14 +14,14 @@ namespace Logic.Services
             this.userCollection = userCollection;
         }
 
-        public async Task<bool> DoesUsernameExist(string username)
+        public async Task<FriendlyUserInfo> CreateUser(RegisterUserRequest registerUser)
         {
-            return await userCollection.DoesUsernameExist(username);
-        }
+            // make sure username does not exist
+            var exists = await userCollection.DoesUsernameExist(registerUser.Username);
+            if (exists) throw new UserExists();
 
-        public async Task<User?> CreateUser(RegisterUserRequest registerUser)
-        {
-            var user = new User
+            // create user
+            var newUser = new User
             {
                 Id = Guid.NewGuid().ToString(),
                 Username = registerUser.Username,
@@ -30,25 +30,14 @@ namespace Logic.Services
                 LastName = registerUser.LastName,
                 ChatroomIds = new List<string>()
             };
+            await userCollection.Add(newUser);
 
-            await userCollection.Add(user);
-
-            return user;
-        }
-
-
-        public async Task<User> GetUser(LoginUserRequest loginRequest)
-        {
-            // look for username and password in DB
-            var foundUser = await userCollection.Get(loginRequest.Username, loginRequest.Password);
-            if (foundUser == null) throw new UnauthorizedUser();
-
-            return foundUser;
-        }
-
-        public async Task<User?> GetUser(string userId)
-        {
-            return await userCollection.Get(userId);
+            return new FriendlyUserInfo()
+            {
+                UserId = newUser.Id,
+                FirstName = newUser.FirstName,
+                LastName = newUser.LastName,
+            };
         }
 
         public async Task<FriendlyUserInfo> GetFriendly(string userId)
