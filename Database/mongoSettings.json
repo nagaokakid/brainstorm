@@ -1,0 +1,8 @@
+﻿{
+  "ConnectionString": {
+    "Username": "comp4350",
+    "API_Key": "3465caae-46e4-4422-b7a5-8a1f34b2db69",
+    "Cluster": "ac-xzpz7wj-shard-00-00.aj9h1fd",
+    "Database": "brainstorm"
+  }
+}

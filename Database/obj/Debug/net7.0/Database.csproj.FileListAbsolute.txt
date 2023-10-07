@@ -1,0 +1,5 @@
+C:\Users\Akira Cooper\source\repos\brainstorm\Database\obj\Debug\net7.0\Database.csproj.AssemblyReference.cache
+C:\Users\Akira Cooper\source\repos\brainstorm\Database\obj\Debug\net7.0\Database.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Akira Cooper\source\repos\brainstorm\Database\obj\Debug\net7.0\Database.AssemblyInfoInputs.cache
+C:\Users\Akira Cooper\source\repos\brainstorm\Database\obj\Debug\net7.0\Database.AssemblyInfo.cs
+C:\Users\Akira Cooper\source\repos\brainstorm\Database\obj\Debug\net7.0\Database.csproj.CoreCompileInputs.cache

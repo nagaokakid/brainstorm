@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Akira Cooper\\source\\repos\\brainstorm\\Logic\\Logic.csproj": {}
+    "C:\\Users\\Akira Cooper\\source\\repos\\brainstorm\\Database\\Database.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Akira Cooper\\source\\repos\\brainstorm\\Logic\\Logic.csproj": {
+    "C:\\Users\\Akira Cooper\\source\\repos\\brainstorm\\Database\\Database.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Akira Cooper\\source\\repos\\brainstorm\\Logic\\Logic.csproj",
-        "projectName": "Logic",
-        "projectPath": "C:\\Users\\Akira Cooper\\source\\repos\\brainstorm\\Logic\\Logic.csproj",
+        "projectUniqueName": "C:\\Users\\Akira Cooper\\source\\repos\\brainstorm\\Database\\Database.csproj",
+        "projectName": "Database",
+        "projectPath": "C:\\Users\\Akira Cooper\\source\\repos\\brainstorm\\Database\\Database.csproj",
         "packagesPath": "C:\\Users\\Akira Cooper\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Akira Cooper\\source\\repos\\brainstorm\\Logic\\obj\\",
+        "outputPath": "C:\\Users\\Akira Cooper\\source\\repos\\brainstorm\\Database\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Akira Cooper\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -22,7 +22,6 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\sdk\\7.0.302\\Sdks\\Microsoft.NET.Sdk.Web\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -41,33 +40,17 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "dependencies": {
-            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+            "Microsoft.Extensions.Configuration": {
               "target": "Package",
-              "version": "[7.0.11, )"
+              "version": "[7.0.0, )"
             },
-            "Microsoft.AspNetCore.OpenApi": {
+            "Microsoft.Extensions.Configuration.Json": {
               "target": "Package",
-              "version": "[7.0.10, )"
+              "version": "[7.0.0, )"
             },
-            "Microsoft.IdentityModel.JsonWebTokens": {
+            "MongoDB.Driver": {
               "target": "Package",
-              "version": "[7.0.2, )"
-            },
-            "Microsoft.IdentityModel.Tokens": {
-              "target": "Package",
-              "version": "[7.0.2, )"
-            },
-            "Microsoft.VisualStudio.Azure.Containers.Tools.Targets": {
-              "target": "Package",
-              "version": "[1.19.4, )"
-            },
-            "Swashbuckle.AspNetCore": {
-              "target": "Package",
-              "version": "[6.5.0, )"
-            },
-            "System.IdentityModel.Tokens.Jwt": {
-              "target": "Package",
-              "version": "[7.0.2, )"
+              "version": "[2.21.0, )"
             }
           },
           "imports": [
@@ -82,9 +65,6 @@
           "assetTargetFallback": true,
           "warn": true,
           "frameworkReferences": {
-            "Microsoft.AspNetCore.App": {
-              "privateAssets": "none"
-            },
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
