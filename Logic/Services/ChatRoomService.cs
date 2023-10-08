@@ -1,43 +1,45 @@
-﻿using Logic.DTOs.ChatRoom;
-using Logic.Models;
+﻿using Database.CollectionContracts;
+using Database.Data;
+using Logic.DTOs.ChatRoom;
+using Logic.DTOs.Messages;
+using Logic.DTOs.User;
+using Logic.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Logic.Services
 {
     public class ChatRoomService
     {
+        private readonly IChatRoomCollection chatRoomCollection;
+        private readonly IUserCollection userCollection;
 
-        private List<ChatRoom> rooms = new();
-        private readonly UserService databaseService;
-
-        public ChatRoomService(UserService databaseService)
+        public ChatRoomService(IChatRoomCollection chatRoomCollection, IUserCollection userCollection)
         {
-            this.databaseService = databaseService;
+            this.chatRoomCollection = chatRoomCollection;
+            this.userCollection = userCollection;
         }
 
         public async Task<ChatRoom?> GetRoomByJoinCode(int chatRoomJoinCode)
         {
-            return rooms.Find(x => x.JoinCode == chatRoomJoinCode);
+            return await chatRoomCollection.GetByJoinCode(chatRoomJoinCode);
         }
 
-        public async Task AddMessageToChatRoom(string chatRoomId, ChatRoomMessage chatRoomMessage)
+        public async Task AddMessageToChatRoom(string chatRoomId, MessageInfo msg)
         {
-            var foundRoom = rooms.Find(x => x.Id == chatRoomId);
-            if (foundRoom != null)
+            await chatRoomCollection.AddMessage(chatRoomId, new ChatRoomMessage
             {
-                foundRoom.Messages.Add(chatRoomMessage);
-            }
-        }
-
-        private async Task AddChatRoomToUser(User user, string chatRoomId)
-        {
-            user.ChatroomIds.Add(chatRoomId);
+                FromUserId = msg.FromUserInfo.UserId,
+                Message = msg.Message, 
+                Timestamp = msg.Timestamp,
+            });
         }
 
         public async Task<ActionResult<CreateChatRoomResponse>> CreateChatRoom(CreateChatRoomRequest request)
         {
             // get user
-            var foundUser = await databaseService.GetUser(request.UserId);
+            var foundUser = await userCollection.Get(request.UserId);
+
+            if (foundUser == null) throw new ChatRoomNotFound();
 
             // create new room
             ChatRoom newRoom = new()
@@ -50,30 +52,45 @@ namespace Logic.Services
                 JoinCode = Random.Shared.Next(100001, 999999),
 
                 // add user as a member to this room immediately
-                Members = databaseService.GetList(new List<string>() { request.UserId }),
+                MemberIds = new List<string>() { foundUser.Id },
 
                 // no messages yet
                 Messages = new List<ChatRoomMessage>()
             };
 
             // add room to user collection
-            await AddChatRoomToUser(foundUser, newRoom.Id);
+            await userCollection.AddChatRoomToUser(foundUser.Id, newRoom.Id);
 
             // add new room to room collection
-            rooms.Add(newRoom);
-
+            await chatRoomCollection.Add(newRoom);
             return new CreateChatRoomResponse
             {
-                ChatRoom = newRoom,
+                ChatRoom = new FriendlyChatRoom
+                {
+                    Id = newRoom.Id,
+                    Title = newRoom.Title,
+                    Description = newRoom.Description,
+                    Messages = new List<MessageInfo>(),
+                    JoinCode = newRoom.JoinCode,
+                    Members = new List<FriendlyUserInfo>
+                    {
+                        new FriendlyUserInfo
+                        {
+                            UserId = foundUser.Id,
+                            FirstName = foundUser.FirstName,
+                            LastName = foundUser.LastName
+                        }
+                    }
+                },
             };
         }
 
-        public List<ChatRoom> GetChatRooms(List<string> chatRoomIds)
+        public async Task<List<ChatRoom>> GetChatRooms(List<string> chatRoomIds)
         {
             List<ChatRoom> result = new();
-            foreach (var c in chatRoomIds)
+            foreach (var id in chatRoomIds)
             {
-                result.Add(rooms.Find(x => x.Id == c));
+                result.Add(await chatRoomCollection.GetById(id));
             }
             return result;
         }

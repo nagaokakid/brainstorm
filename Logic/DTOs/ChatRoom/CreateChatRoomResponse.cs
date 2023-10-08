@@ -2,6 +2,6 @@
 {
     public class CreateChatRoomResponse
     {
-        public Models.ChatRoom ChatRoom { get; set; }
+        public FriendlyChatRoom ChatRoom { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Logic.DTOs.ChatRoom;
+using Logic.Exceptions;
 using Logic.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,6 +22,10 @@ namespace Logic.Controllers
             try
             {
                 return await chatRoomService.CreateChatRoom(request);
+            }
+            catch (ChatRoomNotFound e)
+            {
+                return BadRequest(e.Message);
             }
             catch (Exception)
             {

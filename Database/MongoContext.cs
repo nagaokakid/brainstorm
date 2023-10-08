@@ -1,8 +1,5 @@
-﻿using MongoDB.Driver;
-using System;
-using System.IO;
-using Microsoft.Extensions.Configuration;
-using System.Linq.Expressions;
+﻿using Microsoft.Extensions.Configuration;
+using MongoDB.Driver;
 
 namespace Database
 {
