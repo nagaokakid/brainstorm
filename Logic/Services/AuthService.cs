@@ -30,6 +30,9 @@ namespace Logic.Services
 
         public async Task<RegisterLoginResponse> RegisterUser(RegisterUserRequest registerUser)
         {
+            if (registerUser == null || string.IsNullOrEmpty(registerUser.Username) || string.IsNullOrEmpty(registerUser.Password) || string.IsNullOrEmpty(registerUser.FirstName) || string.IsNullOrEmpty(registerUser.LastName))
+                throw new BadRequest();
+
             var user = await userService.CreateUser(registerUser);
 
             // return registered user

@@ -34,5 +34,10 @@ namespace Database.Collections
         {
             return users.Find(x=>x.Username.Equals(username) && x.Password.Equals(password));
         }
+
+        public Task<Dictionary<string, User>> GetAll()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
