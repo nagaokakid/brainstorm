@@ -10,7 +10,9 @@ function chatRoomOption() {
                 <img className='btn-icon' src={icon1} alt="" />
                 Create Chat Room
             </button>
-            <button type="button" className="btn btn-primary" onClick={() => buttunHandler(2)}><a>456</a></button>
+            <button type="button" className="btn btn-primary" onClick={() => buttunHandler(2)}>
+                <a>456</a>
+            </button>
         </div>
     );
 }

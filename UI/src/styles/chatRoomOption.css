@@ -1,17 +1,27 @@
 .btn-group {
     position: absolute;
+    display: flex;
+    flex-direction: row;
     width: 500px;
     height: 300px;
+    box-shadow: 0px 0px 25px 5px gray;
 }
 
 .btn-group .btn {
     display: flex;
     flex-direction: column;
-    background-color: rgba(240, 248, 255, 0);
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    color: black;
+}
+
+.btn-group .btn:hover {
+    background-color: rgba(82, 82, 82, 0.432);
 }
 
 .btn-group .btn img.btn-icon {
-    width: 100%;
+    width: 90%;
     height: 90%;
     margin: 0 auto;
 }
