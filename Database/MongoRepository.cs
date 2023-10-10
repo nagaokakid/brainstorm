@@ -1,51 +1,60 @@
-﻿using System;
-using System;
-using System.Collections.Generic;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
-using Database;
-using MongoDB.Bson;
+﻿using MongoDB.Bson;
 using MongoDB.Driver;
 
-// Generic class to represent a collection of T type objects (User, ChatRoom, Message, etc.)
-public class MongoRepository<T> where T : class
+namespace Database
 {
-    private IMongoCollection<T> collection;
-
-    public MongoRepository(MongoContext context, string collectionName)
+    // Generic class to represent a collection of T type objects (User, ChatRoom, Message, etc.)
+    public class MongoRepository<Data> where Data : class
     {
-        collection = context.GetCollection<T>(collectionName);
-    }
+        private IMongoCollection<Data> collection;
+        private readonly MongoContext context;
+        private MongoClient client;
+        private IMongoDatabase database;
 
-    public async Task<IEnumerable<T>> GetAll()
-    {
-        return await collection.Find(_ => true).ToListAsync();
-    }
+        // Constructor: connect to MongoDB database and retrieve the collection by name
+        public MongoRepository(string collectionName)
+        {
+            context = new();
+            client = new MongoClient(MongoContext.ConnectionString);
+            database = client.GetDatabase(MongoContext.DatabaseName);
+            collection = database.GetCollection<Data>(collectionName);
+        }
 
-    public async Task<T> GetById(string id)
-    {
-        var objectId = new ObjectId(id);
-        var filter = Builders<T>.Filter.Eq("_id", objectId);
-        return await collection.Find(filter).FirstOrDefaultAsync();
-    }
+        // Get all the documents
+        public async Task<IEnumerable<Data>> GetAll()
+        {
+            return await collection.Find(_ => true).ToListAsync();
+        }
 
-    public async Task Create(T document)
-    {
-        await collection.InsertOneAsync(document);
-    }
+        // Get a single document by ID
+        public async Task<Data> GetById(string id)
+        {
+            var objectId = new ObjectId(id);
+            var filter = Builders<Data>.Filter.Eq("_id", objectId);
+            return await collection.Find(filter).FirstOrDefaultAsync();
+        }
 
-    public async Task Update(string id, T document)
-    {
-        var objectId = new ObjectId(id);
-        var filter = Builders<T>.Filter.Eq("_id", objectId);
-        await collection.ReplaceOneAsync(filter, document);
-    }
+        // Create a new document
+        public async Task Create(Data data)
+        {
+            await collection.InsertOneAsync(data);
+        }
 
-    public async Task Delete(string id)
-    {
-        var objectId = new ObjectId(id);
-        var filter = Builders<T>.Filter.Eq("_id", objectId);
-        await collection.DeleteOneAsync(filter);
+        // Update an existing document
+        public async Task Update(string id, Data data)
+        {
+            var objectId = new ObjectId(id);
+            var filter = Builders<Data>.Filter.Eq("_id", objectId);
+            await collection.ReplaceOneAsync(filter, data);
+        }
+
+        // Delete an existing document
+        public async Task Delete(string id)
+        {
+            var objectId = new ObjectId(id);
+            var filter = Builders<Data>.Filter.Eq("_id", objectId);
+            await collection.DeleteOneAsync(filter);
+        }
     }
 }
 

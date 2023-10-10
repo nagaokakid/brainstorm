@@ -6,6 +6,7 @@ namespace Database.Collections
     public class UserCollection : IUserCollection
     {
         private List<User> users = new();
+        private MongoRepository<User> userRepository = new("User");
         public async Task Add(User newUser)
         {
             users.Add(newUser);
