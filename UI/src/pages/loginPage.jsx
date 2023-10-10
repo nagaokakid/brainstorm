@@ -1,5 +1,5 @@
 import "../styles/LoginPage.css"
-import LogRes from "../components/LogRes"
+import LogRes from "../components/logRes"
 
 function LoginPage()
 {
