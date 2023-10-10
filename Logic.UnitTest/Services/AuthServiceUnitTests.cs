@@ -63,6 +63,26 @@ namespace Logic.UnitTest.LoginUser
         }
 
         [Test]
+        public async Task LoginUser_InputEmptyPassword_ThrowsUnauthorized()
+        {
+            // Arrange
+            var userCollection = new Mock<IUserCollection>();
+            var chatRoomCollection = new Mock<IChatRoomCollection>();
+            var config = new Mock<Microsoft.Extensions.Configuration.IConfiguration>();
+            var userService = new Mock<UserService>(userCollection.Object);
+            var authService = new AuthService(userCollection.Object, chatRoomCollection.Object, config.Object, userService.Object);
+
+            var request = new LoginUserRequest
+            {
+                Username = "Username",
+                Password = "",
+            };
+
+            // Assert
+            Assert.That(() => authService.LoginUser(request), Throws.TypeOf<UnauthorizedUser>());
+        }
+
+        [Test]
         public async Task RegisterUser_InputNull_ThrowBadRequest()
         {
             // Arrange
