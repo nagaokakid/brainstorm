@@ -15,7 +15,17 @@ namespace Logic
     {
         public static void Main(string[] args)
         {
+            var allowAllCors = "allow";
+
             var builder = WebApplication.CreateBuilder(args);
+            // allow all cors
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy(name: allowAllCors, policy =>
+                {
+                    policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+                });
+            });
 
             // Add services to the container.
             builder.Services.AddScoped<AuthService>();
@@ -61,11 +71,7 @@ namespace Logic
 
             });
 
-            // allow all cors
-            builder.Services.AddCors(x =>
-            {
-                x.AddPolicy("AllowAll", allow => allow.AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin());
-            });
+            
 
             // setup project for authentication
             builder.Services.AddAuthentication(x =>
@@ -106,11 +112,10 @@ namespace Logic
             }
 
             app.UseHttpsRedirection();
+            app.UseCors(allowAllCors);
             app.UseAuthentication();
             app.UseAuthorization();
-            app.UseCors("AllowAll");
-
-
+            
             app.MapControllers();
             app.MapHub<ChatRoomHub>("/chatroom").AllowAnonymous();
             app.MapHub<DirectMessagingHub>("/direct").AllowAnonymous();

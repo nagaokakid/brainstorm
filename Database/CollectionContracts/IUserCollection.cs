@@ -9,5 +9,6 @@ namespace Database.CollectionContracts
         Task Add(User newUser);
         Task<bool> DoesUsernameExist(string username);
         Task AddChatRoomToUser(string userId, string chatRoomId);
+        Task<Dictionary<string, User>> GetAll();
     }
 }
