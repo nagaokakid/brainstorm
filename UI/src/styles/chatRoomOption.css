@@ -1,0 +1,17 @@
+.btn-group {
+    position: absolute;
+    width: 500px;
+    height: 300px;
+}
+
+.btn-group .btn {
+    display: flex;
+    flex-direction: column;
+    background-color: rgba(240, 248, 255, 0);
+}
+
+.btn-group .btn img.btn-icon {
+    width: 100%;
+    height: 90%;
+    margin: 0 auto;
+}
