@@ -4,10 +4,16 @@ namespace Database
 {
     public class MongoContext
     {
-        public static string ConnectionString { get; set; }
-        public static string DatabaseName { get; set; }
+        public static string? ConnectionString { get; private set; }
+        public static string? DatabaseName { get; private set; }
 
         public MongoContext()
+        {
+            ConnectionString = null;
+            DatabaseName = null;
+        }
+
+        public void ReadConfigFile()
         {
             if (ConnectionString == null)
             {
@@ -26,9 +32,9 @@ namespace Database
                     IConfigurationRoot configuration = builder.Build();
 
                     // Get all parts of the MongoDB connection string from the JSON config file
-                    string username = configuration.GetConnectionString("ConnectionString:Username");
-                    string apiKey = configuration.GetConnectionString("ConnectionString:API_Key");
-                    string cluster = configuration.GetConnectionString("ConnectionString:Cluster");
+                    string? username = configuration.GetConnectionString("ConnectionString:Username");
+                    string? apiKey = configuration.GetConnectionString("ConnectionString:API_Key");
+                    string? cluster = configuration.GetConnectionString("ConnectionString:Cluster");
                     DatabaseName = configuration.GetConnectionString("ConnectionString:Database");
 
                     // Assemble the connection string
@@ -36,16 +42,19 @@ namespace Database
                 }
                 catch (FileNotFoundException)
                 {
-                    Console.WriteLine("Could not find the JSON file for MongoDB settings.");
+                    Console.WriteLine("Could not find the config file for MongoDB.");
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"An error occurred while reading the JSON file for MongoDB settings: {ex.Message}");
+                    Console.WriteLine($"An error occurred while reading the config file for MongoDB: {ex.Message}");
                 }
 
             }
-        } // constructor
 
-    }
+        }
 
-}
+
+
+    } // class
+
+} // namespace

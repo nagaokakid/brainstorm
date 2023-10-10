@@ -40,12 +40,20 @@ namespace Database
             await collection.InsertOneAsync(data);
         }
 
-        // Update an existing document
+        // Update an existing document (overwrite)
         public async Task Update(string id, Data data)
         {
             var objectId = new ObjectId(id);
             var filter = Builders<Data>.Filter.Eq("_id", objectId);
             await collection.ReplaceOneAsync(filter, data);
+        }
+
+        public async Task UpdateArrayInDocument(string id, string arrayName, string newItem)
+        {
+            var objectId = new ObjectId(id);
+            var filter = Builders<Data>.Filter.Eq("_id", objectId);
+            var update = Builders<Data>.Update.Push(arrayName, newItem);
+            await collection.UpdateOneAsync(filter, update);
         }
 
         // Delete an existing document

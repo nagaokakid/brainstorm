@@ -9,7 +9,7 @@ namespace Database.Collections
         private MongoRepository<User> userRepository = new("User");
         public async Task Add(User newUser)
         {
-            users.Add(newUser);
+            await userRepository.Create(newUser);
         }
 
         public async Task AddChatRoomToUser(string userId, string chatRoomId)
