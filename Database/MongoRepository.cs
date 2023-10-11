@@ -86,6 +86,19 @@ namespace Database
             return await collection.Find(filter).FirstOrDefaultAsync();
         }
 
+        public async Task<IEnumerable<TDocument>> GetAllDocumentsByFieldValues(List<string> fieldNames, List<string> fieldValues)
+        {
+            var filterBuilder = Builders<TDocument>.Filter;
+            var filter = filterBuilder.Empty;
+
+            for (int i = 0; i < fieldNames.Count; i++)
+            {
+                filter &= filterBuilder.Eq(fieldNames[i], fieldValues[i]);
+            }
+
+            return await collection.Find(filter).ToListAsync();
+
+        }
         // Create a new document
         public async Task CreateDocument(TDocument document)
         {

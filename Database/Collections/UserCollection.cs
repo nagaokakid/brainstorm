@@ -7,7 +7,7 @@ namespace Database.Collections
 {
     public class UserCollection : IUserCollection
     {
-        // Get the User collection on MongoDB
+        // The user collection from MongoDB
         private MongoRepository<User> userRepository = new("User");
         
         // Add a new user document to the User collection
@@ -19,7 +19,7 @@ namespace Database.Collections
         // Add a new chat room ID to the array in an existing user document
         public async Task AddChatRoomToUser(string userId, string chatRoomId)
         {
-            await userRepository.AddToArrayInDocument(userId, "chatRoomIds", chatRoomId);
+            await userRepository.AddToArrayInDocument(userId, "ChatRoomIds", chatRoomId);
         }
 
         // Check if username already exists in User collection
