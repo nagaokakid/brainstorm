@@ -1,67 +1,196 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Driver;
+using System.Collections;
 
 namespace Database
 {
     // Generic class to represent a collection of T type objects (User, ChatRoom, Message, etc.)
-    public class MongoRepository<Data> where Data : class
+    public class MongoRepository<TDocument> where TDocument : class
     {
-        private IMongoCollection<Data> collection;
-        private readonly MongoContext context;
-        private MongoClient client;
-        private IMongoDatabase database;
+        private IMongoCollection<TDocument>? collection;
+        private string collectionName;
+        private MongoClient? client;
+        private IMongoDatabase? database;
 
-        // Constructor: connect to MongoDB database and retrieve the collection by name
+        // Constructor: connect to MongoDB and link to a collection
         public MongoRepository(string collectionName)
         {
-            context = new();
-            client = new MongoClient(MongoContext.ConnectionString);
-            database = client.GetDatabase(MongoContext.DatabaseName);
-            collection = database.GetCollection<Data>(collectionName);
+            this.collectionName = collectionName;
+            ConnectToMongo();
         }
 
-        // Get all the documents
-        public async Task<IEnumerable<Data>> GetAll()
+        // Attempt database connection
+        private void ConnectToMongo()
         {
-            return await collection.Find(_ => true).ToListAsync();
+            try
+            {
+                MongoContext.ReadConfigFile();
+                client = new MongoClient(MongoContext.ConnectionString);
+                database = client.GetDatabase(MongoContext.DatabaseName);
+                collection = database.GetCollection<TDocument>(collectionName);
+            }
+            catch (MongoException ex) 
+            {
+                Console.WriteLine("Failed to connect to MongoDB: " + ex.Message);
+                throw;
+            }
+            catch (Exception ex) 
+            {
+                Console.WriteLine("General error occurred: " + ex.Message);
+                throw;
+            }
+        }
+
+        // Get all the documents for a collection
+        public async Task<IEnumerable<TDocument>> GetAllDocuments()
+        {
+            try
+            {
+                return await collection.Find(_ => true).ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Failed to retrieve all documents for the collection on MongoDB: " + ex.Message);
+                throw;
+            }
         }
 
         // Get a single document by ID
-        public async Task<Data> GetById(string id)
+        public async Task<TDocument> GetDocumentById(string id)
         {
-            var objectId = new ObjectId(id);
-            var filter = Builders<Data>.Filter.Eq("_id", objectId);
-            return await collection.Find(filter).FirstOrDefaultAsync();
+            try
+            {
+                var objectId = new ObjectId(id);
+                var filter = Builders<TDocument>.Filter.Eq("_id", objectId);
+                return await collection.Find(filter).FirstOrDefaultAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Failed to retrieve document on MongoDB: " + ex.Message);
+                throw;
+            }
+
         }
 
         // Create a new document
-        public async Task Create(Data data)
+        public async Task CreateDocument(TDocument document)
         {
-            await collection.InsertOneAsync(data);
+            try
+            {
+                await collection.InsertOneAsync(document);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Failed to create document on MongoDB: " + ex.Message);
+                throw;
+            }
         }
 
-        // Update an existing document (overwrite)
-        public async Task Update(string id, Data data)
+        // Overwrite an existing document with a new one
+        public async Task ReplaceDocument(string id, TDocument newDocument)
         {
-            var objectId = new ObjectId(id);
-            var filter = Builders<Data>.Filter.Eq("_id", objectId);
-            await collection.ReplaceOneAsync(filter, data);
+            try
+            {
+                var objectId = new ObjectId(id);
+                var filter = Builders<TDocument>.Filter.Eq("_id", objectId);
+                var result = await collection.ReplaceOneAsync(filter, newDocument);
+
+                if (result.ModifiedCount == 0)
+                {
+                    Console.WriteLine("No document was replaced.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Failed to replace document on MongoDB: " + ex.Message);
+                throw;
+            }
+
         }
 
-        public async Task UpdateArrayInDocument(string id, string arrayName, string newItem)
+        // Update the value of a field in an existing document
+        public async Task UpdateFieldInDocument(string id, string fieldName, string newFieldValue)
         {
-            var objectId = new ObjectId(id);
-            var filter = Builders<Data>.Filter.Eq("_id", objectId);
-            var update = Builders<Data>.Update.Push(arrayName, newItem);
-            await collection.UpdateOneAsync(filter, update);
+            try
+            {
+                var objectId = new ObjectId(id);
+                var filter = Builders<TDocument>.Filter.Eq("_id", objectId);
+                var update = Builders<TDocument>.Update.Set(fieldName, newFieldValue);
+                var result = await collection.UpdateOneAsync(filter, update);
+
+                if (result.ModifiedCount == 0)
+                {
+                    Console.WriteLine("No document field was updated.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Failed to update field value in a document on MongoDB" + ex.Message);
+                throw;
+            }
+        }
+
+        // Add a new element to an array within an existing document
+        public async Task AddToArrayInDocument(string id, string arrayName, string newElement)
+        {
+            try
+            {
+                var objectId = new ObjectId(id);
+                var filter = Builders<TDocument>.Filter.Eq("_id", objectId);
+                var update = Builders<TDocument>.Update.Push(arrayName, newElement);
+                var result = await collection.UpdateOneAsync(filter, update);
+                
+                if (result.ModifiedCount == 0)
+                {
+                    Console.WriteLine("No document array was updated.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Failed to add element to document array on MongoDB: " + ex.Message);
+                throw;
+            }
+
+        }
+
+        // Remove an element from an array within an existing document
+        public async Task RemoveFromArrayInDocument(string id, string arrayName, BsonValue elementToRemove)
+        {
+            try
+            {
+                var objectId = new ObjectId(id);
+                var filter = Builders<TDocument>.Filter.Eq("_id", objectId);
+                var update = Builders<TDocument>.Update.Pull(arrayName, elementToRemove);
+                var result = await collection.UpdateOneAsync(filter, update);
+
+                if (result.ModifiedCount == 0)
+                {
+                    Console.WriteLine("No element was removed from document array.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Failed to remove element from document array on MongoDB: " + ex.Message);
+                throw;
+            }
+
         }
 
         // Delete an existing document
-        public async Task Delete(string id)
+        public async Task DeleteDocument(string id)
         {
-            var objectId = new ObjectId(id);
-            var filter = Builders<Data>.Filter.Eq("_id", objectId);
-            await collection.DeleteOneAsync(filter);
+            try
+            {
+                var objectId = new ObjectId(id);
+                var filter = Builders<TDocument>.Filter.Eq("_id", objectId);
+                await collection.DeleteOneAsync(filter);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Failed to delete document on MongoDB: " + ex.Message);
+                throw;
+            }
+
         }
     }
 }

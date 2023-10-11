@@ -5,8 +5,15 @@ namespace Database.Collections
 {
     public class UserCollection : IUserCollection
     {
-        private List<User> users = new();
-        private MongoRepository<User> userRepository = new("User");
+        /*private List<User> users = new();*/
+        private MongoRepository<User> userRepository;
+
+        public UserCollection()
+        {
+            userRepository = new("User");
+            userRepository.ConnectToMongo();
+        }
+        
         public async Task Add(User newUser)
         {
             await userRepository.Create(newUser);
@@ -14,6 +21,10 @@ namespace Database.Collections
 
         public async Task AddChatRoomToUser(string userId, string chatRoomId)
         {
+            var foundUser = await userRepository.GetById(userId);
+
+
+
             var found = users.Find(x => x.Id == userId);
             if(found != null)
             {

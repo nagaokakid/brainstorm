@@ -7,13 +7,7 @@ namespace Database
         public static string? ConnectionString { get; private set; }
         public static string? DatabaseName { get; private set; }
 
-        public MongoContext()
-        {
-            ConnectionString = null;
-            DatabaseName = null;
-        }
-
-        public void ReadConfigFile()
+        public static void ReadConfigFile()
         {
             if (ConnectionString == null)
             {
@@ -46,7 +40,7 @@ namespace Database
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"An error occurred while reading the config file for MongoDB: {ex.Message}");
+                    Console.WriteLine("An error occurred while reading the config file for MongoDB: " + ex.Message);
                 }
 
             }
