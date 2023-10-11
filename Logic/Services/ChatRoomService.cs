@@ -19,7 +19,7 @@ namespace Logic.Services
             this.userCollection = userCollection;
         }
 
-        public async Task<ChatRoom?> GetRoomByJoinCode(int chatRoomJoinCode)
+        public async Task<ChatRoom?> GetRoomByJoinCode(string chatRoomJoinCode)
         {
             return await chatRoomCollection.GetByJoinCode(chatRoomJoinCode);
         }
@@ -49,7 +49,7 @@ namespace Logic.Services
                 Title = request.Title,
 
                 // random 6-digit join code
-                JoinCode = Random.Shared.Next(100001, 999999),
+                JoinCode = Random.Shared.Next(100001, 999999).ToString(),
 
                 // add user as a member to this room immediately
                 MemberIds = new List<string>() { foundUser.Id },

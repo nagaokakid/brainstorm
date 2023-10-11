@@ -75,16 +75,16 @@ namespace Logic.UnitTest.Services
             {
                 Id = "id",
                 Description = "desc",
-                JoinCode = 123,
+                JoinCode = "123",
             };
-            chatRoomCollectionService.Setup(x => x.GetByJoinCode(123)).Returns(async () => chat);
+            chatRoomCollectionService.Setup(x => x.GetByJoinCode("123")).Returns(async () => chat);
             var chatRoomService = new ChatRoomService(chatRoomCollectionService.Object, userCollection.Object);
 
             // Act
-            var result = await chatRoomService.GetRoomByJoinCode(123);
+            var result = await chatRoomService.GetRoomByJoinCode("123");
 
             // Assert
-            Assert.That(result.JoinCode == 123);
+            Assert.That(result.JoinCode == "123");
         }
     }
 }
