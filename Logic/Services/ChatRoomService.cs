@@ -39,7 +39,7 @@ namespace Logic.Services
             // get user
             var foundUser = await userCollection.Get(request.UserId);
 
-            if (foundUser == null) throw new ChatRoomNotFound();
+            if (foundUser == null) throw new UserNotFound();
 
             // create new room
             ChatRoom newRoom = new()
