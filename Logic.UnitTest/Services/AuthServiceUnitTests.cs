@@ -9,14 +9,23 @@ namespace Logic.UnitTest.LoginUser
     [TestFixture]
     public class AuthServiceUnitTests
     {
+        Mock<IUserCollection> userCollection;
+        Mock<IChatRoomCollection> chatRoomCollection;
+        Mock<Microsoft.Extensions.Configuration.IConfiguration> config;
+
+        Mock<UserService> userService;
+
+        [SetUp]
+        public void Setup()
+        {
+            userCollection = new Mock<IUserCollection>();
+            chatRoomCollection = new Mock<IChatRoomCollection>();
+            config = new Mock<Microsoft.Extensions.Configuration.IConfiguration>();
+            userService = new Mock<UserService>(userCollection.Object);
+        }
         [Test]
         public async Task LoginUser_InputNull_ThrowsUnauthorized()
         {
-            var userCollection = new Mock<IUserCollection>();
-            var chatRoomCollection = new Mock<IChatRoomCollection>();
-            var config = new Mock<Microsoft.Extensions.Configuration.IConfiguration>();
-            var userService = new Mock<UserService>(userCollection.Object);
-
             var authService = new AuthService(userCollection.Object, chatRoomCollection.Object, config.Object, userService.Object);
 
             Assert.That(() => authService.LoginUser(null), Throws.TypeOf<UnauthorizedUser>());
@@ -26,10 +35,6 @@ namespace Logic.UnitTest.LoginUser
         public async Task LoginUser_InputNullUsername_ThrowsUnauthorized()
         {
             // Arrange
-            var userCollection = new Mock<IUserCollection>();
-            var chatRoomCollection = new Mock<IChatRoomCollection>();
-            var config = new Mock<Microsoft.Extensions.Configuration.IConfiguration>();
-            var userService = new Mock<UserService>(userCollection.Object);
             var authService = new AuthService(userCollection.Object, chatRoomCollection.Object, config.Object, userService.Object);
 
             var request = new LoginUserRequest
@@ -46,10 +51,6 @@ namespace Logic.UnitTest.LoginUser
         public async Task LoginUser_InputNullPassword_ThrowsUnauthorized()
         {
             // Arrange
-            var userCollection = new Mock<IUserCollection>();
-            var chatRoomCollection = new Mock<IChatRoomCollection>();
-            var config = new Mock<Microsoft.Extensions.Configuration.IConfiguration>();
-            var userService = new Mock<UserService>(userCollection.Object);
             var authService = new AuthService(userCollection.Object, chatRoomCollection.Object, config.Object, userService.Object);
 
             var request = new LoginUserRequest
@@ -66,10 +67,6 @@ namespace Logic.UnitTest.LoginUser
         public async Task LoginUser_InputEmptyPassword_ThrowsUnauthorized()
         {
             // Arrange
-            var userCollection = new Mock<IUserCollection>();
-            var chatRoomCollection = new Mock<IChatRoomCollection>();
-            var config = new Mock<Microsoft.Extensions.Configuration.IConfiguration>();
-            var userService = new Mock<UserService>(userCollection.Object);
             var authService = new AuthService(userCollection.Object, chatRoomCollection.Object, config.Object, userService.Object);
 
             var request = new LoginUserRequest
@@ -86,10 +83,6 @@ namespace Logic.UnitTest.LoginUser
         public async Task RegisterUser_InputNull_ThrowBadRequest()
         {
             // Arrange
-            var userCollection = new Mock<IUserCollection>();
-            var chatRoomCollection = new Mock<IChatRoomCollection>();
-            var config = new Mock<Microsoft.Extensions.Configuration.IConfiguration>();
-            var userService = new Mock<UserService>(userCollection.Object);
             var authService = new AuthService(userCollection.Object, chatRoomCollection.Object, config.Object, userService.Object);
 
             // Assert
@@ -99,10 +92,6 @@ namespace Logic.UnitTest.LoginUser
         public void RegisterUser_InputUsernameIsNull_ThrowBadRequest()
         {
             // Arrange
-            var userCollection = new Mock<IUserCollection>();
-            var chatRoomCollection = new Mock<IChatRoomCollection>();
-            var config = new Mock<Microsoft.Extensions.Configuration.IConfiguration>();
-            var userService = new Mock<UserService>(userCollection.Object);
             var authService = new AuthService(userCollection.Object, chatRoomCollection.Object, config.Object, userService.Object);
             var request = new RegisterUserRequest
             {
@@ -119,10 +108,6 @@ namespace Logic.UnitTest.LoginUser
         public void RegisterUser_InputPasswordIsNull_ThrowBadRequest()
         {
             // Arrange
-            var userCollection = new Mock<IUserCollection>();
-            var chatRoomCollection = new Mock<IChatRoomCollection>();
-            var config = new Mock<Microsoft.Extensions.Configuration.IConfiguration>();
-            var userService = new Mock<UserService>(userCollection.Object);
             var authService = new AuthService(userCollection.Object, chatRoomCollection.Object, config.Object, userService.Object);
             var request = new RegisterUserRequest
             {
@@ -140,10 +125,6 @@ namespace Logic.UnitTest.LoginUser
         public void RegisterUser_InputFirstnameIsNull_ThrowBadRequest()
         {
             // Arrange
-            var userCollection = new Mock<IUserCollection>();
-            var chatRoomCollection = new Mock<IChatRoomCollection>();
-            var config = new Mock<Microsoft.Extensions.Configuration.IConfiguration>();
-            var userService = new Mock<UserService>(userCollection.Object);
             var authService = new AuthService(userCollection.Object, chatRoomCollection.Object, config.Object, userService.Object);
             var request = new RegisterUserRequest
             {
@@ -161,21 +142,33 @@ namespace Logic.UnitTest.LoginUser
         public void RegisterUser_InputLastnameIsNull_ThrowBadRequest()
         {
             // Arrange
-            var userCollection = new Mock<IUserCollection>();
-            var chatRoomCollection = new Mock<IChatRoomCollection>();
-            var config = new Mock<Microsoft.Extensions.Configuration.IConfiguration>();
-            var userService = new Mock<UserService>(userCollection.Object);
             var authService = new AuthService(userCollection.Object, chatRoomCollection.Object, config.Object, userService.Object);
             var request = new RegisterUserRequest
             {
                 Username = "username",
                 Password = "password",
                 FirstName = "firstname",
-                LastName =null
+                LastName = null
             };
 
             // Assert
             Assert.That(() => authService.RegisterUser(request), Throws.TypeOf<BadRequest>());
+        }
+
+        [Test]
+        public async Task GetFriendlyChatRooms_InputChatRoomNotFound_ThrowChatRoomNotFoundException()
+        {
+            // Arrange
+            chatRoomCollection.Setup(x => x.GetById("id")).Returns(async () => null);
+            var authService = new AuthService(userCollection.Object, chatRoomCollection.Object, config.Object, userService.Object);
+            var ids = new List<string>()
+            {
+                "1",
+                "2"
+            };
+
+            // Assert
+            Assert.That(() => authService.GetFriendlyChatRooms(ids), Throws.TypeOf<ChatRoomNotFound>());
         }
     }
 }

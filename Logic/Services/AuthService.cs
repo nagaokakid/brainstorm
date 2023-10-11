@@ -30,6 +30,7 @@ namespace Logic.Services
 
         public async Task<RegisterLoginResponse> RegisterUser(RegisterUserRequest registerUser)
         {
+            // make sure input is not null or empty
             if (registerUser == null || string.IsNullOrEmpty(registerUser.Username) || string.IsNullOrEmpty(registerUser.Password) || string.IsNullOrEmpty(registerUser.FirstName) || string.IsNullOrEmpty(registerUser.LastName))
                 throw new BadRequest();
 
@@ -93,9 +94,11 @@ namespace Logic.Services
             };
         }
 
-        private async Task<List<FriendlyChatRoom>> GetFriendlyChatRooms(List<string> chatRoomIds)
+        public async Task<List<FriendlyChatRoom>> GetFriendlyChatRooms(List<string> chatRoomIds)
         {
             var result = new List<FriendlyChatRoom>();
+
+            // get friendly chatroom for each chatRoomId
             foreach (var room in chatRoomIds)
             {
                 var found = await chatRoomCollection.GetById(room);

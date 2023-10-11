@@ -90,7 +90,10 @@ namespace Logic.Services
             List<ChatRoom> result = new();
             foreach (var id in chatRoomIds)
             {
-                result.Add(await chatRoomCollection.GetById(id));
+                var found = await chatRoomCollection.GetById(id);
+                if (found == null) throw new ChatRoomNotFound();
+                
+                result.Add(found);
             }
             return result;
         }
