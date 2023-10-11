@@ -72,6 +72,20 @@ namespace Database
 
         }
 
+        // Get the document that matches the values for field names, both given as lists
+        public async Task<TDocument> GetDocumentByFieldValues(List<string> fieldNames, List<string> fieldValues)
+        {
+            var filterBuilder = Builders<TDocument>.Filter;
+            var filter = filterBuilder.Empty;
+
+            for (int i = 0; i < fieldNames.Count; i++)
+            {
+                filter = filter & filterBuilder.Eq(fieldNames[i], fieldValues[i]);
+            }
+
+            return await collection.Find(filter).FirstOrDefaultAsync();
+        }
+
         // Create a new document
         public async Task CreateDocument(TDocument document)
         {
@@ -109,7 +123,7 @@ namespace Database
         }
 
         // Update the value of a field in an existing document
-        public async Task UpdateFieldInDocument(string id, string fieldName, BsonValue newFieldValue)
+        public async Task UpdateFieldInDocument(string id, string fieldName, string newFieldValue)
         {
             try
             {
@@ -131,7 +145,7 @@ namespace Database
         }
 
         // Add a new element to an array within an existing document
-        public async Task AddToArrayInDocument(string id, string arrayName, BsonValue newElement)
+        public async Task AddToArrayInDocument(string id, string arrayName, string newElement)
         {
             try
             {
@@ -154,7 +168,7 @@ namespace Database
         }
 
         // Remove an element from an array within an existing document
-        public async Task RemoveFromArrayInDocument(string id, string arrayName, BsonValue elementToRemove)
+        public async Task RemoveFromArrayInDocument(string id, string arrayName, string elementToRemove)
         {
             try
             {

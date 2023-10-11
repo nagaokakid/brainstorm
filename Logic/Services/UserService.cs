@@ -53,7 +53,7 @@ namespace Logic.Services
                 };
             }
 
-            throw new UserExists();
+            throw new UserExists(); // if found == null, should we throw UserNotFound exception?
         }
         public async Task<List<FriendlyUserInfo>> GetList(List<string> memberIds)
         {

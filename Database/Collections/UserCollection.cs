@@ -1,5 +1,7 @@
 ﻿using Database.CollectionContracts;
 using Database.Data;
+using MongoDB.Bson;
+using System.ComponentModel;
 
 namespace Database.Collections
 {
@@ -8,37 +10,62 @@ namespace Database.Collections
         // Get the User collection on MongoDB
         private MongoRepository<User> userRepository = new("User");
         
+        // Add a new user document to the User collection
         public async Task Add(User newUser)
         {
             await userRepository.CreateDocument(newUser);
         }
 
+        // Add a new chat room ID to the array in an existing user document
         public async Task AddChatRoomToUser(string userId, string chatRoomId)
         {
-            var foundUser = await userRepository.GetDocumentById(userId);
-
-
-
-            var found = users.Find(x => x.Id == userId);
-            if(found != null)
-            {
-                found.ChatroomIds.Add(chatRoomId);
-            }
+            await userRepository.AddToArrayInDocument(userId, "chatRoomIds", chatRoomId);
         }
 
+        // Check if username already exists in User collection
         public async Task<bool> DoesUsernameExist(string username)
         {
-            return users.Find(x => x.Username == username) != null;
+            bool found;
+
+            List<string> fieldNames = new List<string>
+            {
+                "Username"
+            };
+
+            List<string> fieldValues = new List<string>
+            {
+                username
+            };
+
+            found = await userRepository.GetDocumentByFieldValues(fieldNames, fieldValues) != null;
+
+            return found;
         }
 
+        // Get the user that matches the given ID
         public async Task<User?> Get(string userId)
         {
-            return users.Find(x=>x.Id == userId);
+            return await userRepository.GetDocumentById(userId);
         }
 
+        // Get the user that matches the given username and password
         public async Task<User?> Get(string username, string password)
         {
-            return users.Find(x=>x.Username.Equals(username) && x.Password.Equals(password));
+            List<string> fieldNames = new List<string>
+            {
+                "Username",
+                "Password"
+            };
+
+            List<string> fieldValues = new List<string>
+            {
+                username,
+                password
+            };
+
+            return await userRepository.GetDocumentByFieldValues(fieldNames, fieldValues);
+
         }
-    }
-}
+
+    } // class
+} // namespace
