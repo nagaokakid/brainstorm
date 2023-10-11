@@ -4,7 +4,7 @@ using System.Collections;
 
 namespace Database
 {
-    // Generic class to represent a collection of T type objects (User, ChatRoom, Message, etc.)
+    // Generic class to represent a collection of data type documents (User, ChatRoom, Message, etc.)
     public class MongoRepository<TDocument> where TDocument : class
     {
         private IMongoCollection<TDocument>? collection;
@@ -109,7 +109,7 @@ namespace Database
         }
 
         // Update the value of a field in an existing document
-        public async Task UpdateFieldInDocument(string id, string fieldName, string newFieldValue)
+        public async Task UpdateFieldInDocument(string id, string fieldName, BsonValue newFieldValue)
         {
             try
             {
@@ -131,7 +131,7 @@ namespace Database
         }
 
         // Add a new element to an array within an existing document
-        public async Task AddToArrayInDocument(string id, string arrayName, string newElement)
+        public async Task AddToArrayInDocument(string id, string arrayName, BsonValue newElement)
         {
             try
             {
@@ -183,7 +183,12 @@ namespace Database
             {
                 var objectId = new ObjectId(id);
                 var filter = Builders<TDocument>.Filter.Eq("_id", objectId);
-                await collection.DeleteOneAsync(filter);
+                var result = await collection.DeleteOneAsync(filter);
+
+                if (result.DeletedCount == 0)
+                {
+                    Console.WriteLine("No document was deleted.");
+                }
             }
             catch (Exception ex)
             {

@@ -5,23 +5,17 @@ namespace Database.Collections
 {
     public class UserCollection : IUserCollection
     {
-        /*private List<User> users = new();*/
-        private MongoRepository<User> userRepository;
-
-        public UserCollection()
-        {
-            userRepository = new("User");
-            userRepository.ConnectToMongo();
-        }
+        // Get the User collection on MongoDB
+        private MongoRepository<User> userRepository = new("User");
         
         public async Task Add(User newUser)
         {
-            await userRepository.Create(newUser);
+            await userRepository.CreateDocument(newUser);
         }
 
         public async Task AddChatRoomToUser(string userId, string chatRoomId)
         {
-            var foundUser = await userRepository.GetById(userId);
+            var foundUser = await userRepository.GetDocumentById(userId);
 
 
 

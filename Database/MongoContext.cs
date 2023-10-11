@@ -37,10 +37,12 @@ namespace Database
                 catch (FileNotFoundException)
                 {
                     Console.WriteLine("Could not find the config file for MongoDB.");
+                    throw;
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine("An error occurred while reading the config file for MongoDB: " + ex.Message);
+                    throw;
                 }
 
             }
