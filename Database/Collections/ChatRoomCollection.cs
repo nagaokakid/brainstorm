@@ -5,7 +5,10 @@ namespace Database.Collections
 {
     public class ChatRoomCollection : IChatRoomCollection
     {
-        private List<ChatRoom> chatRooms = new();
+        // The chat room collection from MongoDB
+        private MongoRepository<ChatRoom> chatRoomRepository = new("ChatRoom");
+
+        // Add a new chat room document to the collection
         public async Task Add(ChatRoom chatRoom)
         {
             chatRooms.Add(chatRoom);

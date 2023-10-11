@@ -75,28 +75,44 @@ namespace Database
         // Get the document that matches the values for field names, both given as lists
         public async Task<TDocument> GetDocumentByFieldValues(List<string> fieldNames, List<string> fieldValues)
         {
-            var filterBuilder = Builders<TDocument>.Filter;
-            var filter = filterBuilder.Empty;
-
-            for (int i = 0; i < fieldNames.Count; i++)
+            try
             {
-                filter = filter & filterBuilder.Eq(fieldNames[i], fieldValues[i]);
-            }
+                var filterBuilder = Builders<TDocument>.Filter;
+                var filter = filterBuilder.Empty;
 
-            return await collection.Find(filter).FirstOrDefaultAsync();
+                for (int i = 0; i < fieldNames.Count; i++)
+                {
+                    filter = filter & filterBuilder.Eq(fieldNames[i], fieldValues[i]);
+                }
+
+                return await collection.Find(filter).FirstOrDefaultAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Failed to retrieve document with given field names and values: " + ex.Message);
+                throw;
+            }
         }
 
         public async Task<IEnumerable<TDocument>> GetAllDocumentsByFieldValues(List<string> fieldNames, List<string> fieldValues)
         {
-            var filterBuilder = Builders<TDocument>.Filter;
-            var filter = filterBuilder.Empty;
-
-            for (int i = 0; i < fieldNames.Count; i++)
+            try
             {
-                filter &= filterBuilder.Eq(fieldNames[i], fieldValues[i]);
-            }
+                var filterBuilder = Builders<TDocument>.Filter;
+                var filter = filterBuilder.Empty;
 
-            return await collection.Find(filter).ToListAsync();
+                for (int i = 0; i < fieldNames.Count; i++)
+                {
+                    filter &= filterBuilder.Eq(fieldNames[i], fieldValues[i]);
+                }
+
+                return await collection.Find(filter).ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Failed to get list of documents with given field names and values: " + ex.Message);
+                throw;
+            }
 
         }
         // Create a new document
