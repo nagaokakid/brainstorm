@@ -19,7 +19,7 @@ namespace Logic.Services
             this.userCollection = userCollection;
         }
 
-        public async Task<ChatRoom?> GetRoomByJoinCode(int chatRoomJoinCode)
+        public async Task<ChatRoom?> GetRoomByJoinCode(string chatRoomJoinCode)
         {
             return await chatRoomCollection.GetByJoinCode(chatRoomJoinCode);
         }

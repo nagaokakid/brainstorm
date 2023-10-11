@@ -72,7 +72,7 @@ namespace Database
 
         }
 
-        // Get the document that matches the values for field names, both given as lists
+        // Get a single document that matches the given field names and values
         public async Task<TDocument> GetDocumentByFieldValues(List<string> fieldNames, List<string> fieldValues)
         {
             try
@@ -94,6 +94,7 @@ namespace Database
             }
         }
 
+        // Get all documents that match the given the field names and their values
         public async Task<IEnumerable<TDocument>> GetAllDocumentsByFieldValues(List<string> fieldNames, List<string> fieldValues)
         {
             try
@@ -115,6 +116,7 @@ namespace Database
             }
 
         }
+
         // Create a new document
         public async Task CreateDocument(TDocument document)
         {
