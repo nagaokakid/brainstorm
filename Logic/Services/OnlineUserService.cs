@@ -20,7 +20,16 @@ namespace Logic.Services
             },
 
             // called if key exists
-            (key, value) => value
+            (key, value) => new OnlineUser
+            {
+                UserInfo = new FriendlyUserInfo
+                {
+                    UserId = userInfo.UserId,
+                    FirstName = userInfo.FirstName,
+                    LastName = userInfo.LastName,
+                },
+                ConnectionId = connectionId,
+            }
 
             );
         }

@@ -24,18 +24,24 @@ namespace Logic.Hubs
         {
             await onlineUserService.Add(user, Context.ConnectionId);
         }
-        public async Task SendMessage(MessageInfo directMessage)
+
+        public async Task GetChatHistory(string fromId, string toId)
         {
-            if (directMessage.ToUserInfo != null)
+            var result = await directMessageService.GetMessagesByUserId(fromId, toId);
+            await Clients.Client(Context.ConnectionId).SendAsync("ReceiveChatHistory", result);
+        }
+        public async Task SendDirectMessage(MessageInfo msg)
+        {
+            if (msg.ToUserInfo != null)
             {
-                directMessage.Timestamp = DateTime.Now;
+                msg.Timestamp = DateTime.Now;
 
                 // make sure user is online
-                OnlineUser? online = onlineUserService.Get(directMessage.ToUserInfo.UserId);
+                OnlineUser? online = onlineUserService.Get(msg.ToUserInfo.UserId);
                 if (online != null)
                 {
-                    await Clients.Client(online.ConnectionId).SendAsync("ReceiveDirectMessage", directMessage);
-                    await directMessageService.AddNewMessage(directMessage);
+                    await Clients.Client(online.ConnectionId).SendAsync("ReceiveDirectMessage", msg);
+                    await directMessageService.AddNewMessage(msg);
                 }
             }
         }

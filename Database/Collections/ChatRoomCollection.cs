@@ -25,7 +25,7 @@ namespace Database.Collections
             return chatRooms.Find(x => x.Id == chatRoomId);
         }
 
-        public async Task<ChatRoom?> GetByJoinCode(int joinCode)
+        public async Task<ChatRoom?> GetByJoinCode(string joinCode)
         {
             return chatRooms.Find(x => x.JoinCode == joinCode);
         }
