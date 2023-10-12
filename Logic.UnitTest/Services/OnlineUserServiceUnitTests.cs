@@ -1,18 +1,23 @@
-﻿using Database.Data;
-using Logic.DTOs.User;
+﻿using Logic.DTOs.User;
 using Logic.Services;
-using MongoDB.Driver.Core.Connections;
 
 namespace Logic.UnitTest.Services
 {
     [TestFixture]
     public class OnlineUserServiceUnitTests
     {
+        OnlineUserService onlineUserService;
+
+        [SetUp]
+        public void Setup()
+        {
+            onlineUserService = new OnlineUserService();
+        }
+
         [Test]
         public async Task AddGet_InputFirst_Valid()
         {
             // Arrange
-            var onlineUserService = new OnlineUserService();
             var userId = Guid.NewGuid().ToString();
             var connectionId = Guid.NewGuid().ToString();
             var user = new FriendlyUserInfo
@@ -35,7 +40,6 @@ namespace Logic.UnitTest.Services
         public async Task AddGet_InputDuplicateId_Valid()
         {
             // Arrange
-            var onlineUserService = new OnlineUserService();
             var id = Guid.NewGuid().ToString();
             var connectionId = Guid.NewGuid().ToString();
             var connectionId2 = Guid.NewGuid().ToString();
@@ -59,7 +63,6 @@ namespace Logic.UnitTest.Services
         public async Task Remove_InputValid_Valid()
         {
             // Arrange
-            var onlineUserService = new OnlineUserService();
             var id = Guid.NewGuid().ToString();
             var connectionId = Guid.NewGuid().ToString();
             var user = new FriendlyUserInfo

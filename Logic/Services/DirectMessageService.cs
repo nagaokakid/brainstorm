@@ -21,6 +21,9 @@ namespace Logic.Services
 
         public async Task<List<MessageInfo>> GetMessagesByUserId(string fromId, string toId)
         {
+            if (fromId == null) throw new ArgumentNullException($"{nameof(fromId)} parameter is null");
+            if (toId == null) throw new ArgumentNullException($"{nameof(toId)} parameter is null");
+            
             var result = await directMessageCollection.Get(fromId, toId);
             if(result == null) return new List<MessageInfo>();
 

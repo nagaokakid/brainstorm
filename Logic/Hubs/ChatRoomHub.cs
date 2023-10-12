@@ -13,7 +13,7 @@ namespace Logic.Hubs
             this.chatRoomService = chatRoomService;
         }
 
-        public async Task JoinChatRoom(int joinCode)
+        public async Task JoinChatRoom(string joinCode)
         {
             // get room for chatRoomCode
             var result = await chatRoomService.GetRoomByJoinCode(joinCode);

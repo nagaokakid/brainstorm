@@ -10,6 +10,14 @@ namespace Logic.UnitTest.Services
     [TestFixture]
     public class UserServiceUnitTests
     {
+        Mock<IUserCollection> userCollectionService;
+
+        [SetUp]
+        public void Setup()
+        {
+            userCollectionService = new Mock<IUserCollection>();
+        }
+
         [Test]
         public void CreateUser_InputDuplidateUsername_ThrowsUsernameExistsException()
         {
@@ -19,7 +27,7 @@ namespace Logic.UnitTest.Services
                 Username = "username",
             };
 
-            var userCollectionService = new Mock<IUserCollection>();
+            
             userCollectionService.Setup(x => x.DoesUsernameExist(request.Username)).Returns(async () => true);
             var userService = new UserService(userCollectionService.Object);
 
@@ -31,7 +39,6 @@ namespace Logic.UnitTest.Services
         public void GetFriendlyUserInfo_InputInvalid_ThrowsUsernameExistsException()
         {
             // Arrange
-            var userCollectionService = new Mock<IUserCollection>();
             userCollectionService.Setup(x => x.Get("username")).Returns(async () => null);
             var userService = new UserService(userCollectionService.Object);
 
@@ -51,7 +58,6 @@ namespace Logic.UnitTest.Services
                 LastName = "lastname"
             };
 
-            var userCollectionService = new Mock<IUserCollection>();
             userCollectionService.Setup(x => x.Get("username")).Returns(async () => user);
             var userService = new UserService(userCollectionService.Object);
 
