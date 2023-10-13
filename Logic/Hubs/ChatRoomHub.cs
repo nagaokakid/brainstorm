@@ -1,5 +1,4 @@
 ﻿using Logic.DTOs.Messages;
-using Logic.Models;
 using Logic.Services;
 using Microsoft.AspNetCore.SignalR;
 
@@ -14,7 +13,7 @@ namespace Logic.Hubs
             this.chatRoomService = chatRoomService;
         }
 
-        public async Task JoinChatRoom(int joinCode)
+        public async Task JoinChatRoom(string joinCode)
         {
             // get room for chatRoomCode
             var result = await chatRoomService.GetRoomByJoinCode(joinCode);
@@ -35,12 +34,7 @@ namespace Logic.Hubs
                 await Clients.Group(msg.ChatRoomId).SendAsync("ReceiveChatRoomMessage", msg);
 
                 // add message to chatroom
-                await chatRoomService.AddMessageToChatRoom(msg.ChatRoomId, new ChatRoomMessage
-                {
-                    From = msg.FromUserInfo,
-                    Message = msg.Message,
-                    Timestamp = msg.Timestamp,
-                });
+                await chatRoomService.AddMessageToChatRoom(msg.ChatRoomId, msg);
             }
         }
         public override Task OnDisconnectedAsync(Exception? exception)

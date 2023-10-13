@@ -1,21 +1,33 @@
-﻿using Logic.DTOs.Messages;
+﻿using Database.CollectionContracts;
+using Logic.DTOs.Messages;
+using Logic.Helpers;
 
 namespace Logic.Services
 {
     public class DirectMessageService
     {
-        private List<MessageInfo> messages = new();
+        private readonly IDirectMessageCollection directMessageCollection;
+        private readonly IUserCollection userCollection;
 
+        public DirectMessageService(IDirectMessageCollection directMessageCollection, IUserCollection userCollection)
+        {
+            this.directMessageCollection = directMessageCollection;
+            this.userCollection = userCollection;
+        }
         public async Task AddNewMessage(MessageInfo msg)
         {
-            messages.Add(msg);
+            await directMessageCollection.Add(msg.FromDTO());
         }
 
-        public async Task<List<MessageInfo>> GetMessagesByUserId(string userId)
+        public async Task<List<MessageInfo>> GetMessagesByUserId(string fromId, string toId)
         {
-            var result = messages.Where(x=> x.ToUserInfo.UserId == userId || x.FromUserInfo.UserId == userId)?.ToList();
+            if (fromId == null) throw new ArgumentNullException($"{nameof(fromId)} parameter is null");
+            if (toId == null) throw new ArgumentNullException($"{nameof(toId)} parameter is null");
+            
+            var result = await directMessageCollection.Get(fromId, toId);
             if(result == null) return new List<MessageInfo>();
-            return result;
+
+            return result.ToDTO(await userCollection.GetAll());
         }
     }
 }

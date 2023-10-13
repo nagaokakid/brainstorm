@@ -15,6 +15,7 @@ import {
 function LogRes()
 {
 
+    //This handle the state of the tabs; Login or Register
     const [justifyActive, setJustifyActive] = useState('tab1');
     const handleJustifyClick = (value) =>
     {
@@ -25,27 +26,41 @@ function LogRes()
         setJustifyActive(value)
     }
 
+    //This handle the state of the inputs; Username, Password, Re-Password, First Name, Last Name
+    const [input, setInput] = useState({
+        Username: '',
+        Password: '',
+        RePassword: '',
+        FirstName: '',
+        LastName: ''
+    });
+    //This will keep track of the inputs and update the state
+    const handleChanged = (value) =>
+    {
+        const id = value.target.id;
+        const info = value.target.value;
+        setInput((prev) => { return {...prev, [id]: info} });
+    }
+
+    //This will verify the form and handle the request to the server
     const RequestHandle = (value) =>
     {
-        const Username = document.getElementById('Id').value;
-        const Password = document.getElementById('Password').value;
-        const RePassword = document.getElementById('RePassword').value;
         if (value === 1)
         {
-            if (Username, Password === "")
+            if (input.Username == "" || input.Password == "")
             {
                 alert("Please complete the form");
                 return;
             }
             else
             {
-                fetch('',
+                fetch('http://localhost:3001/api/UserLogin',
                 {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ Username, Password }),
+                    body: JSON.stringify({ Username: input.Username, Password: input.Password }),
                 }).then(response => response.json()).then(data =>
                     {
                         console.log('Success:', data);
@@ -57,26 +72,26 @@ function LogRes()
         }
         else if (value === 2)
         {
-            if (Username, Password, RePassword === "")
+            if (input.Username == "" || input.Password == "" || input.RePassword == "" || input.FirstName == "" || input.LastName == "")
             {
                 alert("Please complete the form");
                 return;
             }
             else if
-            (Password !== RePassword)
+            (input.Password != input.RePassword)
             {
                 alert("Passwords do not match");
                 return;
             }
             else
             {
-                fetch('',
+                fetch('http://localhost:3001/api/User',
                 {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ Username, Password}),
+                    body: JSON.stringify({ Username: input.Username, Password: input.Password, FirstName: input.FirstName, LastName: input.LastName}),
                 }).then(response => response.json()).then(data =>
                     {
                         console.log('Success:', data);
@@ -90,7 +105,7 @@ function LogRes()
 
     return (
         <>
-            <MDBContainer className="p-3 my-5 d-flex flex-column w-50">
+            <MDBContainer className="p-3 my-5 d-flex flex-column">
                 <MDBTabs pills justify className='mb-3 d-flex flex-row justify-content-between'>
                     <MDBTabsItem>
                         <MDBTabsLink onClick={() => handleJustifyClick('tab1')} active={justifyActive === 'tab1'}>
@@ -106,15 +121,17 @@ function LogRes()
                 <MDBTabsContent>
                     <MDBTabsPane show={justifyActive === 'tab1'}>
                         <h3 className='SignInTitle'>Sign In:</h3>
-                        <MDBInput wrapperClass='mb-4' label='Username' id='Username' type='text' />
-                        <MDBInput wrapperClass='mb-4' label='Password' id='Password' type='password' />
+                        <MDBInput wrapperClass='mb-4' label='Username' id='Username' type='text' onChange={handleChanged} />
+                        <MDBInput wrapperClass='mb-4' label='Password' id='Password' type='password' onChange={handleChanged} />
                         <MDBBtn className="mb-4 w-100" onClick={() => RequestHandle(1)}>Sign in</MDBBtn>
                     </MDBTabsPane>
                     <MDBTabsPane show={justifyActive === 'tab2'}>
                         <h3 className='RegisterTitle'>Create Account:</h3>
-                        <MDBInput wrapperClass='mb-4' label='Username' id='Username' type='text' />
-                        <MDBInput wrapperClass='mb-4' label='Password' id='Password' type='password' />
-                        <MDBInput wrapperClass='mb-4' label='Re-Password' id='RePassword' type='password' />
+                        <MDBInput wrapperClass='mb-4' label='Username' id='Username' type='text' onChange={handleChanged} />
+                        <MDBInput wrapperClass='mb-4' label='First Name' id='FirstName' type='text' onChange={handleChanged} />
+                        <MDBInput wrapperClass='mb-4' label='Last Name' id='LastName' type='text' onChange={handleChanged} />
+                        <MDBInput wrapperClass='mb-4' label='Password' id='Password' type='password' onChange={handleChanged} />
+                        <MDBInput wrapperClass='mb-4' label='Re-Password' id='RePassword' type='password' onChange={handleChanged} />
                         <MDBBtn className="mb-4 w-100" onClick={() => RequestHandle(2)}>Sign up</MDBBtn>
                     </MDBTabsPane>
                 </MDBTabsContent>
