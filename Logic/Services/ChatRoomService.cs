@@ -49,7 +49,7 @@ namespace Logic.Services
                 Title = request.Title,
 
                 // random 6-digit join code
-                JoinCode = Random.Shared.Next(100001, 999999),
+                JoinCode = Random.Shared.Next(100001, 999999).ToString(),
 
                 // add user as a member to this room immediately
                 MemberIds = new List<string>() { foundUser.Id },
@@ -90,7 +90,10 @@ namespace Logic.Services
             List<ChatRoom> result = new();
             foreach (var id in chatRoomIds)
             {
-                result.Add(await chatRoomCollection.GetById(id));
+                var found = await chatRoomCollection.GetById(id);
+                if (found == null) throw new ChatRoomNotFound();
+                
+                result.Add(found);
             }
             return result;
         }
