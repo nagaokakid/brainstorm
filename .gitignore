@@ -3,6 +3,8 @@ Logic/.vscode/
 Logic/.vs/
 Logic/bin/
 Logic/obj/
+Logic.UnitTest/bin
+Logic.UnitTest/obj
 Database/.vscode/
 Database/.vs/
 Database/bin/
