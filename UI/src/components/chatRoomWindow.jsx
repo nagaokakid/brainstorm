@@ -1,6 +1,6 @@
 import { createSignalRContext } from 'react-signalr/signalr';
 import MessageWindow from './msgWindow';
-import MessageInput from './msgInput';
+import MessageInput from './msgInputField';
 
 
 function chatRoomWindow()
