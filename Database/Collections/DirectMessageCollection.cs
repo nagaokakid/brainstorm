@@ -5,20 +5,32 @@ namespace Database.Collections
 {
     public class DirectMessageCollection : IDirectMessageCollection
     {
-        private List<DirectMessage> directMessages = new();
+        // The direct message collection from MongoDB
+        private MongoRepository<DirectMessage> directMessageRepository = new("DirectMessage");
+
+        // Add a new direct message document to the collection
         public async Task Add(DirectMessage message)
         {
-            directMessages.Add(message);
+            await directMessageRepository.CreateDocument(message);
         }
 
+        // Get all messages between two users from the collection
         public async Task<IEnumerable<DirectMessage>> Get(string fromUserId, string toUserId)
         {
-            // get all messages between 2 users
-            var found = directMessages.Where(x => x.FromUserId.Equals(fromUserId) && x.ToUserId.Equals(toUserId));
-            if (found != null) return found;
-            
-            // return empty list
-            return new List<DirectMessage>();
+            List<string> fieldNames = new List<string>
+            {
+                "FromUserId",
+                "ToUserId"
+            };
+
+            List<string> fieldValues = new List<string>
+            {
+                fromUserId,
+                toUserId
+            };
+
+            return await directMessageRepository.GetAllDocumentsByFieldValues(fieldNames, fieldValues);
+
         }
     }
 }

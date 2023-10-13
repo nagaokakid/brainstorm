@@ -5,29 +5,40 @@ namespace Database.Collections
 {
     public class ChatRoomCollection : IChatRoomCollection
     {
-        private List<ChatRoom> chatRooms = new();
+        // The chat room collection from MongoDB
+        private MongoRepository<ChatRoom> chatRoomRepository = new("ChatRoom");
+
+        // Add a new chat room document to the collection
         public async Task Add(ChatRoom chatRoom)
         {
-            chatRooms.Add(chatRoom);
+            await chatRoomRepository.CreateDocument(chatRoom);
         }
 
+        // Add a new message ID to the document's array
         public async Task AddMessage(string chatRoomId, ChatRoomMessage chatRoomMessage)
         {
-            var found = chatRooms.Find(x => x.Id == chatRoomId);
-            if(found != null)
-            {
-                found.Messages.Add(chatRoomMessage);
-            }
+            await chatRoomRepository.AddToArrayInDocument(chatRoomId, "Messages", chatRoomMessage.FromUserId);
         }
 
+        // Get the chat room document with the given ID
         public async Task<ChatRoom?> GetById(string chatRoomId)
         {
-            return chatRooms.Find(x => x.Id == chatRoomId);
+            return await chatRoomRepository.GetDocumentById(chatRoomId);
         }
 
         public async Task<ChatRoom?> GetByJoinCode(string joinCode)
         {
-            return chatRooms.Find(x => x.JoinCode == joinCode);
+            List<string> fieldNames = new List<string>
+            {
+                "JoinCode"
+            };
+
+            List<string> fieldValues = new List<string>
+            {
+                joinCode
+            };
+
+            return await chatRoomRepository.GetDocumentByFieldValues(fieldNames, fieldValues);
         }
     }
 }
