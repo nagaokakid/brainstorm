@@ -22,7 +22,6 @@ ipch/
 # User-specific files for Rider
 .idea/
 
-
 # Windows image file caches
 Thumbs.db
 ehthumbs.db
@@ -48,9 +47,6 @@ mono_crash.*
 # .NET Scaffolding
 ScaffoldingReadMe.txt
 
-# Windows shortcuts
-*.lnk
-
 # Tye-specific files
 .tye/
 
@@ -61,8 +57,3 @@ vs2019.lnk
 
 # Local history
 .localhistory/
-
-
-
-
-
