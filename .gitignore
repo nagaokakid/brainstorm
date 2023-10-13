@@ -1,16 +1,70 @@
-# Ignore compiled Python files
-__pycache__/
-*.pyc
 
-# Ignore the virtual environment directory (if you're using one)
-venv/
+# Visual Studio temporary files
+.vscode/
+.vs/
+bin/
+obj/
+ipch/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
 
-# Ignore database files (SQLite, PostgreSQL, etc.)
-db.sqlite3
+# User-specific files for Rider
+.idea/
 
-# Ignore local settings (settings/local.py)
-brainstorm/settings/local.py
+# Tye
+.tye/
 
-# Ignore media and static files (you can deploy them separately)
-media/
-static/
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Folder config file
+Desktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# Windows Installer files
+*.cab
+*.msi
+*.msm
+*.msp
+
+# Windows shortcuts
+*.lnk
+
+# Mono Auto Generated Files
+mono_crash.*
+
+# .NET Scaffolding
+ScaffoldingReadMe.txt
+
+# Windows shortcuts
+*.lnk
+
+# Rider specific files
+.idea/
+
+# User-specific Visual Studio files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Tye-specific files
+.tye/
+
+# Visual Studio 2019 config folder
+.vs2019/
+vs2019.lnk
+.vstscache/
+
+# Local history
+.localhistory/
+
+
+
+
+

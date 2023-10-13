@@ -1,18 +1,24 @@
 import "../styles/LoginPage.css"
-import LogRes from "../components/LogRes"
+import LogRes from "../components/logRes"
+import GuestJoin from "../components/guestJoin"
 
 function LoginPage()
 {
     return (
         <>
             <div className="PageContainer">
-                <div className="MemberContainer">
-                    <div className="FormContainer">
-                        <LogRes/>
+                <div className="InfoContainer">
+                    <div className="MemberContainer">
+                        <div className="FormContainer">
+                            <LogRes />
+                        </div>
                     </div>
-                </div>
-                <div className="GuestContainer">
-
+                    <div className="VerticalLine"></div>
+                    <div className="GuestContainer">
+                        <div className="GuestFormContainer">
+                            <GuestJoin />
+                        </div>
+                    </div>
                 </div>
             </div>
         </>

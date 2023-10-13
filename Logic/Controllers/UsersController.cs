@@ -28,9 +28,13 @@ namespace Logic.Controllers
                 var user = await authService.RegisterUser(registerUser);
                 return Created($"/api/users/{user.UserInfo.UserId}", user);
             }
-            catch (UserExists e)
+            catch (UsernameExists e)
             {
                 return BadRequest(e.Message);
+            }
+            catch (BadRequest)
+            {
+                return BadRequest();
             }
             catch (Exception)
             {
