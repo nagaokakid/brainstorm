@@ -1,20 +1,20 @@
 
 # Visual Studio temporary files
-.vscode/
-.vs/
-bin/
-obj/
-ipch/
+*.vscode/
+*.vs/
+*.bin/
+*.obj/
+*.ipch/
 *.suo
 *.user
 *.userosscache
 *.sln.docstates
 
 # User-specific files for Rider
-.idea/
+*.idea/
 
 # Tye
-.tye/
+*.tye/
 
 # Windows image file caches
 Thumbs.db
@@ -44,14 +44,9 @@ ScaffoldingReadMe.txt
 # Windows shortcuts
 *.lnk
 
-# Rider specific files
-.idea/
 
-# User-specific Visual Studio files
-*.suo
-*.user
-*.userosscache
-*.sln.docstates
+
+
 
 # Tye-specific files
 .tye/
