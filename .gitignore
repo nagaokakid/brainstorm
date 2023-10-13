@@ -1,13 +1,16 @@
-
 # Visual Studio temporary files
 Logic/.vscode/
 Logic/.vs/
-Database/.vscode/
-Database/.vs/
 Logic/bin/
 Logic/obj/
+Database/.vscode/
+Database/.vs/
 Database/bin/
 Database/obj/
+UI/.vscode/
+UI/.vs/
+UI/bin/
+UI/obj/
 ipch/
 *.suo
 *.user
@@ -45,8 +48,6 @@ ScaffoldingReadMe.txt
 
 # Windows shortcuts
 *.lnk
-
-
 
 # Tye-specific files
 .tye/
