@@ -67,5 +67,9 @@ namespace Database.Collections
 
         }
 
+        public Task<Dictionary<string, User>> GetAll()
+        {
+            throw new NotImplementedException();
+        }
     } // class
 } // namespace

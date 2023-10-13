@@ -32,7 +32,7 @@ namespace Database
                     DatabaseName = configuration.GetConnectionString("ConnectionString:Database");
 
                     // Assemble the connection string
-                    ConnectionString = $"mongo+srv://{username}:{apiKey}@{cluster}.mongodb.net/{DatabaseName}";
+                    ConnectionString = $"mongodb+srv://{username}:{apiKey}@{cluster}.mongodb.net/{DatabaseName}";
                 }
                 catch (FileNotFoundException)
                 {
