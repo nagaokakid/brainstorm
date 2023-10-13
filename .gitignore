@@ -1,9 +1,18 @@
-
 # Visual Studio temporary files
-.vscode/
-.vs/
-bin/
-obj/
+Logic/.vscode/
+Logic/.vs/
+Logic/bin/
+Logic/obj/
+Logic.UnitTest/bin
+Logic.UnitTest/obj
+Database/.vscode/
+Database/.vs/
+Database/bin/
+Database/obj/
+UI/.vscode/
+UI/.vs/
+UI/bin/
+UI/obj/
 ipch/
 *.suo
 *.user
@@ -12,9 +21,6 @@ ipch/
 
 # User-specific files for Rider
 .idea/
-
-# Tye
-.tye/
 
 # Windows image file caches
 Thumbs.db
@@ -41,18 +47,6 @@ mono_crash.*
 # .NET Scaffolding
 ScaffoldingReadMe.txt
 
-# Windows shortcuts
-*.lnk
-
-# Rider specific files
-.idea/
-
-# User-specific Visual Studio files
-*.suo
-*.user
-*.userosscache
-*.sln.docstates
-
 # Tye-specific files
 .tye/
 
@@ -63,8 +57,3 @@ vs2019.lnk
 
 # Local history
 .localhistory/
-
-
-
-
-
