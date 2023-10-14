@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Akira Cooper\\source\\repos\\brainstorm\\Database\\Database.csproj": {}
+    "C:\\Users\\Akira Cooper\\source\\repos\\brainstorm\\Database.UnitTest\\Database.UnitTest.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Akira Cooper\\source\\repos\\brainstorm\\Database\\Database.csproj": {
+    "C:\\Users\\Akira Cooper\\source\\repos\\brainstorm\\Database.UnitTest\\Database.UnitTest.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Akira Cooper\\source\\repos\\brainstorm\\Database\\Database.csproj",
-        "projectName": "Database",
-        "projectPath": "C:\\Users\\Akira Cooper\\source\\repos\\brainstorm\\Database\\Database.csproj",
+        "projectUniqueName": "C:\\Users\\Akira Cooper\\source\\repos\\brainstorm\\Database.UnitTest\\Database.UnitTest.csproj",
+        "projectName": "Database.UnitTest",
+        "projectPath": "C:\\Users\\Akira Cooper\\source\\repos\\brainstorm\\Database.UnitTest\\Database.UnitTest.csproj",
         "packagesPath": "C:\\Users\\Akira Cooper\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Akira Cooper\\source\\repos\\brainstorm\\Database\\obj\\",
+        "outputPath": "C:\\Users\\Akira Cooper\\source\\repos\\brainstorm\\Database.UnitTest\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Akira Cooper\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -40,17 +40,33 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "dependencies": {
-            "Microsoft.Extensions.Configuration": {
+            "Microsoft.NET.Test.Sdk": {
               "target": "Package",
-              "version": "[7.0.0, )"
+              "version": "[17.5.0, )"
             },
-            "Microsoft.Extensions.Configuration.Json": {
+            "Moq": {
               "target": "Package",
-              "version": "[7.0.0, )"
+              "version": "[4.20.69, )"
             },
-            "MongoDB.Driver": {
+            "NUnit": {
               "target": "Package",
-              "version": "[2.21.0, )"
+              "version": "[3.13.3, )"
+            },
+            "NUnit.Analyzers": {
+              "target": "Package",
+              "version": "[3.6.1, )"
+            },
+            "NUnit3TestAdapter": {
+              "target": "Package",
+              "version": "[4.4.2, )"
+            },
+            "System.IO.Abstractions": {
+              "target": "Package",
+              "version": "[19.2.69, )"
+            },
+            "coverlet.collector": {
+              "target": "Package",
+              "version": "[3.2.0, )"
             }
           },
           "imports": [

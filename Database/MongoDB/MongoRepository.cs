@@ -1,8 +1,7 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Driver;
-using System.Collections;
 
-namespace Database
+namespace Database.MongoDB
 {
     // Generic class to represent a collection of data type documents (User, ChatRoom, Message, etc.)
     public class MongoRepository<TDocument> where TDocument : class
@@ -24,17 +23,18 @@ namespace Database
         {
             try
             {
-                MongoContext.ReadConfigFile();
+                var configReader = new ConfigReader();
+                MongoContext.ReadConfigFile(configReader);
                 client = new MongoClient(MongoContext.ConnectionString);
                 database = client.GetDatabase(MongoContext.DatabaseName);
                 collection = database.GetCollection<TDocument>(collectionName);
             }
-            catch (MongoException ex) 
+            catch (MongoException ex)
             {
                 Console.WriteLine("Failed to connect to MongoDB: " + ex.Message);
                 throw;
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 Console.WriteLine("General error occurred: " + ex.Message);
                 throw;
@@ -184,7 +184,7 @@ namespace Database
                 var filter = Builders<TDocument>.Filter.Eq("_id", objectId);
                 var update = Builders<TDocument>.Update.Push(arrayName, newElement);
                 var result = await collection.UpdateOneAsync(filter, update);
-                
+
                 if (result.ModifiedCount == 0)
                 {
                     Console.WriteLine("No document array was updated.");
