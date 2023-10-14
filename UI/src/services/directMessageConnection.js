@@ -1,4 +1,5 @@
 import * as signalR from "@microsoft/signalr"
+import AppInfo from "./appInfo"
 
 const DIRECT_URL = AppInfo.BaseURL + "direct"
 

@@ -1,4 +1,3 @@
-import {Login, Register} from '../services/apiService'
 import { useState } from 'react';
 import '../styles/LogRes.css';
 import 'mdb-react-ui-kit/dist/css/mdb.min.css';
@@ -12,10 +11,11 @@ import {
     MDBBtn,
     MDBInput
 } from 'mdb-react-ui-kit'
+import ApiService from '../services/apiService';
 
 function LogRes()
 {
-
+    const apiService = new ApiService()
     //This handle the state of the tabs; Login or Register
     const [justifyActive, setJustifyActive] = useState('tab1');
     const handleJustifyClick = (value) =>
@@ -55,13 +55,13 @@ function LogRes()
             }
             else
             {
-                var response = await Login(input.Username, input.Password)
+                var response = await apiService.Login(input.Username, input.Password)
                 if(response.ok){
                     // if good
-                    console.log('Success:', data);
+                    console.log('Success');
                 } else{
                     // if error
-                    console.error('Error:', error);
+                    console.error('Error');
                 }
             }
         }
@@ -80,12 +80,12 @@ function LogRes()
             }
             else
             {
-                const resp = await Register(input.Username, input.Password, input.FirstName, input.LastName)
+                const resp = await apiService.Register(input.Username, input.Password, input.FirstName, input.LastName)
                 if(resp.ok){
-                    console.log('Success:', data);
+                    console.log('Success');
 
                 } else{
-                    console.error('Error:', error);
+                    console.error('Error');
                 }
             }
         }
