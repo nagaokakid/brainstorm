@@ -1,8 +1,11 @@
-export default class AppInfo {
+export default class AppInfo
+{
     static BaseURL = "https://localhost:32768/"
-    
-    static loginRegisterResponse = {
-        "userInfo": {
+
+    static loginRegisterResponse =
+    {
+        "userInfo":
+        {
             "userId": "string",
             "firstName": "string",
             "lastName": "string"
@@ -16,12 +19,14 @@ export default class AppInfo {
                 "joinCode": "string",
                 "messages": [
                     {
-                        "fromUserInfo": {
+                        "fromUserInfo":
+                        {
                             "userId": "string",
                             "firstName": "string",
                             "lastName": "string"
                         },
-                        "toUserInfo": {
+                        "toUserInfo":
+                        {
                             "userId": "string",
                             "firstName": "string",
                             "lastName": "string"
@@ -42,15 +47,18 @@ export default class AppInfo {
         ]
     }
 
-    static getUserId(){
-        return loginRegisterResponse.userInfo.userId
+    static getUserId()
+    {
+        return this.loginRegisterResponse.userInfo.userId
     }
 
-    static addNewChatRoom(chatRoom){
+    static addNewChatRoom(chatRoom)
+    {
         this.loginRegisterResponse.chatRooms.push(chatRoom)
     }
 
-    static getCurrentFriendlyUserInfo(){
+    static getCurrentFriendlyUserInfo()
+    {
         return this.loginRegisterResponse.userInfo
     }
 }
