@@ -3,6 +3,7 @@ import emailIcon from '../assets/email.png';
 import '../styles/msgInputField.css';
 import SignalRDirect from '../services/directMessageConnection';
 import SignalRChatRoom from '../services/chatRoomConnection';
+import AppInfo from '../services/appInfo';
 
 function msgInputField(toUserInfo, groupId)
 {

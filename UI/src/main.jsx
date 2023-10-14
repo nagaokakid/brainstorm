@@ -10,6 +10,6 @@ import './index.css'
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     {/* Change the bottom line to test any pages */ }
-      <MsgInput/>
+      <LoginPage/>
   </React.StrictMode>,
 )

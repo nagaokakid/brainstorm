@@ -1,7 +1,8 @@
+import AppInfo from "./appInfo"
 
-class ApiService {
+export default class ApiService {
     async Login(username, password) {
-        const resp = await fetch(AppInfo.BaseURL + "/api/users/login", {
+        const resp = await fetch(AppInfo.BaseURL + "api/users/login", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -18,7 +19,7 @@ class ApiService {
     }
 
     async Register(username, password, firstName, lastName) {
-        const resp = await fetch(AppInfo.BaseURL + "/api/users", {
+        const resp = await fetch(AppInfo.BaseURL + "api/users", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
