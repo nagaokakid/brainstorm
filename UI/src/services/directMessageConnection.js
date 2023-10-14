@@ -1,6 +1,6 @@
 import * as signalR from "@microsoft/signalr"
 
-const DIRECT_URL = "https://localhost:32768/direct"
+const DIRECT_URL = AppInfo.BaseURL + "direct"
 
 class SignalRDirect {
     static #instance
