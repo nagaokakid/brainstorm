@@ -1,11 +1,11 @@
 import * as signalR from "@microsoft/signalr"
 
-const DIRECT_URL = "https://localhost:32768/chatroom"
+const DIRECT_URL = AppInfo.BaseURL + "chatroom"
 
 class SignalRChatRoom {
     static #instance
 
-    constructor(receiveChatRoomMessageCallback) {
+    constructor(receiveChatRoomMessageCallback, changeUserStatusCallback) {
         this.connection = new signalR.HubConnectionBuilder()
         this.connection.withUrl(DIRECT_URL)
         this.connection.withAutomaticReconnect()
@@ -17,6 +17,8 @@ class SignalRChatRoom {
             .then(() => {
                 console.log("chatroom connected");
                 this.connection.on("ReceiveChatRoomMessage", (msg) => receiveChatRoomMessageCallback(msg));
+                this.connection.on("ChangeUserStatus", (userId, isOnline) => changeUserStatusCallback(userId, isOnline));
+
             })
             .catch(err => console.warn(err))
     }

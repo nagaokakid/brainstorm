@@ -1,14 +1,33 @@
 import { useState } from 'react';
 import emailIcon from '../assets/email.png';
 import '../styles/msgInputField.css';
+import SignalRDirect from '../services/directMessageConnection';
+import SignalRChatRoom from '../services/chatRoomConnection';
 
-function msgInputField()
+function msgInputField(toUserInfo, groupId)
 {
+    const direct = SignalRDirect.getInstance()
+    const chatRoom = SignalRChatRoom.getInstance()
+
     const [text, setText] = useState("");
 
     const handleSend = () =>
     {
         setText("");
+
+        // create messabe object
+        const msg = {
+            fromUserInfo : AppInfo.getCurrentFriendlyUserInfo(),
+            toUserInfo: toUserInfo ?? groupId,
+            message : text,
+            timestamp: Date.now().toString()
+        }
+        // send message
+        if(toUserInfo){
+            direct.sendMessage(msg)
+        } else{
+            chatRoom.sendChatRoomMessage(msg)
+        }
     };
 
     const handleKey = (e) =>

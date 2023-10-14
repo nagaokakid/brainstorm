@@ -1,3 +1,4 @@
+import {Login, Register} from '../services/apiService'
 import { useState } from 'react';
 import '../styles/LogRes.css';
 import 'mdb-react-ui-kit/dist/css/mdb.min.css';
@@ -43,7 +44,7 @@ function LogRes()
     }
 
     //This will verify the form and handle the request to the server
-    const RequestHandle = (value) =>
+    const RequestHandle = async (value) =>
     {
         if (value === 1)
         {
@@ -54,20 +55,14 @@ function LogRes()
             }
             else
             {
-                fetch('http://localhost:3001/api/UserLogin',
-                {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ Username: input.Username, Password: input.Password }),
-                }).then(response => response.json()).then(data =>
-                    {
-                        console.log('Success:', data);
-                    }).catch((error) =>
-                    {
-                        console.error('Error:', error);
-                    });
+                var response = await Login(input.Username, input.Password)
+                if(response.ok){
+                    // if good
+                    console.log('Success:', data);
+                } else{
+                    // if error
+                    console.error('Error:', error);
+                }
             }
         }
         else if (value === 2)
@@ -85,20 +80,13 @@ function LogRes()
             }
             else
             {
-                fetch('http://localhost:3001/api/User',
-                {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ Username: input.Username, Password: input.Password, FirstName: input.FirstName, LastName: input.LastName}),
-                }).then(response => response.json()).then(data =>
-                    {
-                        console.log('Success:', data);
-                    }).catch((error) =>
-                    {
-                        console.error('Error:', error);
-                    });
+                const resp = await Register(input.Username, input.Password, input.FirstName, input.LastName)
+                if(resp.ok){
+                    console.log('Success:', data);
+
+                } else{
+                    console.error('Error:', error);
+                }
             }
         }
     }
