@@ -14,7 +14,7 @@ function chatRoomWindow(isChatRoom)
         <div className='WindowContainer'>
             <div className='MsgContainer'>
                 <div className='ChatHeader'>
-                    <h1>Header</h1>
+                    <h1>{isChatRoom.window}</h1>
                 </div>
                 <div className='MsgSection'>
                     <MessageWindow connection= { connection }/>
@@ -23,7 +23,7 @@ function chatRoomWindow(isChatRoom)
                     <MessageInput connection= { connection }/>
                 </div>
             </div>
-            <div className='MemberListContainer'>
+            <div className='MemberListContainer' style={isChatRoom.chatType==1 ? {display:"none"}:{display:"flex"} }>
                 <MemberList />
             </div>
         </div>
