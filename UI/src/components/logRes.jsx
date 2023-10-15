@@ -12,12 +12,11 @@ import {
     MDBBtn,
     MDBInput
 } from 'mdb-react-ui-kit'
+import { useNavigate } from 'react-router-dom';
 
 function LogRes()
 {
-    // Create an Object of the apiService
-    const apiService = new ApiService()
-
+    
     //  handle the state of the tabs; Login or Register
     const [justifyActive, setJustifyActive] = useState('tab1');
     const handleJustifyClick = (value) =>
@@ -28,7 +27,7 @@ function LogRes()
         }
         setJustifyActive(value)
     }
-
+    
     // This handle the state of the inputs; Username, Password, Re-Password, First Name, Last Name
     const [input, setInput] = useState({
         Username: '',
@@ -42,31 +41,35 @@ function LogRes()
     {
         const id = value.target.id;
         const info = value.target.value;
-        setInput((prev) => { return {...prev, [id]: info} });
+        setInput((prev) => { return {...prev, [id]: info} })
     }
-
+    
+    const navigate = useNavigate()
     // This will verify the form and handle the request to the server
     const RequestHandle = async (value) =>
     {
+        // Create an Object of the apiService
+        const apiService = new ApiService()
         if (value === 1)
         {
             if (input.Username == "" || input.Password == "")
             {
-                alert("Please complete the form");
-                return;
+                alert("Please complete the form")
             }
             else
             {
                 var response = await apiService.Login(input.Username, input.Password)
 
                 // To-Do: Handle the response and create UI for different responses
-                if(response.ok){
+                if (response.ok)
+                {
                     // if good
-                    console.log('Success');
-                } else{
+                    navigate('/main')
+                }
+                else
+                {
                     // if error
-                    console.error('Error');
-                    
+                    alert('Something went wrong');
                 }
             }
         }
@@ -75,13 +78,11 @@ function LogRes()
             if (input.Username == "" || input.Password == "" || input.RePassword == "" || input.FirstName == "" || input.LastName == "")
             {
                 alert("Please complete the form");
-                return;
             }
             else if
             (input.Password != input.RePassword)
             {
                 alert("Passwords do not match");
-                return;
             }
             else
             {
@@ -89,10 +90,10 @@ function LogRes()
 
                 // To-Do: Handle the response and create UI for different responses
                 if(resp.ok){
-                    console.log('Success');
+                    navigate('/main')
 
                 } else{
-                    console.error('Error');
+                    alert('Something went wrong');
                 }
             }
         }
