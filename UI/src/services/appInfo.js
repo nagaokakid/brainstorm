@@ -57,6 +57,16 @@ export default class AppInfo
         return this.loginRegisterResponse.userInfo.firstName + " " + this.loginRegisterResponse.userInfo.lastName
     }
 
+    static getDirectMessagesList()
+    {
+        return this.loginRegisterResponse.directMesseges ? this.loginRegisterResponse.directMesseges : []
+    }
+
+    static getChatRoomsList()
+    {
+        return this.loginRegisterResponse.chatRooms ? [] :this.loginRegisterResponse.chatRooms
+    }
+
     static addNewChatRoom(chatRoom)
     {
         this.loginRegisterResponse.chatRooms.push(chatRoom)
