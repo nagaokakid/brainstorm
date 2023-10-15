@@ -1,4 +1,6 @@
-﻿namespace Database.MongoDB
+﻿using Database.MongoDB;
+
+namespace Database
 {
     public static class MongoContext
     {
@@ -11,7 +13,7 @@
             {
                 try
                 {
-                    // Read the json config file and return a json object
+                    // Read config file and get json object back
                     var jsonObject = configReader.ReadJsonConfigFile("mongoSettings.json");
 
                     // Gather the attributes for the connection string

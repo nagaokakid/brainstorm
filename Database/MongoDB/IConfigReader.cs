@@ -4,19 +4,34 @@ namespace Database.MongoDB
 {
     public interface IConfigReader
     {
-        JsonElement ReadJsonConfigFile(string fileName);
+        public JsonElement ReadJsonConfigFile(string fileName);
     }
 
     public class ConfigReader : IConfigReader
     {
-        // Read json config file and return a JSON object
+
+        // Read JSON config file and return a JSON object
         public JsonElement ReadJsonConfigFile(string fileName)
         {
-            // Get file path
-            string currentDirectory = Directory.GetCurrentDirectory();
-            string configFilePath = Path.Combine(currentDirectory, fileName);
+            string? currentDirectory = Directory.GetCurrentDirectory();
+            string targetDirectoryPath = "";
 
-            // Read file and deserialize as JSON object
+            // Look for config file starting from current directory, moving up the tree, one level at a time
+            while (!string.IsNullOrEmpty(currentDirectory)) 
+            {
+                string directoryToCheck = Path.Combine(currentDirectory, "Database/MongoDB/");
+                if (Directory.Exists(directoryToCheck))
+                {
+                    targetDirectoryPath = directoryToCheck;
+                    break;
+                }
+                currentDirectory = Directory.GetParent(currentDirectory)?.FullName;
+            }
+
+            // Full file path for config file
+            string configFilePath = Path.Combine(targetDirectoryPath, fileName);
+
+            // Read file and deserialize into JSON object
             string jsonConfigText = File.ReadAllText(configFilePath);
             var jsonObject = JsonSerializer.Deserialize<JsonElement>(jsonConfigText);
 
