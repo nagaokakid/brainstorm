@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import ApiService from '../services/apiService';
 import '../styles/LogRes.css';
 import 'mdb-react-ui-kit/dist/css/mdb.min.css';
 import {
@@ -11,12 +12,13 @@ import {
     MDBBtn,
     MDBInput
 } from 'mdb-react-ui-kit'
-import ApiService from '../services/apiService';
 
 function LogRes()
 {
+    // Create an Object of the apiService
     const apiService = new ApiService()
-    //This handle the state of the tabs; Login or Register
+
+    //  handle the state of the tabs; Login or Register
     const [justifyActive, setJustifyActive] = useState('tab1');
     const handleJustifyClick = (value) =>
     {
@@ -27,7 +29,7 @@ function LogRes()
         setJustifyActive(value)
     }
 
-    //This handle the state of the inputs; Username, Password, Re-Password, First Name, Last Name
+    // This handle the state of the inputs; Username, Password, Re-Password, First Name, Last Name
     const [input, setInput] = useState({
         Username: '',
         Password: '',
@@ -35,7 +37,7 @@ function LogRes()
         FirstName: '',
         LastName: ''
     });
-    //This will keep track of the inputs and update the state
+    // This will keep track of the inputs and update the state
     const handleChanged = (value) =>
     {
         const id = value.target.id;
@@ -43,7 +45,7 @@ function LogRes()
         setInput((prev) => { return {...prev, [id]: info} });
     }
 
-    //This will verify the form and handle the request to the server
+    // This will verify the form and handle the request to the server
     const RequestHandle = async (value) =>
     {
         if (value === 1)
@@ -56,12 +58,15 @@ function LogRes()
             else
             {
                 var response = await apiService.Login(input.Username, input.Password)
+
+                // To-Do: Handle the response and create UI for different responses
                 if(response.ok){
                     // if good
                     console.log('Success');
                 } else{
                     // if error
                     console.error('Error');
+                    
                 }
             }
         }
@@ -81,6 +86,8 @@ function LogRes()
             else
             {
                 const resp = await apiService.Register(input.Username, input.Password, input.FirstName, input.LastName)
+
+                // To-Do: Handle the response and create UI for different responses
                 if(resp.ok){
                     console.log('Success');
 
