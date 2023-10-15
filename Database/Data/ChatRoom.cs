@@ -6,7 +6,6 @@ namespace Database.Data
     public class ChatRoom
     {
         [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
         [BsonElement("_id")]
         public string Id { get; set; }
         public string Title { get; set; }

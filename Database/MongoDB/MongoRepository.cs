@@ -1,5 +1,6 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Driver;
+using MongoDB.Driver.Core.Configuration;
 
 namespace Database.MongoDB
 {
@@ -7,27 +8,21 @@ namespace Database.MongoDB
     public class MongoRepository<TDocument> where TDocument : class
     {
         private IMongoCollection<TDocument>? collection;
-        private string collectionName;
         private MongoClient? client;
         private IMongoDatabase? database;
+
+        // Hard-coded to avoid file location issues when using Docker
+        private const string CONNECTION_STRING = "mongodb+srv://comp4350:O954Xbw6kQ488jym@brainstorm.aj9h1fd.mongodb.net/?retryWrites=true&w=majority";
+        private const string DATABASE_NAME = "brainstorm";
 
         // Constructor: connect to MongoDB and link to a collection
         public MongoRepository(string collectionName)
         {
-            this.collectionName = collectionName;
-            ConnectToMongo();
-        }
-
-        // Attempt database connection
-        private void ConnectToMongo()
-        {
             try
             {
-                var configReader = new ConfigReader();
-                MongoContext.ReadConfigFile(configReader);
-                client = new MongoClient(MongoContext.ConnectionString);
-                database = client.GetDatabase(MongoContext.DatabaseName);
-                collection = database.GetCollection<TDocument>(collectionName);
+            client = new MongoClient(CONNECTION_STRING);
+            database = client.GetDatabase(DATABASE_NAME);
+            collection = database.GetCollection<TDocument>(collectionName);
             }
             catch (MongoException ex)
             {
@@ -36,9 +31,10 @@ namespace Database.MongoDB
             }
             catch (Exception ex)
             {
-                Console.WriteLine("General error occurred: " + ex.Message);
+                Console.WriteLine("System error occurred during MongoDB operation: " + ex.Message);
                 throw;
             }
+
         }
 
         // Get all the documents for a collection
@@ -48,9 +44,14 @@ namespace Database.MongoDB
             {
                 return await collection.Find(_ => true).ToListAsync();
             }
-            catch (Exception ex)
+            catch (MongoException ex)
             {
                 Console.WriteLine("Failed to retrieve all documents for the collection on MongoDB: " + ex.Message);
+                throw;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("System error occurred during MongoDB operation: " + ex.Message);
                 throw;
             }
         }
@@ -64,12 +65,16 @@ namespace Database.MongoDB
                 var filter = Builders<TDocument>.Filter.Eq("_id", objectId);
                 return await collection.Find(filter).FirstOrDefaultAsync();
             }
-            catch (Exception ex)
+            catch (MongoException ex)
             {
                 Console.WriteLine("Failed to retrieve document on MongoDB: " + ex.Message);
                 throw;
             }
-
+            catch (Exception ex)
+            {
+                Console.WriteLine("System error occurred during MongoDB operation: " + ex.Message);
+                throw;
+            }
         }
 
         // Get a single document that matches the given field names and values
@@ -87,9 +92,14 @@ namespace Database.MongoDB
 
                 return await collection.Find(filter).FirstOrDefaultAsync();
             }
-            catch (Exception ex)
+            catch (MongoException ex)
             {
                 Console.WriteLine("Failed to retrieve document with given field names and values: " + ex.Message);
+                throw;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("System error occurred during MongoDB operation: " + ex.Message);
                 throw;
             }
         }
@@ -109,9 +119,14 @@ namespace Database.MongoDB
 
                 return await collection.Find(filter).ToListAsync();
             }
-            catch (Exception ex)
+            catch (MongoException ex)
             {
                 Console.WriteLine("Failed to get list of documents with given field names and values: " + ex.Message);
+                throw;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("System error occurred during MongoDB operation: " + ex.Message);
                 throw;
             }
 
@@ -124,9 +139,14 @@ namespace Database.MongoDB
             {
                 await collection.InsertOneAsync(document);
             }
-            catch (Exception ex)
+            catch (MongoException ex)
             {
                 Console.WriteLine("Failed to create document on MongoDB: " + ex.Message);
+                throw;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("System error occurred during MongoDB operation: " + ex.Message);
                 throw;
             }
         }
@@ -145,12 +165,15 @@ namespace Database.MongoDB
                     Console.WriteLine("No document was replaced.");
                 }
             }
+            catch (MongoException ex)
+            {
+                Console.WriteLine("Failed to replace an existing document on Mongo: " + ex.Message);
+            }
             catch (Exception ex)
             {
-                Console.WriteLine("Failed to replace document on MongoDB: " + ex.Message);
+                Console.WriteLine("System error occurred during MongoDB operation: " + ex.Message);
                 throw;
             }
-
         }
 
         // Update the value of a field in an existing document
@@ -168,9 +191,14 @@ namespace Database.MongoDB
                     Console.WriteLine("No document field was updated.");
                 }
             }
-            catch (Exception ex)
+            catch (MongoException ex)
             {
                 Console.WriteLine("Failed to update field value in a document on MongoDB" + ex.Message);
+                throw;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("System error occurred during MongoDB operation: " + ex.Message);
                 throw;
             }
         }
@@ -190,12 +218,16 @@ namespace Database.MongoDB
                     Console.WriteLine("No document array was updated.");
                 }
             }
-            catch (Exception ex)
+            catch (MongoException ex)
             {
                 Console.WriteLine("Failed to add element to document array on MongoDB: " + ex.Message);
                 throw;
             }
-
+            catch (Exception ex)
+            {
+                Console.WriteLine("System error occurred during MongoDB operation: " + ex.Message);
+                throw;
+            }
         }
 
         // Remove an element from an array within an existing document
@@ -213,12 +245,16 @@ namespace Database.MongoDB
                     Console.WriteLine("No element was removed from document array.");
                 }
             }
-            catch (Exception ex)
+            catch (MongoException ex)
             {
                 Console.WriteLine("Failed to remove element from document array on MongoDB: " + ex.Message);
                 throw;
             }
-
+            catch (Exception ex)
+            {
+                Console.WriteLine("System error occurred during MongoDB operation: " + ex.Message);
+                throw;
+            }
         }
 
         // Delete an existing document
@@ -235,9 +271,14 @@ namespace Database.MongoDB
                     Console.WriteLine("No document was deleted.");
                 }
             }
-            catch (Exception ex)
+            catch (MongoException ex)
             {
                 Console.WriteLine("Failed to delete document on MongoDB: " + ex.Message);
+                throw;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("System error occurred during MongoDB operation: " + ex.Message);
                 throw;
             }
 
