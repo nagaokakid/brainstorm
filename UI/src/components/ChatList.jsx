@@ -1,7 +1,8 @@
-import React from "react";
+/* eslint-disable react/prop-types */
 import "../styles/ChatList.css";
 
-const ChatList = ({ chats }) => {
+function ChatList(props)
+{
   return (
     <div className="chat-list">
       <h3>Chat</h3> 
@@ -9,7 +10,7 @@ const ChatList = ({ chats }) => {
         <input type="text" placeholder="Search Chats" />
       </div>
       <div className="chats">
-        {chats.map((chat, index) => (
+        {props.chats.map((chat, index) => (
           <div className="chat-item" key={index}>
             <div className="chat-details">
               <div className="chat-username">{chat.username}</div>
@@ -20,6 +21,6 @@ const ChatList = ({ chats }) => {
       </div>
     </div>
   );
-};
+}
 
 export default ChatList;
