@@ -1,7 +1,7 @@
-import React from "react";
 import "../styles/MemberList.css";
 
-const MemberList = () => {
+function MemberList()
+{
   const onlineMembers = ["Member 1", "Member 2", "Member 3"];
   const offlineMembers = ["Member 4", "Member 5", "Member 6"];
   return (
@@ -24,6 +24,6 @@ const MemberList = () => {
       </div>
     </div>
   );
-};
+}
 
 export default MemberList;

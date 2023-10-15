@@ -1,5 +1,6 @@
 import MessageWindow from './msgWindow';
 import MessageInput from './msgInputField';
+import MemberList from './MemberList';
 import SignalRChatRoom from "../services/chatRoomConnection";
 import SignalRDirect from '../services/directMessageConnection';
 import '../styles/chatRoomWindow.css';
@@ -22,7 +23,9 @@ function chatRoomWindow(isChatRoom)
                     <MessageInput connection= { connection }/>
                 </div>
             </div>
-            <div className='MemberListContainer'></div>
+            <div className='MemberListContainer'>
+                <MemberList />
+            </div>
         </div>
     );
 }
