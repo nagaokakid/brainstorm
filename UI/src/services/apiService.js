@@ -73,4 +73,28 @@ export default class ApiService
 
         return resp
     }
+
+    async GuestJoin(code)
+    {
+        const resp = await fetch(AppInfo.BaseURL + "/api/chatroom/guest",
+        {
+            method: 'POST',
+            headers:
+            {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                code: code
+            }),
+
+        })
+
+        // if response is okay, assign to appinfo for later use
+        if (resp.ok)
+        {
+            AppInfo.addNewChatRoom(resp.json)
+        }
+
+        return resp
+    }
 }

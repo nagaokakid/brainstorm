@@ -1,15 +1,14 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-//import LoginPage from "./pages/LoginPage";
-import ChatRoomWindow  from './components/chatRoomWindow'
+import LoginPage from "./pages/loginPage";
+import MainPage from "./pages/mainPage";
 
 function App()
 {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Change the bottom line to test any pages */ }
-        <Route path="/" element={<ChatRoomWindow isChatRoom = {true}/>}>
-        </Route>
+        <Route path="/" exact element={<LoginPage />} />
+        <Route path="/main" element={<MainPage />} />
       </Routes>
     </BrowserRouter>
   )
