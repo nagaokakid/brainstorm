@@ -1,6 +1,7 @@
 .MsgInputContainer
 {
     height: 50px;
+    width: 100%;
     background: #fff;
     padding: 5px;
     display: flex;
