@@ -1,17 +1,21 @@
-import React from 'react';
-import "../styles/MainPage.css"
-
+import React from "react";
+import "../styles/MainPage.css";
+import NavigationBar from "../components/NavigationBar";
+import ChatList from "../components/ChatList";
+import HeaderNavBar from "../components/HeaderNavBar";
+import MemberList from "../components/MemberList";
+//top element a grid, 4 colms
 function MainPage() {
   return (
-    <>
-     <div className="App">
-      <header className="App-header">
-        <h1>Welcome to Brainstorm</h1>
-        <p>This is the main page of our brainstorm.</p>
-      </header>
-     </div>
-    </>
-  ); 
+    <div className="App">
+      <header className="App-header"></header>
+      <HeaderNavBar userName={["userName"]} />
+      <div className="main-page-container">
+        <NavigationBar />
+        <ChatList chats={["Chat 1", "Chat 2", "Chat 3"]} />
+      </div>
+    </div>
+  );
 }
 
 export default MainPage;
