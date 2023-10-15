@@ -52,6 +52,11 @@ export default class AppInfo
         return this.loginRegisterResponse.userInfo.userId
     }
 
+    static getUserName()
+    {
+        return this.loginRegisterResponse.userInfo.firstName + " " + this.loginRegisterResponse.userInfo.lastName
+    }
+
     static addNewChatRoom(chatRoom)
     {
         this.loginRegisterResponse.chatRooms.push(chatRoom)
