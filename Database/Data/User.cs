@@ -6,7 +6,6 @@ namespace Database.Data
     public class User
     {
         [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
         [BsonElement("_id")]
         public string Id { get; set; }
         public string Username { get; set; }
