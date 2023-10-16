@@ -1,14 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import emailIcon from '../assets/email.png';
 import '../styles/msgInputField.css';
-import SignalRDirect from '../services/directMessageConnection';
-import SignalRChatRoom from '../services/chatRoomConnection';
 import AppInfo from '../services/appInfo';
 
-function msgInputField(toUserInfo, groupId)
+function msgInputField(props)
 {
-    const direct = SignalRDirect.getInstance()
-    const chatRoom = SignalRChatRoom.getInstance()
+    const connection = props.connection.getInstance()
     const [text, setText] = useState("");
 
     // Send message
@@ -20,16 +17,16 @@ function msgInputField(toUserInfo, groupId)
         // create message object
         const msg = {
             fromUserInfo : AppInfo.getCurrentFriendlyUserInfo(),
-            toUserInfo: toUserInfo ? toUserInfo : groupId,
+            toUserInfo: [props.chatId],
             message : text,
             timestamp: Date.now().toString()
         }
 
         // send message
         if(toUserInfo){
-            direct.sendMessage(msg)
+            connection.sendMessage(msg)
         } else{
-            chatRoom.sendChatRoomMessage(msg)
+            connection.sendChatRoomMessage(msg)
         }
 
         setText("");
@@ -43,6 +40,10 @@ function msgInputField(toUserInfo, groupId)
             handleSend();
         }
     };
+
+    useEffect(() => {
+        setText("");
+    }, [props.chatId, props.connection])
 
     return (
         <div className="MsgInputContainer">
