@@ -8,13 +8,13 @@ import '../styles/chatRoomWindow.css';
 function chatRoomWindow(isChatRoom)
 {
     // Create the connection object (return direct message connection if isChatRoom is false)
-    const connection = isChatRoom ? new SignalRDirect(): new SignalRChatRoom();
+    const connection = isChatRoom.chatType === "Direct Message List" ? new SignalRDirect : new SignalRChatRoom;
 
     return (
         <div className='WindowContainer'>
             <div className='MsgContainer'>
                 <div className='ChatHeader'>
-                    <h1>Header</h1>
+                    <h1>{isChatRoom.headerTitle}</h1>
                 </div>
                 <div className='MsgSection'>
                     <MessageWindow connection= { connection }/>
@@ -23,7 +23,7 @@ function chatRoomWindow(isChatRoom)
                     <MessageInput connection= { connection }/>
                 </div>
             </div>
-            <div className='MemberListContainer'>
+            <div className='MemberListContainer' style={isChatRoom.chatType==1 ? {display:"none"}:{display:"flex"} }>
                 <MemberList />
             </div>
         </div>
