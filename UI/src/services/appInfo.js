@@ -59,12 +59,12 @@ export default class AppInfo
 
     static getDirectMessagesList()
     {
-        return this.loginRegisterResponse.directMesseges ? this.loginRegisterResponse.directMesseges : []
+        return this.loginRegisterResponse.directMesseges ? [{id:"DM_1", lastMsg:"This is left"}, {id:"DM_2", lastMsg:"This is left"}] : [{id:"DM_1", lastMsg:"This is right"}, {id:"DM_2", lastMsg:"This is right"}]
     }
 
     static getChatRoomsList()
     {
-        return this.loginRegisterResponse.chatRooms ? [] :this.loginRegisterResponse.chatRooms
+        return this.loginRegisterResponse.chatRooms ? [{id:"CR_1", lastMsg:"This is left"}] : [{id:"CR_1", lastMsg:"This is right"}]
     }
 
     static addNewChatRoom(chatRoom)
