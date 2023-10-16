@@ -1,4 +1,6 @@
+import { useNavigate } from 'react-router-dom';
 import '../styles/guestJoin.css';
+import ApiService from '../services/apiService';
 import 'mdb-react-ui-kit/dist/css/mdb.min.css';
 import {
   MDBInput,
@@ -7,38 +9,29 @@ import {
 
 function guestJoin()
 {
-
+  const navigate = useNavigate()
   //This will verify the input and handle the request to the server
-  const RequestHandle = () =>
+  const RequestHandle = async () =>
   {
+    // Create an Object of the apiService
+    const apiService = new ApiService()
     const code = document.getElementById('code').value;
     if (code != "")
     {
-      fetch('http://localhost:3001/api/GuestJoin',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ code: code })
-        })
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.status == "Success") {
-            console.log(data);
-          }
-          else {
-            alert(data.status);
-          }
-        })
-        .catch((error) => {
-          console.error('Error:', error);
-        });
+      var response = await apiService.GuestJoin(code)
+      
+      if (response.status === 200)
+      {
+        navigate('/mainPage')
+      }
+      else
+      {
+        alert("Invalid Code")
+      }
     }
     else
     {
       alert("Please complete the form");
-      return;
     }
   }
 

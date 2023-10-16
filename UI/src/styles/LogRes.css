@@ -3,11 +3,13 @@
     margin-bottom: 20px;
     display: flex;
     justify-content: center;
+    font-size: 30px !important;
 }
 
 .nav-pills .nav-link
 {
     border-radius: 0px 10px 0px 10px !important; 
+    font-size: 20px !important;
 }
 
 .form-outline
@@ -19,4 +21,5 @@
 .ripple
 {
     border-radius: 0px 10px 0px 10px !important; 
+    font-size: 16px !important;
 }
