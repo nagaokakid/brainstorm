@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import ApiService from '../services/apiService';
 import '../styles/LogRes.css';
 import 'mdb-react-ui-kit/dist/css/mdb.min.css';
 import {
@@ -11,11 +12,12 @@ import {
     MDBBtn,
     MDBInput
 } from 'mdb-react-ui-kit'
+import { useNavigate } from 'react-router-dom';
 
 function LogRes()
 {
-
-    //This handle the state of the tabs; Login or Register
+    
+    //  handle the state of the tabs; Login or Register
     const [justifyActive, setJustifyActive] = useState('tab1');
     const handleJustifyClick = (value) =>
     {
@@ -25,8 +27,8 @@ function LogRes()
         }
         setJustifyActive(value)
     }
-
-    //This handle the state of the inputs; Username, Password, Re-Password, First Name, Last Name
+    
+    // This handle the state of the inputs; Username, Password, Re-Password, First Name, Last Name
     const [input, setInput] = useState({
         Username: '',
         Password: '',
@@ -34,40 +36,41 @@ function LogRes()
         FirstName: '',
         LastName: ''
     });
-    //This will keep track of the inputs and update the state
+    // This will keep track of the inputs and update the state
     const handleChanged = (value) =>
     {
         const id = value.target.id;
         const info = value.target.value;
-        setInput((prev) => { return {...prev, [id]: info} });
+        setInput((prev) => { return {...prev, [id]: info} })
     }
-
-    //This will verify the form and handle the request to the server
-    const RequestHandle = (value) =>
+    
+    const navigate = useNavigate()
+    // This will verify the form and handle the request to the server
+    const RequestHandle = async (value) =>
     {
+        // Create an Object of the apiService
+        const apiService = new ApiService()
         if (value === 1)
         {
             if (input.Username == "" || input.Password == "")
             {
-                alert("Please complete the form");
-                return;
+                alert("Please complete the form")
             }
             else
             {
-                fetch('http://localhost:3001/api/UserLogin',
+                var response = await apiService.Login(input.Username, input.Password)
+
+                // To-Do: Handle the response and create UI for different responses
+                if (response.ok)
                 {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ Username: input.Username, Password: input.Password }),
-                }).then(response => response.json()).then(data =>
-                    {
-                        console.log('Success:', data);
-                    }).catch((error) =>
-                    {
-                        console.error('Error:', error);
-                    });
+                    // if good
+                    navigate('/main')
+                }
+                else
+                {
+                    // if error
+                    alert('Something went wrong');
+                }
             }
         }
         else if (value === 2)
@@ -75,30 +78,23 @@ function LogRes()
             if (input.Username == "" || input.Password == "" || input.RePassword == "" || input.FirstName == "" || input.LastName == "")
             {
                 alert("Please complete the form");
-                return;
             }
             else if
             (input.Password != input.RePassword)
             {
                 alert("Passwords do not match");
-                return;
             }
             else
             {
-                fetch('http://localhost:3001/api/User',
-                {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ Username: input.Username, Password: input.Password, FirstName: input.FirstName, LastName: input.LastName}),
-                }).then(response => response.json()).then(data =>
-                    {
-                        console.log('Success:', data);
-                    }).catch((error) =>
-                    {
-                        console.error('Error:', error);
-                    });
+                const resp = await apiService.Register(input.Username, input.Password, input.FirstName, input.LastName)
+
+                // To-Do: Handle the response and create UI for different responses
+                if(resp.ok){
+                    navigate('/main')
+
+                } else{
+                    alert('Something went wrong');
+                }
             }
         }
     }
