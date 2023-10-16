@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Database", "..\Database\Dat
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Logic.UnitTest", "..\Logic.UnitTest\Logic.UnitTest.csproj", "{61B0EC56-84BC-4D81-A054-9E0B2C241C44}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Database.UnitTest", "..\Database.UnitTest\Database.UnitTest.csproj", "{97360FD3-5111-4FF8-8E0E-A8755A75E1D2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Database.UnitTest", "..\Database.UnitTest\Database.UnitTest.csproj", "{97360FD3-5111-4FF8-8E0E-A8755A75E1D2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

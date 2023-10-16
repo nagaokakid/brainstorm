@@ -1,30 +1,29 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Driver;
-using MongoDB.Driver.Core.Configuration;
 
 namespace Database.MongoDB
 {
     // Generic class to represent a collection of data type documents (User, ChatRoom, Message, etc.)
     public class MongoRepository<TDocument> where TDocument : class
     {
-        private IMongoCollection<TDocument>? collection;
-        private MongoClient? client;
-        private IMongoDatabase? database;
+        private IMongoCollection<TDocument> collection;
+        private IMongoClient client;
+        private IMongoDatabase database;
 
         // Hard-coded to avoid file location issues when using Docker
         private const string CONNECTION_STRING = "mongodb+srv://comp4350:O954Xbw6kQ488jym@brainstorm.aj9h1fd.mongodb.net/?retryWrites=true&w=majority";
         private const string DATABASE_NAME = "brainstorm";
 
-        // Constructor: connect to MongoDB and link to a collection
+        // Constructor: connect to MongoDB database and link to a specific collection
         public MongoRepository(string collectionName)
         {
             try
             {
-            client = new MongoClient(CONNECTION_STRING);
-            database = client.GetDatabase(DATABASE_NAME);
-            collection = database.GetCollection<TDocument>(collectionName);
+                client = new MongoClient(CONNECTION_STRING);
+                database = client.GetDatabase(DATABASE_NAME);
+                collection = database.GetCollection<TDocument>(collectionName);
             }
-            catch (MongoException ex)
+            catch (MongoConfigurationException ex)
             {
                 Console.WriteLine("Failed to connect to MongoDB: " + ex.Message);
                 throw;
