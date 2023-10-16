@@ -5,25 +5,25 @@ import SignalRChatRoom from "../services/chatRoomConnection";
 import SignalRDirect from '../services/directMessageConnection';
 import '../styles/chatRoomWindow.css';
 
-function chatRoomWindow(isChatRoom)
+function chatRoomWindow(props)
 {
     // Create the connection object (return direct message connection if isChatRoom is false)
-    const connection = isChatRoom.chatType === "Direct Message List" ? new SignalRDirect : new SignalRChatRoom;
+    const connection = props.chatType === "Direct Message List" ? SignalRDirect : SignalRChatRoom;
 
     return (
         <div className='WindowContainer'>
-            <div className='MsgContainer'>
+            <div className='MsgContainer' style={props.chatType === "Direct Message List" ? {width:"100%"} : {} }>
                 <div className='ChatHeader'>
-                    <h1>{isChatRoom.headerTitle}</h1>
+                    <h1>{props.headerTitle}</h1>
                 </div>
                 <div className='MsgSection'>
-                    <MessageWindow connection= { connection }/>
+                    <MessageWindow connection= { connection } chatId= {props.headerTitle} />
                 </div>
                 <div className='InputSection'>
-                    <MessageInput connection= { connection }/>
+                    <MessageInput connection= { connection } chatId={props.headerTitle} />
                 </div>
             </div>
-            <div className='MemberListContainer' style={isChatRoom.chatType==1 ? {display:"none"}:{display:"flex"} }>
+            <div className='MemberListContainer' style={props.chatType === "Direct Message List" ? {display:"none"}:{display:"flex"} }>
                 <MemberList />
             </div>
         </div>
