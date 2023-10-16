@@ -57,6 +57,16 @@ export default class AppInfo
         return this.loginRegisterResponse.userInfo.firstName + " " + this.loginRegisterResponse.userInfo.lastName
     }
 
+    static getDirectMessagesList()
+    {
+        return this.loginRegisterResponse.directMesseges ? [{id:"DM_1", lastMsg:"This is left"}, {id:"DM_2", lastMsg:"This is left"}] : [{id:"DM_1", lastMsg:"This is right"}, {id:"DM_2", lastMsg:"This is right"}]
+    }
+
+    static getChatRoomsList()
+    {
+        return this.loginRegisterResponse.chatRooms ? [{id:"CR_1", lastMsg:"This is left"}] : [{id:"CR_1", lastMsg:"This is right"}]
+    }
+
     static addNewChatRoom(chatRoom)
     {
         this.loginRegisterResponse.chatRooms.push(chatRoom)

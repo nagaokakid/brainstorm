@@ -4,6 +4,7 @@ function HeaderNavBar()
 {
   return (
     <div className="header-nav-bar">
+      {/* To-do: Add refresh function in the website name*/}
       <div className="user-name">BRAINSTORM</div>
       <div className="nav-icons">
         <button className="new-message-button">New Message</button>
