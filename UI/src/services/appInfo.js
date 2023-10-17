@@ -110,6 +110,16 @@ export default class AppInfo
         ]
     }
 
+    static setToken()
+    {
+        localStorage.setItem("token", this.loginRegisterResponse.token)
+    }
+
+    static getToken()
+    {
+        return localStorage.getItem("token")
+    }
+
     static getUserId()
     {
         return this.loginRegisterResponse.userInfo.userId

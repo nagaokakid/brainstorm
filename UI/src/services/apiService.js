@@ -19,6 +19,7 @@ export default class ApiService
         if (resp.ok)
         {
             AppInfo.loginRegisterResponse = resp.json()
+            AppInfo.setToken()
         }
 
         return resp
@@ -42,6 +43,7 @@ export default class ApiService
         if (resp.ok)
         {
             AppInfo.loginRegisterResponse = resp.json()
+            AppInfo.setToken()
         }
 
         return resp
@@ -92,7 +94,7 @@ export default class ApiService
         // if response is okay, assign to appinfo for later use
         if (resp.ok)
         {
-            AppInfo.addNewChatRoom(resp.json)
+            AppInfo.loginRegisterResponse=resp.json()
         }
 
         return resp
