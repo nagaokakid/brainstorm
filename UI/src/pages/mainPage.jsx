@@ -8,27 +8,26 @@ import { useState } from "react";
 import AppInfo from "../services/appInfo";
 
 //top element a grid, 4 colms
-function MainPage() {
-  console.log(AppInfo.loginRegisterResponse);
+function MainPage()
+{
   // If the user is not logged in, redirect to the login page
-  // if (localStorage.getItem("token") === null || localStorage.getItem("token") !== AppInfo.getToken)
-  // {
-  //   localStorage.removeItem("token");
-  //   localStorage.removeItem("username");
-  //   window.location.href = "/";
-  // }
+  if (localStorage.getItem("token") === null || localStorage.getItem("token") !== AppInfo.getToken)
+  {
+    window.location.href = "/";
+  }
 
   // Set the default chat type to be "Direct Message List"
   const [isUpdated, setIsUpdated] = useState(false);
 
   // Set the default chat type to be "Direct Message List"
-  const [chatType, setChatType] = useState("Direct Message List");
+  const [chatType, setChatType] = useState("ChatRoom List");
 
   // Handle the callback from the NavigationBar component
   const handleCallBack = (childData) => {
     setChatType(childData);
-  };
-  // Receive message from SignalR
+  }
+
+  // Callback function for receiving messages
   function receiveMessage(message) {
     console.log("received message", message);
     AppInfo.addMessage(message);
