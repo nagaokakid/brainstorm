@@ -32,7 +32,41 @@ export default class AppInfo
                             "lastName": "string"
                         },
                         "chatRoomId": "string",
-                        "message": "string",
+                        "message": "hello",
+                        "timestamp": "2023-10-13T23:35:59.786Z"
+                    },
+                    {
+                        "fromUserInfo":
+                        {
+                            "userId": "string",
+                            "firstName": "string",
+                            "lastName": "string"
+                        },
+                        "toUserInfo":
+                        {
+                            "userId": "string",
+                            "firstName": "string",
+                            "lastName": "string"
+                        },
+                        "chatRoomId": "string",
+                        "message": "bye",
+                        "timestamp": "2023-10-13T23:35:59.786Z"
+                    },
+                    {
+                        "fromUserInfo":
+                        {
+                            "userId": "string",
+                            "firstName": "string",
+                            "lastName": "string"
+                        },
+                        "toUserInfo":
+                        {
+                            "userId": "string",
+                            "firstName": "string",
+                            "lastName": "string"
+                        },
+                        "chatRoomId": "string",
+                        "message": "really?",
                         "timestamp": "2023-10-13T23:35:59.786Z"
                     }
                 ],
@@ -64,7 +98,7 @@ export default class AppInfo
                             "lastName": "string"
                         },
                         "chatRoomId": "string",
-                        "message": "string",
+                        "message": "I'm here",
                         "timestamp": "2023-10-13T23:35:59.786Z"
                     }
                 ],
@@ -79,7 +113,7 @@ export default class AppInfo
         ],
         "directMesseges": [
             {
-                "id": "0001",
+                "id": "0011",
                 "messages": [
                     {
                         "fromUserInfo":
@@ -94,7 +128,7 @@ export default class AppInfo
                             "firstName": "string",
                             "lastName": "string"
                         },
-                        "chatRoomId": "string",
+                        "chatRoomId": "DirectMessage",
                         "message": "This is DM 1 lalalalalalalalalalaalal",
                         "timestamp": "2023-10-13T23:35:59.786Z"
                     }
@@ -108,6 +142,16 @@ export default class AppInfo
                 ]
             }
         ]
+    }
+
+    static setToken()
+    {
+        localStorage.setItem("token", this.loginRegisterResponse.token)
+    }
+
+    static getToken()
+    {
+        return localStorage.getItem("token")
     }
 
     static getUserId()
@@ -138,5 +182,31 @@ export default class AppInfo
     static getCurrentFriendlyUserInfo()
     {
         return this.loginRegisterResponse.userInfo
+    }
+
+    static addMessage(message)
+    {
+        if (message.toUserInfo && message.toUserInfo != null)
+        {
+            // Direct Message
+        }
+        else
+        {
+            this.loginRegisterResponse.chatRooms.forEach(chatRoom => {if (chatRoom.id === message.chatRoomId) chatRoom.messages.push(message)})
+        }
+    }
+
+    static getList(chatId, chatType)
+    {
+        if (chatType === "Direct Message List")
+        {
+            var temp = this.loginRegisterResponse.directMesseges.find(chat => chat.id === chatId)
+            return temp ? temp.messages : [{}]
+        }
+        else
+        {
+            var temp1 = this.loginRegisterResponse.chatRooms.find(chat => chat.id === chatId)
+            return temp1 ? temp1.messages : [{}]
+        }
     }
 }

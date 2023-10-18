@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import "../styles/ChatList.css";
 import ChatRoomWindow from "./chatRoomWindow";
+import ChatRoomOption from "./chatRoomOption";
 import AppInfo from "../services/appInfo";
 import { useEffect, useState } from "react";
 
@@ -22,6 +23,20 @@ function ChatList(props)
     }
   }, [props.chatType])
 
+  // Create a chat room option
+  const [display, setDisplay] = useState("none")
+  
+
+  const handleCreateRoomButton = () =>
+  {
+    setDisplay("flex")
+  }
+
+  // useEffect(() =>
+  // {
+  //   document.getElementById("OptionContainer").style.display ="none"
+  // }, [display])
+
   return (
     <div className="ChatListContainer">
       <div className="chat-list">
@@ -39,10 +54,14 @@ function ChatList(props)
             </div>
           ))}
         </div>
+        <div className="CreateChatRoomButton" style={ props.chatType === "Direct Message List" ? {display:"none"}:{display:"flex"}}>
+          <button onClick={() => handleCreateRoomButton()}>Create Chat Room</button>
+        </div>
       </div>
       <div className="ChatWindowContainer">
         <ChatRoomWindow headerTitle={chatId} chatType={props.chatType}/>
       </div>
+      <ChatRoomOption style= {display} />
     </div>
   );
 }
