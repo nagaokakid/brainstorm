@@ -24,21 +24,6 @@ export default class ApiService {
         return resp
     }
 
-    async connectChatRooms() {
-        const connection = await SignalRChatRoom.getInstance()
-        if (AppInfo.loginRegisterResponse.chatRooms) {
-            for (let index = 0; index < AppInfo.loginRegisterResponse.chatRooms.length; index++) {
-                const element = AppInfo.loginRegisterResponse.chatRooms[index];
-                await connection.joinChatRoom(element.joinCode)
-            }
-        }
-    }
-
-    async connectChatRoom(joinCode) {
-        const connection = await SignalRChatRoom.getInstance()
-        await connection.joinChatRoom(joinCode)
-    }
-
     // Do a Register API call to the backend
     async Register(username, password, firstName, lastName) {
         const resp = await fetch(AppInfo.BaseURL + "api/users",
@@ -63,7 +48,7 @@ export default class ApiService {
     }
 
     // Do a GetChatRooms API call to the backend
-    async CreateChatRoom(userId, title, description) {
+    async CreateChatRoom(title, description) {
         const resp = await fetch(AppInfo.BaseURL + "api/chatroom",
             {
                 method: 'POST',
@@ -73,7 +58,7 @@ export default class ApiService {
                     "Authorization": 'Bearer ' + AppInfo.getToken()
                 },
                 body: JSON.stringify({
-                    userId: userId,
+                    userId: AppInfo.loginRegisterResponse.userInfo.userId,
                     title: title,
                     description: description
                 }),
@@ -82,21 +67,23 @@ export default class ApiService {
 
         // if response is okay, assign to appinfo for later use
         if (resp.ok) {
-            data = (await resp.json())["chatRoom"]
+            var data = (await resp.json())["chatRoom"]
             AppInfo.addNewChatRoom(data)
-            await connectChatRoom(data.joinCode)
+            await this.connectChatRoom(data.joinCode)
         }
 
         return resp
     }
 
+    // Allow user to get into a chat room without an account
     async GuestJoin(code) {
-        const resp = await fetch(AppInfo.BaseURL + "/api/chatroom/guest",
+        const resp = await fetch(AppInfo.BaseURL + "api/chatroom/guest",
             {
                 method: 'POST',
                 headers:
                 {
                     'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + AppInfo.getToken()
                 },
                 body: JSON.stringify({
                     code: code
@@ -107,8 +94,30 @@ export default class ApiService {
         // if response is okay, assign to appinfo for later use
         if (resp.ok) {
             AppInfo.loginRegisterResponse = await resp.json()
+            AppInfo.setToken()
+            await this.connectChatRooms()
         }
 
         return resp
+    }
+
+    // Build the connection to the backend for each chatroom
+    async connectChatRooms() {
+        const connection = await SignalRChatRoom.getInstance()
+        const chatRooms = AppInfo.loginRegisterResponse.chatRooms
+
+        // Build connection only if there are chatrooms
+        if (chatRooms) {
+            for (let index = 0; index < chatRooms.length; index++) {
+                const element = chatRooms[index];
+                await connection.joinChatRoom(element.joinCode)
+            }
+        }
+    }
+
+    // Build the connection to the backend for a specific chatroom
+    async connectChatRoom(joinCode) {
+        const connection = await SignalRChatRoom.getInstance()
+        await connection.joinChatRoom(joinCode)
     }
 }
