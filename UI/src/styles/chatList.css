@@ -2,10 +2,11 @@
 .ChatListContainer
 {
   position: relative;
-  width: 100%;
+  width: 90%;
   display: flex;
   flex-direction: row;
 }
+
 .ChatListContainer .chat-list
 {
   position: relative;
@@ -14,6 +15,7 @@
   flex-direction: column;
   background-color: #fff;
   overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .ChatListContainer .chat-list h3
