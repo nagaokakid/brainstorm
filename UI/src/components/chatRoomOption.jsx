@@ -29,7 +29,7 @@ function  chatRoomOption(props) {
                 </button>
                 <button type="button" className="btn btn-primary" >
                     <img className='btn-icon' src={icon2} alt="" />
-                    <GuestJoin />
+                    {/* <GuestJoin /> */}
                 </button>
             </div>
         </div>
