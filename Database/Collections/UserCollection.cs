@@ -20,7 +20,7 @@ namespace Database.Collections
         // Add a new chat room ID to the array in an existing user document
         public async Task AddChatRoomToUser(string userId, string chatRoomId)
         {
-            await userRepository.AddToArrayInDocument(userId, "ChatRoomIds", chatRoomId);
+            await userRepository.AddToArrayInDocument(userId, "ChatroomIds", chatRoomId);
         }
 
         // Check if username already exists in User collection
