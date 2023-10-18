@@ -32,14 +32,14 @@ function ChatList(props)
   }, [props.chatType])
 
   // Setting the create chat room option to be visible
-  const handleCreateRoomButton = () =>
+  const handleCreateRoomButton = (e) =>
   {
-    setDisplay("flex")
+    setDisplay(e)
   }
 
   // useEffect(() =>
   // {
-  //   document.getElementById("OptionContainer").style.display ="none"
+  //   // document.getElementById("OptionContainer").style.display ="none"
   // }, [display])
 
   return (
@@ -51,7 +51,7 @@ function ChatList(props)
         </div>
         <div className="chats">
           {chatList.map((chat, index) => (
-            <div className="chat-item" key={index} onClick={() => setChatTitle(chat.title)}>
+            <div className="chat-item" key={index} onClick={() => {setChatTitle(chat.title), setChatId(chat.id)}}>
               <div className="chat-details">
                 <div className="chat-title">{chat.title}</div>
                 <div className="last-message">{chat.description}</div>
@@ -60,13 +60,13 @@ function ChatList(props)
           ))}
         </div>
         <div className="CreateChatRoomButton" style={ props.chatType === "Direct Message List" ? {display:"none"}:{display:"flex"}}>
-          <button onClick={() => handleCreateRoomButton()}>Create Chat Room</button>
+          <button onClick={() => handleCreateRoomButton("flex")}>Create Chat Room</button>
         </div>
       </div>
       <div className="ChatWindowContainer">
         <ChatRoomWindow headerTitle={chatTitle} chatType={props.chatType} chatId={chatId}/>
       </div>
-      <ChatRoomOption style= {display} />
+      <ChatRoomOption style= {display} callBack={handleCreateRoomButton} />
     </div>
   );
 }

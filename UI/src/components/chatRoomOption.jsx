@@ -5,15 +5,23 @@ import GuestJoin from './guestJoin'
 import AppInfo from '../services/appInfo'
 import ApiService from '../services/apiService'
 
-function  chatRoomOption(props) {
-    async function buttonHandler(selected)
-    {
-        console.log("buttonHandler called");
-        if (selected === 1)
-        {
+function chatRoomOption(props)
+{
+    // Set the component to be hidden and pass back the selected option
+    function handleOptionClick(e) {
+        props.callBack(e)
+    }
+
+    // Prevent the child from being clicked
+    function handleChildClick(e) {
+        e.stopPropagation();
+    }
+
+    // 
+    async function buttonHandler(selected) {
+        if (selected === 1) {
             var chatRoomName = prompt("Please enter the Chat room name", "Description");
-            if (chatRoomName != null)
-            {
+            if (chatRoomName != null) {
                 var userId = AppInfo.getUserId();
                 const apiService = new ApiService();
                 await apiService.CreateChatRoom(userId, chatRoomName, "description");
@@ -21,13 +29,13 @@ function  chatRoomOption(props) {
         }
     }
     return (
-        <div className='OptionContainer' style={ {display : props.style}}>
-            <div className="btn-group" role="group" aria-label="Basic example">
+        <div className='OptionContainer' style={{ display: props.style }} onClick={() => handleOptionClick("none")}>
+            <div className="btn-group" role="group" aria-label="Basic example" onClick={handleChildClick}>
                 <button type="button" className="btn btn-primary" onClick={() => buttonHandler(1)}>
                     <img className='btn-icon' src={icon1} alt="" />
                     Create Chat Room
                 </button>
-                <button type="button" className="btn btn-primary" >
+                <button type="button" className="btn btn-primary" onClick={() => {const input = prompt("Enter the chat room code")}}>
                     <img className='btn-icon' src={icon2} alt="" />
                     {/* <GuestJoin /> */}
                 </button>
