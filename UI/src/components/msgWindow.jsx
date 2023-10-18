@@ -4,7 +4,8 @@ import AppInfo from "../services/appInfo";
 
 function msgWindow(props)
 {
-    const [messages, setMessages] = useState( props.chatId === "No Selected Chat" ? [{}] : AppInfo.getList(props.chatId, props.chatType) );
+    // Set the message to the display
+    const [messages, setMessages] = useState( props.chatId === "No Selected Chat" ? [] : AppInfo.getList(props.chatId, props.chatType) );
 
     useEffect(() =>
     {
@@ -13,8 +14,8 @@ function msgWindow(props)
 
     return (
         <div className="msgWindowContainer">
-            {messages.map((e) => (
-                <MessageBox message={e.message} key={e.id} />
+            {messages.map((e, index) => (
+                <MessageBox message={e.message} key={index} />
             ))}
         </div>
     );
