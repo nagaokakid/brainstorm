@@ -85,7 +85,7 @@
   width: 100%;
 }
 
-.ChatListContainer .chat-list .chats .chat-item .chat-details .chat-username, .last-message
+.ChatListContainer .chat-list .chats .chat-item .chat-details .chat-title, .last-message
 {
   white-space: nowrap; 
   overflow: hidden;

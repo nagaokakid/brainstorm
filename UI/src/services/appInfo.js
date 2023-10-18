@@ -166,14 +166,14 @@ export default class AppInfo
 
     static getDirectMessagesList()
     {
-        return this.loginRegisterResponse.directMesseges ? this.loginRegisterResponse.directMesseges : [{}]
+        return this.loginRegisterResponse.directMessages ?? []
     }
 
     static getChatRoomsList()
     {
         const data = this.loginRegisterResponse.chatRooms
         console.log("from service "+ data);
-        return  this.loginRegisterResponse.chatRooms ?? [{}]
+        return  this.loginRegisterResponse.chatRooms ?? []
     }
 
     static addNewChatRoom(chatRoom)
@@ -202,7 +202,7 @@ export default class AppInfo
     {
         if (chatType === "Direct Message List")
         {
-            var temp = this.loginRegisterResponse.directMesseges.find(chat => chat.id === chatId)
+            var temp = this.loginRegisterResponse.directMessages.find(chat => chat.id === chatId)
             return temp ? temp.messages : [{}]
         }
         else

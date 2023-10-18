@@ -1,6 +1,5 @@
 import * as signalR from "@microsoft/signalr"
 import AppInfo from "./appInfo"
-import { json } from "react-router-dom"
 
 const DIRECT_URL = AppInfo.BaseURL + "chatroom"
 
