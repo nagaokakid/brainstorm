@@ -1,14 +1,18 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { useEffect, useState } from "react";
 import emailIcon from "../assets/email.png";
 import "../styles/msgInputField.css";
 import AppInfo from "../services/appInfo";
 import SignalRChatRoom from "../services/chatRoomConnection";
 
-function msgInputField(props) {
+function msgInputField(props)
+{
+  // Set the default state of the text
   const [text, setText] = useState("");
 
   // Send message
-  const handleSend = () => {
+  const handleSend = () =>
+  {
     // check if text is empty
     if (!text) return;
 
@@ -21,7 +25,7 @@ function msgInputField(props) {
         message: text,
         timestamp: Date.now().toString(),
       };
-      connection.sendMessage(msg);
+      props.connection.sendMessage(msg);
     } else {
         // {
         //     "fromUserInfo": {
@@ -39,7 +43,7 @@ function msgInputField(props) {
         message: text,
         timestamp: Date.UTC(Date.now)
       };
-      SignalRChatRoom.getInstance().then(async (x) => {
+      props.connection.then(async (x) => {
         console.log("Sending message " + msg);
         await x.sendChatRoomMessage(JSON.stringify(msg));
         console.log("Sent Message");

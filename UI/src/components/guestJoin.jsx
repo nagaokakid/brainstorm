@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { useNavigate } from 'react-router-dom';
 import '../styles/guestJoin.css';
 import ApiService from '../services/apiService';
@@ -20,7 +21,7 @@ function guestJoin()
     {
       var response = await apiService.GuestJoin(code)
       
-      if (response.status === 200)
+      if (response.ok)
       {
         navigate('/mainPage')
       }

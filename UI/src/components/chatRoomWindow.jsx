@@ -8,7 +8,7 @@ import '../styles/chatRoomWindow.css';
 function chatRoomWindow(props)
 {
     // Create the connection object (return direct message connection if isChatRoom is false)
-    const connection = props.chatType === "Direct Message List" ? SignalRDirect : SignalRChatRoom;
+    const connection = props.chatType === "Direct Message List" ? SignalRDirect.getInstance() : SignalRChatRoom.getInstance();
 
     return (
         <div className='WindowContainer'>
@@ -20,7 +20,7 @@ function chatRoomWindow(props)
                     <MessageWindow title={props.headerTitle} chatId= {props.chatId} chatType= {props.chatType}/>
                 </div>
                 <div className='InputSection'>
-                    <MessageInput connection= { connection } chatId={props.headerTitle} />
+                    <MessageInput connection= { connection } chatId={props.chatId} />
                 </div>
             </div>
             <div className='MemberListContainer' style={props.chatType === "Direct Message List" ? {display:"none"}:{display:"flex"} }>
