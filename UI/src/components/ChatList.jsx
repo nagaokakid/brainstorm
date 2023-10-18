@@ -28,6 +28,26 @@ function ChatList(props)
     else if (props.chatType === "ChatRoom List")
     {
       setChatList(AppInfo.getChatRoomsList());
+      setTimeout(() => {
+        console.log("Added a message")
+        AppInfo.addMessage({
+          "fromUserInfo":
+          {
+              "userId": "string",
+              "firstName": "string",
+              "lastName": "string"
+          },
+          "toUserInfo":
+          {
+              "userId": "string",
+              "firstName": "string",
+              "lastName": "string"
+          },
+          "chatRoomId": "0001",
+          "message": "ggwp",
+          "timestamp": "2023-10-13T23:35:59.786Z"
+      })
+      }, 5000);
     }
   }, [props.chatType])
 
@@ -36,11 +56,6 @@ function ChatList(props)
   {
     setDisplay(e)
   }
-
-  // useEffect(() =>
-  // {
-  //   // document.getElementById("OptionContainer").style.display ="none"
-  // }, [display])
 
   return (
     <div className="ChatListContainer">
