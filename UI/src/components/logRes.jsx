@@ -16,9 +16,21 @@ import { useNavigate } from 'react-router-dom';
 
 function LogRes()
 {
-    
-    //  handle the state of the tabs; Login or Register
+    const navigate = useNavigate()
+
+    //  Store the state of the tabs
     const [justifyActive, setJustifyActive] = useState('tab1');
+
+    // This handle the state of the inputs; Username, Password, Re-Password, First Name, Last Name
+    const [input, setInput] = useState({
+        Username: '',
+        Password: '',
+        RePassword: '',
+        FirstName: '',
+        LastName: ''
+    });
+
+    // This will handle the tabs and change the state
     const handleJustifyClick = (value) =>
     {
         if (value === justifyActive)
@@ -28,14 +40,6 @@ function LogRes()
         setJustifyActive(value)
     }
     
-    // This handle the state of the inputs; Username, Password, Re-Password, First Name, Last Name
-    const [input, setInput] = useState({
-        Username: '',
-        Password: '',
-        RePassword: '',
-        FirstName: '',
-        LastName: ''
-    });
     // This will keep track of the inputs and update the state
     const handleChanged = (value) =>
     {
@@ -44,7 +48,6 @@ function LogRes()
         setInput((prev) => { return {...prev, [id]: info} })
     }
     
-    const navigate = useNavigate()
     // This will verify the form and handle the request to the server
     const RequestHandle = async (value) =>
     {
@@ -91,6 +94,7 @@ function LogRes()
 
                 // To-Do: Handle the response and create UI for different responses
                 if(resp.ok){
+                    console.log("Navigating to main page");
                     navigate('/main')
 
                 } else{
