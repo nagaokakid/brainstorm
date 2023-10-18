@@ -12,7 +12,7 @@ function chatRoomWindow(props)
 
     return (
         <div className='WindowContainer'>
-            <div className='MsgContainer' style={props.chatType === "Direct Message List" ?? {width:"100%"} }>
+            <div className='MsgContainer' style={props.chatType === "Direct Message List" ? {width:"100%"} : {}}>
                 <div className='ChatHeader'>
                     <h1>{props.headerTitle}</h1>
                 </div>
