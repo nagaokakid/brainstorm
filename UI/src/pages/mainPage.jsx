@@ -2,14 +2,13 @@ import "../styles/MainPage.css";
 import HeaderNavBar from "../components/HeaderNavBar";
 import NavigationBar from "../components/NavigationBar";
 import ChatList from "../components/ChatList";
-import { useState } from "react";
 import SignalRChatRoom from "../services/chatRoomConnection";
 import SignalRDirect from "../services/directMessageConnection";
+import { useState } from "react";
 import AppInfo from "../services/appInfo";
 
 //top element a grid, 4 colms
-function MainPage()
-{
+function MainPage() {
   console.log(AppInfo.loginRegisterResponse);
   // If the user is not logged in, redirect to the login page
   // if (localStorage.getItem("token") === null || localStorage.getItem("token") !== AppInfo.getToken)
@@ -20,37 +19,36 @@ function MainPage()
   // }
 
   // Set the default chat type to be "Direct Message List"
-  const [isUpdated, setIsUpdated] = useState(false)
-
-  // Receive message from SignalR
-  function receiveMessage(message)
-  {
-    AppInfo.addMessage(message)
-    setIsUpdated(!isUpdated)
-  }
-
-  // Create SignalR connection
-  const chatRoomLive = SignalRChatRoom.getInstance()
-  chatRoomLive.receiveMessageCallback(receiveMessage)
-  SignalRDirect.getInstance()
+  const [isUpdated, setIsUpdated] = useState(false);
 
   // Set the default chat type to be "Direct Message List"
   const [chatType, setChatType] = useState("Direct Message List");
 
   // Handle the callback from the NavigationBar component
-  const handleCallBack = (childData) =>
-  {
+  const handleCallBack = (childData) => {
     setChatType(childData);
+  };
+  // Receive message from SignalR
+  function receiveMessage(message) {
+    console.log("received message", message);
+    AppInfo.addMessage(message);
+    setIsUpdated(!isUpdated);
   }
 
+  // Create SignalR connection
+  SignalRChatRoom.getInstance().then((x) => {
+    x.receiveMessageCallback(receiveMessage);
+  });
+  
+  // SignalRDirect.getInstance();
   return (
     <div className="App">
       <div className="headerNavContainer">
         <HeaderNavBar />
       </div>
       <div className="main-page-container">
-        <NavigationBar handleCallBack={handleCallBack}/>
-        <ChatList chatType={chatType} changes= {isUpdated} />
+        <NavigationBar handleCallBack={handleCallBack} />
+        <ChatList chatType={chatType} changes={isUpdated} />
       </div>
     </div>
   );

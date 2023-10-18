@@ -64,6 +64,7 @@ function LogRes()
                 if (response.ok)
                 {
                     // if good
+                    console.log("Navigating to main page");
                     navigate('/main')
                 }
                 else
