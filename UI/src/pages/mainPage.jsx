@@ -13,7 +13,7 @@ function MainPage()
   // If the user is not logged in, redirect to the login page
   if (localStorage.getItem("token") === null || localStorage.getItem("token") !== AppInfo.getToken)
   {
-    window.location.href = "/";
+    // window.location.href = "/";
   }
 
   // Set the default chat type to be "Direct Message List"
