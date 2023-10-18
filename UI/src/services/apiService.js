@@ -1,4 +1,5 @@
 import AppInfo from "./appInfo"
+import SignalRChatRoom from "./chatRoomConnection"
 
 export default class ApiService
 {
@@ -18,11 +19,25 @@ export default class ApiService
         // if response is okay, assign to appinfo for later use
         if (resp.ok)
         {
-            AppInfo.loginRegisterResponse = resp.json()
+            AppInfo.loginRegisterResponse = await resp.json()
             AppInfo.setToken()
+            await this.connectChatRooms()
         }
 
         return resp
+    }
+
+    async connectChatRooms(){
+        const connection = await SignalRChatRoom.getInstance()
+        for (let index = 0; index < AppInfo.loginRegisterResponse.chatRooms.length; index++) {
+            const element = AppInfo.loginRegisterResponse.chatRooms[index];
+            await connection.joinChatRoom(element.joinCode)
+        }
+    }
+
+    async connectChatRoom(joinCode){
+        const connection = await SignalRChatRoom.getInstance()
+        await connection.joinChatRoom(joinCode)
     }
 
     // Do a Register API call to the backend
@@ -42,8 +57,9 @@ export default class ApiService
         // if response is okay, assign to appinfo for later use
         if (resp.ok)
         {
-            AppInfo.loginRegisterResponse = resp.json()
+            AppInfo.loginRegisterResponse = await resp.json()
             AppInfo.setToken()
+            await this.connectChatRooms()
         }
 
         return resp
@@ -52,12 +68,13 @@ export default class ApiService
     // Do a GetChatRooms API call to the backend
     async CreateChatRoom(userId, title, description)
     {
-        const resp = await fetch(AppInfo.BaseURL + "/api/chatroom",
+        const resp = await fetch(AppInfo.BaseURL + "api/chatroom",
         {
             method: 'POST',
             headers:
             {
                 'Content-Type': 'application/json',
+                "Authorization": 'Bearer ' + AppInfo.getToken()
             },
             body: JSON.stringify({
                 userId: userId,
@@ -70,7 +87,9 @@ export default class ApiService
         // if response is okay, assign to appinfo for later use
         if (resp.ok)
         {
-            AppInfo.addNewChatRoom(resp.json)
+            data = (await resp.json())["chatRoom"]
+            AppInfo.addNewChatRoom(data)
+            await connectChatRoom(data.joinCode)
         }
 
         return resp
@@ -94,7 +113,7 @@ export default class ApiService
         // if response is okay, assign to appinfo for later use
         if (resp.ok)
         {
-            AppInfo.loginRegisterResponse=resp.json()
+            AppInfo.loginRegisterResponse=await resp.json()
         }
 
         return resp

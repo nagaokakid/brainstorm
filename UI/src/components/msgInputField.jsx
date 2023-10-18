@@ -14,18 +14,24 @@ function msgInputField(props)
         // check if text is empty
         if (!text) return;
 
-        // create message object
-        const msg = {
-            fromUserInfo : AppInfo.getCurrentFriendlyUserInfo(),
-            toUserInfo: [props.chatId],
-            message : text,
-            timestamp: Date.now().toString()
-        }
-
+        
         // send message
         if(toUserInfo){
+            // create message object
+            const msg = {
+                fromUserInfo : AppInfo.getCurrentFriendlyUserInfo(),
+                toUserInfo: [props.chatId],
+                message : text,
+                timestamp: Date.now().toString()
+            }
             connection.sendMessage(msg)
         } else{
+            const msg = {
+                fromUserInfo : AppInfo.getCurrentFriendlyUserInfo(),
+                chatRoomId: [chatroomId],
+                message : text,
+                timestamp: Date.now().toString()
+            }
             connection.sendChatRoomMessage(msg)
         }
 

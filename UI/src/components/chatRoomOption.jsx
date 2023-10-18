@@ -5,17 +5,18 @@ import GuestJoin from './guestJoin'
 import AppInfo from '../services/appInfo'
 import ApiService from '../services/apiService'
 
-function chatRoomOption(props) {
-    const buttonHandler = (selected) =>
+function  chatRoomOption(props) {
+    async function buttonHandler(selected)
     {
+        console.log("buttonHandler called");
         if (selected === 1)
         {
-            var chatRoomName, description = prompt("Please enter the Chat room name", "Description");
-            if (chatRoomName != null && description != null)
+            var chatRoomName = prompt("Please enter the Chat room name", "Description");
+            if (chatRoomName != null)
             {
                 var userId = AppInfo.getUserId();
                 const apiService = new ApiService();
-                apiService.createChatRoom(userId, chatRoomName, description);
+                await apiService.CreateChatRoom(userId, chatRoomName, "description");
             }
         }
     }

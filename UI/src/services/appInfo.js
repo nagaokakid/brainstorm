@@ -1,6 +1,6 @@
 export default class AppInfo
 {
-    static BaseURL = "https://localhost:32768/"
+    static BaseURL = "https://localhost:32772/"
 
     static loginRegisterResponse =
     {
@@ -111,7 +111,7 @@ export default class AppInfo
                 ]
             }
         ],
-        "directMesseges": [
+        "directMessages": [
             {
                 "id": "0011",
                 "messages": [
@@ -171,7 +171,9 @@ export default class AppInfo
 
     static getChatRoomsList()
     {
-        return this.loginRegisterResponse.chatRooms ? this.loginRegisterResponse.chatRooms : [{}]
+        const data = this.loginRegisterResponse.chatRooms
+        console.log("from service "+ data);
+        return  this.loginRegisterResponse.chatRooms ?? [{}]
     }
 
     static addNewChatRoom(chatRoom)

@@ -19,7 +19,12 @@ function ChatList(props)
     }
     else if (props.chatType === "ChatRoom List")
     {
-      setChatList(AppInfo.getChatRoomsList());
+      console.log("in chatroom list... getChatRoomsList");
+      const data = AppInfo.getChatRoomsList()
+
+      setChatList(data);
+      console.log("in chatroom list" + data);
+      console.log(data);
     }
   }, [props.chatType])
 

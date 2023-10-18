@@ -6,37 +6,38 @@ const DIRECT_URL = AppInfo.BaseURL + "chatroom"
 class SignalRChatRoom {
     static #instance
 
-    constructor(receiveChatRoomMessageCallback, changeUserStatusCallback) {
+    constructor() {
         this.connection = new signalR.HubConnectionBuilder()
         this.connection.withUrl(DIRECT_URL)
         this.connection.withAutomaticReconnect()
 
         this.connection = this.connection.build()
 
-        console.log("starting chatroom connection");
-        this.connection.start()
-            .then(() => {
-                console.log("chatroom connected");
-                this.connection.on("ReceiveChatRoomMessage", (msg) => receiveChatRoomMessageCallback(msg));
-                this.connection.on("ChangeUserStatus", (userId, isOnline) => changeUserStatusCallback(userId, isOnline));
+    }
 
-            })
-            .catch(err => console.warn(err))
+    async makeConnection() {
+        await this.connection.start()
+        console.log("realtime chatroom connected");
+    }
+
+    receiveMessageCallback(callback) {
+        this.connection.on("ReceiveChatRoomMessage", (msg) => callback(msg));
     }
 
     sendChatRoomMessage(msg) {
         this.connection.send("SendChatRoomMessage", msg)
     }
 
-    joinChatRoom(code) {
-        this.connection.send("JoinChatRoom", code)
+    joinChatRoom(joinCode) {
+        this.connection.send("JoinChatRoom", joinCode)
     }
 
     // This idea is from stack overflow
-    static getInstance(receiveChatRoomMessageCallback) {
+    static async getInstance() {
 
         if (SignalRChatRoom.instance == null) {
-            SignalRChatRoom.instance = new SignalRChatRoom(receiveChatRoomMessageCallback)
+            SignalRChatRoom.instance = new SignalRChatRoom()
+            await SignalRChatRoom.instance.makeConnection()
         }
         return SignalRChatRoom.instance
     }

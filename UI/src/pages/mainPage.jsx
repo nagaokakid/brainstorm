@@ -10,6 +10,7 @@ import AppInfo from "../services/appInfo";
 //top element a grid, 4 colms
 function MainPage()
 {
+  console.log(AppInfo.loginRegisterResponse);
   // If the user is not logged in, redirect to the login page
   // if (localStorage.getItem("token") === null || localStorage.getItem("token") !== AppInfo.getToken)
   // {
@@ -29,8 +30,9 @@ function MainPage()
   }
 
   // Create SignalR connection
-  SignalRChatRoom.getInstance(receiveMessage)
-  SignalRDirect.getInstance(receiveMessage)
+  const chatRoomLive = SignalRChatRoom.getInstance()
+  chatRoomLive.receiveMessageCallback(receiveMessage)
+  SignalRDirect.getInstance()
 
   // Set the default chat type to be "Direct Message List"
   const [chatType, setChatType] = useState("Direct Message List");
