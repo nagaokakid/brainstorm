@@ -7,8 +7,16 @@ import { useEffect, useState } from "react";
 
 function ChatList(props)
 {
-  const [chatList, setChatList] = useState([{}])
+  // Set the default chat list to be the Chat room list
+  const [chatList, setChatList] = useState(AppInfo.getChatRoomsList)
+
+  // Set the default chat window to be "No Selected Chat"
   const [chatId, setChatId] = useState("No Selected Chat")
+
+  const [chatTitle, setChatTitle] = useState("No Selected Chat")
+  
+  // Track the display of the chat room option
+  const [display, setDisplay] = useState("none")
 
   // Update the chat list when the chat type changes
   useEffect (() =>
@@ -19,19 +27,11 @@ function ChatList(props)
     }
     else if (props.chatType === "ChatRoom List")
     {
-      console.log("in chatroom list... getChatRoomsList");
-      const data = AppInfo.getChatRoomsList()
-
-      setChatList(data);
-      console.log("in chatroom list" + data);
-      console.log(data);
+      setChatList(AppInfo.getChatRoomsList());
     }
   }, [props.chatType])
 
-  // Create a chat room option
-  const [display, setDisplay] = useState("none")
-  
-
+  // Setting the create chat room option to be visible
   const handleCreateRoomButton = () =>
   {
     setDisplay("flex")
@@ -51,9 +51,9 @@ function ChatList(props)
         </div>
         <div className="chats">
           {chatList.map((chat, index) => (
-            <div className="chat-item" key={index} onClick={() => setChatId(chat.id)}>
+            <div className="chat-item" key={index} onClick={() => setChatTitle(chat.title)}>
               <div className="chat-details">
-                <div className="chat-username">{chat.id}</div>
+                <div className="chat-title">{chat.title}</div>
                 <div className="last-message">{chat.description}</div>
               </div>
             </div>
@@ -64,7 +64,7 @@ function ChatList(props)
         </div>
       </div>
       <div className="ChatWindowContainer">
-        <ChatRoomWindow headerTitle={chatId} chatType={props.chatType}/>
+        <ChatRoomWindow headerTitle={chatTitle} chatType={props.chatType} chatId={chatId}/>
       </div>
       <ChatRoomOption style= {display} />
     </div>
