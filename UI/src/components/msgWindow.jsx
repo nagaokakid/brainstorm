@@ -9,8 +9,9 @@ function msgWindow(props)
 
     useEffect(() =>
     {
-        setMessages(props.chatId === "No Selected Chat" ? [{}] : AppInfo.getList(props.chatId, props.chatType))
-    }, [props.chatId, AppInfo.loginRegisterResponse])
+        setMessages(props.chatId === "No Selected Chat" ? [] : AppInfo.getList(props.chatId, props.chatType))
+        console.log("Message Window Updated")
+    }, [props.chatId, AppInfo.loginRegisterResponse.chatRooms])
 
     return (
         <div className="msgWindowContainer">
