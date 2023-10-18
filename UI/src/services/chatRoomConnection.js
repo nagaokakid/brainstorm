@@ -24,8 +24,8 @@ class SignalRChatRoom {
             callback(msg)
             console.log("Receive realtime chatroom msg");
             console.log(msg);
-        }
-            );
+            AppInfo.addMessage(msg)
+        });
     }
 
     async sendChatRoomMessage(msg) {
