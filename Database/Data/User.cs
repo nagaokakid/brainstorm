@@ -12,6 +12,6 @@ namespace Database.Data
         public string Password { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public List<string> ChatroomIds { get; set; }
+        public List<string> ChatRoomIds { get; set; }
     }
 }
