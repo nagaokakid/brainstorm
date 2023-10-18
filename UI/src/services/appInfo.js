@@ -15,7 +15,7 @@ export default class AppInfo
             {
                 "id": "0001",
                 "title": "string",
-                "description": "This is Chat Room 1 lalalalallalalalalalallalal",
+                "description": "AppInfo is Chat Room 1 lalalalallalalalalalallalal",
                 "joinCode": "string",
                 "messages": [
                     {
@@ -80,8 +80,8 @@ export default class AppInfo
             },
             {
                 "id": "0002",
-                "title": "string",
-                "description": "This is Chat Room 2",
+                "title": "string2",
+                "description": "AppInfo is Chat Room 2",
                 "joinCode": "string",
                 "messages": [
                     {
@@ -129,7 +129,7 @@ export default class AppInfo
                             "lastName": "string"
                         },
                         "chatRoomId": "DirectMessage",
-                        "message": "This is DM 1 lalalalalalalalalalaalal",
+                        "message": "AppInfo is DM 1 lalalalalalalalalalaalal",
                         "timestamp": "2023-10-13T23:35:59.786Z"
                     }
                 ],
@@ -146,7 +146,7 @@ export default class AppInfo
 
     static setToken()
     {
-        localStorage.setItem("token", this.loginRegisterResponse.token)
+        localStorage.setItem("token", AppInfo.loginRegisterResponse.token)
     }
 
     static getToken()
@@ -156,34 +156,34 @@ export default class AppInfo
 
     static getUserId()
     {
-        return this.loginRegisterResponse.userInfo.userId
+        return AppInfo.loginRegisterResponse.userInfo.userId
     }
 
     static getUserName()
     {
-        return this.loginRegisterResponse.userInfo.firstName + " " + this.loginRegisterResponse.userInfo.lastName
+        return AppInfo.loginRegisterResponse.userInfo.firstName + " " + AppInfo.loginRegisterResponse.userInfo.lastName
     }
 
     static getDirectMessagesList()
     {
-        return this.loginRegisterResponse.directMessages ?? []
+        return AppInfo.loginRegisterResponse.directMessages ?? []
     }
 
     static getChatRoomsList()
     {
-        const data = this.loginRegisterResponse.chatRooms
-        console.log("from service "+ data);
-        return  this.loginRegisterResponse.chatRooms ?? []
+        // const data = AppInfo.loginRegisterResponse.chatRooms
+        // console.log("from service "+ data);
+        return  AppInfo.loginRegisterResponse.chatRooms ?? []
     }
 
     static addNewChatRoom(chatRoom)
     {
-        this.loginRegisterResponse.chatRooms.push(chatRoom)
+        AppInfo.loginRegisterResponse.chatRooms.push(chatRoom)
     }
 
     static getCurrentFriendlyUserInfo()
     {
-        return this.loginRegisterResponse.userInfo
+        return AppInfo.loginRegisterResponse.userInfo
     }
 
     static addMessage(message)
@@ -194,7 +194,7 @@ export default class AppInfo
         }
         else
         {
-            this.loginRegisterResponse.chatRooms.forEach(chatRoom => {if (chatRoom.id === message.chatRoomId) chatRoom.messages.push(message)})
+            AppInfo.loginRegisterResponse.chatRooms.forEach(chatRoom => {if (chatRoom.id === message.chatRoomId) chatRoom.messages.push(message)})
         }
     }
 
@@ -202,12 +202,12 @@ export default class AppInfo
     {
         if (chatType === "Direct Message List")
         {
-            var temp = this.loginRegisterResponse.directMessages.find(chat => chat.id === chatId)
+            var temp = AppInfo.loginRegisterResponse.directMessages.find(chat => chat.id === chatId)
             return temp ? temp.messages : [{}]
         }
         else
         {
-            var temp1 = this.loginRegisterResponse.chatRooms.find(chat => chat.id === chatId)
+            var temp1 = AppInfo.loginRegisterResponse.chatRooms.find(chat => chat.id === chatId)
             return temp1 ? temp1.messages : [{}]
         }
     }
