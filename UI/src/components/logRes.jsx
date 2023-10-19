@@ -16,7 +16,7 @@ import { useNavigate } from 'react-router-dom';
 
 function LogRes()
 {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
     //  Store the state of the tabs
     const [justifyActive, setJustifyActive] = useState('tab1');
@@ -37,7 +37,8 @@ function LogRes()
         {
             return;
         }
-        setJustifyActive(value)
+
+        setJustifyActive(value);
     }
     
     // This will keep track of the inputs and update the state
@@ -45,30 +46,30 @@ function LogRes()
     {
         const id = value.target.id;
         const info = value.target.value;
-        setInput((prev) => { return {...prev, [id]: info} })
+        setInput((prev) => { return {...prev, [id]: info} });
     }
     
     // This will verify the form and handle the request to the server
     const RequestHandle = async (value) =>
     {
         // Create an Object of the apiService
-        const apiService = new ApiService()
+        const apiService = new ApiService();
         if (value === 1)
         {
             if (input.Username == "" || input.Password == "")
             {
-                alert("Please complete the form")
+                alert("Please complete the form");
             }
             else
             {
-                var response = await apiService.Login(input.Username, input.Password)
+                var response = await apiService.Login(input.Username, input.Password);
 
                 // To-Do: Handle the response and create UI for different responses
                 if (response.ok)
                 {
                     // if good
                     console.log("Navigating to main page");
-                    navigate('/main')
+                    navigate('/main');
                 }
                 else
                 {
@@ -83,21 +84,22 @@ function LogRes()
             {
                 alert("Please complete the form");
             }
-            else if
-            (input.Password != input.RePassword)
+            else if (input.Password != input.RePassword)
             {
                 alert("Passwords do not match");
             }
             else
             {
-                const resp = await apiService.Register(input.Username, input.Password, input.FirstName, input.LastName)
+                const resp = await apiService.Register(input.Username, input.Password, input.FirstName, input.LastName);
 
                 // To-Do: Handle the response and create UI for different responses
-                if(resp.ok){
+                if(resp.ok)
+                {
                     console.log("Navigating to main page");
-                    navigate('/main')
+                    navigate('/main');
 
-                } else{
+                } else
+                {
                     alert('Something went wrong');
                 }
             }

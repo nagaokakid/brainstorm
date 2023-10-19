@@ -11,7 +11,7 @@ function NavigationBar(props)
   {
     localStorage.removeItem("token");
     localStorage.removeItem("username");
-    navigate("/")
+    navigate("/");
   }
 
   return (

@@ -3,7 +3,6 @@ import HeaderNavBar from "../components/HeaderNavBar";
 import NavigationBar from "../components/NavigationBar";
 import ChatList from "../components/ChatList";
 import SignalRChatRoom from "../services/chatRoomConnection";
-import SignalRDirect from "../services/directMessageConnection";
 import { useState } from "react";
 import AppInfo from "../services/appInfo";
 
@@ -17,29 +16,26 @@ function MainPage()
   }
 
   // Set the default chat type to be "Direct Message List"
-  const [isUpdated, setIsUpdated] = useState(false);
-
-  // Set the default chat type to be "Direct Message List"
   const [chatType, setChatType] = useState("ChatRoom List");
 
   // Handle the callback from the NavigationBar component
-  const handleCallBack = (childData) => {
+  const handleCallBack = (childData) =>
+  {
     setChatType(childData);
   }
 
   // Callback function for receiving messages
-  function receiveMessage(message) {
+  function receiveMessage(message)
+  {
     console.log("received message", message);
     AppInfo.addMessage(message);
-    setIsUpdated(!isUpdated);
   }
 
   // Create SignalR connection
   SignalRChatRoom.getInstance().then((x) => {
     x.receiveMessageCallback(receiveMessage);
   });
-  
-  // SignalRDirect.getInstance();
+
   return (
     <div className="App">
       <div className="headerNavContainer">
@@ -47,7 +43,7 @@ function MainPage()
       </div>
       <div className="main-page-container">
         <NavigationBar handleCallBack={handleCallBack} />
-        <ChatList chatType={chatType} changes={isUpdated} />
+        <ChatList chatType={chatType} />
       </div>
     </div>
   );
