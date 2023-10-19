@@ -13,6 +13,23 @@ function msgInputField(props)
   // Send message
   const handleSend = () =>
   {
+    AppInfo.addMessage({
+      "fromUserInfo":
+      {
+          "userId": "string",
+          "firstName": "string",
+          "lastName": "string"
+      },
+      "toUserInfo":
+      {
+          "userId": "string",
+          "firstName": "string",
+          "lastName": "string"
+      },
+      "chatRoomId": "0001",
+      "message": "---->here<----",
+      "timestamp": "2023-10-13T23:35:59.786Z"
+  })
     // check if text is empty
     if (!text) return;
 
