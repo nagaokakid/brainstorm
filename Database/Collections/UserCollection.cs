@@ -68,9 +68,19 @@ namespace Database.Collections
 
         }
 
-        public Task<Dictionary<string, User>> GetAll()
+        public async Task<Dictionary<string, User>> GetAll()
         {
-            throw new NotImplementedException();
+            var found = await userRepository.GetAllUsers();
+            if(found != null)
+            {
+                var result = new Dictionary<string, User>();
+                foreach (var user in found)
+                {
+                    result.Add(user.Id, user);
+                }
+                return result;
+            }
+            return new Dictionary<string, User>();
         }
     } // class
 } // namespace

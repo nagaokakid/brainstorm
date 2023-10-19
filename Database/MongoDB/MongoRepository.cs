@@ -111,6 +111,10 @@ namespace Database.MongoDB
             }
         }
 
+        public async Task<List<TDocument>> GetAllUsers()
+        {
+            return await collection.Find(_ => true).ToListAsync();
+        }
         // Get all documents that match the given the field names and their values
         public async Task<IEnumerable<TDocument>> GetAllDocumentsByFieldValues(List<string> fieldNames, List<string> fieldValues)
         {

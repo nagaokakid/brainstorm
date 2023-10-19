@@ -1,20 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Akira Cooper\\source\\repos\\brainstorm\\Database.UnitTest\\Database.UnitTest.csproj": {}
+    "D:\\C# Library\\API_4350\\Database.UnitTest\\Database.UnitTest.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Akira Cooper\\source\\repos\\brainstorm\\Database.UnitTest\\Database.UnitTest.csproj": {
+    "D:\\C# Library\\API_4350\\Database.UnitTest\\Database.UnitTest.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Akira Cooper\\source\\repos\\brainstorm\\Database.UnitTest\\Database.UnitTest.csproj",
+        "projectUniqueName": "D:\\C# Library\\API_4350\\Database.UnitTest\\Database.UnitTest.csproj",
         "projectName": "Database.UnitTest",
-        "projectPath": "C:\\Users\\Akira Cooper\\source\\repos\\brainstorm\\Database.UnitTest\\Database.UnitTest.csproj",
-        "packagesPath": "C:\\Users\\Akira Cooper\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Akira Cooper\\source\\repos\\brainstorm\\Database.UnitTest\\obj\\",
+        "projectPath": "D:\\C# Library\\API_4350\\Database.UnitTest\\Database.UnitTest.csproj",
+        "packagesPath": "C:\\Users\\rfk4p\\.nuget\\packages\\",
+        "outputPath": "D:\\C# Library\\API_4350\\Database.UnitTest\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\Akira Cooper\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\rfk4p\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -22,14 +26,15 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net7.0": {
             "targetAlias": "net7.0",
             "projectReferences": {
-              "C:\\Users\\Akira Cooper\\source\\repos\\brainstorm\\Database\\Database.csproj": {
-                "projectPath": "C:\\Users\\Akira Cooper\\source\\repos\\brainstorm\\Database\\Database.csproj"
+              "D:\\C# Library\\API_4350\\Database\\Database.csproj": {
+                "projectPath": "D:\\C# Library\\API_4350\\Database\\Database.csproj"
               }
             }
           }
@@ -46,7 +51,7 @@
           "dependencies": {
             "Microsoft.NET.Test.Sdk": {
               "target": "Package",
-              "version": "[17.5.0, )"
+              "version": "[17.7.2, )"
             },
             "Moq": {
               "target": "Package",
@@ -57,12 +62,14 @@
               "version": "[3.13.3, )"
             },
             "NUnit.Analyzers": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
               "target": "Package",
-              "version": "[3.6.1, )"
+              "version": "[3.8.0, )"
             },
             "NUnit3TestAdapter": {
               "target": "Package",
-              "version": "[4.4.2, )"
+              "version": "[4.5.0, )"
             }
           },
           "imports": [
@@ -81,21 +88,25 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.302\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.400\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\Akira Cooper\\source\\repos\\brainstorm\\Database\\Database.csproj": {
+    "D:\\C# Library\\API_4350\\Database\\Database.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Akira Cooper\\source\\repos\\brainstorm\\Database\\Database.csproj",
+        "projectUniqueName": "D:\\C# Library\\API_4350\\Database\\Database.csproj",
         "projectName": "Database",
-        "projectPath": "C:\\Users\\Akira Cooper\\source\\repos\\brainstorm\\Database\\Database.csproj",
-        "packagesPath": "C:\\Users\\Akira Cooper\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Akira Cooper\\source\\repos\\brainstorm\\Database\\obj\\",
+        "projectPath": "D:\\C# Library\\API_4350\\Database\\Database.csproj",
+        "packagesPath": "C:\\Users\\rfk4p\\.nuget\\packages\\",
+        "outputPath": "D:\\C# Library\\API_4350\\Database\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\Akira Cooper\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\rfk4p\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -103,6 +114,7 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -150,7 +162,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.302\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.400\\RuntimeIdentifierGraph.json"
         }
       }
     }
