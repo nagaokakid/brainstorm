@@ -128,7 +128,11 @@ export default class AppInfo
 
                 "messages": [
                     {
-                        "message": "AppInfo is DM 1 lalalalalalalalalalaalal",
+                        "message": "11AppInfo is DM 1 lalalalalalalalalalaalal",
+                        "timestamp": "2023-10-13T23:35:59.786Z"
+                    },
+                    {
+                        "message": "22AppInfo is DM 1 lalalalalalalalalalaalal",
                         "timestamp": "2023-10-13T23:35:59.786Z"
                     }
                 ],

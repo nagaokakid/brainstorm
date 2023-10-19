@@ -1,10 +1,12 @@
-import AppInfo from "./appInfo"
-import SignalRChatRoom from "./chatRoomConnection"
-import SignalRDirect from "./directMessageConnection"
+import AppInfo from "./appInfo";
+import SignalRChatRoom from "./chatRoomConnection";
+import SignalRDirect from "./directMessageConnection";
 
-export default class ApiService {
-    // Do a Login API call to the backend
-    async Login(username, password) {
+export default class ApiService
+{
+    // Do a Login API call to the backend and connect to all chatrooms and direct messaging
+    async Login(username, password)
+    {
         const resp = await fetch(AppInfo.BaseURL + "api/users/login",
             {
                 method: 'POST',
@@ -13,61 +15,49 @@ export default class ApiService {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({ Username: username, Password: password }),
-            })
+            });
 
         // if response is okay, assign to appinfo for later use
         if (resp.ok) {
-            AppInfo.loginRegisterResponse = await resp.json()
-            AppInfo.setToken()
-            console.log(AppInfo.loginRegisterResponse);
-            await this.connectChatRooms()
-            await this.connectDirectMessaging()
+            AppInfo.loginRegisterResponse = await resp.json();
+            AppInfo.setToken();
+            console.log("----> Login success");
+            await this.connectChatRooms();
+            await this.connectDirectMessaging();
         }
 
-        return resp
+        return resp;
     }
-
-    test(msg){
-        console.log("receive direct message");
-        console.log(msg);
-    }
-
-    async connectDirectMessaging(){
-        const conn = await SignalRDirect.getInstance()
-        conn.setReceiveDirectMessageCallback(this.test);
-        const msg = {
-            fromUserInfo: AppInfo.getCurrentFriendlyUserInfo(),
-            toUserInfo: AppInfo.getCurrentFriendlyUserInfo(),
-            message: "hello direct message",
-        }
-        await conn.sendMessage(msg)
-    }
-
-    // Do a Register API call to the backend
-    async Register(username, password, firstName, lastName) {
+    
+    // Do a Register API call to the backend and connect to direct messaging
+    async Register(username, password, firstName, lastName)
+    {
         const resp = await fetch(AppInfo.BaseURL + "api/users",
+        {
+            method: 'POST',
+            headers:
             {
-                method: 'POST',
-                headers:
-                {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ Username: username, Password: password, FirstName: firstName, LastName: lastName }),
-
-            })
-
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ Username: username, Password: password, FirstName: firstName, LastName: lastName }),
+            
+        });
+        
         // if response is okay, assign to appinfo for later use
-        if (resp.ok) {
-            AppInfo.loginRegisterResponse = await resp.json()
-            AppInfo.setToken()
-            await this.connectChatRooms()
+        if (resp.ok)
+        {
+            AppInfo.loginRegisterResponse = await resp.json();
+            AppInfo.setToken();
+            console.log("----> Register success");
+            await this.connectDirectMessaging();
         }
-
-        return resp
+        
+        return resp;
     }
 
-    // Do a GetChatRooms API call to the backend
-    async CreateChatRoom(title, description) {
+    // Do a GetChatRooms API call to the backend and build the connection to the chat room
+    async CreateChatRoom(title, description)
+    {
         const resp = await fetch(AppInfo.BaseURL + "api/chatroom",
             {
                 method: 'POST',
@@ -77,25 +67,28 @@ export default class ApiService {
                     "Authorization": 'Bearer ' + AppInfo.getToken()
                 },
                 body: JSON.stringify({
-                    userId: AppInfo.loginRegisterResponse.userInfo.userId,
+                    userId: AppInfo.getUserId(),
                     title: title,
                     description: description
                 }),
 
-            })
+            });
 
         // if response is okay, assign to appinfo for later use
-        if (resp.ok) {
-            var data = (await resp.json())["chatRoom"]
-            AppInfo.addNewChatRoom(data)
-            await this.connectChatRoom(data.joinCode)
+        if (resp.ok)
+        {
+            const data = (await resp.json())["chatRoom"];
+            AppInfo.addNewChatRoom(data);
+            console.log("----> Create chatroom success");
+            await this.connectChatRoom(data.joinCode);
         }
 
-        return resp
+        return resp;
     }
 
-    // Allow user to get into a chat room without an account
-    async GuestJoin(code) {
+    // Do a chatroom join API call to the backend without an account
+    async GuestJoin(code)
+    {
         const resp = await fetch(AppInfo.BaseURL + "api/chatroom/guest",
             {
                 method: 'POST',
@@ -108,35 +101,61 @@ export default class ApiService {
                     code: code
                 }),
 
-            })
+            });
 
         // if response is okay, assign to appinfo for later use
-        if (resp.ok) {
-            AppInfo.loginRegisterResponse = await resp.json()
-            AppInfo.setToken()
-            await this.connectChatRooms()
+        if (resp.ok)
+        {
+            AppInfo.loginRegisterResponse = await resp.json();
+            AppInfo.setToken();
+            console.log("----> Guest join success");
+            await this.connectChatRooms();
         }
 
-        return resp
+        return resp;
     }
 
     // Build the connection to the backend for each chatroom
-    async connectChatRooms() {
-        const connection = await SignalRChatRoom.getInstance()
-        const chatRooms = AppInfo.loginRegisterResponse.chatRooms
+    async connectChatRooms()
+    {
+        const connection = await SignalRChatRoom.getInstance();
+        const chatRooms = AppInfo.loginRegisterResponse.chatRooms;
 
         // Build connection only if there are chatrooms
-        if (chatRooms) {
-            for (let index = 0; index < chatRooms.length; index++) {
+        if (chatRooms)
+        {
+            console.log("----> Connecting to chatrooms");
+            for (let index = 0; index < chatRooms.length; index++)
+            {
                 const element = chatRooms[index];
-                await connection.joinChatRoom(element.joinCode)
+                await connection.joinChatRoom(element.joinCode);
             }
         }
     }
 
     // Build the connection to the backend for a specific chatroom
-    async connectChatRoom(joinCode) {
-        const connection = await SignalRChatRoom.getInstance()
-        await connection.joinChatRoom(joinCode)
+    async connectChatRoom(joinCode)
+    {
+        const connection = await SignalRChatRoom.getInstance();
+        console.log("----> Connecting to chatroom");
+        await connection.joinChatRoom(joinCode);
+    }
+
+    test(msg){
+        console.log("receive direct message");
+        console.log(msg);
+    }
+
+    // Build the connection to the backend for direct messaging
+    async connectDirectMessaging()
+    {
+        const conn = await SignalRDirect.getInstance();
+        conn.setReceiveDirectMessageCallback(this.test);
+        const msg = {
+            fromUserInfo: AppInfo.getCurrentFriendlyUserInfo(),
+            toUserInfo: AppInfo.getCurrentFriendlyUserInfo(),
+            message: "hello direct message",
+        }
+        await conn.sendMessage(msg)
     }
 }
