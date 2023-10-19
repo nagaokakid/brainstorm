@@ -23,14 +23,14 @@ namespace Logic
             {
                 options.AddPolicy(name: allowAllCors, policy =>
                 {
-                    policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+                    policy.AllowCredentials().AllowAnyHeader().AllowAnyMethod().SetIsOriginAllowed(x => true);
                 });
             });
 
             // Add services to the container.
             builder.Services.AddScoped<AuthService>();
             builder.Services.AddScoped<UserService>();
-            builder.Services.AddScoped<OnlineUserService>();
+            builder.Services.AddSingleton<OnlineUserService>();
             builder.Services.AddScoped<DirectMessageService>();
             builder.Services.AddScoped<ChatRoomService>();
             builder.Services.AddSingleton<IUserCollection, UserCollection>();

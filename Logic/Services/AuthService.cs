@@ -1,4 +1,6 @@
 ﻿using Database.CollectionContracts;
+using Database.Data;
+using Logic.Helpers;
 using Logic.DTOs.ChatRoom;
 using Logic.DTOs.Messages;
 using Logic.DTOs.User;
@@ -15,13 +17,15 @@ namespace Logic.Services
     {
         private readonly IUserCollection userCollection;
         private readonly IChatRoomCollection chatRoomCollection;
+        private readonly IDirectMessageCollection directMessageCollection;
         private readonly IConfiguration config;
         private readonly UserService userService;
 
-        public AuthService(IUserCollection userCollection, IChatRoomCollection chatRoomCollection, IConfiguration config, UserService userService)
+        public AuthService(IUserCollection userCollection, IChatRoomCollection chatRoomCollection, IDirectMessageCollection directMessageCollection, IConfiguration config, UserService userService)
         {
             this.userCollection = userCollection;
             this.chatRoomCollection = chatRoomCollection;
+            this.directMessageCollection = directMessageCollection;
 
             // configuration settings for the api
             this.config = config;
@@ -85,13 +89,27 @@ namespace Logic.Services
                 LastName = user.LastName,
             };
 
+            // get list of users so that we don't need to go to db everytime
+            var users = await userCollection.GetAll();
+
             // return logged in user
             return new RegisterLoginResponse
             {
                 UserInfo = friendly,
                 Token = CreateToken(friendly),
-                ChatRooms = await GetFriendlyChatRooms(user.ChatroomIds)
+                ChatRooms = await GetFriendlyChatRooms(user.ChatroomIds),
+                DirectMessages = await GetDirectMessages(user.Id, users)
             };
+        }
+
+        private async Task<List<FriendlyDirectMessageHistory>> GetDirectMessages(string userId, Dictionary<string, User> users)
+        {
+            var hist = await directMessageCollection.GetAll(userId);
+            if(hist != null) 
+            {
+                return hist.ToDTO(users);
+            }
+            return new List<FriendlyDirectMessageHistory>();
         }
 
         public async Task<List<FriendlyChatRoom>> GetFriendlyChatRooms(List<string> chatRoomIds)

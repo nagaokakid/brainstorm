@@ -15,14 +15,24 @@ namespace Logic.Hubs
             this.onlineUserService = onlineUserService;
             this.directMessageService = directMessageService;
         }
+        public override Task OnConnectedAsync()
+        {
+            return base.OnConnectedAsync();
+        }
         public override async Task OnDisconnectedAsync(Exception? exception)
         {
             onlineUserService.Remove(Context.ConnectionId);
             await base.OnDisconnectedAsync(exception);
         }
-        public async Task JoinDirect(FriendlyUserInfo user)
+        public async Task JoinDirect(string userId, string firstName, string lastName)
         {
-            await onlineUserService.Add(user, Context.ConnectionId);
+            var user = new FriendlyUserInfo
+            {
+                UserId = userId,
+                FirstName = firstName,
+                LastName = lastName
+            };
+            await onlineUserService.Add(userId, Context.ConnectionId);
         }
 
         public async Task GetChatHistory(string fromId, string toId)
@@ -30,20 +40,27 @@ namespace Logic.Hubs
             var result = await directMessageService.GetMessagesByUserId(fromId, toId);
             await Clients.Client(Context.ConnectionId).SendAsync("ReceiveChatHistory", result);
         }
-        public async Task SendDirectMessage(MessageInfo msg)
+        public async Task SendDirectMessage(string fromUserId, string fromFirstName, string fromLastName, string toUserId, string toFirstName, string toLastName, string msg)
         {
-            if (msg.ToUserInfo != null)
+            var msgInfo = new MessageInfo
             {
-                msg.Timestamp = DateTime.Now;
+                FromUserInfo = new FriendlyUserInfo { UserId = fromUserId, FirstName = fromFirstName, LastName = fromLastName },
+                ToUserInfo = new FriendlyUserInfo { UserId = toUserId, FirstName = toFirstName, LastName = toLastName },
+                Message = msg,
+                Timestamp = DateTime.Now
+            };
+            // save direct message
+            await directMessageService.AddNewMessage(msgInfo);
+            await Clients.Client(Context.ConnectionId).SendAsync("ReceiveDirectMessage", msgInfo);
 
-                // make sure user is online
-                OnlineUser? online = onlineUserService.Get(msg.ToUserInfo.UserId);
-                if (online != null)
-                {
-                    await Clients.Client(online.ConnectionId).SendAsync("ReceiveDirectMessage", msg);
-                    await directMessageService.AddNewMessage(msg);
-                }
+
+            // make sure user is online
+            var connectionId = onlineUserService.Get(toUserId);
+            if (connectionId != null)
+            {
+                await Clients.Client(connectionId).SendAsync("ReceiveDirectMessage", msgInfo);
             }
+
         }
     }
 }
