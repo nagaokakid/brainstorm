@@ -34,8 +34,8 @@ namespace Logic.Hubs
                     }
                 };
                 await Groups.AddToGroupAsync(Context.ConnectionId, result.Id);
-                await Clients.Client(Context.ConnectionId).SendAsync("ReceiveChatRoomMessage", msg);
-                await Clients.Client(Context.ConnectionId).SendAsync("ReceiveChatRoomInfo",result);
+                Clients.Client(Context.ConnectionId).SendAsync("ReceiveChatRoomMessage", msg);
+                Clients.Client(Context.ConnectionId).SendAsync("ReceiveChatRoomInfo",result);
             }
         }
         public async Task SendChatRoomMessage(string userId, string chatRoomId, string firstName, string lastName, string msg)
@@ -54,7 +54,7 @@ namespace Logic.Hubs
                 await Clients.Group(chatRoomId).SendAsync("ReceiveChatRoomMessage", msgInfo);
 
                 // add message to chatroom
-                await chatRoomService.AddMessageToChatRoom(msgInfo.ChatRoomId, msgInfo);
+                chatRoomService.AddMessageToChatRoom(msgInfo.ChatRoomId, msgInfo);
             }
         }
         public override Task OnDisconnectedAsync(Exception? exception)
