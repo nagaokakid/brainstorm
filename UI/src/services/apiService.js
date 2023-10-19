@@ -1,5 +1,6 @@
 import AppInfo from "./appInfo"
 import SignalRChatRoom from "./chatRoomConnection"
+import SignalRDirect from "./directMessageConnection"
 
 export default class ApiService {
     // Do a Login API call to the backend
@@ -18,10 +19,28 @@ export default class ApiService {
         if (resp.ok) {
             AppInfo.loginRegisterResponse = await resp.json()
             AppInfo.setToken()
+            console.log(AppInfo.loginRegisterResponse);
             await this.connectChatRooms()
+            await this.connectDirectMessaging()
         }
 
         return resp
+    }
+
+    test(msg){
+        console.log("receive direct message");
+        console.log(msg);
+    }
+
+    async connectDirectMessaging(){
+        const conn = await SignalRDirect.getInstance()
+        conn.setReceiveDirectMessageCallback(this.test);
+        const msg = {
+            fromUserInfo: AppInfo.getCurrentFriendlyUserInfo(),
+            toUserInfo: AppInfo.getCurrentFriendlyUserInfo(),
+            message: "hello direct message",
+        }
+        await conn.sendMessage(msg)
     }
 
     // Do a Register API call to the backend

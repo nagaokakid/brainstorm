@@ -44,8 +44,7 @@ function msgInputField(props)
         timestamp: Date.UTC(Date.now)
       };
       props.connection.then(async (x) => {
-        console.log("Sending message " + msg);
-        await x.sendChatRoomMessage(JSON.stringify(msg));
+        await x.sendChatRoomMessage(msg);
         console.log("Sent Message");
       });
     }

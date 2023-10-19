@@ -1,6 +1,6 @@
 export default class AppInfo
 {
-    static BaseURL = "https://localhost:32772/"
+    static BaseURL = "https://localhost:32768/"
 
     static loginRegisterResponse =
     {
@@ -113,33 +113,25 @@ export default class AppInfo
         ],
         "directMessages": [
             {
-                "id": "0011",
+                "User1":
+                        {
+                            "userId": "string",
+                            "firstName": "string",
+                            "lastName": "string"
+                        },
+                "User2":
+                        {
+                            "userId": "string",
+                            "firstName": "string",
+                            "lastName": "string"
+                        },
+
                 "messages": [
                     {
-                        "fromUserInfo":
-                        {
-                            "userId": "string",
-                            "firstName": "string",
-                            "lastName": "string"
-                        },
-                        "toUserInfo":
-                        {
-                            "userId": "string",
-                            "firstName": "string",
-                            "lastName": "string"
-                        },
-                        "chatRoomId": "DirectMessage",
                         "message": "AppInfo is DM 1 lalalalalalalalalalaalal",
                         "timestamp": "2023-10-13T23:35:59.786Z"
                     }
                 ],
-                "members": [
-                    {
-                        "userId": "string",
-                        "firstName": "string",
-                        "lastName": "string"
-                    }
-                ]
             }
         ]
     }

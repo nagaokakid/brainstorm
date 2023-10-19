@@ -6,29 +6,36 @@ const DIRECT_URL = AppInfo.BaseURL + "direct"
 class SignalRDirect {
     static #instance
 
-    constructor(receiveDirectMessageCallback, receiveChatHistoryCallback) {
+    constructor() {
         this.connection = new signalR.HubConnectionBuilder()
         this.connection.withUrl(DIRECT_URL)
         this.connection.withAutomaticReconnect()
-
         this.connection = this.connection.build()
+    }
 
-        console.log("starting connection");
-        this.connection.start()
-            .then(() => {
-                console.log("connected");
-                this.connection.on("ReceiveDirectMessage", (msg) => receiveDirectMessageCallback(msg));
-                this.connection.on("ReceiveChatHistory", (msg) => receiveChatHistoryCallback(msg));
+    async makeConnection(){
+        console.log("starting connection")
+        await this.connection.start()
+            .then(async () => {
+                await this.join()
+                console.log("join Direct Message");
             })
             .catch(err => console.warn(err))
     }
 
-    sendMessage(msg) {
-        this.connection.send("SendDirectMessage", msg)
+    setReceiveDirectMessageCallback(directMessageCallback){
+        this.connection.on("ReceiveDirectMessage", (msg) => directMessageCallback(msg));
     }
 
-    join(user) {
-        this.connection.send("JoinDirect", user)
+    async sendMessage(msg) {
+        console.log("Sending Direct Message");
+        await this.connection.send("SendDirectMessage", msg.fromUserInfo.userId, msg.fromUserInfo.firstName, msg.fromUserInfo.lastName, msg.toUserInfo.userId, msg.toUserInfo.firstName, msg.toUserInfo.lastName, msg.message)
+    }
+
+    async join() {
+        console.log("Joining Direct Messaging");
+        const user = AppInfo.getCurrentFriendlyUserInfo()
+        await this.connection.send("JoinDirect", user.userId, user.firstName, user.lastName)
     }
 
     getChatHistory(fromId, toId) {
@@ -36,10 +43,11 @@ class SignalRDirect {
     }
 
     // This idea is from stack overflow
-    static getInstance(receiveDirectMessageCallback, receiveChatHistoryCallback) {
+    static async getInstance() {
 
         if (SignalRDirect.instance == null) {
-            SignalRDirect.instance = new SignalRDirect(receiveDirectMessageCallback, receiveChatHistoryCallback)
+            SignalRDirect.instance = new SignalRDirect()
+            await SignalRDirect.instance.makeConnection()
         }
         return SignalRDirect.instance
     }

@@ -28,16 +28,20 @@ class SignalRChatRoom {
         });
     }
 
+    receiveChatRoomInfoCallback(callback){
+        this.connection.on("ReceiveChatRoomInfo", (info) => {
+            callback(info)
+            console.log("Receive new ChatRoom Info");
+            console.log(info);
+            AppInfo.addNewChatRoom(info)
+        })
+    }
+
     async sendChatRoomMessage(msg) {
         console.log("sending chatroom message" + msg);
         console.log(msg);
         console.log("connection state " + this.connection.state);
-        // FromUserInfo: {UserId: "id", FirstName: "first", LastName: "last"},
-        const test =  {    
-            "msg": "hi"
-        }
-        console.log(test);
-        this.connection.send("SendChatRoomMessage", test).catch(x=>console.log(x))
+        this.connection.send("SendChatRoomMessage", msg.fromUserInfo.userId,  msg.chatRoomId,  msg.fromUserInfo.firstName,  msg.fromUserInfo.lastName,  msg.message).catch(x=>console.log(x))
     }
 
     joinChatRoom(joinCode) {
