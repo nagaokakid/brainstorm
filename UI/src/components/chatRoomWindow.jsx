@@ -1,4 +1,4 @@
-import MessageWindow from './msgWindow';
+import MessageWindow from './MsgWindow';
 import MessageInput from './msgInputField';
 import MemberList from './MemberList';
 import SignalRChatRoom from "../services/chatRoomConnection";
@@ -11,13 +11,13 @@ function chatRoomWindow(props)
     const connection = props.chatType === "Direct Message List" ? SignalRDirect.getInstance() : SignalRChatRoom.getInstance();
 
     return (
-        <div className='WindowContainer'>
+        <div className='WindowContainer' style={ props.chatId === "" ? {display:"none"} : {display:"flex"}}>
             <div className='MsgContainer' style={props.chatType === "Direct Message List" ? {width:"100%"} : {}}>
                 <div className='ChatHeader'>
-                    <h1>{props.headerTitle}</h1>
+                    <h1 className='ChatTitle'>{props.headerTitle}</h1>
                 </div>
                 <div className='MsgSection'>
-                    <MessageWindow title={props.headerTitle} chatId= {props.chatId} chatType= {props.chatType}/>
+                    <MessageWindow title={props.headerTitle} chatId= {props.chatId} chatType= {props.chatType} />
                 </div>
                 <div className='InputSection'>
                     <MessageInput connection= { connection } chatId={props.chatId} />
