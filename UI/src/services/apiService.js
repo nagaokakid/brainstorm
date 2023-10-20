@@ -151,7 +151,7 @@ export default class ApiService
             for (let index = 0; index < chatRooms.length; index++)
             {
                 const element = chatRooms[index];
-                await connection.joinChatRoom(element.joinCode);
+                await connection.joinChatRoom(element.joinCode, "Second");
             }
         }
     }
@@ -164,7 +164,7 @@ export default class ApiService
     {
         const connection = await SignalRChatRoom.getInstance();
         console.log("----> Connecting to chatroom");
-        await connection.joinChatRoom(joinCode);
+        await connection.joinChatRoom(joinCode, "Second");
     }
 
     /**

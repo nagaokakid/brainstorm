@@ -70,11 +70,12 @@ class SignalRChatRoom
     /**
      * Build the connection to the chat room
      * @param {*} joinCode The join code of the chat room
+     * @param {*} type The type of the chat room
      */
-    async joinChatRoom(joinCode)
+    async joinChatRoom(joinCode, type)
     {
         console.log("----> Joining chatroom", joinCode);
-        await this.connection.send("JoinChatRoom", joinCode).catch(console.log("----> Join chatroom failed"));
+        await this.connection.send("JoinChatRoom", joinCode, type).catch(console.log("----> Join chatroom failed"));
     }
 
     /**

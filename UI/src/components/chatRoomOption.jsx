@@ -2,7 +2,6 @@
 import '../styles/ChatRoomOption.css'
 import icon1 from '../assets/chat-bubble.png'
 import icon2 from '../assets/meeting.png'
-import AppInfo from '../services/AppInfo'
 import ApiService from '../services/ApiService'
 import SignalRChatRoom from '../services/ChatRoomConnection'
 
@@ -38,52 +37,6 @@ function ChatRoomOption(props)
         }
     }
 
-    // // 
-    // async function buttonHandler(selected) {
-    //     if (selected === 1) {
-            
-    //         if (chatRoomName) {
-    //             console.log("Created a chat room")
-    //             AppInfo.addNewChatRoom({
-    //                 "id": "00120",
-    //                 "title": chatRoomName,
-    //                 "description": "AppInfo is Chat Room 1 lalalalallalalalalalallalal",
-    //                 "joinCode": "string",
-    //                 "messages": [
-    //                     {
-    //                         "fromUserInfo":
-    //                         {
-    //                             "userId": "string",
-    //                             "firstName": "string",
-    //                             "lastName": "string"
-    //                         },
-    //                         "toUserInfo":
-    //                         {
-    //                             "userId": "string",
-    //                             "firstName": "string",
-    //                             "lastName": "string"
-    //                         },
-    //                         "chatRoomId": "string",
-    //                         "message": "hello",
-    //                         "timestamp": "2023-10-13T23:35:59.786Z"
-    //                     }
-    //                 ],
-    //                 "members": [
-    //                     {
-    //                         "userId": "string",
-    //                         "firstName": "string",
-    //                         "lastName": "string"
-    //                     }
-    //                 ]
-    //             })
-    //             handleOptionClick("none")
-    //             const apiService = new ApiService();
-    //             await apiService.CreateChatRoom(chatRoomName, "description")
-                
-    //         }
-    //     }
-    // }
-
     /**
      * Join a chat room
      */
@@ -95,7 +48,7 @@ function ChatRoomOption(props)
         {
             SignalRChatRoom.getInstance().then(async x =>
             {
-                await x.joinChatRoom(input)
+                await x.joinChatRoom(input, "First")
                 await x.setReceiveChatRoomInfoCallback((msg) => console.log("----> Received chat room info: ", msg))
             })
         }
