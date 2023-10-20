@@ -2,9 +2,9 @@ import "../styles/MainPage.css";
 import HeaderNavBar from "../components/HeaderNavBar";
 import NavigationBar from "../components/NavigationBar";
 import ChatList from "../components/ChatList";
-import SignalRChatRoom from "../services/chatRoomConnection";
 import { useState } from "react";
 import AppInfo from "../services/appInfo";
+import ApiService from "../services/apiService";
 
 //top element a grid, 4 colms
 function MainPage()
@@ -24,17 +24,8 @@ function MainPage()
     setChatType(childData);
   }
 
-  // Callback function for receiving messages
-  function receiveMessage(message)
-  {
-    console.log("received message", message);
-    AppInfo.addMessage(message);
-  }
-
-  // Create SignalR connection
-  SignalRChatRoom.getInstance().then((x) => {
-    x.receiveMessageCallback(receiveMessage);
-  });
+  const apiservice = new ApiService();
+  apiservice.buildCallBack();
 
   return (
     <div className="App">
