@@ -27,7 +27,8 @@ class SignalRChatRoom
     async makeConnection()
     {
         console.log("----> Starting connection to chatroom services");
-        await this.connection.start()
+        await this.connection.start();
+        this.connection.on("NewMemberJoined", (userInfo, chatId) => {AppInfo.addNewMember(userInfo, chatId); console.log("----> New member joined callback")});
     }
 
     /**
@@ -40,6 +41,8 @@ class SignalRChatRoom
         {
             callBackFunction(msg);
             AppInfo.addChatRoomMessage(msg);
+            AppInfo.addOne()
+            console.log("----> Receive chatroom message callback");
         });
     }
 
@@ -52,6 +55,7 @@ class SignalRChatRoom
         this.connection.on("ReceiveChatRoomInfo", (info) =>
         {
             callBackFunction(info);
+            
             AppInfo.addChatRoomInfo(info);
         });
     }
@@ -75,7 +79,7 @@ class SignalRChatRoom
     async joinChatRoom(joinCode, type)
     {
         console.log("----> Joining chatroom", joinCode);
-        await this.connection.send("JoinChatRoom", joinCode, type).catch(console.log("----> Join chatroom failed"));
+        await this.connection.send("JoinChatRoom", joinCode, type, AppInfo.getUserId(), AppInfo.getFirstName(), AppInfo.getLastName()).catch(console.log("----> Join chatroom failed"));
     }
 
     /**

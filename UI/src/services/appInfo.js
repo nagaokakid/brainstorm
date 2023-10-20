@@ -1,5 +1,8 @@
 export default class AppInfo
 {
+    static receiveChatRoomMessage = 1;
+    static receiveChatRoomInfoMessage = 1;
+
     static BaseURL = "http://localhost:5135/"
 
     static loginRegisterResponse =
@@ -140,6 +143,11 @@ export default class AppInfo
         ]
     }
 
+    static addOne()
+    {
+        this.receiveChatRoomMessage++;
+    }
+
     static getCurrentFriendlyUserInfo()
     {
         return this.loginRegisterResponse.userInfo ?? {};
@@ -181,6 +189,21 @@ export default class AppInfo
         return this.loginRegisterResponse.directMessages ?? [];
     }
 
+    /**
+     * 
+     * @param {*} userInfo User information object
+     * @param {*} chatId The chat room id
+     */
+    static addNewMember(userInfo, chatId)
+    {
+        this.getChatRoomsList().forEach(chatRoom =>
+            {
+                if (chatRoom.id === chatId)
+                {
+                    chatRoom.members.push(userInfo);
+                }
+            });
+    }
 
     /**
      * 

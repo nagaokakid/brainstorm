@@ -4,6 +4,7 @@ import icon1 from '../assets/chat-bubble.png'
 import icon2 from '../assets/meeting.png'
 import ApiService from '../services/ApiService'
 import SignalRChatRoom from '../services/ChatRoomConnection'
+import AppInfo from '../services/AppInfo'
 
 /**
  * 
@@ -48,7 +49,7 @@ function ChatRoomOption(props)
         {
             SignalRChatRoom.getInstance().then(async x =>
             {
-                await x.joinChatRoom(input, "First")
+                await x.joinChatRoom(input, "First", AppInfo.getUserId())
                 await x.setReceiveChatRoomInfoCallback((msg) => console.log("----> Received chat room info: ", msg))
             })
         }
