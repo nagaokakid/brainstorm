@@ -17,7 +17,7 @@ function chatRoomWindow(props)
                     <h1 className='ChatTitle'>{props.headerTitle}</h1>
                 </div>
                 <div className='MsgSection'>
-                    <MessageWindow title={props.headerTitle} chatId= {props.chatId} chatType= {props.chatType} />
+                    <MessageWindow chatId= {props.chatId} chatType= {props.chatType} />
                 </div>
                 <div className='InputSection'>
                     <MessageInput connection= { connection } chatId={props.chatId} />
