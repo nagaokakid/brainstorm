@@ -14,7 +14,12 @@ namespace Logic.Hubs
             this.chatRoomService = chatRoomService;
         }
 
-        public async Task JoinChatRoom(string joinCode, string first)
+        public async Task AddNewUserToChatRoom(string userId)
+        {
+            await chatRoomService.AddNewUserToChatRoom(userId);
+        }
+
+        public async Task JoinChatRoom(string joinCode, string first, string userId, string firstName, string lastName)
         {
             // get room for chatRoomCode
             var result = await chatRoomService.GetRoomByJoinCode(joinCode);
@@ -22,10 +27,27 @@ namespace Logic.Hubs
             // add member to group
             if (result != null)
             {
+                var newUser = new FriendlyUserInfo
+                {
+                    UserId = userId,
+                    FirstName = firstName,
+                    LastName = lastName,
+                };
+
                 await Groups.AddToGroupAsync(Context.ConnectionId, result.Id);
+
                 if (first == "First")
                 {
                     await Clients.Client(Context.ConnectionId).SendAsync("ReceiveChatRoomInfo", result);
+                }
+
+                // check if user is already a member of the chatroom when they join
+                var found = result.MemberIds.FirstOrDefault(x => x == userId);
+                if (found == null)
+                {
+                    // add new member to chatroom
+                    await chatRoomService.AddNewUserToChatRoom(userId);
+                    await Clients.Group(result.Id).SendAsync("NewMemberJoined", newUser, result.Id);
                 }
             }
         }
