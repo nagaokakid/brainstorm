@@ -16,7 +16,7 @@ function msgInputField(props)
     AppInfo.addMessage({
       "fromUserInfo":
       {
-          "userId": "string",
+          "userId": "3",
           "firstName": "string",
           "lastName": "string"
       },

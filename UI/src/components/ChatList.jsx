@@ -11,12 +11,14 @@ function ChatList(props)
   const [chatList, setChatList] = useState([]);
 
   // Track the current selected chat
-  const [chatId, setChatId] = useState("")
+  const [chatId, setChatId] = useState("");
 
-  const [chatTitle, setChatTitle] = useState("")
+  const [chatTitle, setChatTitle] = useState("");
   
   // Track the display of the chat room option
   const [display, setDisplay] = useState("none");
+
+  const [memberList, setMemberList] = useState();
 
   // Update the chat list when the chat type changes
   useEffect (() =>
@@ -46,7 +48,7 @@ function ChatList(props)
         </div>
         <div className="chats">
           {chatList.map((chat, index) => (
-            <div className="chat-item" key={index} onClick={() => {setChatTitle(chat.title ?? chat.User2.firstName), setChatId(chat.id ?? chat.User2.userId)}}>
+            <div className="chat-item" key={index} onClick={() => {setChatTitle(chat.title ?? chat.User2.firstName), setChatId(chat.id ?? chat.User2.userId), setMemberList(chat.members ?? null)}}>
               <div className="chat-details">
                 <div className="chat-title">{chat.title ?? chat.User2.firstName}</div>
                 <div className="last-message">{chat.description ?? chat.messages.slice(-1)[0].message}</div>
@@ -59,7 +61,7 @@ function ChatList(props)
         </div>
       </div>
       <div className="ChatWindowContainer">
-        <ChatRoomWindow headerTitle={chatTitle} chatType={props.chatType} chatId={chatId}/>
+        <ChatRoomWindow headerTitle={chatTitle} chatType={props.chatType} chatId={chatId} memberList={memberList} />
       </div>
       <ChatRoomOption style= {display} callBack={handleCreateRoomButton} />
     </div>

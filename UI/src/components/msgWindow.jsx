@@ -7,18 +7,16 @@ function MsgWindow(props)
 {
     // Set the message to the display
     const [messages, setMessages] = useState([]);
-    const [count, setCount] = useState(AppInfo.loginRegisterResponse.chatRooms[0].messages.length);
-    console.log(props.chatId);
 
     useEffect(() =>
     {
         setMessages(props.chatId === "" ? [] : AppInfo.getList(props.chatId, props.chatType));
-    }, [props.chatId, props.chatType, count]);
+    }, [props.chatId, props.chatType]);
 
     return (
         <div className="msgWindowContainer">
             {messages.map((e, index) => (
-                <MessageBox message={e.message} key={index}/>
+                <MessageBox message={e.message} key={index} user={ e.fromUserInfo ? e.fromUserInfo.userId : null}/>
             ))}
         </div>
     );

@@ -44,7 +44,7 @@ class SignalRDirect
     async sendMessage(msg)
     {
         console.log("----> Sending Direct Message");
-        await this.connection.send("SendDirectMessage", msg.fromUserInfo.userId, msg.fromUserInfo.firstName, msg.fromUserInfo.lastName, msg.toUserInfo.userId, msg.toUserInfo.firstName, msg.toUserInfo.lastName, msg.message).catch(console.log("----> Send Direct Message failed"));
+        await this.connection.send("SendDirectMessage", msg.User1.userId, msg.User1.firstName, msg.User1.lastName, msg.User2.userId, msg.User2.firstName, msg.User2.lastName, msg.messages.message).catch(console.log("----> Send Direct Message failed"));
     }
 
     // This is the function that joins the direct message channel.

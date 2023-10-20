@@ -24,7 +24,7 @@ function chatRoomWindow(props)
                 </div>
             </div>
             <div className='MemberListContainer' style={props.chatType === "Direct Message List" ? {display:"none"}:{display:"flex"} }>
-                <MemberList />
+                <MemberList memberList={props.memberList}/>
             </div>
         </div>
     );

@@ -1,6 +1,9 @@
-import { useContext, useEffect, useRef } from "react";
+/* eslint-disable react/prop-types */
+import { useState, useEffect } from "react";
+import '../styles/MsgBox.css'
+import AppInfo from "../services/appInfo";
 
-function Message({ message, id })
+function MsgBox(props)
 {
     // const ref = useRef();
 
@@ -24,11 +27,24 @@ function Message({ message, id })
     //     }
     // };
 
+    const [position, setPosition] = useState("");
+
+    useEffect(() => {
+        if (props.user === AppInfo.getUserId())
+        {
+            setPosition("end");
+        }
+        else
+        {
+            setPosition("start");
+        }
+    }, [props.user]);
+
     return (
-        <div className="messageContent">
-            <p>{message}</p>
+        <div className="MessageContainer" style={{justifyContent:position}}>
+            <p>{props.message}</p>
         </div>
     );
 }
 
-export default Message;
+export default MsgBox;

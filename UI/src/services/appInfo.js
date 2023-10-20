@@ -6,7 +6,7 @@ export default class AppInfo
     {
         "userInfo":
         {
-            "userId": "string",
+            "userId": "3",
             "firstName": "string",
             "lastName": "string"
         },
@@ -21,13 +21,13 @@ export default class AppInfo
                     {
                         "fromUserInfo":
                         {
-                            "userId": "string",
+                            "userId": "1",
                             "firstName": "string",
                             "lastName": "string"
                         },
                         "toUserInfo":
                         {
-                            "userId": "string",
+                            "userId": "2",
                             "firstName": "string",
                             "lastName": "string"
                         },
@@ -38,13 +38,13 @@ export default class AppInfo
                     {
                         "fromUserInfo":
                         {
-                            "userId": "string",
+                            "userId": "1",
                             "firstName": "string",
                             "lastName": "string"
                         },
                         "toUserInfo":
                         {
-                            "userId": "string",
+                            "userId": "2",
                             "firstName": "string",
                             "lastName": "string"
                         },
@@ -55,13 +55,13 @@ export default class AppInfo
                     {
                         "fromUserInfo":
                         {
-                            "userId": "string",
+                            "userId": "3",
                             "firstName": "string",
                             "lastName": "string"
                         },
                         "toUserInfo":
                         {
-                            "userId": "string",
+                            "userId": "2",
                             "firstName": "string",
                             "lastName": "string"
                         },
@@ -72,8 +72,8 @@ export default class AppInfo
                 ],
                 "members": [
                     {
-                        "userId": "string",
-                        "firstName": "string",
+                        "userId": "0001",
+                        "firstName": "11111",
                         "lastName": "string"
                     }
                 ]
@@ -104,8 +104,8 @@ export default class AppInfo
                 ],
                 "members": [
                     {
-                        "userId": "string",
-                        "firstName": "string",
+                        "userId": "00005",
+                        "firstName": "22222",
                         "lastName": "string"
                     }
                 ]
@@ -175,6 +175,25 @@ export default class AppInfo
         AppInfo.loginRegisterResponse.chatRooms.push(chatRoom)
     }
 
+    static addNewDirectMessage(directMessage)
+    {
+        var result = ""
+        AppInfo.loginRegisterResponse.directMessages.map((current) =>
+        {
+            if (directMessage.User2.userId === current.User2.userId)
+                result = current.messages.push(directMessage.messages[0])
+        })
+        
+        if (result === "")
+        {
+            return AppInfo.loginRegisterResponse.directMessages.push(directMessage)
+        }
+        else
+        {
+            return result
+        }
+    }
+
     static getCurrentFriendlyUserInfo()
     {
         return AppInfo.loginRegisterResponse.userInfo
@@ -196,7 +215,7 @@ export default class AppInfo
     {
         if (chatType === "Direct Message List")
         {
-            var temp = AppInfo.loginRegisterResponse.directMessages.find(chat => chat.id === chatId)
+            var temp = AppInfo.loginRegisterResponse.directMessages.find(chat => chat.User2.userId === chatId)
             return temp ? temp.messages : []
         }
         else
