@@ -33,7 +33,7 @@ function ChatRoomWindow(props)
         <div className='WindowContainer' style={props.chat === null ? {display:"none"} : {display:"flex"}}>
             <div className='MsgContainer' style={props.chatType === "Direct Message List" ? {width:"100%"} : {}}>
                 <div className='ChatHeader'>
-                    <h1 className='ChatTitle'>{chatHeader}</h1>
+                    <h1 className='ChatTitle'>{props.chat.joinCode ?? chatHeader}</h1>
                 </div>
                 <div className='MsgSection'>
                     <MessageWindow chatId= {chatId} chatType= {props.chatType} />

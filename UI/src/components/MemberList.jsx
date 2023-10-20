@@ -20,8 +20,8 @@ function MemberList(props)
     const msg = () =>
     {
       return {
-        "User1":AppInfo.getCurrentFriendlyUserInfo(),
-        "User2":
+        "user1":AppInfo.getCurrentFriendlyUserInfo(),
+        "user2":
                 {
                     "userId": id,
                     "firstName": name,
