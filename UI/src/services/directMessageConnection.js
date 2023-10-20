@@ -1,14 +1,18 @@
 import * as signalR from "@microsoft/signalr";
-import AppInfo from "./appInfo";
+import AppInfo from "./AppInfo";
 
-// This is the URL for the SignalR direct message Hub
+/**
+ * This is the URL for the SignalR direct message Hub
+ */
 const DIRECT_URL = AppInfo.BaseURL + "direct";
 
 class SignalRDirect
 {
     static #instance
 
-    // This is the connection to the SignalR direct message Hub
+    /**
+     * This is the connection to the SignalR direct message Hub
+     */
     constructor()
     {
         this.connection = new signalR.HubConnectionBuilder();
@@ -17,7 +21,9 @@ class SignalRDirect
         this.connection = this.connection.build();
     }
 
-    // This is the function that actually makes the connection and join the direct message
+    /**
+     * This is the function that actually makes the connection and join the direct message
+     */
     async makeConnection()
     {
         console.log("----> Starting connection to direct message");
@@ -30,24 +36,32 @@ class SignalRDirect
             .catch(console.log("----> Connection to direct message failed"));
     }
 
-    // This is the function that sets the callback for receiving direct messages
-    setReceiveDirectMessageCallback(directMessageCallback)
+    /**
+     * Set a callback function that will be called when a direct message is received
+     * @param {*} callBackFunction A function that will be called when a direct message is received
+     */
+    setReceiveDirectMessageCallback(callBackFunction)
     {
         this.connection.on("ReceiveDirectMessage", (msg) =>
         {
-            directMessageCallback(msg);
-            AppInfo.addMessage(msg);
+            callBackFunction(msg);
+            AppInfo.addDirectMessage(msg);
         });
     }
 
-    // This is the function that sends a direct message to the backend
+    /**
+     * 
+     * @param {*} msg An message object that will be sent to the backend
+     */
     async sendMessage(msg)
     {
         console.log("----> Sending Direct Message");
-        await this.connection.send("SendDirectMessage", msg.User1.userId, msg.User1.firstName, msg.User1.lastName, msg.User2.userId, msg.User2.firstName, msg.User2.lastName, msg.messages[0].message).catch(console.log("----> Send Direct Message failed"));
+        await this.connection.send("SendDirectMessage", msg.user1.userId, msg.user1.firstName, msg.user1.lastName, msg.user2.userId, msg.user2.firstName, msg.user2.lastName, msg.messages[0].message).catch(console.log("----> Send Direct Message failed"));
     }
 
-    // This is the function that joins the direct message channel.
+    /**
+     * This is the function that joins the direct message channel.
+     */
     async join()
     {
         console.log("----> Joining Direct Messaging");
@@ -55,13 +69,21 @@ class SignalRDirect
         await this.connection.send("JoinDirect", user.userId, user.firstName, user.lastName).catch(console.log("----> Join direct message failed"));
     }
 
+    /**
+     * 
+     * @param {*} fromId 
+     * @param {*} toId 
+     */
     async getDirectMessageHistory(fromId, toId)
     {
         console.log("----> Getting Direct Message History");
         await this.connection.send("GetChatHistory", fromId, toId).catch(console.log("----> Get Direct Message History failed"));
     }
 
-    // This idea is from stack overflow
+    /**
+     * Get the instance of the SignalR direct message connection
+     * @returns A singleton instance of the SignalR direct message connection
+     */
     static async getInstance()
     {
         if (SignalRDirect.instance == null)

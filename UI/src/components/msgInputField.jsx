@@ -1,11 +1,19 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable react-hooks/rules-of-hooks */
-import { useEffect, useState } from "react";
+import "../styles/MsgInputField.css";
+import AppInfo from "../services/AppInfo";
 import emailIcon from "../assets/email.png";
-import "../styles/msgInputField.css";
-import AppInfo from "../services/appInfo";
-import SignalRChatRoom from "../services/chatRoomConnection";
+import SignalRDirect from "../services/DirectMessageConnection";
+import { useEffect, useState } from "react";
+import SignalRChatRoom from "../services/ChatRoomConnection";
 
-function msgInputField(props)
+/**
+ * 
+ * @param {*} chatType The type of chat list to be displayed; either "Direct Message List" or "ChatRoom List"
+ * @param {*} chatId Either the chat room id or the direct message to_user id 
+ * @returns 
+ */
+function MsgInputField(props)
 {
   // Set the default state of the text
   const [text, setText] = useState("");
@@ -13,56 +21,35 @@ function msgInputField(props)
   // Send message
   const handleSend = () =>
   {
-    AppInfo.addMessage({
-      "fromUserInfo":
-      {
-          "userId": "3",
-          "firstName": "string",
-          "lastName": "string"
-      },
-      "toUserInfo":
-      {
-          "userId": "string",
-          "firstName": "string",
-          "lastName": "string"
-      },
-      "chatRoomId": "0001",
-      "message": "---->here<----",
-      "timestamp": "2023-10-13T23:35:59.786Z"
-  })
     // check if text is empty
     if (!text) return;
 
-    // send message
-    if (false) {
+    if (props.chatType === "Direct Message List")
+    {
       // create message object
       const msg = {
-        fromUserInfo: AppInfo.getCurrentFriendlyUserInfo(),
-        toUserInfo: [props.chatId],
-        message: text,
-        timestamp: Date.now().toString(),
+        user1: AppInfo.getCurrentFriendlyUserInfo(),
+        user2: {userId:props.chatId, },
+        messages: [{message:text}],
       };
-      props.connection.sendMessage(msg);
-    } else {
-        // {
-        //     "fromUserInfo": {
-        //       "userId": "string",
-        //       "firstName": "string",
-        //       "lastName": "string"
-        //     },
-        //     "chatRoomId": "string",
-        //     "message": "string",
-        //     "timestamp": "2023-10-18T04:40:53.386Z"
-        //   }
+      SignalRDirect.getInstance().then( async (value) =>
+      {
+        await value.sendMessage(msg);
+        console.log("----> Sent Direct Message");
+      });
+    }
+    else if (props.chatType === "ChatRoom List")
+    {
+      // create message object
       const msg = {
         fromUserInfo: AppInfo.getCurrentFriendlyUserInfo(),
         chatRoomId: props.chatId,
         message: text,
-        timestamp: Date.UTC(Date.now)
       };
-      props.connection.then(async (x) => {
-        await x.sendChatRoomMessage(msg);
-        console.log("Sent Message");
+      SignalRChatRoom.getInstance().then( async (value) =>
+      {
+        await value.sendChatRoomMessage(msg);
+        console.log("----> Sent Chat Room Message");
       });
     }
 
@@ -70,15 +57,19 @@ function msgInputField(props)
   };
 
   // Send message on enter key
-  const handleKey = (e) => {
-    if (e.code === "Enter" || e.code === "NumpadEnter") {
+  const handleKey = (e) =>
+  {
+    if (e.code === "Enter" || e.code === "NumpadEnter")
+    {
       handleSend();
     }
   };
 
-  useEffect(() => {
+  // Clean the input bar when the chat id changes
+  useEffect(() =>
+  {
     setText("");
-  }, [props.chatId, props.connection]);
+  }, [props.chatId]);
 
   return (
     <div className="MsgInputContainer">
@@ -99,4 +90,4 @@ function msgInputField(props)
   );
 }
 
-export default msgInputField;
+export default MsgInputField;

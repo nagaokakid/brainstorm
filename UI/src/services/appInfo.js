@@ -115,18 +115,18 @@ export default class AppInfo
             {
                 "user1":
                         {
-                            "userId": "string",
+                            "userId": "3",
                             "firstName": "string",
                             "lastName": "string"
                         },
                 "user2":
                         {
-                            "userId": "string",
+                            "userId": "1",
                             "firstName": "string",
                             "lastName": "string"
                         },
 
-                "messages": [
+                "directMessages": [
                     {
                         "message": "11AppInfo is DM 1 lalalalalalalalalalaalal",
                         "timestamp": "2023-10-13T23:35:59.786Z"
@@ -136,92 +136,127 @@ export default class AppInfo
                         "timestamp": "2023-10-13T23:35:59.786Z"
                     }
                 ],
-            }
+            },
         ]
-    }
-
-    static setToken()
-    {
-        localStorage.setItem("token", AppInfo.loginRegisterResponse.token)
-    }
-
-    static getToken()
-    {
-        return localStorage.getItem("token")
-    }
-
-    static getUserId()
-    {
-        return AppInfo.loginRegisterResponse.userInfo.userId
-    }
-
-    static getUserName()
-    {
-        return AppInfo.loginRegisterResponse.userInfo.firstName + " " + AppInfo.loginRegisterResponse.userInfo.lastName
-    }
-
-    static getDirectMessagesList()
-    {
-        return AppInfo.loginRegisterResponse.directMessages ?? []
-    }
-
-    static getChatRoomsList()
-    {
-        return  AppInfo.loginRegisterResponse.chatRooms ?? []
-    }
-
-    static addNewChatRoom(chatRoom)
-    {
-        AppInfo.loginRegisterResponse.chatRooms.push(chatRoom)
-    }
-
-    static addNewDirectMessage(directMessage)
-    {
-        var result = ""
-        AppInfo.loginRegisterResponse.directMessages.map((current) =>
-        {
-            if (directMessage.User2.userId === current.User2.userId)
-                result = current.messages.push(directMessage.messages[0])
-        })
-        
-        if (result === "")
-        {
-            return AppInfo.loginRegisterResponse.directMessages.push(directMessage)
-        }
-        else
-        {
-            return result
-        }
     }
 
     static getCurrentFriendlyUserInfo()
     {
-        return AppInfo.loginRegisterResponse.userInfo
+        return this.loginRegisterResponse.userInfo ?? {};
     }
 
-    static addMessage(message)
+    static getUserId()
     {
-        if (message === null)
+        return this.getCurrentFriendlyUserInfo().userId ?? {};
+    }
+
+    static getFirstName()
+    {
+        return this.getCurrentFriendlyUserInfo().firstName ?? {};
+    }
+
+    static getLastName()
+    {
+        return this.getCurrentFriendlyUserInfo().lastName ?? {};
+    }
+
+    static getUserName()
+    {
+        var temp = this.getCurrentFriendlyUserInfo();
+        return temp.firstName + " " + temp.lastName;
+    }
+
+    static getToken()
+    {
+        return this.loginRegisterResponse.token ?? "";
+    }
+
+    static getChatRoomsList()
+    {
+        return  this.loginRegisterResponse.chatRooms ?? [];
+    }
+
+    static getDirectMessagesList()
+    {
+        return this.loginRegisterResponse.directMessages ?? [];
+    }
+
+
+    /**
+     * 
+     * @param {*} chatRoom An object that contains the chat room information
+     * @returns 
+     */
+    static addNewChatRoom(chatRoom)
+    {
+        return this.getChatRoomsList().push(chatRoom);
+    }
+
+    /**
+     * 
+     * @param {*} newDirectMessage An object that contains the from_user, to_user and message information
+     * @returns 
+     */
+    static addNewDirectMessage(newDirectMessage)
+    {
+        var result = null;
+        this.getDirectMessagesList().map((current) =>
         {
-            // Direct Message
+            if (newDirectMessage.user2.userId === current.user2.userId)
+            {
+                console.log("----> Adding new direct message to existing direct message list");
+                result = current.messages.push(newDirectMessage.messages[0]);
+                console.log("----> Added new direct message", this.getDirectMessagesList());
+            } 
+        });
+        
+        if (result === null)
+        {
+            console.log("----> Create a new Direct Message List");
+            return this.loginRegisterResponse.directMessages.push(newDirectMessage);
         }
         else
         {
-            AppInfo.loginRegisterResponse.chatRooms.forEach(chatRoom => {if (chatRoom.id === message.chatRoomId) chatRoom.messages.push(message)})
+            return result;
         }
     }
 
-    static getList(chatId, chatType)
+    /**
+     * 
+     * @param {*} message An object that contains the from_user, chat room id and message information
+     * @returns 
+     */
+    static addChatRoomMessage(message)
+    {
+        var result = null;
+        this.getChatRoomsList().forEach(chatRoom =>
+            {
+                if (chatRoom.id === message.chatRoomId)
+                {
+                    result = chatRoom.messages.push(message);
+                }
+            });
+
+        return result;
+    }
+
+    /**
+     * 
+     * @param {*} chatId Can be the chat room id or the to_user_id
+     * @param {*} chatType Can be either 'Direct Message List' or 'Chat Room List'
+     * @returns 
+     */
+    static getListHistory(chatId, chatType)
     {
         if (chatType === "Direct Message List")
         {
-            var temp = AppInfo.loginRegisterResponse.directMessages.find(chat => chat.user2.userId === chatId)
-            return temp ? temp.messages : []
+            var temp = this.getDirectMessagesList().find(chat => chat.user2.userId === chatId);
+            return temp ? temp.directMessages : [];
         }
         else
         {
-            var temp1 = AppInfo.loginRegisterResponse.chatRooms.find(chat => chat.id === chatId)
-            return temp1 ? temp1.messages : []
+            var temp1 = this.getChatRoomsList().find(chat => chat.id === chatId);
+            return temp1 ? temp1.messages : [];
         }
     }
 }

@@ -1,34 +1,29 @@
 /* eslint-disable react/prop-types */
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import '../styles/MsgBox.css'
-import AppInfo from "../services/appInfo";
+import AppInfo from "../services/AppInfo";
 
+/**
+ * 
+ * @param {*} message The message to be displayed 
+ * @param {*} user The user that sent the message
+ * @returns 
+ */
 function MsgBox(props)
 {
-    // const ref = useRef();
-
-    // useEffect(() => {
-    //     ref.current?.scrollIntoView({ behavior: "smooth" });
-    // }, [message]);
-
-    // const toHoursAndMinutes = (totalSeconds) => {
-    //     const totalMinutes = Math.floor(totalSeconds / 60);
-    //     const seconds = Math.floor(totalSeconds % 60);
-    //     const hours = Math.floor(totalMinutes / 60);
-    //     const minutes = Math.floor(totalMinutes % 60);
-    //     if (hours !== 0) {
-    //         return `${hours} Hours Ago`;
-    //     } else if (hours === 0 && minutes !== 0) {
-    //         return `${minutes} Minutes Ago`;
-    //     } else if (hours === 0 && minutes === 0 && seconds !== 0) {
-    //         return `${seconds} Seconds Ago`;
-    //     } else if (hours === 0 && minutes === 0 && seconds === 0) {
-    //         return "Just now";
-    //     }
-    // };
-
+    // Set the default position of the message box; either "right" or "left"
     const [position, setPosition] = useState("");
 
+    // Scroll to the bottom of the message box
+    const ref = useRef();
+
+    // Scroll to the bottom of the message box when the message changes
+    useEffect(() =>
+    {
+        ref.current?.scrollIntoView({ behavior: "smooth" });
+    }, [props.message]);
+
+    // Set the position of the message box
     useEffect(() => {
         if (props.user === AppInfo.getUserId())
         {

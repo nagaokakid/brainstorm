@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { useNavigate } from 'react-router-dom';
-import '../styles/guestJoin.css';
-import ApiService from '../services/apiService';
+import '../styles/GuestJoin.css';
+import ApiService from '../services/ApiService';
 import 'mdb-react-ui-kit/dist/css/mdb.min.css';
 import {
   MDBInput,

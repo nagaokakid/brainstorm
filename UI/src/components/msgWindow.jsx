@@ -1,41 +1,60 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
+import "../styles/MsgWindow.css";
+import MessageBox from "./MsgBox";
+import AppInfo from "../services/AppInfo";
+import MessageInput from "./MsgInputField";
+import SignalRChatRoom from "../services/ChatRoomConnection";
+import SignalRDirect from "../services/DirectMessageConnection";
 import { useEffect, useState } from "react";
-import MessageBox from "./msgBox";
-import AppInfo from "../services/appInfo";
-import SignalRChatRoom from "../services/chatRoomConnection";
-import SignalRDirect from "../services/directMessageConnection";
 
-function MsgWindow(props) {
+/**
+ * 
+ * @param {*} chatId Either the chat room id or the direct message to_user id
+ * @param {*} chatType The type of chat list to be displayed; either "Direct Message List" or "ChatRoom List"
+ * @returns 
+ */
+function MsgWindow(props)
+{
   // Set the message to the display
-  const [messages, setMessages] = useState(props.chatId === "" ? [] : AppInfo.getList(props.chatId, props.chatType));
+  const [messages, setMessages] = useState(props.chatId === "" ? [] : AppInfo.getListHistory(props.chatId, props.chatType));
 
-  async function receiveChatRoomMsg(msg) {
-    console.log("----> Receive chatroom message callback in MsgWindow", msg)
-    setMessages([...messages, msg])
+  // Receive message callback
+  async function receiveMessage(msg)
+  {
+    console.log("----> Receive a message callback in MsgWindow", msg);
+    setMessages([...messages, msg]);
   }
 
-  SignalRChatRoom.getInstance().then((value) =>
-    value.receiveMessageCallback(receiveChatRoomMsg)
-  );
+  // Set the receive message callback
+  useEffect(() =>
+  {
+    if (props.chatType === "Direct Message List")
+    {
+      SignalRDirect.getInstance().then((value) => value.setReceiveDirectMessageCallback(receiveMessage));
+    }
+    else if (props.chatType === "ChatRoom List")
+    {
+      SignalRChatRoom.getInstance().then((value) => value.setReceiveChatRoomMessageCallback(receiveMessage));
+    }
+  }, [props.chatType]);
 
-  SignalRDirect.getInstance().then((value) =>{
-    value.setReceiveDirectMessageCallback(receiveChatRoomMsg)
-  })
-  console.log(props.chatId);
-
-  useEffect(() => {
-    console.log("........log use effect");
-
-    setMessages(
-      props.chatId === "" ? [] : AppInfo.getList(props.chatId, props.chatType)
-    );
-  }, [props.chatId, props.chatType]);
+  // Set the message list when the chat id changes
+  useEffect(() =>
+  {
+    setMessages(props.chatId === "" ? [] : AppInfo.getListHistory(props.chatId, props.chatType));
+  }, [props.chatId]);
 
   return (
-    <div className="msgWindowContainer">
-      {messages.map((e, index) => (
-        <MessageBox message={e.message} key={index} user={ e.fromUserInfo ? e.fromUserInfo.userId : null}/>
-      ))}
+    <div className="MsgWindowContainer">
+      <div className="MsgSection">
+        {messages.map((e, index) => (
+          <MessageBox message={e.message} key={index} user={e.fromUserInfo ? e.fromUserInfo.userId : null} />
+        ))}
+      </div>
+      <div className='InputSection'>
+        <MessageInput chatType={props.chatType} chatId={props.chatId} />
+      </div>
     </div>
   );
 }

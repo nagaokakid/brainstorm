@@ -1,11 +1,16 @@
 /* eslint-disable react/prop-types */
-import AppInfo from "../services/appInfo";
-import SignalRDirect from "../services/directMessageConnection";
 import "../styles/MemberList.css";
+import AppInfo from "../services/AppInfo";
+import SignalRDirect from "../services/DirectMessageConnection";
 
+/**
+ * 
+ * @param {*} memberList The list of members to be displayed 
+ * @returns 
+ */
 function MemberList(props)
 {
-  const onlineMembers = props.memberList ?? ["Member 1", "Member 2", "Member 3"];
+  const onlineMembers = props.memberList ?? ["Empty"];
   const offlineMembers = ["Member 4", "Member 5", "Member 6"];
 
   function handleMemberClick(id, name)
@@ -31,11 +36,9 @@ function MemberList(props)
       }
     }
 
-    SignalRDirect.getInstance().then(value => value.sendMessage(msg()));
-    console.log("---> first");
-    AppInfo.addNewDirectMessage(msg());
-    console.log(AppInfo.getDirectMessagesList(), "here is the list");
+    SignalRDirect.getInstance().then( async (value) => await value.sendMessage(msg()));
   }
+
   return (
     <div className="member-list">
       <div className="online-members">

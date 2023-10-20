@@ -1,26 +1,31 @@
-import AppInfo from "./appInfo";
-import SignalRChatRoom from "./chatRoomConnection";
-import SignalRDirect from "./directMessageConnection";
+import AppInfo from "./AppInfo";
+import SignalRChatRoom from "./ChatRoomConnection";
+import SignalRDirect from "./DirectMessageConnection";
 
 export default class ApiService
 {
-    // Do a Login API call to the backend and connect to all chatrooms and direct messaging
+    /**
+     * Do a Login API call to the backend and connect to all chatrooms and direct messaging
+     * @param {*} username The username of the user
+     * @param {*} password The password of the user
+     * @returns A json object that contains the response from the backend
+     */
     async Login(username, password)
     {
         const resp = await fetch(AppInfo.BaseURL + "api/users/login",
+        {
+            method: 'POST',
+            headers:
             {
-                method: 'POST',
-                headers:
-                {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ Username: username, Password: password }),
-            });
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ Username: username, Password: password }),
+        });
 
         // if response is okay, assign to appinfo for later use
         if (resp.ok) {
             AppInfo.loginRegisterResponse = await resp.json();
-            AppInfo.setToken();
+            localStorage.setItem("token", AppInfo.getToken());
             console.log("----> Login success");
             await this.connectChatRooms();
             await this.connectDirectMessaging();
@@ -28,8 +33,15 @@ export default class ApiService
 
         return resp;
     }
-    
-    // Do a Register API call to the backend and connect to direct messaging
+
+    /**
+     * Do a Register API call to the backend and connect to direct messaging
+     * @param {*} username The username of the user
+     * @param {*} password The password of the user
+     * @param {*} firstName The first name of the user
+     * @param {*} lastName The last name of the user
+     * @returns A json object that contains the response from the backend
+     */
     async Register(username, password, firstName, lastName)
     {
         const resp = await fetch(AppInfo.BaseURL + "api/users",
@@ -47,7 +59,7 @@ export default class ApiService
         if (resp.ok)
         {
             AppInfo.loginRegisterResponse = await resp.json();
-            AppInfo.setToken();
+            localStorage.setItem("token", AppInfo.getToken());
             console.log("----> Register success");
             await this.connectDirectMessaging();
         }
@@ -55,7 +67,12 @@ export default class ApiService
         return resp;
     }
 
-    // Do a GetChatRooms API call to the backend and build the connection to the chat room
+    /**
+     * Do a GetChatRooms API call to the backend and build the connection to the chat room
+     * @param {*} title The chat room name or title
+     * @param {*} description The chat room description
+     * @returns A json object that contains the response from the backend
+     */
     async CreateChatRoom(title, description)
     {
         const resp = await fetch(AppInfo.BaseURL + "api/chatroom",
@@ -64,7 +81,7 @@ export default class ApiService
                 headers:
                 {
                     'Content-Type': 'application/json',
-                    "Authorization": 'Bearer ' + AppInfo.getToken()
+                    "Authorization": 'Bearer ' + AppInfo.getToken(),
                 },
                 body: JSON.stringify({
                     userId: AppInfo.getUserId(),
@@ -86,28 +103,32 @@ export default class ApiService
         return resp;
     }
 
-    // Do a chatroom join API call to the backend without an account
+    /**
+     * Do a chatroom join API call to the backend without an account
+     * @param {*} code The join code of the chatroom
+     * @returns A json object that contains the response from the backend
+     */
     async GuestJoin(code)
     {
         const resp = await fetch(AppInfo.BaseURL + "api/chatroom/guest",
+        {
+            method: 'POST',
+            headers:
             {
-                method: 'POST',
-                headers:
-                {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + AppInfo.getToken()
-                },
-                body: JSON.stringify({
-                    code: code
-                }),
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + AppInfo.getToken()
+            },
+            body: JSON.stringify({
+                code: code
+            }),
 
-            });
+        });
 
         // if response is okay, assign to appinfo for later use
         if (resp.ok)
         {
             AppInfo.loginRegisterResponse = await resp.json();
-            AppInfo.setToken();
+            localStorage.setItem("token", AppInfo.getToken());
             console.log("----> Guest join success");
             await this.connectChatRooms();
         }
@@ -115,11 +136,13 @@ export default class ApiService
         return resp;
     }
 
-    // Build the connection to the backend for each chatroom
+    /**
+     * Build the connection to the backend for each chatroom
+     */
     async connectChatRooms()
     {
         const connection = await SignalRChatRoom.getInstance();
-        const chatRooms = AppInfo.loginRegisterResponse.chatRooms;
+        const chatRooms = AppInfo.getChatRoomsList();
 
         // Build connection only if there are chatrooms
         if (chatRooms)
@@ -133,7 +156,10 @@ export default class ApiService
         }
     }
 
-    // Build the connection to the backend for a specific chatroom
+    /**
+     * Build the connection to the backend for a specific chatroom
+     * @param {*} joinCode The join code of the chatroom
+     */
     async connectChatRoom(joinCode)
     {
         const connection = await SignalRChatRoom.getInstance();
@@ -141,23 +167,26 @@ export default class ApiService
         await connection.joinChatRoom(joinCode);
     }
 
-    // Build the connection to the backend for direct messaging
+    /**
+     * Build the connection to the backend for direct messaging
+     */
     async connectDirectMessaging()
     {
         const conn = await SignalRDirect.getInstance();
-        conn.setReceiveDirectMessageCallback((msg) => console.log("----> Receive direct message callback", msg));
-        // const msg = {
-        //     fromUserInfo: AppInfo.getCurrentFriendlyUserInfo(),
-        //     toUserInfo: AppInfo.getCurrentFriendlyUserInfo(),
-        //     message: "hello direct message",
-        // }
-        // await conn.sendMessage(msg)
+        conn.setReceiveDirectMessageCallback((msg) =>
+        {
+            console.log("----> Receive direct message callback", msg);
+            AppInfo.addNewDirectMessage(msg);
+        });
     }
 
+    /**
+     * Set all the call back functions for the SignalR
+     */
     async buildCallBack()
     {
-        await SignalRDirect.getInstance().then(value => value.setReceiveDirectMessageCallback((msg) => console.log("----> Receive direct message callback", msg)));
-        await SignalRChatRoom.getInstance().then(value => value.receiveMessageCallback((msg) => console.log("----> Receive chatroom message callback1", msg)));
-        await SignalRChatRoom.getInstance().then(value => value.receiveChatRoomInfoCallback((info) => console.log("----> Receive chatroom info callback", info)));
+        // await SignalRDirect.getInstance().then(value => value.setReceiveDirectMessageCallback((msg) => console.log("----> Receive direct message callback", msg)));
+        // await SignalRChatRoom.getInstance().then(value => value.receiveMessageCallback((msg) => console.log("----> Receive chatroom message callback1", msg)));
+        // await SignalRChatRoom.getInstance().then(value => value.receiveChatRoomInfoCallback((info) => console.log("----> Receive chatroom info callback", info)));
     }
 }

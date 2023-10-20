@@ -1,41 +1,55 @@
 /* eslint-disable react/prop-types */
 import "../styles/ChatList.css";
-import ChatRoomWindow from "./chatRoomWindow";
-import ChatRoomOption from "./chatRoomOption";
-import AppInfo from "../services/appInfo";
-import { useEffect, useState } from "react";
+import ChatRoomOption from "./ChatRoomOption";
+import AppInfo from "../services/AppInfo";
+import { lazy, useEffect, useState, Suspense } from "react";
 
+/**
+ * 
+ * @param {*} chatType The type of chat list to be displayed; either "Direct Message List" or "ChatRoom List"
+ * @returns The chat list of the application
+ */
 function ChatList(props)
 {
-  // Set the default chat list to be the Chat room list
+  // Lazy load the chat room window component
+  const ChatRoomWindow = lazy(() => import("./ChatRoomWindow"));
+
+  // Set the default chat type
+  const [chatType, setChatType] = useState(props.chatType);
+
+  // Set the default chat list to be empty list
   const [chatList, setChatList] = useState([]);
 
   // Track the current selected chat
-  const [chatId, setChatId] = useState("");
-
-  const [chatTitle, setChatTitle] = useState("");
+  const [selectedChat, setSelectedChat] = useState(null);
   
-  // Track the display of the chat room option
+  // Set the default display of the create chat room option to be hidden
   const [display, setDisplay] = useState("none");
 
-  const [memberList, setMemberList] = useState();
-
-  // Update the chat list when the chat type changes
+  // Re-render the chat list when the chat type changes
   useEffect (() =>
   {
     if (props.chatType === "Direct Message List")
     {
-      console.log("direct chat list object");
-      console.log(AppInfo.getDirectMessagesList());
+      console.log("----> Displaying direct messages list");
       setChatList(AppInfo.getDirectMessagesList());
     }
     else if (props.chatType === "ChatRoom List")
     {
+      console.log("----> Displaying chat rooms list");
       setChatList(AppInfo.getChatRoomsList());
     }
   }, [props.chatType]);
 
-  // Setting the create chat room option to be visible
+  // Set the chat id and chat title when a chat is selected
+  const handleChatOnClick = (chat) =>
+  {
+    console.log("Selected a chat");
+    setSelectedChat(chat);
+    setChatType(props.chatType);
+  }
+
+  // Set the display of the create chat room option
   const handleCreateRoomButton = (e) =>
   {
     setDisplay(e)
@@ -50,12 +64,9 @@ function ChatList(props)
         </div>
         <div className="chats">
           {chatList.map((chat, index) => (
-            <div className="chat-item" key={index} onClick={() => {
-              console.log("chat ----");
-              console.log(chat);
-              setChatTitle(chat.title ?? chat.user2.firstName), setChatId(chat.id ?? chat.user2.userId), setMemberList(chat.members ?? null)}}>
+            <div className="chat-item" key={index} onClick={() => handleChatOnClick(chat)}>
               <div className="chat-details">
-                <div className="chat-title">{chat.title ?? chat.user2.firstName}</div>
+                <div className="chat-title">{chat.title ?? chat.user2.firstName+" "+chat.user2.lastName}</div>
                 <div className="last-message">{chat.description ?? chat.directMessages.slice(-1)[0].message}</div>
               </div>
             </div>
@@ -66,9 +77,13 @@ function ChatList(props)
         </div>
       </div>
       <div className="ChatWindowContainer">
-        <ChatRoomWindow headerTitle={chatTitle} chatType={props.chatType} chatId={chatId} memberList={memberList} />
+        { selectedChat && (
+        <Suspense fallback={"Loading...."}>
+          <ChatRoomWindow chatType={chatType} chat={selectedChat} />
+        </Suspense>
+        )}
       </div>
-      <ChatRoomOption style= {display} callBack={handleCreateRoomButton} />
+      <ChatRoomOption style= {display} callBackFunction={handleCreateRoomButton} />
     </div>
   );
 }

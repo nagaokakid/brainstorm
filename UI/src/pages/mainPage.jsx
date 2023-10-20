@@ -2,11 +2,14 @@ import "../styles/MainPage.css";
 import HeaderNavBar from "../components/HeaderNavBar";
 import NavigationBar from "../components/NavigationBar";
 import ChatList from "../components/ChatList";
+import AppInfo from "../services/AppInfo";
+import ApiService from "../services/ApiService";
 import { useState } from "react";
-import AppInfo from "../services/appInfo";
-import ApiService from "../services/apiService";
 
-//top element a grid, 4 colms
+/**
+ * 
+ * @returns The main page of the application
+ */
 function MainPage()
 {
   // If the user is not logged in, redirect to the login page
@@ -33,7 +36,7 @@ function MainPage()
         <HeaderNavBar />
       </div>
       <div className="main-page-container">
-        <NavigationBar handleCallBack={handleCallBack} />
+        <NavigationBar callBackFunction={handleCallBack} />
         <ChatList chatType={chatType} />
       </div>
     </div>
