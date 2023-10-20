@@ -6,12 +6,9 @@ namespace Database.Collections
 {
     public class DirectMessageCollection : IDirectMessageCollection
     {
-        // Stub Database Collection
-        List<DirectMessageHistory> directMessages = new();
-
-
+   
         // The direct message collection from MongoDB
-        private MongoRepository<DirectMessage> directMessageRepository = new("DirectMessage");
+        private MongoRepository<DirectMessageHistory> directMessageHistoryRepository = new("brainstorm", "DirectMessageHistory");
 
         // Add a new direct message document to the collection
         public async Task Add(string userId1, string userId2, DirectMessage message)
@@ -22,15 +19,16 @@ namespace Database.Collections
                 // users have not exchanged direct messages before
                 var hist = new DirectMessageHistory
                 {
+                    Id = Guid.NewGuid().ToString(),
                     UserId1 = userId1,
                     UserId2 = userId2,
                     DirectMessages = new List<DirectMessage> { message },
                 };
-                directMessages.Add(hist);
+                await directMessageHistoryRepository.CreateDocument(hist);
             }
             else
             {
-                find.DirectMessages.Add(message);
+                await directMessageHistoryRepository.AddToArrayInDocument(find.Id, "DirectMessages", message);
             }
             //var result = await Get(userId1, userId2);
             //result.DirectMessages.Add(message);
@@ -58,14 +56,54 @@ namespace Database.Collections
 
         public async Task<List<DirectMessageHistory>> GetAll(string userId)
         {
-            var result = directMessages.Where(x => x.UserId1 == userId || x.UserId2 == userId)?.ToList();
-            return result ?? new List<DirectMessageHistory>();
+            List<string> fieldNameOne = new List<string>
+            {
+                "UserId1"
+            };
+            List<string> fieldNameTwo = new List<string>
+            {
+                "UserId2"
+            };
+            List<string> fieldValue = new List<string>
+            {
+                userId
+            };
+
+            var result1 = await directMessageHistoryRepository.GetAllDocumentsByFieldValues(fieldNameOne, fieldValue);
+            var result2 = await directMessageHistoryRepository.GetAllDocumentsByFieldValues(fieldNameTwo, fieldValue);
+
+            List<DirectMessageHistory> allDirectMessages = new();
+            allDirectMessages.AddRange(result1);
+            allDirectMessages.AddRange(result2);
+
+            return allDirectMessages;
         }
 
 
         public async Task<DirectMessageHistory?> Get(string userId1, string userId2)
         {
-            return directMessages.FirstOrDefault(x => (x.UserId1 == userId1 && x.UserId2 == x.UserId2) || (x.UserId1 == userId2 && x.UserId2 == x.UserId1));
+            List<string> fieldNames = new List<string>
+            {
+                "UserId1",
+                "UserId2"
+            };
+
+            List<string> orderOneValues = new List<string>
+            {
+                userId1,
+                userId2
+            };
+
+            List<string> orderTwoValues = new List<string>
+            {
+                userId2,
+                userId1
+            };
+
+            var result1 = await directMessageHistoryRepository.GetDocumentByFieldValues(fieldNames, orderOneValues);
+            var result2 = await directMessageHistoryRepository.GetDocumentByFieldValues(fieldNames, orderTwoValues);
+
+            return result1 ?? result2;
         }
     }
 }

@@ -13,15 +13,14 @@ namespace Database.MongoDB
 
         // Hard-coded to avoid file location issues when using Docker
         private const string CONNECTION_STRING = "mongodb+srv://comp4350:O954Xbw6kQ488jym@brainstorm.aj9h1fd.mongodb.net/?retryWrites=true&w=majority";
-        private const string DATABASE_NAME = "brainstorm";
 
         // Constructor: connect to MongoDB database and link to a specific collection
-        public MongoRepository(string collectionName)
+        public MongoRepository(string databaseName, string collectionName)
         {
             try
             {
                 client = new MongoClient(CONNECTION_STRING);
-                database = client.GetDatabase(DATABASE_NAME);
+                database = client.GetDatabase(databaseName);
                 collection = database.GetCollection<TDocument>(collectionName);
             }
             catch (MongoConfigurationException ex)
@@ -40,7 +39,7 @@ namespace Database.MongoDB
         }
 
         // Get all the documents for a collection
-        public async Task<IEnumerable<TDocument>> GetAllDocuments()
+        public async Task<List<TDocument>> GetAllDocuments()
         {
             try
             {
@@ -111,12 +110,8 @@ namespace Database.MongoDB
             }
         }
 
-        public async Task<List<TDocument>> GetAllUsers()
-        {
-            return await collection.Find(_ => true).ToListAsync();
-        }
         // Get all documents that match the given the field names and their values
-        public async Task<IEnumerable<TDocument>> GetAllDocumentsByFieldValues(List<string> fieldNames, List<string> fieldValues)
+        public async Task<List<TDocument>> GetAllDocumentsByFieldValues(List<string> fieldNames, List<string> fieldValues)
         {
             try
             {
@@ -221,7 +216,7 @@ namespace Database.MongoDB
         }
 
         // Add a new element to an array within an existing document
-        public async Task AddToArrayInDocument(string id, string arrayName, string newElement)
+        public async Task AddToArrayInDocument(string id, string arrayName, object newElement)
         {
             try
             {
@@ -249,7 +244,7 @@ namespace Database.MongoDB
         }
 
         // Remove an element from an array within an existing document
-        public async Task RemoveFromArrayInDocument(string id, string arrayName, string elementToRemove)
+        public async Task RemoveFromArrayInDocument(string id, string arrayName, object elementToRemove)
         {
             try
             {

@@ -2172,24 +2172,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\rfk4p\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+    "C:\\Users\\Akira Cooper\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\C# Library\\API_4350\\Logic\\Logic.csproj",
+      "projectUniqueName": "C:\\Users\\Akira Cooper\\source\\repos\\brainstorm\\Logic\\Logic.csproj",
       "projectName": "Logic",
-      "projectPath": "D:\\C# Library\\API_4350\\Logic\\Logic.csproj",
-      "packagesPath": "C:\\Users\\rfk4p\\.nuget\\packages\\",
-      "outputPath": "D:\\C# Library\\API_4350\\Logic\\obj\\",
+      "projectPath": "C:\\Users\\Akira Cooper\\source\\repos\\brainstorm\\Logic\\Logic.csproj",
+      "packagesPath": "C:\\Users\\Akira Cooper\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Akira Cooper\\source\\repos\\brainstorm\\Logic\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-      ],
       "configFilePaths": [
-        "C:\\Users\\rfk4p\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Users\\Akira Cooper\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -2197,15 +2192,15 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "C:\\Program Files\\dotnet\\library-packs": {},
+        "C:\\Program Files\\dotnet\\sdk\\7.0.302\\Sdks\\Microsoft.NET.Sdk.Web\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "net7.0": {
           "targetAlias": "net7.0",
           "projectReferences": {
-            "D:\\C# Library\\API_4350\\Database\\Database.csproj": {
-              "projectPath": "D:\\C# Library\\API_4350\\Database\\Database.csproj"
+            "C:\\Users\\Akira Cooper\\source\\repos\\brainstorm\\Database\\Database.csproj": {
+              "projectPath": "C:\\Users\\Akira Cooper\\source\\repos\\brainstorm\\Database\\Database.csproj"
             }
           }
         }
@@ -2268,7 +2263,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.400\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.302\\RuntimeIdentifierGraph.json"
       }
     }
   }
