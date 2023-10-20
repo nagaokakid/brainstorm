@@ -26,12 +26,6 @@ namespace Logic.Hubs
         }
         public async Task JoinDirect(string userId, string firstName, string lastName)
         {
-            var user = new FriendlyUserInfo
-            {
-                UserId = userId,
-                FirstName = firstName,
-                LastName = lastName
-            };
             await onlineUserService.Add(userId, Context.ConnectionId);
         }
 
@@ -49,8 +43,6 @@ namespace Logic.Hubs
                 Message = msg,
                 Timestamp = DateTime.Now
             };
-            // save direct message
-            await directMessageService.AddNewMessage(msgInfo);
             await Clients.Client(Context.ConnectionId).SendAsync("ReceiveDirectMessage", msgInfo);
 
 
@@ -60,6 +52,9 @@ namespace Logic.Hubs
             {
                 await Clients.Client(connectionId).SendAsync("ReceiveDirectMessage", msgInfo);
             }
+
+            // save direct message
+            directMessageService.AddNewMessage(msgInfo);
 
         }
     }

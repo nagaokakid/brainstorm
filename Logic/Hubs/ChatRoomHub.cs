@@ -17,14 +17,14 @@ namespace Logic.Hubs
         public async Task JoinChatRoom(string joinCode)
         {
             // get room for chatRoomCode
-            var result = await chatRoomService.GetRoomByJoinCode(joinCode);
+            var chatRoom = await chatRoomService.GetRoomByJoinCode(joinCode);
 
             // add member to group
-            if (result != null)
+            if (chatRoom != null)
             {
                 var msg = new MessageInfo
                 {
-                    ChatRoomId = result.Id,
+                    ChatRoomId = chatRoom.Id,
                     Message = $"New Member joined",
                     FromUserInfo = new FriendlyUserInfo
                     {
@@ -33,9 +33,9 @@ namespace Logic.Hubs
                         UserId = "id"
                     }
                 };
-                await Groups.AddToGroupAsync(Context.ConnectionId, result.Id);
-                await Clients.Client(Context.ConnectionId).SendAsync("ReceiveChatRoomMessage", msg);
-                await Clients.Client(Context.ConnectionId).SendAsync("ReceiveChatRoomInfo",result);
+                await Groups.AddToGroupAsync(Context.ConnectionId, chatRoom.Id);
+                Clients.Client(Context.ConnectionId).SendAsync("ReceiveChatRoomMessage", msg);
+                Clients.Client(Context.ConnectionId).SendAsync("ReceiveChatRoomInfo",chatRoom);
             }
         }
         public async Task SendChatRoomMessage(string userId, string chatRoomId, string firstName, string lastName, string msg)
@@ -51,10 +51,10 @@ namespace Logic.Hubs
                 };
 
                 // send message to everyone in the chatRoom
-                await Clients.Group(chatRoomId).SendAsync("ReceiveChatRoomMessage", msgInfo);
+                Clients.Group(chatRoomId).SendAsync("ReceiveChatRoomMessage", msgInfo);
 
                 // add message to chatroom
-                await chatRoomService.AddMessageToChatRoom(msgInfo.ChatRoomId, msgInfo);
+                chatRoomService.AddMessageToChatRoom(msgInfo.ChatRoomId, msgInfo);
             }
         }
         public override Task OnDisconnectedAsync(Exception? exception)
