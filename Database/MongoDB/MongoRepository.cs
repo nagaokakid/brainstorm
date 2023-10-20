@@ -216,7 +216,7 @@ namespace Database.MongoDB
         }
 
         // Add a new element to an array within an existing document
-        public async Task AddToArrayInDocument(string id, string arrayName, object newElement)
+        public async Task AddToArrayInDocument(string id, string arrayName, string newElement)
         {
             try
             {
@@ -244,7 +244,7 @@ namespace Database.MongoDB
         }
 
         // Remove an element from an array within an existing document
-        public async Task RemoveFromArrayInDocument(string id, string arrayName, object elementToRemove)
+        public async Task RemoveFromArrayInDocument(string id, string arrayName, string elementToRemove)
         {
             try
             {

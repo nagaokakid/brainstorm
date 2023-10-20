@@ -1,6 +1,7 @@
 ﻿using Database.CollectionContracts;
 using Database.Data;
 using Database.MongoDB;
+using System.Collections.Generic;
 
 namespace Database.Collections
 {
@@ -28,7 +29,7 @@ namespace Database.Collections
             }
             else
             {
-                await directMessageHistoryRepository.AddToArrayInDocument(find.Id, "DirectMessages", message);
+                await directMessageHistoryRepository.AddToArrayInDocument(find.Id, "DirectMessages", find.UserId1);
             }
             //var result = await Get(userId1, userId2);
             //result.DirectMessages.Add(message);
@@ -76,7 +77,7 @@ namespace Database.Collections
             allDirectMessages.AddRange(result1);
             allDirectMessages.AddRange(result2);
 
-            return allDirectMessages;
+            return allDirectMessages ?? new List<DirectMessageHistory>();
         }
 
 

@@ -15,10 +15,10 @@ namespace Database.Collections
             await chatRoomRepository.CreateDocument(chatRoom);
         }
 
-        // Add a new message object to the document's array
+        // Add a new message ID to the document's array
         public async Task AddMessage(string chatRoomId, ChatRoomMessage chatRoomMessage)
         {
-            await chatRoomRepository.AddToArrayInDocument(chatRoomId, "Messages", chatRoomMessage);
+            await chatRoomRepository.AddToArrayInDocument(chatRoomId, "Messages", chatRoomMessage.FromUserId);
         }
 
         // Get the chat room document with the given ID
