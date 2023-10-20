@@ -20,7 +20,7 @@ namespace Database.Collections
         // Add a new chat room ID to the array in an existing user document
         public async Task AddChatRoomToUser(string userId, string chatRoomId)
         {
-            await userRepository.AddToArrayInDocument(userId, "ChatRoomIds", chatRoomId);
+            await userRepository.AddToArrayInDocument(userId, "ChatroomIds", chatRoomId);
         }
 
         // Check if username already exists in User collection
@@ -68,9 +68,19 @@ namespace Database.Collections
 
         }
 
-        public Task<Dictionary<string, User>> GetAll()
+        public async Task<Dictionary<string, User>> GetAll()
         {
-            throw new NotImplementedException();
+            var found = await userRepository.GetAllUsers();
+            if(found != null)
+            {
+                var result = new Dictionary<string, User>();
+                foreach (var user in found)
+                {
+                    result.Add(user.Id, user);
+                }
+                return result;
+            }
+            return new Dictionary<string, User>();
         }
     } // class
 } // namespace

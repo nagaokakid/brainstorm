@@ -1,21 +1,20 @@
 import { useEffect, useState } from "react";
 import MessageBox from "./msgBox";
+import AppInfo from "../services/appInfo";
 
 function msgWindow(props)
 {
-    const conn = props.connection
-    var count = 1;
-    const [messages, setMessages] = useState([{}]);
+    const [messages, setMessages] = useState( props.chatId === "No Selected Chat" ? [{}] : AppInfo.getList(props.chatId, props.chatType) );
 
-    useEffect(() => {
-        setMessages([{msg:"Loading...", id:0}]);
-        console.log("useEffect");
-    }, [props.chatId]);
-    
+    useEffect(() =>
+    {
+        setMessages(props.chatId === "No Selected Chat" ? [{}] : AppInfo.getList(props.chatId, props.chatType))
+    }, [props.chatId])
+
     return (
         <div className="msgWindowContainer">
             {messages.map((e) => (
-                <MessageBox message={e.msg} key={e.id} />
+                <MessageBox message={e.message} key={e.id} />
             ))}
         </div>
     );

@@ -1,5 +1,6 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Driver;
+using System.Diagnostics;
 
 namespace Database.MongoDB
 {
@@ -25,12 +26,14 @@ namespace Database.MongoDB
             }
             catch (MongoConfigurationException ex)
             {
-                Console.WriteLine("Failed to connect to MongoDB: " + ex.Message);
+                Console.WriteLine("Mongo Exception! Failed to connect to MongoDB: " + ex.Message);
+                Console.WriteLine(ex.StackTrace);
                 throw;
             }
             catch (Exception ex)
             {
-                Console.WriteLine("System error occurred during MongoDB operation: " + ex.Message);
+                Console.WriteLine("System Exception! Failed to connect to MongoDB: " + ex.Message);
+                Console.WriteLine(ex.StackTrace);
                 throw;
             }
 
@@ -45,12 +48,14 @@ namespace Database.MongoDB
             }
             catch (MongoException ex)
             {
-                Console.WriteLine("Failed to retrieve all documents for the collection on MongoDB: " + ex.Message);
+                Console.WriteLine("Mongo Exception! Failed to retrieve all documents for the collection: " + ex.Message);
+                Console.WriteLine(ex.StackTrace);
                 throw;
             }
             catch (Exception ex)
             {
-                Console.WriteLine("System error occurred during MongoDB operation: " + ex.Message);
+                Console.WriteLine("System Exception! Failed to retrieve all documents for a collection: " + ex.Message);
+                Console.WriteLine(ex.StackTrace);
                 throw;
             }
         }
@@ -60,18 +65,19 @@ namespace Database.MongoDB
         {
             try
             {
-                var objectId = new ObjectId(id);
-                var filter = Builders<TDocument>.Filter.Eq("_id", objectId);
+                var filter = Builders<TDocument>.Filter.Eq("_id", id);
                 return await collection.Find(filter).FirstOrDefaultAsync();
             }
             catch (MongoException ex)
             {
-                Console.WriteLine("Failed to retrieve document on MongoDB: " + ex.Message);
+                Console.WriteLine("Mongo Exception! Failed to retrieve a document: " + ex.Message);
+                Console.WriteLine(ex.StackTrace);
                 throw;
             }
             catch (Exception ex)
             {
-                Console.WriteLine("System error occurred during MongoDB operation: " + ex.Message);
+                Console.WriteLine("System Exception! Failed to retrieve a document: " + ex.Message);
+                Console.WriteLine(ex.StackTrace);
                 throw;
             }
         }
@@ -93,16 +99,22 @@ namespace Database.MongoDB
             }
             catch (MongoException ex)
             {
-                Console.WriteLine("Failed to retrieve document with given field names and values: " + ex.Message);
+                Console.WriteLine("Mongo Exception! Failed to retrieve document with given field names and values: " + ex.Message);
+                Console.WriteLine(ex.StackTrace);
                 throw;
             }
             catch (Exception ex)
             {
-                Console.WriteLine("System error occurred during MongoDB operation: " + ex.Message);
+                Console.WriteLine("System Exception! Failed to retrieve document with given field names and values: " + ex.Message);
+                Console.WriteLine(ex.StackTrace);
                 throw;
             }
         }
 
+        public async Task<List<TDocument>> GetAllUsers()
+        {
+            return await collection.Find(_ => true).ToListAsync();
+        }
         // Get all documents that match the given the field names and their values
         public async Task<IEnumerable<TDocument>> GetAllDocumentsByFieldValues(List<string> fieldNames, List<string> fieldValues)
         {
@@ -120,12 +132,14 @@ namespace Database.MongoDB
             }
             catch (MongoException ex)
             {
-                Console.WriteLine("Failed to get list of documents with given field names and values: " + ex.Message);
+                Console.WriteLine("Mongo Exception! Failed to get a list of documents with given field names and values: " + ex.Message);
+                Console.WriteLine(ex.StackTrace);
                 throw;
             }
             catch (Exception ex)
             {
-                Console.WriteLine("System error occurred during MongoDB operation: " + ex.Message);
+                Console.WriteLine("System Exception! Failed to get a list of documents wiht given field names and values: " + ex.Message);
+                Console.WriteLine(ex.StackTrace);
                 throw;
             }
 
@@ -140,12 +154,14 @@ namespace Database.MongoDB
             }
             catch (MongoException ex)
             {
-                Console.WriteLine("Failed to create document on MongoDB: " + ex.Message);
+                Console.WriteLine("Mongo Exception! Failed to create document on MongoDB: " + ex.Message);
+                Console.WriteLine(ex.StackTrace);
                 throw;
             }
             catch (Exception ex)
             {
-                Console.WriteLine("System error occurred during MongoDB operation: " + ex.Message);
+                Console.WriteLine("System Exception! Failed to create document on MongoDB: " + ex.Message);
+                Console.WriteLine(ex.StackTrace);
                 throw;
             }
         }
@@ -155,8 +171,7 @@ namespace Database.MongoDB
         {
             try
             {
-                var objectId = new ObjectId(id);
-                var filter = Builders<TDocument>.Filter.Eq("_id", objectId);
+                var filter = Builders<TDocument>.Filter.Eq("_id", id);
                 var result = await collection.ReplaceOneAsync(filter, newDocument);
 
                 if (result.ModifiedCount == 0)
@@ -166,11 +181,13 @@ namespace Database.MongoDB
             }
             catch (MongoException ex)
             {
-                Console.WriteLine("Failed to replace an existing document on Mongo: " + ex.Message);
+                Console.WriteLine("Mongo Exception! Failed to replace an existing document on MongoDB: " + ex.Message);
+                Console.WriteLine(ex.StackTrace);
             }
             catch (Exception ex)
             {
-                Console.WriteLine("System error occurred during MongoDB operation: " + ex.Message);
+                Console.WriteLine("System Exception! Failed to replace an existing document on MongoDB: " + ex.Message);
+                Console.WriteLine(ex.StackTrace);
                 throw;
             }
         }
@@ -180,8 +197,7 @@ namespace Database.MongoDB
         {
             try
             {
-                var objectId = new ObjectId(id);
-                var filter = Builders<TDocument>.Filter.Eq("_id", objectId);
+                var filter = Builders<TDocument>.Filter.Eq("_id", id);
                 var update = Builders<TDocument>.Update.Set(fieldName, newFieldValue);
                 var result = await collection.UpdateOneAsync(filter, update);
 
@@ -192,12 +208,14 @@ namespace Database.MongoDB
             }
             catch (MongoException ex)
             {
-                Console.WriteLine("Failed to update field value in a document on MongoDB" + ex.Message);
+                Console.WriteLine("Mongo Exception! Failed to update field value in a document on MongoDB" + ex.Message);
+                Console.WriteLine(ex.StackTrace);
                 throw;
             }
             catch (Exception ex)
             {
-                Console.WriteLine("System error occurred during MongoDB operation: " + ex.Message);
+                Console.WriteLine("System Exception! Failed to update field value in a document on MongoDB: " + ex.Message);
+                Console.WriteLine(ex.StackTrace);
                 throw;
             }
         }
@@ -207,8 +225,7 @@ namespace Database.MongoDB
         {
             try
             {
-                var objectId = new ObjectId(id);
-                var filter = Builders<TDocument>.Filter.Eq("_id", objectId);
+                var filter = Builders<TDocument>.Filter.Eq("_id", id);
                 var update = Builders<TDocument>.Update.Push(arrayName, newElement);
                 var result = await collection.UpdateOneAsync(filter, update);
 
@@ -219,12 +236,14 @@ namespace Database.MongoDB
             }
             catch (MongoException ex)
             {
-                Console.WriteLine("Failed to add element to document array on MongoDB: " + ex.Message);
+                Console.WriteLine("Mongo Exception! Failed to add element to document array on MongoDB: " + ex.Message);
+                Console.WriteLine(ex.StackTrace);
                 throw;
             }
             catch (Exception ex)
             {
-                Console.WriteLine("System error occurred during MongoDB operation: " + ex.Message);
+                Console.WriteLine("System Exception! Failed to add element to document array on MongoDB: " + ex.Message);
+                Console.WriteLine(ex.StackTrace);
                 throw;
             }
         }
@@ -234,8 +253,7 @@ namespace Database.MongoDB
         {
             try
             {
-                var objectId = new ObjectId(id);
-                var filter = Builders<TDocument>.Filter.Eq("_id", objectId);
+                var filter = Builders<TDocument>.Filter.Eq("_id", id);
                 var update = Builders<TDocument>.Update.Pull(arrayName, elementToRemove);
                 var result = await collection.UpdateOneAsync(filter, update);
 
@@ -246,12 +264,14 @@ namespace Database.MongoDB
             }
             catch (MongoException ex)
             {
-                Console.WriteLine("Failed to remove element from document array on MongoDB: " + ex.Message);
+                Console.WriteLine("Mongo Exception! Failed to remove element from document array on MongoDB: " + ex.Message);
+                Console.WriteLine(ex.StackTrace);
                 throw;
             }
             catch (Exception ex)
             {
-                Console.WriteLine("System error occurred during MongoDB operation: " + ex.Message);
+                Console.WriteLine("System Exception! Failed to remove element from document array on MongoDB: " + ex.Message);
+                Console.WriteLine(ex.StackTrace);
                 throw;
             }
         }
@@ -261,8 +281,7 @@ namespace Database.MongoDB
         {
             try
             {
-                var objectId = new ObjectId(id);
-                var filter = Builders<TDocument>.Filter.Eq("_id", objectId);
+                var filter = Builders<TDocument>.Filter.Eq("_id", id);
                 var result = await collection.DeleteOneAsync(filter);
 
                 if (result.DeletedCount == 0)
@@ -272,12 +291,14 @@ namespace Database.MongoDB
             }
             catch (MongoException ex)
             {
-                Console.WriteLine("Failed to delete document on MongoDB: " + ex.Message);
+                Console.WriteLine("Mongo Exception! Failed to delete document on MongoDB: " + ex.Message);
+                Console.WriteLine(ex.StackTrace);
                 throw;
             }
             catch (Exception ex)
             {
-                Console.WriteLine("System error occurred during MongoDB operation: " + ex.Message);
+                Console.WriteLine("System Exception! Failed to delete document on MongoDB: " + ex.Message);
+                Console.WriteLine(ex.StackTrace);
                 throw;
             }
 
