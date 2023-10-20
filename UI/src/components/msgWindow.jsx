@@ -8,9 +8,7 @@ import SignalRDirect from "../services/directMessageConnection";
 function MsgWindow(props) {
   // Set the message to the display
   const [messages, setMessages] = useState(props.chatId === "" ? [] : AppInfo.getList(props.chatId, props.chatType));
-  //   const [count, setCount] = useState(
-  //     AppInfo.loginRegisterResponse.chatRooms[0].messages.length
-  //   );
+
   async function receiveChatRoomMsg(msg) {
     console.log("----> Receive chatroom message callback in MsgWindow", msg)
     setMessages([...messages, msg])
@@ -21,16 +19,16 @@ function MsgWindow(props) {
   );
 
   SignalRDirect.getInstance().then((value) =>{
-    value.receiveMessageCallback(receiveChatRoomMsg)
+    value.setReceiveDirectMessageCallback(receiveChatRoomMsg)
   })
   console.log(props.chatId);
 
   useEffect(() => {
     console.log("........log use effect");
 
-    // setMessages(
-    //   props.chatId === "" ? [] : AppInfo.getList(props.chatId, props.chatType)
-    // );
+    setMessages(
+      props.chatId === "" ? [] : AppInfo.getList(props.chatId, props.chatType)
+    );
   }, [props.chatId, props.chatType]);
 
   return (

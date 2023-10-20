@@ -15,23 +15,17 @@ function MemberList(props)
     const msg = () =>
     {
       return {
-        "User1":
-                {
-                    "userId": "string",
-                    "firstName": "string",
-                    "lastName": "string"
-                },
+        "User1":AppInfo.getCurrentFriendlyUserInfo(),
         "User2":
                 {
                     "userId": id,
                     "firstName": name,
-                    "lastName": "string"
+                    "lastName": name
                 },
 
         "messages": [
             {
-                "message": temp,
-                "timestamp": "2023-10-13T23:35:59.786Z"
+                "message": temp
             }
         ],
       }

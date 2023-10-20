@@ -25,6 +25,8 @@ function ChatList(props)
   {
     if (props.chatType === "Direct Message List")
     {
+      console.log("direct chat list object");
+      console.log(AppInfo.getDirectMessagesList());
       setChatList(AppInfo.getDirectMessagesList());
     }
     else if (props.chatType === "ChatRoom List")
@@ -48,10 +50,13 @@ function ChatList(props)
         </div>
         <div className="chats">
           {chatList.map((chat, index) => (
-            <div className="chat-item" key={index} onClick={() => {setChatTitle(chat.title ?? chat.User2.firstName), setChatId(chat.id ?? chat.User2.userId), setMemberList(chat.members ?? null)}}>
+            <div className="chat-item" key={index} onClick={() => {
+              console.log("chat ----");
+              console.log(chat);
+              setChatTitle(chat.title ?? chat.user2.firstName), setChatId(chat.id ?? chat.user2.userId), setMemberList(chat.members ?? null)}}>
               <div className="chat-details">
-                <div className="chat-title">{chat.title ?? chat.User2.firstName}</div>
-                <div className="last-message">{chat.description ?? chat.messages.slice(-1)[0].message}</div>
+                <div className="chat-title">{chat.title ?? chat.user2.firstName}</div>
+                <div className="last-message">{chat.description ?? chat.directMessages.slice(-1)[0].message}</div>
               </div>
             </div>
           ))}

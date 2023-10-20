@@ -113,13 +113,13 @@ export default class AppInfo
         ],
         "directMessages": [
             {
-                "User1":
+                "user1":
                         {
                             "userId": "string",
                             "firstName": "string",
                             "lastName": "string"
                         },
-                "User2":
+                "user2":
                         {
                             "userId": "string",
                             "firstName": "string",
@@ -215,7 +215,7 @@ export default class AppInfo
     {
         if (chatType === "Direct Message List")
         {
-            var temp = AppInfo.loginRegisterResponse.directMessages.find(chat => chat.User2.userId === chatId)
+            var temp = AppInfo.loginRegisterResponse.directMessages.find(chat => chat.user2.userId === chatId)
             return temp ? temp.messages : []
         }
         else
