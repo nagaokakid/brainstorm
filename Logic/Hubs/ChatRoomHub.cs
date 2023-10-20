@@ -51,10 +51,10 @@ namespace Logic.Hubs
                 };
 
                 // send message to everyone in the chatRoom
-                Clients.Group(chatRoomId).SendAsync("ReceiveChatRoomMessage", msgInfo);
+                await Clients.Group(chatRoomId).SendAsync("ReceiveChatRoomMessage", msgInfo);
 
                 // add message to chatroom
-                chatRoomService.AddMessageToChatRoom(msgInfo.ChatRoomId, msgInfo);
+                await chatRoomService.AddMessageToChatRoom(msgInfo.ChatRoomId, msgInfo);
             }
         }
         public override Task OnDisconnectedAsync(Exception? exception)

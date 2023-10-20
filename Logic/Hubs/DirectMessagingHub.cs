@@ -36,26 +36,30 @@ namespace Logic.Hubs
         }
         public async Task SendDirectMessage(string fromUserId, string fromFirstName, string fromLastName, string toUserId, string toFirstName, string toLastName, string msg)
         {
-            var msgInfo = new MessageInfo
+            if (!string.IsNullOrEmpty(msg) && !string.IsNullOrEmpty(fromUserId) && !string.IsNullOrEmpty(toUserId))
             {
-                FromUserInfo = new FriendlyUserInfo { UserId = fromUserId, FirstName = fromFirstName, LastName = fromLastName },
-                ToUserInfo = new FriendlyUserInfo { UserId = toUserId, FirstName = toFirstName, LastName = toLastName },
-                Message = msg,
-                Timestamp = DateTime.Now
-            };
-            await Clients.Client(Context.ConnectionId).SendAsync("ReceiveDirectMessage", msgInfo);
+
+                var msgInfo = new MessageInfo
+                {
+                    FromUserInfo = new FriendlyUserInfo { UserId = fromUserId, FirstName = fromFirstName, LastName = fromLastName },
+                    ToUserInfo = new FriendlyUserInfo { UserId = toUserId, FirstName = toFirstName, LastName = toLastName },
+                    Message = msg,
+                    Timestamp = DateTime.Now
+                };
+                await Clients.Client(Context.ConnectionId).SendAsync("ReceiveDirectMessage", msgInfo);
 
 
-            // make sure user is online
-            var connectionId = onlineUserService.Get(toUserId);
-            if (connectionId != null)
-            {
-                await Clients.Client(connectionId).SendAsync("ReceiveDirectMessage", msgInfo);
+                // make sure user is online
+                var connectionId = onlineUserService.Get(toUserId);
+                if (connectionId != null)
+                {
+                    await Clients.Client(connectionId).SendAsync("ReceiveDirectMessage", msgInfo);
+                }
+
+                // save direct message
+                directMessageService.AddNewMessage(msgInfo);
+
             }
-
-            // save direct message
-            directMessageService.AddNewMessage(msgInfo);
-
         }
     }
 }
