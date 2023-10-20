@@ -33,7 +33,11 @@ class SignalRDirect
     // This is the function that sets the callback for receiving direct messages
     setReceiveDirectMessageCallback(directMessageCallback)
     {
-        this.connection.on("ReceiveDirectMessage", (msg) => directMessageCallback(msg));
+        this.connection.on("ReceiveDirectMessage", (msg) =>
+        {
+            directMessageCallback(msg);
+            AppInfo.addMessage(msg);
+        });
     }
 
     // This is the function that sends a direct message to the backend

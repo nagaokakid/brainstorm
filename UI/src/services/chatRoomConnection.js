@@ -38,7 +38,6 @@ class SignalRChatRoom
         this.connection.on("ReceiveChatRoomMessage", (msg) =>
         {
             callback(msg);
-            console.log("----> Receive realtime chatroom msg");
             AppInfo.addMessage(msg);
         });
     }
@@ -49,7 +48,6 @@ class SignalRChatRoom
         this.connection.on("ReceiveChatRoomInfo", (info) =>
         {
             callback(info);
-            console.log("----> Receive new ChatRoom Info");
             AppInfo.addNewChatRoom(info);
         });
     }

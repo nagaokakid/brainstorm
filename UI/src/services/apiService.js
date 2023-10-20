@@ -141,21 +141,23 @@ export default class ApiService
         await connection.joinChatRoom(joinCode);
     }
 
-    test(msg){
-        console.log("receive direct message");
-        console.log(msg);
-    }
-
     // Build the connection to the backend for direct messaging
     async connectDirectMessaging()
     {
         const conn = await SignalRDirect.getInstance();
-        conn.setReceiveDirectMessageCallback(this.test);
-        const msg = {
-            fromUserInfo: AppInfo.getCurrentFriendlyUserInfo(),
-            toUserInfo: AppInfo.getCurrentFriendlyUserInfo(),
-            message: "hello direct message",
-        }
-        await conn.sendMessage(msg)
+        conn.setReceiveDirectMessageCallback((msg) => console.log("----> Receive direct message callback", msg));
+        // const msg = {
+        //     fromUserInfo: AppInfo.getCurrentFriendlyUserInfo(),
+        //     toUserInfo: AppInfo.getCurrentFriendlyUserInfo(),
+        //     message: "hello direct message",
+        // }
+        // await conn.sendMessage(msg)
+    }
+
+    async buildCallBack()
+    {
+        await SignalRDirect.getInstance().then(value => value.setReceiveDirectMessageCallback((msg) => console.log("----> Receive direct message callback", msg)));
+        await SignalRChatRoom.getInstance().then(value => value.receiveMessageCallback((msg) => console.log("----> Receive chatroom message callback", msg)));
+        await SignalRChatRoom.getInstance().then(value => value.receiveChatRoomInfoCallback((info) => console.log("----> Receive chatroom info callback", info)));
     }
 }
