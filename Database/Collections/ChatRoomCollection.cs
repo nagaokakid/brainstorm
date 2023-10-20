@@ -7,7 +7,7 @@ namespace Database.Collections
     public class ChatRoomCollection : IChatRoomCollection
     {
         // The chat room collection from MongoDB
-        private MongoRepository<ChatRoom> chatRoomRepository = new("ChatRoom");
+        private MongoRepository<ChatRoom> chatRoomRepository = new("brainstorm", "ChatRoom");
 
         // Add a new chat room document to the collection
         public async Task Add(ChatRoom chatRoom)
