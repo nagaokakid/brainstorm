@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import MessageBox from "./msgBox";
 import AppInfo from "../services/appInfo";
 import SignalRChatRoom from "../services/chatRoomConnection";
+import SignalRDirect from "../services/directMessageConnection";
 
 function MsgWindow(props) {
   // Set the message to the display
@@ -18,6 +19,10 @@ function MsgWindow(props) {
   SignalRChatRoom.getInstance().then((value) =>
     value.receiveMessageCallback(receiveChatRoomMsg)
   );
+
+  SignalRDirect.getInstance().then((value) =>{
+    value.receiveMessageCallback(receiveChatRoomMsg)
+  })
   console.log(props.chatId);
 
   useEffect(() => {
