@@ -11,7 +11,7 @@ namespace Database.Collections
 
 
         // The direct message collection from MongoDB
-        private MongoRepository<DirectMessage> directMessageRepository = new("DirectMessage");
+        private MongoRepository<DirectMessage> directMessageRepository = new("brainstorm", "DirectMessage");
 
         // Add a new direct message document to the collection
         public async Task Add(string userId1, string userId2, DirectMessage message)

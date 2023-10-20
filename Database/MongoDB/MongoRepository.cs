@@ -13,15 +13,14 @@ namespace Database.MongoDB
 
         // Hard-coded to avoid file location issues when using Docker
         private const string CONNECTION_STRING = "mongodb+srv://comp4350:O954Xbw6kQ488jym@brainstorm.aj9h1fd.mongodb.net/?retryWrites=true&w=majority";
-        private const string DATABASE_NAME = "brainstorm";
 
         // Constructor: connect to MongoDB database and link to a specific collection
-        public MongoRepository(string collectionName)
+        public MongoRepository(string databaseName, string collectionName)
         {
             try
             {
                 client = new MongoClient(CONNECTION_STRING);
-                database = client.GetDatabase(DATABASE_NAME);
+                database = client.GetDatabase(databaseName);
                 collection = database.GetCollection<TDocument>(collectionName);
             }
             catch (MongoConfigurationException ex)

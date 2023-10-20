@@ -9,7 +9,7 @@ namespace Database.Collections
     public class UserCollection : IUserCollection
     {
         // The user collection from MongoDB
-        private MongoRepository<User> userRepository = new("User");
+        private MongoRepository<User> userRepository = new("brainstorm", "User");
         
         // Add a new user document to the User collection
         public async Task Add(User newUser)
