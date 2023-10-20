@@ -157,7 +157,7 @@ export default class ApiService
     async buildCallBack()
     {
         await SignalRDirect.getInstance().then(value => value.setReceiveDirectMessageCallback((msg) => console.log("----> Receive direct message callback", msg)));
-        await SignalRChatRoom.getInstance().then(value => value.receiveMessageCallback((msg) => console.log("----> Receive chatroom message callback", msg)));
+        await SignalRChatRoom.getInstance().then(value => value.receiveMessageCallback((msg) => console.log("----> Receive chatroom message callback1", msg)));
         await SignalRChatRoom.getInstance().then(value => value.receiveChatRoomInfoCallback((info) => console.log("----> Receive chatroom info callback", info)));
     }
 }

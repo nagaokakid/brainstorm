@@ -1,4 +1,4 @@
-import MessageWindow from './MsgWindow';
+import MessageWindow from './msgWindow'
 import MessageInput from './msgInputField';
 import MemberList from './MemberList';
 import SignalRChatRoom from "../services/chatRoomConnection";
