@@ -4,7 +4,8 @@ import NavigationBar from "../components/NavigationBar";
 import ChatList from "../components/ChatList";
 import AppInfo from "../services/AppInfo";
 import ApiService from "../services/ApiService";
-import { useEffect, useState,  } from "react";
+import { useEffect, useState, useContext  } from "react";
+import { DataContext, DataDispatchContext } from "../context/dataContext";
 
 /**
  * 
@@ -12,6 +13,10 @@ import { useEffect, useState,  } from "react";
  */
 function MainPage()
 {
+  const chatMessage = useContext(DataContext)[2];
+  const directMessage = useContext(DataContext)[1];
+  const setChatMessage = useContext(DataDispatchContext)[2];
+  const setDirectMessage = useContext(DataDispatchContext)[1];
   // If the user is not logged in, redirect to the login page
   if (localStorage.getItem("token") === null || localStorage.getItem("token") !== AppInfo.getToken)
   {
@@ -27,11 +32,18 @@ function MainPage()
     setChatType(childData);
   }
 
+  function render()
+  {
+    setChatMessage(!chatMessage);
+    setDirectMessage(!directMessage);
+    console.log("----> Render callback");
+  }
+
   useEffect(() =>
   {
     console.log("----> Build callback");
     const apiservice = new ApiService();
-    apiservice.buildCallBack();
+    apiservice.buildCallBack(render);
   }, []);
   
 

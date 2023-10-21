@@ -13,6 +13,8 @@ import { DataContext } from "../context/dataContext";
 function ChatList(props)
 {
   const chatRoomInfo = useContext(DataContext)[3];
+  const directMessage = useContext(DataContext)[1];
+  const chatMessage = useContext(DataContext)[2];
   console.log("----> ChatList: chatRoomInfo: ", chatRoomInfo);
   
   // Lazy load the chat room window component
@@ -43,7 +45,7 @@ function ChatList(props)
       console.log("----> Displaying chat rooms list");
       setChatList(AppInfo.getChatRoomsList());
     }
-  }, [props.chatType, chatRoomInfo]);
+  }, [props.chatType, chatRoomInfo, directMessage, chatMessage]);
 
   // Set the chat id and chat title when a chat is selected
   const handleChatOnClick = (chat) =>

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import AppInfo from "./AppInfo";
 import SignalRChatRoom from "./ChatRoomConnection";
 import SignalRDirect from "./DirectMessageConnection";
@@ -183,10 +184,22 @@ export default class ApiService
     /**
      * Set all the call back functions for the SignalR
      */
-    async buildCallBack()
+    async buildCallBack(callback)
     {
-        await SignalRDirect.getInstance().then(value => value.setReceiveDirectMessageCallback((msg) => console.log("----> Receive direct message callback", msg)));
-        await SignalRChatRoom.getInstance().then(async value => await value.setReceiveChatRoomMessageCallback((msg) => console.log("----> Receive chatroom message callback1", msg)));
-        await SignalRChatRoom.getInstance().then(value => value.setReceiveChatRoomInfoCallback((info) => console.log("----> Receive chatroom info callback", info)));
+        await SignalRDirect.getInstance().then(value => value.setReceiveDirectMessageCallback((msg) =>
+        {
+            console.log("----> Receive direct message callback", msg)
+            callback(msg);
+        }));
+        await SignalRChatRoom.getInstance().then(async value => await value.setReceiveChatRoomMessageCallback((msg) =>
+        {
+            console.log("----> Receive chatroom message callback1", msg)
+            callback(msg);
+        }));
+        await SignalRChatRoom.getInstance().then(value => value.setReceiveChatRoomInfoCallback((info) =>
+        {
+            console.log("----> Receive chatroom info callback", info)
+            callback(info);
+        }));
     }
 }

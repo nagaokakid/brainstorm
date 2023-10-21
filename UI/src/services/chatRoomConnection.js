@@ -1,6 +1,7 @@
 import * as signalR from "@microsoft/signalr";
 import AppInfo from "./AppInfo";
 import { DataContext, DataDispatchContext } from "../context/dataContext";
+import { useContext } from "react";
 
 /**
  * This is the URL for the SignalR chatroom Hub
@@ -10,6 +11,8 @@ const DIRECT_URL = AppInfo.BaseURL + "chatroom";
 class SignalRChatRoom
 {
     static #instance
+
+
 
     /**
      * This is the connection to the SignalR chatroom Hub
@@ -44,9 +47,7 @@ class SignalRChatRoom
     {
         this.connection.on("ReceiveChatRoomMessage",(msg) =>
         {
-            const setChatMessage = DataDispatchContext()[2];
-            const chatMessage = DataContext()[2];
-            setChatMessage(!chatMessage);
+            console.log("----> Chatroom message received", msg);
             callBackFunction(msg);
             AppInfo.addChatRoomMessage(msg);
         });
@@ -60,12 +61,7 @@ class SignalRChatRoom
     {
         this.connection.on("ReceiveChatRoomInfo", (info) =>
         {
-            var setChatRoomInfo = DataDispatchContext()[3];
-            var chatRoomInfo = DataContext()[3];
             console.log("----> Chatroom info received", info);
-            console.log("before", chatRoomInfo)
-            setChatRoomInfo(!chatRoomInfo);
-            console.log("after", chatRoomInfo)
             callBackFunction(info);
             AppInfo.addChatRoomInfo(info);
         });

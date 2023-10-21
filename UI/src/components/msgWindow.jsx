@@ -6,7 +6,7 @@ import AppInfo from "../services/AppInfo";
 import MessageInput from "./MsgInputField";
 import SignalRChatRoom from "../services/ChatRoomConnection";
 import SignalRDirect from "../services/DirectMessageConnection";
-import { DataContext } from "../context/dataContext";
+import { DataContext, DataDispatchContext } from "../context/dataContext";
 import { useEffect, useState, useContext } from "react";
 
 /**
@@ -19,16 +19,20 @@ function MsgWindow(props)
 {
   const chatMessage = useContext(DataContext)[2];
   const directMessage = useContext(DataContext)[1];
+  const setChatMessage = useContext(DataDispatchContext)[2];
+  const setDirectMessage = useContext(DataDispatchContext)[1];
 
   // Set the message to the display
   const [messages, setMessages] = useState(props.chatId === "" ? [] : AppInfo.getListHistory(props.chatId, props.chatType));
 
   // Receive message callback
-  // async function receiveMessage(msg)
-  // {
-  //   console.log("----> Receive a message callback in MsgWindow", msg);
-  //   // setMessages([...messages, msg]);
-  // }
+  async function receiveMessage(msg)
+  {
+    console.log("----> Receive a message callback in MsgWindow", msg);
+    AppInfo.addChatRoomMessage(msg);
+    setChatMessage(!chatMessage);
+    // setMessages([...messages, msg]);
+  }
 
   // Set the receive message callback
   // useEffect(() =>
@@ -43,9 +47,11 @@ function MsgWindow(props)
   //   }
   // }, [props.chatType]);
 
+  
   // Set the message list when the chat id changes
   useEffect(() =>
   {
+    // SignalRChatRoom.getInstance().then((value) => value.setReceiveChatRoomMessageCallback(receiveMessage));
     setMessages(props.chatId === "" ? [] : AppInfo.getListHistory(props.chatId, props.chatType));
   }, [props.chatId, chatMessage, directMessage]);
 

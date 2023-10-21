@@ -5,6 +5,8 @@ import icon2 from '../assets/meeting.png'
 import ApiService from '../services/ApiService'
 import SignalRChatRoom from '../services/ChatRoomConnection'
 import AppInfo from '../services/AppInfo'
+import { useContext } from 'react'
+import {DataContext, DataDispatchContext} from '../context/dataContext'
 
 /**
  * 
@@ -14,6 +16,8 @@ import AppInfo from '../services/AppInfo'
  */
 function ChatRoomOption(props)
 {
+    const chatRoomInfo = useContext(DataContext)[3];
+    const setChatRoomInfo = useContext(DataDispatchContext)[3];
     // Set the component to be hidden and pass back the selected option
     function handleOptionClick(e)
     {
@@ -35,6 +39,7 @@ function ChatRoomOption(props)
             handleOptionClick("none")
             const apiService = new ApiService();
             await apiService.CreateChatRoom(chatRoomName, "description")
+            setChatRoomInfo(!chatRoomInfo);
         }
     }
 
@@ -50,7 +55,11 @@ function ChatRoomOption(props)
             SignalRChatRoom.getInstance().then(async x =>
             {
                 await x.joinChatRoom(input, "First", AppInfo.getUserId())
-                await x.setReceiveChatRoomInfoCallback((msg) => console.log("----> Received chat room info: ", msg))
+                await x.setReceiveChatRoomInfoCallback((msg) =>
+                {
+                    console.log("----> Received chat room info: ", msg)
+                    setChatRoomInfo(!chatRoomInfo);
+                });
             })
         }
     }
