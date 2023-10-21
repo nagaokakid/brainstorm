@@ -30,9 +30,17 @@ namespace Logic.Services
 
         public async Task<FriendlyUserInfo> GetFriendly(string userId, Dictionary<string, User> users)
         {
-            if (users.TryGetValue(userId, out var user))
+            try
             {
-                return user.ToFriendlyUser();
+
+                if (users.TryGetValue(userId, out var user))
+                {
+                    return user.ToFriendlyUser();
+                }
+            }
+            catch
+            {
+
             }
 
             return new FriendlyUserInfo { UserId = userId };

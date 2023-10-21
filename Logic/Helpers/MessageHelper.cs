@@ -26,10 +26,13 @@ namespace Logic.Helpers
 
         public static FriendlyDirectMessageHistory ToDTO(this DirectMessageHistory msgs, Dictionary<string, User> users)
         {
+            users.TryGetValue(msgs.UserId1, out var u1);
+            users.TryGetValue(msgs.UserId2, out var u2);
+
             return new FriendlyDirectMessageHistory
             {
-                User1 = users[msgs.UserId1].ToFriendlyUser(),
-                User2 = users[msgs.UserId2].ToFriendlyUser(),
+                User1 =  u1 != null ? u1.ToFriendlyUser() :null,
+                User2 = u2 != null ? u2.ToFriendlyUser(): null,
                 DirectMessages = msgs.DirectMessages.Select(x => x.ToDTO()).ToList(),
             };
         }
