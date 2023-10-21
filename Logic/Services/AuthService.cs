@@ -97,7 +97,7 @@ namespace Logic.Services
             {
                 UserInfo = friendly,
                 Token = CreateToken(friendly),
-                ChatRooms = await GetFriendlyChatRooms(user.ChatroomIds),
+                ChatRooms = await GetFriendlyChatRooms(user.ChatroomIds, users),
                 DirectMessages = await GetDirectMessages(user.Id, users)
             };
         }
@@ -112,7 +112,7 @@ namespace Logic.Services
             return new List<FriendlyDirectMessageHistory>();
         }
 
-        public async Task<List<FriendlyChatRoom>> GetFriendlyChatRooms(List<string> chatRoomIds)
+        public async Task<List<FriendlyChatRoom>> GetFriendlyChatRooms(List<string> chatRoomIds, Dictionary<string , User> users)
         {
             var result = new List<FriendlyChatRoom>();
 
@@ -132,10 +132,10 @@ namespace Logic.Services
                         ChatRoomId = found.Id,
                         Message = x.Message,
                         Timestamp = x.Timestamp,
-                        FromUserInfo = userService.GetFriendly(x.FromUserId).Result
+                        FromUserInfo = userService.GetFriendly(x.FromUserId, users).Result
                     }).ToList(),
                     JoinCode = found.JoinCode,
-                    Members = await userService.GetList(found.MemberIds)
+                    Members = await userService.GetList(found.MemberIds, users)
                 });
             }
 
