@@ -11,43 +11,11 @@ namespace Logic.UnitTest.Services
         Mock<IDirectMessageCollection> directMessageCollection;
         Mock<IUserCollection> userCollectoin;
 
-        List<DirectMessage> directMessageList;
-        Dictionary<string, User> userList;
-
         [SetUp]
         public void SetUp()
         {
             directMessageCollection = new Mock<IDirectMessageCollection>();
             userCollectoin = new Mock<IUserCollection>();
-
-            directMessageList = new List<DirectMessage>()
-            {
-                new DirectMessage
-                {
-                    FromUserId = "1",
-                    ToUserId = "2",
-                    Message = "hi",
-                    Timestamp = DateTime.Now
-                }
-            };
-
-            userList = new Dictionary<string, User>()
-            {
-                {
-                    "1",
-                    new User
-                    {
-                        Id = "1",
-                    }
-                },
-                {
-                    "2",
-                    new User
-                    {
-                        Id = "2",
-                    }
-                }
-            };
         }
 
         [Test]
@@ -67,31 +35,38 @@ namespace Logic.UnitTest.Services
         }
 
         [Test]
-        public async Task GetMessageByUserId_InputNoDirectMessages_ReturnNewList()
+        public async Task GetMessageByUserId_InputNoDirectMessages_ReturnNull()
         {
             directMessageCollection.Setup(x => x.Get("fromId", "toId")).Returns(async () => null);
 
             var service = new DirectMessageService(directMessageCollection.Object, userCollectoin.Object);
             var result = await service.GetMessagesByUserId("fromId", "toId");
 
-            Assert.That(result.Count == 0);
+            Assert.That(result == null);
         }
 
         [Test]
         public async Task GetMessageByUserId_InputValid_ReturnList()
         {
             // Arrange
-            directMessageCollection.Setup(x => x.Get("fromId", "toId")).Returns(async () => directMessageList);
-            userCollectoin.Setup(x => x.GetAll()).Returns(async () => userList);
+            directMessageCollection.Setup(x => x.Get("fromId", "toId")).Returns(async () => new DirectMessageHistory { UserId1="fromId", UserId2="toId", DirectMessages = new List<DirectMessage> { new DirectMessage { Message="hi", Timestamp=DateTime.Now} } });
+            userCollectoin.Setup(x => x.GetAll()).Returns(async () => 
+            new Dictionary<string, User>
+            {
+                { "fromId", new User { Id = "fromId" } }, 
+                { "toId", new User { Id="toId"} }
+            });
             var service = new DirectMessageService(directMessageCollection.Object, userCollectoin.Object);
 
             // Act
             var result = await service.GetMessagesByUserId("fromId", "toId");
 
             // Assert
-            Assert.That(result.Count == 1);
-            Assert.That(result[0].FromUserInfo.UserId == "1");
-            Assert.That(result[0].ToUserInfo.UserId == "2");
+            Assert.That(result.DirectMessages.Count == 1);
+            Assert.That(result.User1.UserId == "fromId");
+            Assert.That(result.User2.UserId == "toId");
+            Assert.That(result.DirectMessages[0].Message == "hi");
+
         }
     }
 }

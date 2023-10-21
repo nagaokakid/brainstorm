@@ -42,28 +42,28 @@ namespace Database.UnitTest
         public void Constructor_GivenValidCollectionNameOfUser_DoesNotThrowException()
         {
             string validCollectionName = "User";
-            Assert.DoesNotThrow(() => new MongoRepository<User>(validCollectionName));
+            Assert.DoesNotThrow(() => new MongoRepository<User>(DATABASE_NAME, validCollectionName));
         }
 
         [Test]
         public void Constructor_GivenValidCollectionNameOfDirectMessage_DoesNotThrowException()
         {
             string validCollectionName = "DirectMessage";
-            Assert.DoesNotThrow(() => new MongoRepository<DirectMessage>(validCollectionName));
+            Assert.DoesNotThrow(() => new MongoRepository<DirectMessage>(DATABASE_NAME, validCollectionName));
         }
 
         [Test]
         public void Constructor_GivenValidCollectionNameOfChatRoom_DoesNotThrowException()
         {
             string validCollectionName = "ChatRoom";
-            Assert.DoesNotThrow(() => new MongoRepository<ChatRoom>(validCollectionName));
+            Assert.DoesNotThrow(() => new MongoRepository<ChatRoom>(DATABASE_NAME, validCollectionName));
         }
 
         [Test]
         public void Constructor_GivenValidCollectionNameOfChatRoomMessage_DoesNotThrowException()
         {
             string validCollectionName = "ChatRoomMessage";
-            Assert.DoesNotThrow(() => new MongoRepository<ChatRoomMessage>(validCollectionName));
+            Assert.DoesNotThrow(() => new MongoRepository<ChatRoomMessage>(DATABASE_NAME, validCollectionName));
         }
 
 
