@@ -1,34 +1,45 @@
-import { useContext, useEffect, useRef } from "react";
+/* eslint-disable react/prop-types */
+import { useState, useEffect, useRef } from "react";
+import '../styles/MsgBox.css'
+import AppInfo from "../services/AppInfo";
 
-function Message({ message, id })
+/**
+ * 
+ * @param {*} message The message to be displayed 
+ * @param {*} user The user that sent the message
+ * @returns 
+ */
+function MsgBox(props)
 {
-    // const ref = useRef();
+    // Set the default position of the message box; either "right" or "left"
+    const [position, setPosition] = useState("");
 
-    // useEffect(() => {
-    //     ref.current?.scrollIntoView({ behavior: "smooth" });
-    // }, [message]);
+    // Scroll to the bottom of the message box
+    const ref = useRef();
 
-    // const toHoursAndMinutes = (totalSeconds) => {
-    //     const totalMinutes = Math.floor(totalSeconds / 60);
-    //     const seconds = Math.floor(totalSeconds % 60);
-    //     const hours = Math.floor(totalMinutes / 60);
-    //     const minutes = Math.floor(totalMinutes % 60);
-    //     if (hours !== 0) {
-    //         return `${hours} Hours Ago`;
-    //     } else if (hours === 0 && minutes !== 0) {
-    //         return `${minutes} Minutes Ago`;
-    //     } else if (hours === 0 && minutes === 0 && seconds !== 0) {
-    //         return `${seconds} Seconds Ago`;
-    //     } else if (hours === 0 && minutes === 0 && seconds === 0) {
-    //         return "Just now";
-    //     }
-    // };
+    // Scroll to the bottom of the message box when the message changes
+    useEffect(() =>
+    {
+        ref.current?.scrollIntoView({ behavior: "smooth" });
+    }, [props.message]);
+
+    // Set the position of the message box
+    useEffect(() => {
+        if (props.user === AppInfo.getUserId())
+        {
+            setPosition("end");
+        }
+        else
+        {
+            setPosition("start");
+        }
+    }, [props.user]);
 
     return (
-        <div className="messageContent">
-            <p>{message}</p>
+        <div className="MessageContainer" style={{justifyContent:position}}>
+            <p>{props.message}</p>
         </div>
     );
 }
 
-export default Message;
+export default MsgBox;

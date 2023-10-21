@@ -6,23 +6,21 @@
   background-color: #f0f0f0;
   display: flex;
   flex-direction: column;
+  gap: 20px;
   overflow-y: auto;
-  /* Add a scrollbar for overflow */
+}
 
-  /* Style the headers for online and offline members */
-  .online-members h2,
-  .offline-members h2 {
-    font-size: 18px;
-    font-weight: bold;
-  }
+.member-list .online-members h2, .member-list .offline-members h2
+{
+  position: relative;
+  font-size: 22px;
+  display: flex;
+  justify-content: start;
+}
 
-  /* Style the list of members */
-  ul {
-    list-style: none;
-    padding: 0;
-  }
-
-  li {
-    margin: 5px 0;
-  }
+.member-list ul,
+.member-list li {
+  cursor: pointer;
+  list-style: none;
+  padding: 0;
 }

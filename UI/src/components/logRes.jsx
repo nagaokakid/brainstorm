@@ -1,6 +1,5 @@
-import { useState } from 'react';
-import ApiService from '../services/apiService';
 import '../styles/LogRes.css';
+import ApiService from '../services/ApiService';
 import 'mdb-react-ui-kit/dist/css/mdb.min.css';
 import {
     MDBContainer,
@@ -12,22 +11,20 @@ import {
     MDBBtn,
     MDBInput
 } from 'mdb-react-ui-kit'
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+/**
+ * 
+ * @returns The login and register page of the application
+ */
 function LogRes()
 {
-    
-    //  handle the state of the tabs; Login or Register
+    const navigate = useNavigate();
+
+    //  Store the state of the tabs
     const [justifyActive, setJustifyActive] = useState('tab1');
-    const handleJustifyClick = (value) =>
-    {
-        if (value === justifyActive)
-        {
-            return;
-        }
-        setJustifyActive(value)
-    }
-    
+
     // This handle the state of the inputs; Username, Password, Re-Password, First Name, Last Name
     const [input, setInput] = useState({
         Username: '',
@@ -36,65 +33,84 @@ function LogRes()
         FirstName: '',
         LastName: ''
     });
+
+    // This will handle the tabs and change the state
+    const handleJustifyClick = (value) =>
+    {
+        if (value === justifyActive)
+        {
+            return;
+        }
+
+        setJustifyActive(value);
+    }
+    
     // This will keep track of the inputs and update the state
     const handleChanged = (value) =>
     {
         const id = value.target.id;
         const info = value.target.value;
-        setInput((prev) => { return {...prev, [id]: info} })
+        setInput((prev) => { return {...prev, [id]: info} });
     }
     
-    const navigate = useNavigate()
-    // This will verify the form and handle the request to the server
-    const RequestHandle = async (value) =>
+    /**
+     * This will handle the login request
+     */
+    const handleLogin = async () =>
     {
-        // Create an Object of the apiService
-        const apiService = new ApiService()
-        if (value === 1)
+        const apiService = new ApiService();
+
+        if (input.Username == "" || input.Password == "")
         {
-            if (input.Username == "" || input.Password == "")
+            alert("Please complete the form");
+        }
+        else
+        {
+            var response = await apiService.Login(input.Username, input.Password);
+
+            // To-Do: Handle the response and create UI for different responses
+            if (response.ok)
             {
-                alert("Please complete the form")
+                // if good
+                console.log("Navigating to main page");
+                navigate('/main');
             }
             else
             {
-                var response = await apiService.Login(input.Username, input.Password)
-
-                // To-Do: Handle the response and create UI for different responses
-                if (response.ok)
-                {
-                    // if good
-                    navigate('/main')
-                }
-                else
-                {
-                    // if error
-                    alert('Something went wrong');
-                }
+                // if error
+                alert('Account does not exist');
             }
         }
-        else if (value === 2)
+    }
+
+    /**
+     * This will handle the register request
+     */
+    const handleRegister = async () =>
+    {
+        const apiService = new ApiService();
+
+        if (input.Username == "" || input.Password == "" || input.RePassword == "" || input.FirstName == "" || input.LastName == "")
         {
-            if (input.Username == "" || input.Password == "" || input.RePassword == "" || input.FirstName == "" || input.LastName == "")
-            {
-                alert("Please complete the form");
-            }
-            else if
-            (input.Password != input.RePassword)
-            {
-                alert("Passwords do not match");
-            }
-            else
-            {
-                const resp = await apiService.Register(input.Username, input.Password, input.FirstName, input.LastName)
+            alert("Please complete the form");
+        }
+        else if (input.Password != input.RePassword)
+        {
+            alert("Passwords do not match");
+        }
+        else
+        {
+            const resp = await apiService.Register(input.Username, input.Password, input.FirstName, input.LastName);
 
-                // To-Do: Handle the response and create UI for different responses
-                if(resp.ok){
-                    navigate('/main')
+            // To-Do: Handle the response and create UI for different responses
+            if(resp.ok)
+            {
+                console.log("Navigating to main page");
+                navigate('/main');
 
-                } else{
-                    alert('Something went wrong');
-                }
+            } else
+            {
+                alert('Unable to create account with the given information');
             }
         }
     }
@@ -119,7 +135,7 @@ function LogRes()
                         <h3 className='SignInTitle'>Sign In:</h3>
                         <MDBInput wrapperClass='mb-4' label='Username' id='Username' type='text' onChange={handleChanged} />
                         <MDBInput wrapperClass='mb-4' label='Password' id='Password' type='password' onChange={handleChanged} />
-                        <MDBBtn className="mb-4 w-100" onClick={() => RequestHandle(1)}>Sign in</MDBBtn>
+                        <MDBBtn className="mb-4 w-100" onClick={() => handleLogin()}>Sign in</MDBBtn>
                     </MDBTabsPane>
                     <MDBTabsPane show={justifyActive === 'tab2'}>
                         <h3 className='RegisterTitle'>Create Account:</h3>
@@ -128,7 +144,7 @@ function LogRes()
                         <MDBInput wrapperClass='mb-4' label='Last Name' id='LastName' type='text' onChange={handleChanged} />
                         <MDBInput wrapperClass='mb-4' label='Password' id='Password' type='password' onChange={handleChanged} />
                         <MDBInput wrapperClass='mb-4' label='Re-Password' id='RePassword' type='password' onChange={handleChanged} />
-                        <MDBBtn className="mb-4 w-100" onClick={() => RequestHandle(2)}>Sign up</MDBBtn>
+                        <MDBBtn className="mb-4 w-100" onClick={() => handleRegister()}>Sign up</MDBBtn>
                     </MDBTabsPane>
                 </MDBTabsContent>
             </MDBContainer>

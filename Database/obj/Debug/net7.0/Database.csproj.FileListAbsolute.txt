@@ -22,3 +22,15 @@ C:\Users\Akira Cooper\source\repos\brainstorm\Database\obj\Debug\net7.0\Database
 C:\Users\Akira Cooper\source\repos\brainstorm\Database\obj\Debug\net7.0\refint\Database.dll
 C:\Users\Akira Cooper\source\repos\brainstorm\Database\obj\Debug\net7.0\Database.pdb
 C:\Users\Akira Cooper\source\repos\brainstorm\Database\obj\Debug\net7.0\ref\Database.dll
+C:\Users\rfk4p\Documents\ui_4350\brainstorm1\Database\bin\Debug\net7.0\Database.deps.json
+C:\Users\rfk4p\Documents\ui_4350\brainstorm1\Database\bin\Debug\net7.0\Database.dll
+C:\Users\rfk4p\Documents\ui_4350\brainstorm1\Database\bin\Debug\net7.0\Database.pdb
+C:\Users\rfk4p\Documents\ui_4350\brainstorm1\Database\obj\Debug\net7.0\Database.csproj.AssemblyReference.cache
+C:\Users\rfk4p\Documents\ui_4350\brainstorm1\Database\obj\Debug\net7.0\Database.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\rfk4p\Documents\ui_4350\brainstorm1\Database\obj\Debug\net7.0\Database.AssemblyInfoInputs.cache
+C:\Users\rfk4p\Documents\ui_4350\brainstorm1\Database\obj\Debug\net7.0\Database.AssemblyInfo.cs
+C:\Users\rfk4p\Documents\ui_4350\brainstorm1\Database\obj\Debug\net7.0\Database.csproj.CoreCompileInputs.cache
+C:\Users\rfk4p\Documents\ui_4350\brainstorm1\Database\obj\Debug\net7.0\Database.dll
+C:\Users\rfk4p\Documents\ui_4350\brainstorm1\Database\obj\Debug\net7.0\refint\Database.dll
+C:\Users\rfk4p\Documents\ui_4350\brainstorm1\Database\obj\Debug\net7.0\Database.pdb
+C:\Users\rfk4p\Documents\ui_4350\brainstorm1\Database\obj\Debug\net7.0\ref\Database.dll

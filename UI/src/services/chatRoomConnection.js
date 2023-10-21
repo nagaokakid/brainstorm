@@ -1,44 +1,107 @@
-import * as signalR from "@microsoft/signalr"
-import AppInfo from "./appInfo"
+import * as signalR from "@microsoft/signalr";
+import AppInfo from "./AppInfo";
+import { DataContext, DataDispatchContext } from "../context/dataContext";
+import { useContext } from "react";
 
-const DIRECT_URL = AppInfo.BaseURL + "chatroom"
+/**
+ * This is the URL for the SignalR chatroom Hub
+ */
+const DIRECT_URL = AppInfo.BaseURL + "chatroom";
 
-class SignalRChatRoom {
+class SignalRChatRoom
+{
     static #instance
 
-    constructor(receiveChatRoomMessageCallback, changeUserStatusCallback) {
-        this.connection = new signalR.HubConnectionBuilder()
-        this.connection.withUrl(DIRECT_URL)
-        this.connection.withAutomaticReconnect()
 
-        this.connection = this.connection.build()
 
-        console.log("starting chatroom connection");
-        this.connection.start()
-            .then(() => {
-                console.log("chatroom connected");
-                this.connection.on("ReceiveChatRoomMessage", (msg) => receiveChatRoomMessageCallback(msg));
-                this.connection.on("ChangeUserStatus", (userId, isOnline) => changeUserStatusCallback(userId, isOnline));
-
-            })
-            .catch(err => console.warn(err))
+    /**
+     * This is the connection to the SignalR chatroom Hub
+     */
+    constructor()
+    {
+        this.connection = new signalR.HubConnectionBuilder();
+        this.connection.withUrl(DIRECT_URL);
+        this.connection.withAutomaticReconnect();
+        this.connection = this.connection.build();
     }
 
-    sendChatRoomMessage(msg) {
-        this.connection.send("SendChatRoomMessage", msg)
+    /**
+     * This is the function that actually makes the connection
+     */
+    async makeConnection()
+    {
+        console.log("----> Starting connection to chatroom services");
+        await this.connection.start();
+        this.connection.on("NewMemberJoined", (userInfo, chatId) =>
+        {
+            AppInfo.addNewMember(userInfo, chatId);
+            console.log("----> New member joined callback")
+        });
     }
 
-    joinChatRoom(code) {
-        this.connection.send("JoinChatRoom", code)
+    /**
+     * Set a callback function that will be called when a chat room message is received
+     * @param {*} callBackFunction A function that will be called when a chat room message is received
+     */
+    setReceiveChatRoomMessageCallback(callBackFunction)
+    {
+        this.connection.on("ReceiveChatRoomMessage",(msg) =>
+        {
+            console.log("----> Chatroom message received", msg);
+            callBackFunction(msg);
+            AppInfo.addChatRoomMessage(msg);
+        });
     }
 
-    // This idea is from stack overflow
-    static getInstance(receiveChatRoomMessageCallback) {
+    /**
+     * Set a callback function that will be called when a chat room info is received
+     * @param {*} callback A function that will be called when a chat room info is received
+     */
+    setReceiveChatRoomInfoCallback(callBackFunction)
+    {
+        this.connection.on("ReceiveChatRoomInfo", (info) =>
+        {
+            console.log("----> Chatroom info received", info);
+            callBackFunction(info);
+            AppInfo.addChatRoomInfo(info);
+        });
+    }
 
-        if (SignalRChatRoom.instance == null) {
-            SignalRChatRoom.instance = new SignalRChatRoom(receiveChatRoomMessageCallback)
+    /**
+     * Send a message to the backend from chat room
+     * @param {*} msg A message object that will be sent to the backend
+     */
+    async sendChatRoomMessage(msg)
+    {
+        console.log("----> Sending chatroom message", msg);
+        console.log("----> Connection state ", this.connection.state);
+        await this.connection.send("SendChatRoomMessage", msg.fromUserInfo.userId, msg.chatRoomId, msg.fromUserInfo.firstName, msg.fromUserInfo.lastName, msg.message).catch(x => console.log(x));
+    }
+
+    /**
+     * Build the connection to the chat room
+     * @param {*} joinCode The join code of the chat room
+     * @param {*} type The type of the chat room
+     */
+    async joinChatRoom(joinCode, type)
+    {
+        console.log("----> Joining chatroom", joinCode);
+        await this.connection.send("JoinChatRoom", joinCode, type, AppInfo.getUserId(), AppInfo.getFirstName(), AppInfo.getLastName()).catch(console.log("----> Join chatroom failed"));
+    }
+
+    /**
+     * Get the instance of the SignalRChatRoom
+     * @returns The instance of the SignalRChatRoom
+     */
+    static async getInstance()
+    {
+        if (SignalRChatRoom.instance == null)
+        {
+            SignalRChatRoom.instance = new SignalRChatRoom();
+            await SignalRChatRoom.instance.makeConnection();
         }
-        return SignalRChatRoom.instance
+
+        return SignalRChatRoom.instance;
     }
 }
 

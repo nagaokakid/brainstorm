@@ -1,5 +1,9 @@
 import "../styles/HeaderNavBar.css";
 
+/**
+ * 
+ * @returns The header navigation bar of the application
+ */
 function HeaderNavBar()
 {
   return (

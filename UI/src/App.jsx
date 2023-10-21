@@ -1,16 +1,19 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import LoginPage from "./pages/loginPage";
-import MainPage from "./pages/mainPage";
+import LoginPage from "./pages/LoginPage";
+import MainPage from "./pages/MainPage";
+import { DataContextProvider } from "./context/DataContext";
 
 function App()
 {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" exact element={<LoginPage />} />
-        <Route path="/main" element={<MainPage />} />
-      </Routes>
-    </BrowserRouter>
+    <DataContextProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" exact element={<LoginPage />} />
+          <Route path="/main" element={<MainPage />} />
+        </Routes>
+      </BrowserRouter>
+    </DataContextProvider>
   )
 }
 
