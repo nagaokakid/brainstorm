@@ -19,9 +19,9 @@ namespace Logic.Services
             this.userCollection = userCollection;
         }
 
-        public async Task AddNewUserToChatRoom(string userId)
+        public async Task AddNewUserToChatRoom(string userId, string chatRoomId)
         {
-            await chatRoomCollection.AddNewUserToChatRoom(userId);
+            await chatRoomCollection.AddNewUserToChatRoom(userId, chatRoomId);
         }
 
         public async Task<ChatRoom?> GetRoomByJoinCode(string chatRoomJoinCode)
