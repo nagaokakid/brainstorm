@@ -3,7 +3,6 @@ using Database.Data;
 using Logic.DTOs.User;
 using Logic.Exceptions;
 using Logic.Helpers;
-using Microsoft.AspNetCore.Identity;
 
 namespace Logic.Services
 {
@@ -34,10 +33,10 @@ namespace Logic.Services
             try
             {
 
-            if(users.TryGetValue(userId, out var user))
-            {
-                return user.ToFriendlyUser();
-            }
+                if (users.TryGetValue(userId, out var user))
+                {
+                    return user.ToFriendlyUser();
+                }
             }
             catch
             {
