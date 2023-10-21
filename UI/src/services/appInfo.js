@@ -3,7 +3,7 @@ export default class AppInfo
     static receiveChatRoomMessage = 1;
     static receiveChatRoomInfoMessage = 1;
 
-    static BaseURL = "http://localhost:5135/"
+    static BaseURL = "https://localhost:32774/"
 
     static loginRegisterResponse =
     {
