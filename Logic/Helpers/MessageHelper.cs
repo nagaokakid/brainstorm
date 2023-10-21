@@ -9,6 +9,7 @@ namespace Logic.Helpers
         {
             return new DirectMessage
             {
+                FromUserId = msg.FromUserInfo.UserId,
                 Message = msg.Message,
                 Timestamp = msg.Timestamp,
             };

@@ -14,11 +14,6 @@ namespace Logic.Hubs
             this.chatRoomService = chatRoomService;
         }
 
-        public async Task AddNewUserToChatRoom(string userId)
-        {
-            await chatRoomService.AddNewUserToChatRoom(userId);
-        }
-
         public async Task JoinChatRoom(string joinCode, string first, string userId, string firstName, string lastName)
         {
             // get room for chatRoomCode
@@ -46,7 +41,7 @@ namespace Logic.Hubs
                 if (found == null)
                 {
                     // add new member to chatroom
-                    await chatRoomService.AddNewUserToChatRoom(userId);
+                    await chatRoomService.AddNewUserToChatRoom(userId, result.Id);
                     await Clients.Group(result.Id).SendAsync("NewMemberJoined", newUser, result.Id);
                 }
             }
