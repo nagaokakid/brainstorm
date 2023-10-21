@@ -116,7 +116,6 @@ namespace Logic.Services
         {
             var result = new List<FriendlyChatRoom>();
 
-            var users = await userCollection.GetAll();
             // get friendly chatroom for each chatRoomId
             foreach (var room in chatRoomIds)
             {
