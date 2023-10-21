@@ -9,7 +9,7 @@ namespace Database.Collections
     public class UserCollection : IUserCollection
     {
         // The user collection from MongoDB
-        private MongoRepository<User> userRepository = new("User");
+        private MongoRepository<User> userRepository = new("brainstorm", "User");
         
         // Add a new user document to the User collection
         public async Task Add(User newUser)
@@ -68,9 +68,19 @@ namespace Database.Collections
 
         }
 
-        public Task<Dictionary<string, User>> GetAll()
+        public async Task<Dictionary<string, User>> GetAll()
         {
-            throw new NotImplementedException();
+            var found = await userRepository.GetAllDocuments();
+            if(found != null)
+            {
+                var result = new Dictionary<string, User>();
+                foreach (var user in found)
+                {
+                    result.Add(user.Id, user);
+                }
+                return result;
+            }
+            return new Dictionary<string, User>();
         }
     } // class
 } // namespace

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "u/U2gtwOyGedSijjhwaxxvLoXvooSPqbGi5wo6HEEOkS3zQ5v3qHjUQA3JhQbsVQRiebCf7Eg5H6IJpbP00IdA==",
+  "dgSpecHash": "RlHxDp2JxwUoFThNLLT1HYvOWJ/UTKfBVTk1mJKrZHke400uFQlX72VzVK7tWZmhhbLFzR7+GeIaCfAjenKkqQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\rfk4p\\Documents\\ui_4350\\brainstorm1\\Logic.UnitTest\\Logic.UnitTest.csproj",
+  "projectFilePath": "D:\\C# Library\\API_4350\\Logic.UnitTest\\Logic.UnitTest.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\rfk4p\\.nuget\\packages\\awssdk.core\\3.7.100.14\\awssdk.core.3.7.100.14.nupkg.sha512",
     "C:\\Users\\rfk4p\\.nuget\\packages\\awssdk.securitytoken\\3.7.100.14\\awssdk.securitytoken.3.7.100.14.nupkg.sha512",

@@ -7,7 +7,7 @@ namespace Database.Collections
     public class ChatRoomCollection : IChatRoomCollection
     {
         // The chat room collection from MongoDB
-        private MongoRepository<ChatRoom> chatRoomRepository = new("ChatRoom");
+        private MongoRepository<ChatRoom> chatRoomRepository = new("brainstorm", "ChatRoom");
 
         // Add a new chat room document to the collection
         public async Task Add(ChatRoom chatRoom)
@@ -15,10 +15,20 @@ namespace Database.Collections
             await chatRoomRepository.CreateDocument(chatRoom);
         }
 
-        // Add a new message ID to the document's array
+        public async Task AddNewUserToChatRoom(string userId, string chatRoomId)
+        {
+            await chatRoomRepository.AddToArrayInDocument(chatRoomId, "MemberIds", userId);
+        }
+
+        // Add a new message object to the document's array
         public async Task AddMessage(string chatRoomId, ChatRoomMessage chatRoomMessage)
         {
-            await chatRoomRepository.AddToArrayInDocument(chatRoomId, "Messages", chatRoomMessage.FromUserId);
+            await chatRoomRepository.AddToArrayInDocument(chatRoomId, "Messages", chatRoomMessage);
+        }
+
+        public async Task AddNewUserToChatRoom(string userId)
+        {
+            
         }
 
         // Get the chat room document with the given ID

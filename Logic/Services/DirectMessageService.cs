@@ -16,17 +16,16 @@ namespace Logic.Services
         }
         public async Task AddNewMessage(MessageInfo msg)
         {
-            await directMessageCollection.Add(msg.FromDTO());
+            await directMessageCollection.Add(msg.FromUserInfo.UserId, msg.ToUserInfo.UserId, msg.FromDTO());
         }
 
-        public async Task<List<MessageInfo>> GetMessagesByUserId(string fromId, string toId)
+        public async Task<FriendlyDirectMessageHistory?> GetMessagesByUserId(string userId1, string userId2)
         {
-            if (fromId == null) throw new ArgumentNullException($"{nameof(fromId)} parameter is null");
-            if (toId == null) throw new ArgumentNullException($"{nameof(toId)} parameter is null");
+            if (userId1 == null) throw new ArgumentNullException($"{nameof(userId1)} parameter is null");
+            if (userId2 == null) throw new ArgumentNullException($"{nameof(userId2)} parameter is null");
             
-            var result = await directMessageCollection.Get(fromId, toId);
-            if(result == null) return new List<MessageInfo>();
-
+            var result = await directMessageCollection.Get(userId1, userId2);
+            if(result == null) return null;
             return result.ToDTO(await userCollection.GetAll());
         }
     }

@@ -11,8 +11,9 @@ namespace Logic.UnitTest.LoginUser
     {
         Mock<IUserCollection> userCollection;
         Mock<IChatRoomCollection> chatRoomCollection;
+        Mock<IDirectMessageCollection> directMessageCollection;
         Mock<Microsoft.Extensions.Configuration.IConfiguration> config;
-
+        AuthService authService;
         Mock<UserService> userService;
 
         [SetUp]
@@ -20,13 +21,14 @@ namespace Logic.UnitTest.LoginUser
         {
             userCollection = new Mock<IUserCollection>();
             chatRoomCollection = new Mock<IChatRoomCollection>();
+            directMessageCollection = new Mock<IDirectMessageCollection>();
             config = new Mock<Microsoft.Extensions.Configuration.IConfiguration>();
             userService = new Mock<UserService>(userCollection.Object);
+            authService = new AuthService(userCollection.Object, chatRoomCollection.Object, directMessageCollection.Object, config.Object, userService.Object);
         }
         [Test]
         public async Task LoginUser_InputNull_ThrowsUnauthorized()
         {
-            var authService = new AuthService(userCollection.Object, chatRoomCollection.Object, config.Object, userService.Object);
 
             Assert.That(() => authService.LoginUser(null), Throws.TypeOf<UnauthorizedUser>());
         }
@@ -34,9 +36,6 @@ namespace Logic.UnitTest.LoginUser
         [Test]
         public async Task LoginUser_InputNullUsername_ThrowsUnauthorized()
         {
-            // Arrange
-            var authService = new AuthService(userCollection.Object, chatRoomCollection.Object, config.Object, userService.Object);
-
             var request = new LoginUserRequest
             {
                 Username = null,
@@ -50,9 +49,6 @@ namespace Logic.UnitTest.LoginUser
         [Test]
         public async Task LoginUser_InputNullPassword_ThrowsUnauthorized()
         {
-            // Arrange
-            var authService = new AuthService(userCollection.Object, chatRoomCollection.Object, config.Object, userService.Object);
-
             var request = new LoginUserRequest
             {
                 Username = "Username",
@@ -66,9 +62,6 @@ namespace Logic.UnitTest.LoginUser
         [Test]
         public async Task LoginUser_InputEmptyPassword_ThrowsUnauthorized()
         {
-            // Arrange
-            var authService = new AuthService(userCollection.Object, chatRoomCollection.Object, config.Object, userService.Object);
-
             var request = new LoginUserRequest
             {
                 Username = "Username",
@@ -82,17 +75,12 @@ namespace Logic.UnitTest.LoginUser
         [Test]
         public async Task RegisterUser_InputNull_ThrowBadRequest()
         {
-            // Arrange
-            var authService = new AuthService(userCollection.Object, chatRoomCollection.Object, config.Object, userService.Object);
-
             // Assert
             Assert.That(() => authService.RegisterUser(null), Throws.TypeOf<BadRequest>());
         }
         [Test]
         public void RegisterUser_InputUsernameIsNull_ThrowBadRequest()
         {
-            // Arrange
-            var authService = new AuthService(userCollection.Object, chatRoomCollection.Object, config.Object, userService.Object);
             var request = new RegisterUserRequest
             {
                 Username = null,
@@ -107,8 +95,6 @@ namespace Logic.UnitTest.LoginUser
         [Test]
         public void RegisterUser_InputPasswordIsNull_ThrowBadRequest()
         {
-            // Arrange
-            var authService = new AuthService(userCollection.Object, chatRoomCollection.Object, config.Object, userService.Object);
             var request = new RegisterUserRequest
             {
                 Username = "username",
@@ -124,8 +110,6 @@ namespace Logic.UnitTest.LoginUser
         [Test]
         public void RegisterUser_InputFirstnameIsNull_ThrowBadRequest()
         {
-            // Arrange
-            var authService = new AuthService(userCollection.Object, chatRoomCollection.Object, config.Object, userService.Object);
             var request = new RegisterUserRequest
             {
                 Username = "username",
@@ -141,9 +125,7 @@ namespace Logic.UnitTest.LoginUser
         [Test]
         public void RegisterUser_InputLastnameIsNull_ThrowBadRequest()
         {
-            // Arrange
-            var authService = new AuthService(userCollection.Object, chatRoomCollection.Object, config.Object, userService.Object);
-            var request = new RegisterUserRequest
+           var request = new RegisterUserRequest
             {
                 Username = "username",
                 Password = "password",
@@ -160,7 +142,7 @@ namespace Logic.UnitTest.LoginUser
         {
             // Arrange
             chatRoomCollection.Setup(x => x.GetById("id")).Returns(async () => null);
-            var authService = new AuthService(userCollection.Object, chatRoomCollection.Object, config.Object, userService.Object);
+            var authService = new AuthService(userCollection.Object, chatRoomCollection.Object, directMessageCollection.Object, config.Object, userService.Object);
             var ids = new List<string>()
             {
                 "1",

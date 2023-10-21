@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "ljSJchzlBkLV+94P5TZEIXYZBRkLID/i28gnFmK0ILNRP4c145jBsuz8H63rronVBsZjMuuNh3VRqGc00qyIvw==",
+  "dgSpecHash": "gp2hlMH/KQVG5Wj3Ow6M19mEHfE6t3N4SmYYIuBJ7WV+AGy4Cs3J0UkIknhyLPr/oJid5sTBRUxWZyJX20WRgQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\rfk4p\\Documents\\ui_4350\\brainstorm1\\Database\\Database.csproj",
+  "projectFilePath": "D:\\C# Library\\API_4350\\Database\\Database.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\rfk4p\\.nuget\\packages\\awssdk.core\\3.7.100.14\\awssdk.core.3.7.100.14.nupkg.sha512",
     "C:\\Users\\rfk4p\\.nuget\\packages\\awssdk.securitytoken\\3.7.100.14\\awssdk.securitytoken.3.7.100.14.nupkg.sha512",
