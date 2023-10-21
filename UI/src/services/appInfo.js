@@ -3,7 +3,7 @@ export default class AppInfo
     static receiveChatRoomMessage = 1;
     static receiveChatRoomInfoMessage = 1;
 
-    static BaseURL = "https://localhost:32774/"
+    static BaseURL = "http://localhost:5135/"
 
     static loginRegisterResponse =
     {
@@ -223,22 +223,29 @@ export default class AppInfo
     static addNewDirectMessage(newDirectMessage)
     {
         var result = null;
-        console.log("----> Adding new direct message");
         this.getDirectMessagesList().map((current) =>
         {
-            if (newDirectMessage.user2.userId === current.user2.userId)
+            if (newDirectMessage.toUserInfo.userId === current.user2.userId)
             {
                 console.log("----> Adding new direct message to existing direct message list");
-                result = current.messages.push(newDirectMessage.messages[0]);
-                console.log("----> Added new direct message", this.getDirectMessagesList());
+                var temp1 = {
+                    "message": newDirectMessage.message,
+                    "timestamp": newDirectMessage.timestamp
+                }
+                result = current.directMessages.push(temp1);
+                console.log("----> Added new direct message");
             } 
         });
-        console.log("----> Adding new direct message to new direct message list", result);
         
         if (result === null)
         {
             console.log("----> Create a new Direct Message List");
-            return this.loginRegisterResponse.directMessages.push(newDirectMessage);
+            const temp = {
+                user1 : newDirectMessage.fromUserInfo,
+                user2 : newDirectMessage.toUserInfo,
+                directMessages : [newDirectMessage.message]
+            }
+            return this.loginRegisterResponse.directMessages.push(temp);
         }
         else
         {
