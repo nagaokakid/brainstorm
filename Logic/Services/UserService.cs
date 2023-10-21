@@ -28,23 +28,22 @@ namespace Logic.Services
             return newUser.ToFriendlyUser();
         }
 
-        public async Task<FriendlyUserInfo> GetFriendly(string userId)
+        public async Task<FriendlyUserInfo> GetFriendly(string userId, Dictionary<string, User> users)
         {
-            var found = await userCollection.Get(userId);
-            if (found != null)
+            if (users.TryGetValue(userId, out var user))
             {
-                return found.ToFriendlyUser();
+                return user.ToFriendlyUser();
             }
 
-            throw new UserNotFound();
+            return new FriendlyUserInfo { UserId = userId };
         }
-        public async Task<List<FriendlyUserInfo>> GetList(List<string> memberIds)
+        public async Task<List<FriendlyUserInfo>> GetList(List<string> memberIds, Dictionary<string, User> users)
         {
             List<FriendlyUserInfo> result = new();
 
             foreach (var memberId in memberIds)
             {
-                result.Add(await GetFriendly(memberId));
+                result.Add(await GetFriendly(memberId, users));
             }
 
             return result;
