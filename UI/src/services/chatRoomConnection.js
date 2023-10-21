@@ -60,9 +60,12 @@ class SignalRChatRoom
     {
         this.connection.on("ReceiveChatRoomInfo", (info) =>
         {
-            const setChatRoomInfo = DataDispatchContext()[3];
-            const chatRoomInfo = DataContext()[3];
+            var setChatRoomInfo = DataDispatchContext()[3];
+            var chatRoomInfo = DataContext()[3];
+            console.log("----> Chatroom info received", info);
+            console.log("before", chatRoomInfo)
             setChatRoomInfo(!chatRoomInfo);
+            console.log("after", chatRoomInfo)
             callBackFunction(info);
             AppInfo.addChatRoomInfo(info);
         });

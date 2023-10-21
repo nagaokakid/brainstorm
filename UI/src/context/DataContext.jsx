@@ -10,10 +10,10 @@ export function DataContextProvider({ children }) {
         initialTasks
     );
 
-    const [chatRoom, setChatRoom] = useState("null");
-    const [directMessage, setDirectMessage] = useState("null");
-    const [chatMessage, setChatMessage] = useState("null");
-    const [chatRoomInfo, setChatRoomInfo] = useState("null");
+    const [chatRoom, setChatRoom] = useState(true);
+    const [directMessage, setDirectMessage] = useState(true);
+    const [chatMessage, setChatMessage] = useState(true);
+    const [chatRoomInfo, setChatRoomInfo] = useState(true);
 
     return (
         <DataContext.Provider value={[chatRoom, directMessage, chatMessage, chatRoomInfo]}>

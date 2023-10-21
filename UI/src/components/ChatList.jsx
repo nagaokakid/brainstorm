@@ -13,6 +13,7 @@ import { DataContext } from "../context/dataContext";
 function ChatList(props)
 {
   const chatRoomInfo = useContext(DataContext)[3];
+  console.log("----> ChatList: chatRoomInfo: ", chatRoomInfo);
   
   // Lazy load the chat room window component
   const ChatRoomWindow = lazy(() => import("./ChatRoomWindow"));
