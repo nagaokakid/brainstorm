@@ -4,7 +4,7 @@ import NavigationBar from "../components/NavigationBar";
 import ChatList from "../components/ChatList";
 import AppInfo from "../services/AppInfo";
 import ApiService from "../services/ApiService";
-import { useEffect, useState } from "react";
+import { useEffect, useState,  } from "react";
 
 /**
  * 
@@ -29,6 +29,7 @@ function MainPage()
 
   useEffect(() =>
   {
+    console.log("----> Build callback");
     const apiservice = new ApiService();
     apiservice.buildCallBack();
   }, []);

@@ -1,5 +1,6 @@
 import * as signalR from "@microsoft/signalr";
 import AppInfo from "./AppInfo";
+import { DataContext, DataDispatchContext } from "../context/dataContext";
 
 /**
  * This is the URL for the SignalR direct message Hub
@@ -44,6 +45,9 @@ class SignalRDirect
     {
         this.connection.on("ReceiveDirectMessage", (msg) =>
         {
+            const setDirectMessage = DataDispatchContext()[1];
+            const directMessage = DataContext()[1];
+            setDirectMessage(!directMessage);
             callBackFunction(msg);
             AppInfo.addDirectMessage(msg);
         });

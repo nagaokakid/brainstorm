@@ -1,5 +1,6 @@
 import * as signalR from "@microsoft/signalr";
 import AppInfo from "./AppInfo";
+import { DataContext, DataDispatchContext } from "../context/dataContext";
 
 /**
  * This is the URL for the SignalR chatroom Hub
@@ -28,7 +29,11 @@ class SignalRChatRoom
     {
         console.log("----> Starting connection to chatroom services");
         await this.connection.start();
-        this.connection.on("NewMemberJoined", (userInfo, chatId) => {AppInfo.addNewMember(userInfo, chatId); console.log("----> New member joined callback")});
+        this.connection.on("NewMemberJoined", (userInfo, chatId) =>
+        {
+            AppInfo.addNewMember(userInfo, chatId);
+            console.log("----> New member joined callback")
+        });
     }
 
     /**
@@ -39,10 +44,11 @@ class SignalRChatRoom
     {
         this.connection.on("ReceiveChatRoomMessage",(msg) =>
         {
+            const setChatMessage = DataDispatchContext()[2];
+            const chatMessage = DataContext()[2];
+            setChatMessage(!chatMessage);
             callBackFunction(msg);
             AppInfo.addChatRoomMessage(msg);
-            AppInfo.addOne()
-            console.log("----> Receive chatroom message callback");
         });
     }
 
@@ -54,8 +60,10 @@ class SignalRChatRoom
     {
         this.connection.on("ReceiveChatRoomInfo", (info) =>
         {
+            const setChatRoomInfo = DataDispatchContext()[3];
+            const chatRoomInfo = DataContext()[3];
+            setChatRoomInfo(!chatRoomInfo);
             callBackFunction(info);
-            
             AppInfo.addChatRoomInfo(info);
         });
     }

@@ -6,7 +6,8 @@ import AppInfo from "../services/AppInfo";
 import MessageInput from "./MsgInputField";
 import SignalRChatRoom from "../services/ChatRoomConnection";
 import SignalRDirect from "../services/DirectMessageConnection";
-import { useEffect, useState } from "react";
+import { DataContext } from "../context/dataContext";
+import { useEffect, useState, useContext } from "react";
 
 /**
  * 
@@ -16,6 +17,9 @@ import { useEffect, useState } from "react";
  */
 function MsgWindow(props)
 {
+  const chatMessage = useContext(DataContext)[2];
+  const directMessage = useContext(DataContext)[1];
+
   // Set the message to the display
   const [messages, setMessages] = useState(props.chatId === "" ? [] : AppInfo.getListHistory(props.chatId, props.chatType));
 
@@ -43,8 +47,7 @@ function MsgWindow(props)
   useEffect(() =>
   {
     setMessages(props.chatId === "" ? [] : AppInfo.getListHistory(props.chatId, props.chatType));
-    console.log("----> add one", AppInfo.receiveChatRoomMessage);
-  }, [props.chatId, AppInfo.receiveChatRoomMessage]);
+  }, [props.chatId, chatMessage, directMessage]);
 
   return (
     <div className="MsgWindowContainer">
