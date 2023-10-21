@@ -3,6 +3,7 @@ using Database.Data;
 using Logic.DTOs.User;
 using Logic.Exceptions;
 using Logic.Helpers;
+using Microsoft.AspNetCore.Identity;
 
 namespace Logic.Services
 {
@@ -28,23 +29,30 @@ namespace Logic.Services
             return newUser.ToFriendlyUser();
         }
 
-        public async Task<FriendlyUserInfo> GetFriendly(string userId)
+        public async Task<FriendlyUserInfo> GetFriendly(string userId, Dictionary<string, User> users)
         {
-            var found = await userCollection.Get(userId);
-            if (found != null)
+            try
             {
-                return found.ToFriendlyUser();
+
+            if(users.TryGetValue(userId, out var user))
+            {
+                return user.ToFriendlyUser();
+            }
+            }
+            catch
+            {
+
             }
 
-            throw new UserNotFound();
+            return new FriendlyUserInfo { UserId = userId };
         }
-        public async Task<List<FriendlyUserInfo>> GetList(List<string> memberIds)
+        public async Task<List<FriendlyUserInfo>> GetList(List<string> memberIds, Dictionary<string, User> users)
         {
             List<FriendlyUserInfo> result = new();
 
             foreach (var memberId in memberIds)
             {
-                result.Add(await GetFriendly(memberId));
+                result.Add(await GetFriendly(memberId, users));
             }
 
             return result;

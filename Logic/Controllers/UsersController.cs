@@ -3,6 +3,7 @@ using Logic.Exceptions;
 using Logic.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 
 namespace Logic.Controllers
 {
@@ -55,8 +56,9 @@ namespace Logic.Controllers
             {
                 return Unauthorized();
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Debug.WriteLine(e);
                 return StatusCode(500);
             }
         }
