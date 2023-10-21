@@ -7,9 +7,29 @@ using Moq;
 
 namespace Logic.UnitTest.Services
 {
+    
     [TestFixture]
     public class UserServiceUnitTests
     {
+        Dictionary<string, User> users = new Dictionary<string, User>
+        {
+            {
+                "1",
+                new User
+                {
+                    Id="1"
+                }
+            },
+            {
+                "2",
+                new User
+                {
+                    Id="2",
+                    FirstName = "first",
+                    LastName = "last",
+                }
+            }
+        };
         Mock<IUserCollection> userCollectionService;
 
         [SetUp]
@@ -36,36 +56,27 @@ namespace Logic.UnitTest.Services
         }
 
         [Test]
-        public void GetFriendlyUserInfo_InputInvalid_ThrowsUsernameExistsException()
+        public async Task GetFriendlyUserInfo_InputInvalid_ThrowsUsernameExistsException()
         {
             // Arrange
-            userCollectionService.Setup(x => x.Get("username")).Returns(async () => null);
             var userService = new UserService(userCollectionService.Object);
-
+            var result = await userService.GetFriendly("username", users);
             // Assert
-            Assert.That(() => userService.GetFriendly("username"), Throws.TypeOf<UserNotFound>());
+            Assert.That(result.FirstName == null);
         }
 
         [Test]
         public async Task GetFriendly_InputValid_Valid()
         {
             // Arrange
-            var user = new User
-            {
-                Id = Guid.NewGuid().ToString(),
-                Username = "username",
-                FirstName = "firstname",
-                LastName = "lastname"
-            };
 
-            userCollectionService.Setup(x => x.Get("username")).Returns(async () => user);
             var userService = new UserService(userCollectionService.Object);
 
             // Act
-            var result = await userService.GetFriendly(user.Username);
+            var result = await userService.GetFriendly("2", users);
 
             // Assert
-            Assert.That(result.FirstName == user.FirstName && result.UserId == user.Id && result.LastName == user.LastName);
+            Assert.That(result.FirstName == "first" && result.UserId == "2" && result.LastName == "last");
         }
     }
 }
