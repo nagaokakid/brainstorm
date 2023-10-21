@@ -45,7 +45,9 @@ class SignalRDirect
         this.connection.on("ReceiveDirectMessage", (msg) =>
         {
             callBackFunction(msg);
-            AppInfo.addDirectMessage(msg);
+            console.log("----> Received Direct Message222", msg);
+            AppInfo.addNewDirectMessage(msg);
+            console.log(AppInfo.getDirectMessagesList());
         });
     }
 

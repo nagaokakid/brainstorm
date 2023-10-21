@@ -223,6 +223,7 @@ export default class AppInfo
     static addNewDirectMessage(newDirectMessage)
     {
         var result = null;
+        console.log("----> Adding new direct message");
         this.getDirectMessagesList().map((current) =>
         {
             if (newDirectMessage.user2.userId === current.user2.userId)
@@ -232,6 +233,7 @@ export default class AppInfo
                 console.log("----> Added new direct message", this.getDirectMessagesList());
             } 
         });
+        console.log("----> Adding new direct message to new direct message list", result);
         
         if (result === null)
         {

@@ -13,10 +13,12 @@ import { DataContext, DataDispatchContext } from "../context/dataContext";
  */
 function MainPage()
 {
-  const chatMessage = useContext(DataContext)[2];
-  const directMessage = useContext(DataContext)[1];
-  const setChatMessage = useContext(DataDispatchContext)[2];
-  const setDirectMessage = useContext(DataDispatchContext)[1];
+  
+  var setChatMessage = useContext(DataDispatchContext)[2];
+  var setDirectMessage = useContext(DataDispatchContext)[1];
+  var chatMessage = useContext(DataContext)[2];
+  var directMessage = useContext(DataContext)[1];
+  
   // If the user is not logged in, redirect to the login page
   if (localStorage.getItem("token") === null || localStorage.getItem("token") !== AppInfo.getToken)
   {
@@ -34,8 +36,18 @@ function MainPage()
 
   function render()
   {
-    setChatMessage(!chatMessage);
-    setDirectMessage(!directMessage);
+    var run1 = (e) =>
+    {
+      console.log("----> Render chat callback", e);
+      setChatMessage(!chatMessage);
+    }
+    var run2 = (e) =>
+    {
+      console.log("----> Render direct callback", e);
+      setDirectMessage(!directMessage);
+    }
+    run1(chatMessage)
+    run2(directMessage)
     console.log("----> Render callback");
   }
 
@@ -45,7 +57,6 @@ function MainPage()
     const apiservice = new ApiService();
     apiservice.buildCallBack(render);
   }, []);
-  
 
   return (
     <div className="App">

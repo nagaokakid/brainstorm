@@ -2,7 +2,8 @@
 import '../styles/ChatRoomWindow.css';
 import MessageWindow from './MsgWindow';
 import MemberList from './MemberList';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
+import { DataContext, DataDispatchContext } from '../context/dataContext';
 
 /**
  * 
