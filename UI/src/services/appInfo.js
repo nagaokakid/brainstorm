@@ -1,6 +1,6 @@
 export default class AppInfo
 {
-    static BaseURL = "https://localhost:32768/"
+    static BaseURL = "https://localhost:32826/"
 
     static loginRegisterResponse =
     {
