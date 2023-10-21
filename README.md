@@ -21,3 +21,13 @@ To view the project proposal, click [here](https://github.com/nagaokakid/brainst
 
 # Architecture
 To view the architecture diagram for this project, click [here](https://github.com/nagaokakid/brainstorm/wiki/Architecture-Diagram).
+
+<br>
+
+# Sequence Diagrams
+To view the sequence diagrams for this project, click [here](https://github.com/nagaokakid/brainstorm/tree/main/Sequence%20Diagrams).
+
+<br>
+
+# Testing Plan
+To view the testing plan for the app, click [here](https://github.com/nagaokakid/brainstorm/blob/main/Brainstorm_Test_Plan.pdf).
