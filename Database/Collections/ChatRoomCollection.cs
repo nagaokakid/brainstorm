@@ -26,6 +26,11 @@ namespace Database.Collections
             await chatRoomRepository.AddToArrayInDocument(chatRoomId, "Messages", chatRoomMessage);
         }
 
+        public async Task AddNewUserToChatRoom(string userId)
+        {
+            
+        }
+
         // Get the chat room document with the given ID
         public async Task<ChatRoom?> GetById(string chatRoomId)
         {
