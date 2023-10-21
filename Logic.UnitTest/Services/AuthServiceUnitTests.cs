@@ -1,4 +1,5 @@
 ﻿using Database.CollectionContracts;
+using Database.Data;
 using Logic.DTOs.User;
 using Logic.Exceptions;
 using Logic.Services;
@@ -9,6 +10,25 @@ namespace Logic.UnitTest.LoginUser
     [TestFixture]
     public class AuthServiceUnitTests
     {
+        Dictionary<string, User> users = new Dictionary<string, User>
+        {
+            {
+                "1",
+                new User
+                {
+                    Id="1"
+                }
+            },
+            {
+                "2",
+                new User
+                {
+                    Id="2",
+                    FirstName = "first",
+                    LastName = "last",
+                }
+            }
+        };
         Mock<IUserCollection> userCollection;
         Mock<IChatRoomCollection> chatRoomCollection;
         Mock<IDirectMessageCollection> directMessageCollection;
@@ -150,7 +170,7 @@ namespace Logic.UnitTest.LoginUser
             };
 
             // Assert
-            Assert.That(() => authService.GetFriendlyChatRooms(ids), Throws.TypeOf<ChatRoomNotFound>());
+            Assert.That(() => authService.GetFriendlyChatRooms(ids, users), Throws.TypeOf<ChatRoomNotFound>());
         }
     }
 }
