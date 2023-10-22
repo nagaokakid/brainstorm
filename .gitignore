@@ -66,3 +66,13 @@ Logic.UnitTest/bin/Debug/net7.0/CoverletSourceRootsMapping
 Logic.UnitTest/obj/Debug/net7.0/Logic.UnitTest.assets.cache
 Logic.UnitTest/obj/Debug/net7.0/Logic.UnitTest.csproj.AssemblyReference.cache
 Logic.UnitTest/obj/Debug/net7.0/Logic.UnitTest.GeneratedMSBuildEditorConfig.editorconfig
+/Logic.IntegrationTest/bin/Debug/net7.0/Logic.dll
+/Logic.IntegrationTest/bin/Debug/net7.0/Logic.IntegrationTest.dll
+/Logic/.vs/Logic/DesignTimeBuild/.dtbcache.v2
+/Logic.IntegrationTest/bin/Debug/net7.0/Logic.IntegrationTest.pdb
+/Logic.IntegrationTest/bin/Debug/net7.0/Logic.pdb
+/Logic.IntegrationTest/bin/Debug/net7.0/nunit_random_seed.tmp
+/Logic.IntegrationTest/obj/Debug/net7.0/Logic.IntegrationTest.csproj.AssemblyReference.cache
+/Logic.IntegrationTest/obj/Debug/net7.0/Logic.IntegrationTest.dll
+/Logic.IntegrationTest/obj/Debug/net7.0/Logic.IntegrationTest.pdb
+/Logic/.vs/Logic/v17/.suo

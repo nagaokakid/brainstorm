@@ -1,4 +1,5 @@
-﻿using Logic.DTOs.Messages;
+﻿using Database.CollectionContracts;
+using Logic.DTOs.Messages;
 using Logic.DTOs.User;
 using Logic.Services;
 using Microsoft.AspNetCore.SignalR;
@@ -8,47 +9,56 @@ namespace Logic.Hubs
     public class ChatRoomHub : Hub
     {
         private readonly ChatRoomService chatRoomService;
+        private readonly IUserCollection userCollection;
 
-        public ChatRoomHub(ChatRoomService chatRoomService)
+        public ChatRoomHub(ChatRoomService chatRoomService, IUserCollection userCollection)
         {
             this.chatRoomService = chatRoomService;
+            this.userCollection = userCollection;
         }
 
         public async Task JoinChatRoom(string joinCode, string first, string userId, string firstName, string lastName)
         {
-            // get room for chatRoomCode
-            var result = await chatRoomService.GetRoomByJoinCode(joinCode);
-
-            // add member to group
-            if (result != null)
+            if (joinCode != null && userId != null && firstName != null)
             {
-                var newUser = new FriendlyUserInfo
-                {
-                    UserId = userId,
-                    FirstName = firstName,
-                    LastName = lastName,
-                };
+                // get room for chatRoomCode
+                var foundChatRoom = await chatRoomService.GetRoomByJoinCode(joinCode);
 
-                await Groups.AddToGroupAsync(Context.ConnectionId, result.Id);
-
-                if (first == "First")
+                // add member to group
+                if (foundChatRoom != null)
                 {
-                    await Clients.Client(Context.ConnectionId).SendAsync("ReceiveChatRoomInfo", result);
-                }
+                    var member = new FriendlyUserInfo
+                    {
+                        UserId = userId,
+                        FirstName = firstName,
+                        LastName = lastName,
+                    };
 
-                // check if user is already a member of the chatroom when they join
-                var found = result.MemberIds.FirstOrDefault(x => x == userId);
-                if (found == null)
-                {
-                    // add new member to chatroom
-                    await chatRoomService.AddNewUserToChatRoom(userId, result.Id);
-                    await Clients.Group(result.Id).SendAsync("NewMemberJoined", newUser, result.Id);
+                    // add new member to signalR connection group
+                    await Groups.AddToGroupAsync(Context.ConnectionId, foundChatRoom.Id);
+
+                    if (first == "First")
+                    {
+                        await Clients.Client(Context.ConnectionId).SendAsync("ReceiveChatRoomInfo", foundChatRoom);
+                    }
+
+                    // check if user is already a member of the chatroom when they join
+                    var found = foundChatRoom.MemberIds.FirstOrDefault(x => x == userId);
+                    if (found == null)
+                    {
+                        // add new member to chatroom
+                        await chatRoomService.AddNewUserToChatRoom(userId, foundChatRoom.Id);
+                        await Clients.Group(foundChatRoom.Id).SendAsync("NewMemberJoined", member, foundChatRoom.Id);
+
+                        // add chatRoomId to user object
+                        await userCollection.AddChatRoomToUser(userId, foundChatRoom.Id);
+                    }
                 }
             }
         }
         public async Task SendChatRoomMessage(string userId, string chatRoomId, string firstName, string lastName, string msg)
         {
-            if (chatRoomId != null)
+            if (chatRoomId != null && userId != null && firstName != null && msg != null)
             {
                 var msgInfo = new MessageInfo
                 {
