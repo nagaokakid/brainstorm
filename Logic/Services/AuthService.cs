@@ -132,10 +132,10 @@ namespace Logic.Services
                         ChatRoomId = found.Id,
                         Message = x.Message,
                         Timestamp = x.Timestamp,
-                        FromUserInfo = userService.GetFriendly(x.FromUserId, users).Result
+                        FromUserInfo = x.FromUserId.ToFriendlyUserInfo(users),
                     }).ToList(),
                     JoinCode = found.JoinCode,
-                    Members = await userService.GetList(found.MemberIds, users)
+                    Members = found.MemberIds.ToFriendlyUserInfo(users),
                 });
             }
 

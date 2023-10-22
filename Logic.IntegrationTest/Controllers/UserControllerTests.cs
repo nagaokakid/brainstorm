@@ -74,8 +74,13 @@ namespace Logic.IntegrationTest.Controllers
             var value = (RegisterLoginResponse)action.Value;
 
             // Assert
-            Assert.That(!string.IsNullOrEmpty(value.Token));
-            Assert.That(value.UserInfo.FirstName == "first");
+            Assert.Multiple(() =>
+            {
+
+                Assert.That(!string.IsNullOrEmpty(value.Token));
+                Assert.That(value.UserInfo.FirstName == "first");
+            }
+                );
         }
 
         [Test]
