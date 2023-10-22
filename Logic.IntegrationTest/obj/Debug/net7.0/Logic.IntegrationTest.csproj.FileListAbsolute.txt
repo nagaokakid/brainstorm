@@ -133,3 +133,5 @@ D:\C# Library\API_4350\Logic.IntegrationTest\obj\Debug\net7.0\refint\Logic.Integ
 D:\C# Library\API_4350\Logic.IntegrationTest\obj\Debug\net7.0\Logic.IntegrationTest.pdb
 D:\C# Library\API_4350\Logic.IntegrationTest\obj\Debug\net7.0\Logic.IntegrationTest.genruntimeconfig.cache
 D:\C# Library\API_4350\Logic.IntegrationTest\obj\Debug\net7.0\ref\Logic.IntegrationTest.dll
+D:\C# Library\API_4350\Logic.IntegrationTest\bin\Debug\net7.0\Castle.Core.dll
+D:\C# Library\API_4350\Logic.IntegrationTest\bin\Debug\net7.0\Moq.dll

@@ -2,6 +2,7 @@
 using Database.Data;
 using Logic.Controllers;
 using Logic.DTOs.ChatRoom;
+using Logic.DTOs.Messages;
 using Logic.DTOs.User;
 using Logic.Services;
 using Microsoft.Extensions.Configuration;
@@ -103,6 +104,40 @@ namespace Logic.IntegrationTest.Services
                 Assert.That(result.MemberIds.Count, Is.EqualTo(2));
                 Assert.That(result.MemberIds[0], Is.EqualTo(loginResponse.UserInfo.UserId));
                 Assert.That(result.MemberIds[1], Is.EqualTo("secondUser"));
+            });
+        }
+
+        [Test]
+        public async Task AddMessageToChatRoom()
+        {
+            // Arrange
+            var createChatRoomRequest = new CreateChatRoomRequest
+            {
+                UserId = loginResponse.UserInfo.UserId,
+                Title = Guid.NewGuid().ToString(),
+                Description = "NewDescription",
+            };
+
+            FriendlyChatRoom createdChatRoom = (await chatRoomService.CreateChatRoom(createChatRoomRequest)).ChatRoom;
+            MessageInfo messageInfo = new MessageInfo
+            {
+                ChatRoomId = createdChatRoom.Id,
+                Message = "HelloWorld",
+                FromUserInfo = loginResponse.UserInfo,
+                Timestamp = DateTime.Now,
+            };
+
+            // Act
+            await chatRoomService.AddMessageToChatRoom(createdChatRoom.Id, messageInfo);
+            ChatRoom result = await chatRoomService.GetRoomByJoinCode(createdChatRoom.JoinCode);
+
+            // Arrange
+            Assert.Multiple(() =>
+            {
+                Assert.That(result.Id, Is.EqualTo(createdChatRoom.Id));
+                Assert.That(result.Messages.Count, Is.EqualTo(1));
+                Assert.That(result.Messages[0].Message, Is.EqualTo(messageInfo.Message));
+                Assert.That(result.Messages[0].FromUserId, Is.EqualTo(messageInfo.FromUserInfo.UserId));
             });
         }
     }

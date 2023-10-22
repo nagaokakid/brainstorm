@@ -19,43 +19,46 @@ namespace Logic.Hubs
 
         public async Task JoinChatRoom(string joinCode, string first, string userId, string firstName, string lastName)
         {
-            // get room for chatRoomCode
-            var foundChatRoom = await chatRoomService.GetRoomByJoinCode(joinCode);
-
-            // add member to group
-            if (foundChatRoom != null)
+            if (joinCode != null && userId != null && firstName != null)
             {
-                var member = new FriendlyUserInfo
+                // get room for chatRoomCode
+                var foundChatRoom = await chatRoomService.GetRoomByJoinCode(joinCode);
+
+                // add member to group
+                if (foundChatRoom != null)
                 {
-                    UserId = userId,
-                    FirstName = firstName,
-                    LastName = lastName,
-                };
+                    var member = new FriendlyUserInfo
+                    {
+                        UserId = userId,
+                        FirstName = firstName,
+                        LastName = lastName,
+                    };
 
-                // add new member to signalR connection group
-                await Groups.AddToGroupAsync(Context.ConnectionId, foundChatRoom.Id);
+                    // add new member to signalR connection group
+                    await Groups.AddToGroupAsync(Context.ConnectionId, foundChatRoom.Id);
 
-                if (first == "First")
-                {
-                    await Clients.Client(Context.ConnectionId).SendAsync("ReceiveChatRoomInfo", foundChatRoom);
-                }
+                    if (first == "First")
+                    {
+                        await Clients.Client(Context.ConnectionId).SendAsync("ReceiveChatRoomInfo", foundChatRoom);
+                    }
 
-                // check if user is already a member of the chatroom when they join
-                var found = foundChatRoom.MemberIds.FirstOrDefault(x => x == userId);
-                if (found == null)
-                {
-                    // add new member to chatroom
-                    await chatRoomService.AddNewUserToChatRoom(userId, foundChatRoom.Id);
-                    await Clients.Group(foundChatRoom.Id).SendAsync("NewMemberJoined", member, foundChatRoom.Id);
+                    // check if user is already a member of the chatroom when they join
+                    var found = foundChatRoom.MemberIds.FirstOrDefault(x => x == userId);
+                    if (found == null)
+                    {
+                        // add new member to chatroom
+                        await chatRoomService.AddNewUserToChatRoom(userId, foundChatRoom.Id);
+                        await Clients.Group(foundChatRoom.Id).SendAsync("NewMemberJoined", member, foundChatRoom.Id);
 
-                    // add chatRoomId to user object
-                    await userCollection.AddChatRoomToUser(userId, foundChatRoom.Id);
+                        // add chatRoomId to user object
+                        await userCollection.AddChatRoomToUser(userId, foundChatRoom.Id);
+                    }
                 }
             }
         }
         public async Task SendChatRoomMessage(string userId, string chatRoomId, string firstName, string lastName, string msg)
         {
-            if (chatRoomId != null)
+            if (chatRoomId != null && userId != null && firstName != null && msg != null)
             {
                 var msgInfo = new MessageInfo
                 {

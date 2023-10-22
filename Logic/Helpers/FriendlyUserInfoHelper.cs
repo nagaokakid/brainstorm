@@ -7,6 +7,7 @@ namespace Logic.Helpers
     {
         public static FriendlyUserInfo ToFriendlyUserInfo(this string memberId, Dictionary<string, User>? users)
         {
+            if (string.IsNullOrEmpty(memberId)) throw new ArgumentNullException($"{nameof(memberId)} cannot be null");
             if (users != null && users.Any() && users.TryGetValue(memberId, out var user))
             {
                 return user.ToFriendlyUser();
