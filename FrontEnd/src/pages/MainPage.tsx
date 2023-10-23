@@ -4,8 +4,8 @@ import NavigationBar from "../components/NavigationBar";
 import ChatList from "../components/ChatList";
 import ApiService from "../services/ApiService";
 import UserInfo from "../services/UserInfo";
-import { useEffect, useState } from "react";
-// import { useDataContext } from "../context/DataContext";
+import { useEffect, useState, useContext } from "react";
+import { DataContext } from "../context/DataContext";
 
 /**
  * 
@@ -13,6 +13,14 @@ import { useEffect, useState } from "react";
  */
 function MainPage() {
 
+    const c = useContext(DataContext);
+    if (!c) {
+        throw new Error('useMyContext must be used within a MyContextProvider');
+    }
+
+    const { updateData } = c;
+        
+    
     // If the user is not logged in, redirect to the login page
     if (localStorage.getItem("token") === null || localStorage.getItem("token") !== UserInfo.getToken()) {
         // window.location.href = "/";
@@ -27,7 +35,9 @@ function MainPage() {
     }
 
     function Render(type: number) {
+        // const { updateData } = useDataContext();
         console.log("---->callback", type);
+        updateData(type)
     }
 
     useEffect(() => {

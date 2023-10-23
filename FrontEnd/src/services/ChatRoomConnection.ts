@@ -40,7 +40,6 @@ class SignalRChatRoom {
      */
     setReceiveChatRoomMessageCallback(callBackFunction: () => void) {
         this.connection.on("ReceiveChatRoomMessage", (msg: chatRoomMessageObject) => {
-            console.log("----> Chatroom message received");
             UserInfo.addChatRoomMessage(msg);
             callBackFunction();
         });
@@ -52,7 +51,6 @@ class SignalRChatRoom {
      */
     setReceiveChatRoomInfoCallback(callBackFunction: () => void) {
         this.connection.on("ReceiveChatRoomInfo", (info: chatRoomObject) => {
-            console.log("----> Chatroom info received", info);
             UserInfo.addNewChatRoom(info);
             callBackFunction();
         });

@@ -20,9 +20,8 @@ interface MessageWindowProps {
  */
 function MessageWindow(props: MessageWindowProps) {
 
-    const { chatMessage, directMessage } = useDataContext();
-
-    console.log("----> MessageWindow outside update");
+    const { directMessage } = useDataContext();
+    console.log("----> MessageWindow");
     
 
     // Set the message to the display
@@ -30,9 +29,7 @@ function MessageWindow(props: MessageWindowProps) {
 
     useEffect(() => {
         setMessages(UserInfo.getListHistory(props.chatId, props.chatType));
-        console.log("----> MessageWindow inside update");
-        
-    }, [chatMessage, directMessage, props.chatId]);
+    }, [props.chatId]);
 
     return (
         <div className="MsgWindowContainer">

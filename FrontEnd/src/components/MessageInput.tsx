@@ -3,7 +3,6 @@ import UserInfo from "../services/UserInfo";
 import emailIcon from "../assets/email.png";
 import SignalRDirect from "../services/DirectMessageConnection";
 import SignalRChatRoom from "../services/ChatRoomConnection";
-import { useDataContext } from "../context/DataContext";
 import React, { useEffect, useState } from "react";
 
 interface MsgInputFieldProps {
@@ -18,15 +17,15 @@ interface MsgInputFieldProps {
  * @returns 
  */
 function MsgInputField(props: MsgInputFieldProps) {
+
     // Set the default state of the text
     const [text, setText] = useState("");
-
-    const { updateData } = useDataContext();
 
     // Send message
     const handleSend = () => {
         // check if text is empty
-        updateData(1);
+        console.log("----> clicked");
+
         if (!text) return;
 
         if (props.chatType === "Direct Message List") {

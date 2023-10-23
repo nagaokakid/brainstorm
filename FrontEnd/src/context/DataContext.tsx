@@ -16,7 +16,7 @@ type DataContextType = {
 };
 
 // Create the context with an initial value
-const DataContext = createContext<DataContextType | undefined>(undefined);
+export const DataContext = createContext<DataContextType | undefined>(undefined);
 
 export const useDataContext = () => {
     console.log("----> useDataContext");
@@ -38,7 +38,7 @@ export function DataContextProvider({ children }: DataContextProviderProps) {
     const [chatType, setChatType] = useState("ChatRoom List");
     const updateData = (newData: number) => {
         if (newData === 1) {
-            setChatMessage(!chatMessage);
+            setChatMessage(chatMessage => !chatMessage);
         }
         else if (newData === 2) {
             setDirectMessage(!directMessage);

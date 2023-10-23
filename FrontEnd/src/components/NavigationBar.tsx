@@ -9,7 +9,7 @@ interface NavigationBarProps {
  * @param {*} callBackFunction The callback function to handle the chat type
  * @returns The navigation bar of the application
  */
-function NavigationBar(props:NavigationBarProps) {
+function NavigationBar(props: NavigationBarProps) {
     const navigate = useNavigate();
 
     /**

@@ -49,7 +49,7 @@ function CreateRoomCustomize(props) {
     //             });
     //         })
     //     }
-    // }
+    // }    
 
     return (
         <div className='OptionContainer' style={{ display: props.style }} onClick={() => handleOptionClick("none")}>

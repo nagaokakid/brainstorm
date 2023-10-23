@@ -21,7 +21,6 @@ function MemberList(props: MemberListProps) {
         const temp = prompt("Enter your message to " + name);
 
         if (!temp) return;
-        console.log(temp);
 
         const msg = {
             "user1": UserInfo.getCurrentFriendlyUserInfo(),
