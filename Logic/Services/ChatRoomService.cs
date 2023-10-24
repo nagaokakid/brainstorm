@@ -39,15 +39,9 @@ namespace Logic.Services
             });
         }
 
-        public async Task<ActionResult<CreateChatRoomResponse>> CreateChatRoom(CreateChatRoomRequest request)
+        private static ChatRoom CreateChatRoom(CreateChatRoomRequest request, string userId)
         {
-            // get user
-            var foundUser = await userCollection.Get(request.UserId);
-
-            if (foundUser == null) throw new UserNotFound();
-
-            // create new room
-            ChatRoom newRoom = new()
+            return new()
             {
                 Id = Guid.NewGuid().ToString(),
                 Description = request.Description,
@@ -57,17 +51,33 @@ namespace Logic.Services
                 JoinCode = Random.Shared.Next(100001, 999999).ToString(),
 
                 // add user as a member to this room immediately
-                MemberIds = new List<string>() { foundUser.Id },
+                MemberIds = new List<string>() { userId },
 
                 // no messages yet
                 Messages = new List<ChatRoomMessage>()
             };
+        }
 
-            // add room to user collection
+        public async Task<CreateChatRoomResponse> CreateChatRoom(CreateChatRoomRequest request)
+        {
+            // get user
+            var foundUser = await userCollection.Get(request.UserId) ?? throw new UserNotFound();
+
+            // create new room
+            ChatRoom newRoom = CreateChatRoom(request, foundUser.Id);
+
+            // add roomId to user
             await userCollection.AddChatRoomToUser(foundUser.Id, newRoom.Id);
 
-            // add new room to room collection
+            // add new chatRoom to room collection
             await chatRoomCollection.Add(newRoom);
+
+            // return response
+            return CreateChatRoomResponse(foundUser, newRoom);
+        }
+
+        private static CreateChatRoomResponse CreateChatRoomResponse(User foundUser, ChatRoom newRoom)
+        {
             return new CreateChatRoomResponse
             {
                 ChatRoom = new FriendlyChatRoom
