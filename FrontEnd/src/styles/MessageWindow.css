@@ -1,0 +1,27 @@
+.MsgWindowContainer
+{
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.MsgWindowContainer .MsgSection
+{
+    position: relative;
+    width: 100%;
+    height: 90%;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    padding: 0 10px;
+}
+
+.MsgWindowContainer .InputSection
+{
+    position: relative;
+    width: 100%;
+    display: flex;
+    background-color: rgb(167, 165, 165);
+}
