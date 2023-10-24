@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Logic.UnitTest", "..\Logic.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Database.UnitTest", "..\Database.UnitTest\Database.UnitTest.csproj", "{97360FD3-5111-4FF8-8E0E-A8755A75E1D2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Database.IntegrationTest", "..\Database.IntegrationTest\Database.IntegrationTest.csproj", "{1089C3F5-8D30-4971-B5C8-D90786C2FC19}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Logic.IntegrationTest", "..\Logic.IntegrationTest\Logic.IntegrationTest.csproj", "{F15E5E2C-031D-477A-A014-F82F2B7E8EE7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,10 +35,10 @@ Global
 		{97360FD3-5111-4FF8-8E0E-A8755A75E1D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{97360FD3-5111-4FF8-8E0E-A8755A75E1D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{97360FD3-5111-4FF8-8E0E-A8755A75E1D2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1089C3F5-8D30-4971-B5C8-D90786C2FC19}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1089C3F5-8D30-4971-B5C8-D90786C2FC19}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1089C3F5-8D30-4971-B5C8-D90786C2FC19}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1089C3F5-8D30-4971-B5C8-D90786C2FC19}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F15E5E2C-031D-477A-A014-F82F2B7E8EE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F15E5E2C-031D-477A-A014-F82F2B7E8EE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F15E5E2C-031D-477A-A014-F82F2B7E8EE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F15E5E2C-031D-477A-A014-F82F2B7E8EE7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

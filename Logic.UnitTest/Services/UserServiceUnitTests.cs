@@ -2,6 +2,7 @@
 using Database.Data;
 using Logic.DTOs.User;
 using Logic.Exceptions;
+using Logic.Helpers;
 using Logic.Services;
 using Moq;
 
@@ -60,7 +61,7 @@ namespace Logic.UnitTest.Services
         {
             // Arrange
             var userService = new UserService(userCollectionService.Object);
-            var result = await userService.GetFriendly("username", users);
+            var result = "username".ToFriendlyUserInfo(users);
             // Assert
             Assert.That(result.FirstName == null);
         }
@@ -73,7 +74,7 @@ namespace Logic.UnitTest.Services
             var userService = new UserService(userCollectionService.Object);
 
             // Act
-            var result = await userService.GetFriendly("2", users);
+            var result = "2".ToFriendlyUserInfo(users);
 
             // Assert
             Assert.That(result.FirstName == "first" && result.UserId == "2" && result.LastName == "last");
