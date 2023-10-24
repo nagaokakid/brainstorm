@@ -1,31 +1,23 @@
-#See https://aka.ms/customizecontainer to learn how to customize your debug container and how Visual Studio uses this Dockerfile to build your images for faster debugging.
-
-FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
+FROM mcr.microsoft.com/dotnet/aspnet:7.0-nanoserver-1809 AS base
 WORKDIR /app
-EXPOSE 80
-EXPOSE 443
-# Set the base image
-FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build-env
+EXPOSE 5135
 
-# Set the working directory
+ENV ASPNETCORE_URLS=http://+:5135/
+
+FROM mcr.microsoft.com/dotnet/sdk:7.0-nanoserver-1809 AS build
+ARG configuration=Release
+WORKDIR /src
+COPY ["Logic/Logic.csproj", "Logic/"]
+RUN dotnet restore "Logic\Logic.csproj"
+COPY . .
+WORKDIR "/src/Logic"
+RUN dotnet build "Logic.csproj" -c $configuration -o /app/build
+
+FROM build AS publish
+ARG configuration=Release
+RUN dotnet publish "Logic.csproj" -c $configuration -o /app/publish /p:UseAppHost=false
+
+FROM base AS final
 WORKDIR /app
-
-# Copy the csproj file and restore dependencies
-COPY *.csproj ./
-RUN dotnet restore
-
-# Copy the remaining files and build the project
-COPY . ./
-RUN dotnet publish -c Release -o out
-
-# Set the base image for runtime
-FROM mcr.microsoft.com/dotnet/aspnet:5.0
-
-# Set the working directory
-WORKDIR /app
-
-# Copy the published files from the previous stage
-COPY --from=build-env /app/out .
-
-# Set the entry point for the application
+COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "Logic.dll"]
