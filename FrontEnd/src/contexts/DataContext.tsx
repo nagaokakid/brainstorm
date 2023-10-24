@@ -23,15 +23,15 @@ export function useDataContext() {
 
 export function DataContextProvider({ children }: DataContextProviderProps) {
 
-    const [chatMessage, setChatMessage] = useState(true);
+    const [update, setUpdate] = useState(true);
     const updateData = (newData: number) => {
         if (newData === 1) {
-            setChatMessage(chatMessage => !chatMessage);
+            setUpdate(update => !update);
         }
     };
 
     return (
-        <DataContext.Provider value={[chatMessage, updateData]}>
+        <DataContext.Provider value={[update, updateData]}>
             {children}
         </DataContext.Provider>
     );
