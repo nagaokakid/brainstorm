@@ -38,4 +38,5 @@ jobs:
           context: .
           push: true
           target: final
+          file: ./Logic/Dockerfile
           tags: ${{ secrets.DOCKER_USERNAME }}/${{ github.event.repository.name }}:latest
