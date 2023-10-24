@@ -119,9 +119,7 @@ namespace Logic.Services
             // get friendly chatroom for each chatRoomId
             foreach (var room in chatRoomIds)
             {
-                var found = await chatRoomCollection.GetById(room);
-                if (found == null) throw new ChatRoomNotFound();
-
+                var found = await chatRoomCollection.GetById(room) ?? throw new ChatRoomNotFound();
                 result.Add(new FriendlyChatRoom
                 {
                     Id = found.Id,
@@ -132,10 +130,10 @@ namespace Logic.Services
                         ChatRoomId = found.Id,
                         Message = x.Message,
                         Timestamp = x.Timestamp,
-                        FromUserInfo = userService.GetFriendly(x.FromUserId, users).Result
+                        FromUserInfo = x.FromUserId.ToFriendlyUserInfo(users),
                     }).ToList(),
                     JoinCode = found.JoinCode,
-                    Members = await userService.GetList(found.MemberIds, users)
+                    Members = found.MemberIds.ToFriendlyUserInfo(users),
                 });
             }
 
