@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run: 
-        working-directory: ./Logic
+        working-directory: ./logic
     steps:
       -
         name: Checkout
