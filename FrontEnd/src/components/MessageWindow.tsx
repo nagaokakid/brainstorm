@@ -3,7 +3,7 @@ import "../styles/MessageWindow.css";
 import MessageBox from "./MessageBox";
 import UserInfo from "../services/UserInfo";
 import MessageInput from "./MessageInput";
-import { useDataContext } from "../context/DataContext";
+import { useDataContext } from "../contexts/DataContext";
 import { useEffect, useState } from "react";
 import { chatRoomMessageObject } from "../services/TypesDefine";
 
@@ -20,16 +20,18 @@ interface MessageWindowProps {
  */
 function MessageWindow(props: MessageWindowProps) {
 
-    const { directMessage } = useDataContext();
+    const context = useDataContext();
+
+    const msg = context[0];
     console.log("----> MessageWindow");
-    
+
 
     // Set the message to the display
     const [messages, setMessages] = useState<[] | chatRoomMessageObject[] | { message: string, timestamp: string }[]>([]);
 
     useEffect(() => {
         setMessages(UserInfo.getListHistory(props.chatId, props.chatType));
-    }, [props.chatId]);
+    }, [props.chatId, msg]);
 
     return (
         <div className="MsgWindowContainer">

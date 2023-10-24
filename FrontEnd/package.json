@@ -17,8 +17,9 @@
     "react-router-dom": "^6.17.0"
   },
   "devDependencies": {
-    "@types/react": "^18.2.15",
+    "@types/react": "^18.2.31",
     "@types/react-dom": "^18.2.7",
+    "@types/signalr": "^2.4.1",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
     "@vitejs/plugin-react": "^4.0.3",
