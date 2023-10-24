@@ -5,7 +5,7 @@ import ChatList from "../components/ChatList";
 import ApiService from "../services/ApiService";
 import UserInfo from "../services/UserInfo";
 import { useEffect, useState, useContext } from "react";
-import { DataContext, useDataContext } from "../contexts/DataContext";
+import { DataContext } from "../contexts/DataContext";
 
 /**
  * 
@@ -13,11 +13,9 @@ import { DataContext, useDataContext } from "../contexts/DataContext";
  */
 function MainPage() {
 
-    
-    console.log("----> MainPage");
-    
-    console.log("----> MainPage1");
-    
+    const context = useContext(DataContext);
+
+
     // If the user is not logged in, redirect to the login page
     if (localStorage.getItem("token") === null || localStorage.getItem("token") !== UserInfo.getToken()) {
         // window.location.href = "/";
@@ -33,7 +31,6 @@ function MainPage() {
 
     function Render(type: number) {
         console.log("---->callback", type);
-        const context = useContext(DataContext);
         if (context === undefined) {
             throw new Error('useDataContext must be used within a DataContext');
         }
