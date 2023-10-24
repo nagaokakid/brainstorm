@@ -4,13 +4,13 @@ on:
   push:
     branches:
       - main
+defaults:
+  run:
+    working-directory: Logic
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    defaults:
-      run: 
-        working-directory: ./logic
     steps:
       -
         name: Checkout
@@ -38,5 +38,4 @@ jobs:
           context: .
           push: true
           target: final
-          file: ./Logic/Dockerfile
           tags: ${{ secrets.DOCKER_USERNAME }}/${{ github.event.repository.name }}:latest
