@@ -1,16 +1,22 @@
-FROM mcr.microsoft.com/dotnet/aspnet:7.0-nanoserver-1809 AS base
+#See https://aka.ms/customizecontainer to learn how to customize your debug container and how Visual Studio uses this Dockerfile to build your images for faster debugging.
+
+FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
 WORKDIR /app
-EXPOSE 5135
+EXPOSE 80
+EXPOSE 443
 
-COPY *.csproj ./
-RUN dotnet restore
+FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
+WORKDIR /src
+COPY ["Logic.csproj", "."]
+RUN dotnet restore "./Logic.csproj"
+COPY . .
+WORKDIR "/src/."
+RUN dotnet build "Logic.csproj" -c Release -o /app/build
 
-COPY . ./
-RUN dotnet publish -c Release -o out
+FROM build AS publish
+RUN dotnet publish "Logic.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
-FROM mcr.microsoft.com/dotnet/core/aspnet:2.2
+FROM base AS final
 WORKDIR /app
-
-COPY --from=build-env /app/out .
-
+COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "Logic.dll"]
