@@ -5,7 +5,7 @@ type DataContextProviderProps = {
     children: ReactNode;
 };
 
-type DataContextType = [boolean, (newData: number) => void];
+type DataContextType = [boolean, (newData: boolean) => void];
 
 // Create the context with an initial value
 export const DataContext = createContext<DataContextType | undefined>(undefined);
@@ -24,8 +24,8 @@ export function useDataContext() {
 export function DataContextProvider({ children }: DataContextProviderProps) {
 
     const [update, setUpdate] = useState(true);
-    const updateData = (newData: number) => {
-        if (newData === 1) {
+    const updateData = (newData: boolean) => {
+        if (newData === true) {
             setUpdate(update => !update);
         }
     };

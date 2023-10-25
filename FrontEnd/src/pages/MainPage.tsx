@@ -34,9 +34,9 @@ function MainPage() {
         if (context === undefined) {
             throw new Error('useDataContext must be used within a DataContext');
         }
-        if ((type === 1 && chatType === "ChatRoom List") || (type === 2 && chatType === "Direct Message List")) {
+        if (type === 1 || type === 2 ) {
             const updateData = context[1];
-            updateData(type)
+            updateData(true)
         }
     }
 
