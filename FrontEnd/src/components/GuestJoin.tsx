@@ -1,21 +1,34 @@
 import '../styles/GuestJoin.css';
-import { useNavigate } from 'react-router-dom';
 import ApiService from '../services/ApiService';
 import 'mdb-react-ui-kit/dist/css/mdb.min.css';
 import {
     MDBInput,
     MDBBtn
 } from 'mdb-react-ui-kit'
+import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 
-function guestJoin() {
+function GuestJoin() {
+
     const navigate = useNavigate()
+
+    const [input, setInput] = useState({ code: '' })
+
+    function handleChange(value: React.ChangeEvent<HTMLInputElement>) {
+        const id = value.target.id;
+        const code = value.target.value;
+        setInput((prev: typeof input) => { return { ...prev, [id]: code } });
+    }
+
     //This will verify the input and handle the request to the server
-    const RequestHandle = async () => {
+    async function RequestHandle() {
+
         // Create an Object of the apiService
-        const apiService = new ApiService()
-        const code = document.getElementById('code').value;
-        if (code != "") {
-            var response = await apiService.GuestJoin(code)
+        const apiService = ApiService
+        const code = input.code;
+        
+        if (code) {
+            const response = await apiService.GuestJoin(code)
 
             if (response.ok) {
                 navigate('/mainPage')
@@ -31,10 +44,10 @@ function guestJoin() {
 
     return (
         <div className='GuestCodeContainer'>
-            <MDBInput wrapperClass='mb-4' label='Chat Room Code' id='code' type='text' />
+            <MDBInput wrapperClass='mb-4' label='Chat Room Code' id='code' type='text' onChange={handleChange} />
             <MDBBtn className="mb-4 w-100" onClick={() => RequestHandle()}>Join Chat Room</MDBBtn>
         </div>
     );
 }
 
-export default guestJoin;
+export default GuestJoin;

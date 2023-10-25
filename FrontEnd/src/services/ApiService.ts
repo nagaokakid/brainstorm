@@ -80,7 +80,7 @@ class ApiService {
      * @param {*} description The chat room description
      * @returns A json object that contains the response from the backend
      */
-    async CreateChatRoom(title: string, description: string) {
+    async CreateChatRoom(title: string, description: string|null|undefined) {
         const resp = await fetch(UserInfo.BaseURL + "api/chatroom",
             {
                 method: 'POST',
@@ -131,7 +131,7 @@ class ApiService {
 
         // if response is okay, assign to appinfo for later use
         if (resp.ok) {
-            UserInfo.loginRegisterResponse = await resp.json();
+            UserInfo.loginRegisterResponse = await resp.json(); // Or generate a new guest info here
             localStorage.setItem("token", UserInfo.getToken());
             console.log("----> Guest join success");
             await this.connectChatRooms();
