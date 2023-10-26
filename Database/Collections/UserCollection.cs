@@ -23,6 +23,11 @@ namespace Database.Collections
             await userRepository.AddToArrayInDocument(userId, "ChatroomIds", chatRoomId);
         }
 
+        public async Task AddDirectMessageHistoryToUser(string userId, string directMessageHistoryId)
+        {
+            await userRepository.AddToArrayInDocument(userId, "DirectMessageHistoryIds", directMessageHistoryId);
+        }
+
         // Check if username already exists in User collection
         public async Task<bool> DoesUsernameExist(string username)
         {
