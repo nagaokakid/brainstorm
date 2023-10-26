@@ -13,6 +13,6 @@ namespace Database.Data
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public List<string> ChatroomIds { get; set; }
-        public List<string> DirectMessageHistoryIDs {  get; set; }
+        public List<string> DirectMessageHistoryIds {  get; set; }
     }
 }
