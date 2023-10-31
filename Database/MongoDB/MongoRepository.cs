@@ -13,7 +13,7 @@ namespace Database.MongoDB
         private IMongoDatabase database;
 
         // Hard-coded to avoid file location issues when using Docker
-        private const string CONNECTION_STRING = "mongodb+srv://comp4350:O954Xbw6kQ488jym@brainstorm.aj9h1fd.mongodb.net/?retryWrites=true&w=majority";
+        private const string CONNECTION_STRING = "mongodb+srv://comp4350:pHPx243FmFpd645F@brainstorm.btgsxmb.mongodb.net/?retryWrites=true&w=majority";
 
         // Constructor: connect to MongoDB database and link to a specific collection
         public MongoRepository(string databaseName, string collectionName)
