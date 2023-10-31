@@ -82,17 +82,22 @@ namespace Database.MongoDB
         }
 
         // Get a single document that matches the given field names and values
-        public async Task<TDocument> GetDocumentByFieldValues(List<string> fieldNames, List<string> fieldValues)
+        public async Task<TDocument> GetDocumentByFieldValues(Dictionary<string, string> fieldDict)
         {
             try
             {
                 var filterBuilder = Builders<TDocument>.Filter;
                 var filter = filterBuilder.Empty;
 
-                for (int i = 0; i < fieldNames.Count; i++)
+                foreach (var field in fieldDict)
+                {
+                    filter &= filterBuilder.Eq(field.Key, field.Value);
+                }
+
+/*                for (int i = 0; i < fieldNames.Count; i++)
                 {
                     filter = filter & filterBuilder.Eq(fieldNames[i], fieldValues[i]);
-                }
+                }*/
 
                 return await collection.Find(filter).FirstOrDefaultAsync();
             }
@@ -111,17 +116,22 @@ namespace Database.MongoDB
         }
 
         // Get all documents that match the given the field names and their values
-        public async Task<List<TDocument>> GetAllDocumentsByFieldValues(List<string> fieldNames, List<string> fieldValues)
+        public async Task<List<TDocument>> GetAllDocumentsByFieldValues(Dictionary<string, string> fieldDict)
         {
             try
             {
                 var filterBuilder = Builders<TDocument>.Filter;
                 var filter = filterBuilder.Empty;
 
-                for (int i = 0; i < fieldNames.Count; i++)
+                foreach (var field in fieldDict)
+                {
+                    filter &= filterBuilder.Eq(field.Key, field.Value);
+                }
+
+/*                for (int i = 0; i < fieldNames.Count; i++)
                 {
                     filter &= filterBuilder.Eq(fieldNames[i], fieldValues[i]);
-                }
+                }*/
 
                 return await collection.Find(filter).ToListAsync();
             }

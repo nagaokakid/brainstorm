@@ -6,7 +6,7 @@ namespace Database.Collections
 {
     public class DirectMessageCollection : IDirectMessageCollection
     {
-   
+
         // The direct message collection from MongoDB
         private MongoRepository<DirectMessageHistory> directMessageHistoryRepository = new("brainstorm", "DirectMessageHistory");
 
@@ -14,7 +14,7 @@ namespace Database.Collections
         public async Task Add(string userId1, string userId2, DirectMessage message)
         {
             var find = await Get(userId1, userId2);
-            if(find == null)
+            if (find == null)
             {
                 // users have not exchanged direct messages before
                 var hist = new DirectMessageHistory
@@ -28,7 +28,7 @@ namespace Database.Collections
             }
             else
             {
-                await directMessageHistoryRepository.AddToArrayInDocument(find.Id, "DirectMessages", message);
+                await directMessageHistoryRepository.AddToArrayInDocument(find.Id, "DirectMessage", message); // *add message ID here instead of whole obj
             }
             //var result = await Get(userId1, userId2);
             //result.DirectMessages.Add(message);
@@ -56,21 +56,17 @@ namespace Database.Collections
 
         public async Task<List<DirectMessageHistory>> GetAll(string userId)
         {
-            List<string> fieldNameOne = new List<string>
+            Dictionary<string, string> fieldDict1 = new(1)
             {
-                "UserId1"
+                {"UserId1", userId }
             };
-            List<string> fieldNameTwo = new List<string>
+            Dictionary<string, string> fieldDict2 = new(1)
             {
-                "UserId2"
-            };
-            List<string> fieldValue = new List<string>
-            {
-                userId
+                {"UserId2", userId }
             };
 
-            var result1 = await directMessageHistoryRepository.GetAllDocumentsByFieldValues(fieldNameOne, fieldValue);
-            var result2 = await directMessageHistoryRepository.GetAllDocumentsByFieldValues(fieldNameTwo, fieldValue);
+            var result1 = await directMessageHistoryRepository.GetAllDocumentsByFieldValues(fieldDict1);
+            var result2 = await directMessageHistoryRepository.GetAllDocumentsByFieldValues(fieldDict2);
 
             List<DirectMessageHistory> allDirectMessages = new();
             allDirectMessages.AddRange(result1);
@@ -82,26 +78,20 @@ namespace Database.Collections
 
         public async Task<DirectMessageHistory?> Get(string userId1, string userId2)
         {
-            List<string> fieldNames = new List<string>
+            Dictionary<string, string> fieldDict1 = new(2)
             {
-                "UserId1",
-                "UserId2"
+                {"UserId1", userId1 },
+                {"UserId2", userId2 }
             };
 
-            List<string> orderOneValues = new List<string>
+            Dictionary<string, string> fieldDict2 = new(2)
             {
-                userId1,
-                userId2
+                {"UserId1", userId2 },
+                {"UserId2", userId1 }
             };
 
-            List<string> orderTwoValues = new List<string>
-            {
-                userId2,
-                userId1
-            };
-
-            var result1 = await directMessageHistoryRepository.GetDocumentByFieldValues(fieldNames, orderOneValues);
-            var result2 = await directMessageHistoryRepository.GetDocumentByFieldValues(fieldNames, orderTwoValues);
+            var result1 = await directMessageHistoryRepository.GetDocumentByFieldValues(fieldDict1);
+            var result2 = await directMessageHistoryRepository.GetDocumentByFieldValues(fieldDict2);
 
             return result1 ?? result2;
         }
