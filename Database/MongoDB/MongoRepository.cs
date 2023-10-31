@@ -1,6 +1,7 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Driver;
 using System.Diagnostics;
+using System.Transactions;
 
 namespace Database.MongoDB
 {
@@ -116,7 +117,7 @@ namespace Database.MongoDB
         }
 
         // Get all documents that match the given the field names and their values
-        public async Task<List<TDocument>> GetAllDocumentsByFieldValues(Dictionary<string, string> fieldDict)
+        public async Task<List<TDocument>> GetAllDocumentsByFieldDictionary(Dictionary<string, string> fieldDict)
         {
             try
             {
@@ -148,6 +149,13 @@ namespace Database.MongoDB
                 throw;
             }
 
+        }
+
+        // Get all documents where the given field name matches any of the values in the given list
+        public async Task<List<TDocument>> GetAllDocumentsByValueList(string fieldName, List<string> valueList)
+        {
+            var filter = Builders<TDocument>.Filter.In(fieldName, valueList);
+            return await collection.Find(filter).ToListAsync();
         }
 
         // Create a new document

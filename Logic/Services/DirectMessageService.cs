@@ -17,7 +17,7 @@ namespace Logic.Services
         public async Task AddNewMessage(MessageInfo msg)
         {
             var returnId = await directMessageCollection.Add(msg.FromUserInfo.UserId, msg.ToUserInfo.UserId, msg.FromDTO());
-            if (returnId != null) // new direct message history was created in db; add ID to users
+            if (returnId != null) // new direct message history was created in db; add ID to both users
             {
                 await userCollection.AddDirectMessageHistoryToUser(msg.FromUserInfo.UserId, returnId);
                 await userCollection.AddDirectMessageHistoryToUser(msg.ToUserInfo.UserId, returnId);
