@@ -34,17 +34,12 @@ namespace Database.Collections
         {
             bool found;
 
-            List<string> fieldNames = new List<string>
+            Dictionary<string, string> fieldDict = new(1)
             {
-                "Username"
+                { "Username", username }
             };
 
-            List<string> fieldValues = new List<string>
-            {
-                username
-            };
-
-            found = await userRepository.GetDocumentByFieldValues(fieldNames, fieldValues) != null;
+            found = await userRepository.GetDocumentByFieldDictionary(fieldDict) != null;
 
             return found;
         }
@@ -58,19 +53,13 @@ namespace Database.Collections
         // Get the user that matches the given username and password
         public async Task<User?> Get(string username, string password)
         {
-            List<string> fieldNames = new List<string>
+            Dictionary<string, string> fieldDict = new(2)
             {
-                "Username",
-                "Password"
+                {"Username", username},
+                {"Password", password}
             };
 
-            List<string> fieldValues = new List<string>
-            {
-                username,
-                password
-            };
-
-            return await userRepository.GetDocumentByFieldValues(fieldNames, fieldValues);
+            return await userRepository.GetDocumentByFieldDictionary(fieldDict);
 
         }
 

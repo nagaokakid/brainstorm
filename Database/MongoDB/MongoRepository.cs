@@ -83,7 +83,7 @@ namespace Database.MongoDB
         }
 
         // Get a single document that matches the given field names and values
-        public async Task<TDocument> GetDocumentByFieldValues(Dictionary<string, string> fieldDict)
+        public async Task<TDocument> GetDocumentByFieldDictionary(Dictionary<string, string> fieldDict)
         {
             try
             {
