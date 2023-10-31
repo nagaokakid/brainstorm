@@ -10,8 +10,8 @@ namespace Database.Collections
         // The direct message collection from MongoDB
         private MongoRepository<DirectMessageHistory> directMessageHistoryRepository = new("brainstorm", "DirectMessageHistory");
 
-        // Add a new direct message document to the collection
-        public async Task Add(string userId1, string userId2, DirectMessage message)
+        // Add a new direct message document to the collection (and return an ID if new DM history is made)
+        public async Task<string?> Add(string userId1, string userId2, DirectMessage message)
         {
             var find = await Get(userId1, userId2);
             if (find == null)
@@ -25,10 +25,12 @@ namespace Database.Collections
                     DirectMessages = new List<DirectMessage> { message },
                 };
                 await directMessageHistoryRepository.CreateDocument(hist);
+                return hist.Id;
             }
             else
             {
                 await directMessageHistoryRepository.AddToArrayInDocument(find.Id, "DirectMessage", message); // *add message ID here instead of whole obj
+                return null;
             }
             //var result = await Get(userId1, userId2);
             //result.DirectMessages.Add(message);

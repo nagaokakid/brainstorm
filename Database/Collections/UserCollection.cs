@@ -23,6 +23,7 @@ namespace Database.Collections
             await userRepository.AddToArrayInDocument(userId, "ChatroomIds", chatRoomId);
         }
 
+        // Add a direct message history ID to a user
         public async Task AddDirectMessageHistoryToUser(string userId, string directMessageHistoryId)
         {
             await userRepository.AddToArrayInDocument(userId, "DirectMessageHistoryIds", directMessageHistoryId);
