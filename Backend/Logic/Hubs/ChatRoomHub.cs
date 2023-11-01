@@ -5,7 +5,6 @@ using Logic.DTOs.User;
 using Logic.Helpers;
 using Logic.Services;
 using Microsoft.AspNetCore.SignalR;
-using Microsoft.IdentityModel.Tokens;
 
 namespace Logic.Hubs
 {
@@ -94,9 +93,12 @@ namespace Logic.Hubs
             if (title != null && description != null && chatRoomId != null && creatorId != null)
             {
                 var creator = new FriendlyUserInfo { UserId = creatorId, FirstName = creatorFirstName, LastName = creatorLastName };
-                var session = new BrainstormSession { Title = title, Description = description, ChatRoomId = chatRoomId, CanJoin = true, Creator = creator, SessionId = Guid.NewGuid().ToString(), Ideas = new List<string>(), JoinedMembers = new List<FriendlyUserInfo> { creator } , IdeasAvailable = DateTime.Now.AddDays(1)};
+                var session = new BrainstormSession { Title = title, Description = description, ChatRoomId = chatRoomId, CanJoin = true, Creator = creator, SessionId = Guid.NewGuid().ToString(), Ideas = new List<string>(), JoinedMembers = new List<FriendlyUserInfo> { creator }, IdeasAvailable = DateTime.Now.AddDays(1) };
+                
+                // add created session to dictionary
                 await brainstormService.Add(session);
 
+                // add creator of session to brainstorming session group
                 await Groups.AddToGroupAsync(Context.ConnectionId, session.SessionId);
 
                 // send message to chatroom saying a new brainstorming session has started
@@ -126,10 +128,10 @@ namespace Logic.Hubs
 
         public async Task StartSession(string sessionId)
         {
-            if(sessionId != null)
+            if (sessionId != null)
             {
                 await brainstormService.StartSession(sessionId);
-                
+
                 // let all users know that brainstorm session has started
                 Clients.Group(sessionId).SendAsync("BrainstormSessionStarted", sessionId);
             }
@@ -147,7 +149,7 @@ namespace Logic.Hubs
 
         public async Task SendAllIdeas(string sessionId)
         {
-            if(sessionId != null)
+            if (sessionId != null)
             {
                 var result = await brainstormService.GetAllIdeas(sessionId);
                 Clients.Group(sessionId).SendAsync("ReceiveAllIdeas", sessionId, result);
@@ -156,7 +158,7 @@ namespace Logic.Hubs
 
         public async Task RemoveSession(string sessionId)
         {
-            if(sessionId != null)
+            if (sessionId != null)
             {
                 await brainstormService.RemoveSession(sessionId);
             }

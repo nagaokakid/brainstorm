@@ -8,7 +8,8 @@ namespace Logic.Helpers
     {
         public static BrainstormDTO ToDTO(this BrainstormSession session)
         {
-            Debug.Assert(session != null);
+            if (session == null) throw new ArgumentNullException($"{nameof(session)} is null");
+
             return new BrainstormDTO
             {
                 SessionId = session.SessionId,
