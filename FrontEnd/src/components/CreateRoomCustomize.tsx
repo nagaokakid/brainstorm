@@ -29,8 +29,10 @@ function CreateRoomCustomize(props: CreateRoomCustomizeProps) {
 
         if (chatRoomName) {
             const apiService = ApiService;
-            await apiService.CreateChatRoom(chatRoomName, description)
-            handleOptionClick("none")
+            await apiService.CreateChatRoom(chatRoomName, description);
+            handleOptionClick("none");
+            (document.getElementById('chatRoomName') as HTMLInputElement).value='';
+            (document.getElementById('description') as HTMLInputElement).value='';
         }
         else {
             alert("Please enter a chat room name")
