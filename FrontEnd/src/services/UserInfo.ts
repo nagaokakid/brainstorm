@@ -37,7 +37,13 @@ class UserInfo {
                             },
                             "chatRoomId": "1111",
                             "message": "I'm first user",
-                            "timestamp": "2023-10-13T23:35:59.786Z"
+                            "timestamp": "2023-10-13T23:35:59.786Z", 
+                            "bs_session": {
+                                title: "",
+                                description: "",
+                                sessionId:"", 
+                                creatorId:"",
+                            }
                         },
                         {
                             "fromUserInfo":
@@ -78,7 +84,13 @@ class UserInfo {
                             "firstName": "Second",
                             "lastName": "User"
                         }
-                    ]
+                    ],
+                    "bs_session": {
+                        title: "",
+                        description: "",
+                        brainstormingId:"", 
+                        creatorId:"",
+                    }
                 },
                 {
                     "id": "2222",
