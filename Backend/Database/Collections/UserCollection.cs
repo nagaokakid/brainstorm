@@ -23,22 +23,23 @@ namespace Database.Collections
             await userRepository.AddToArrayInDocument(userId, "ChatroomIds", chatRoomId);
         }
 
+        // Add a direct message history ID to a user
+        public async Task AddDirectMessageHistoryToUser(string userId, string directMessageHistoryId)
+        {
+            await userRepository.AddToArrayInDocument(userId, "DirectMessageHistoryIds", directMessageHistoryId);
+        }
+
         // Check if username already exists in User collection
         public async Task<bool> DoesUsernameExist(string username)
         {
             bool found;
 
-            List<string> fieldNames = new List<string>
+            Dictionary<string, string> fieldDict = new(1)
             {
-                "Username"
+                { "Username", username }
             };
 
-            List<string> fieldValues = new List<string>
-            {
-                username
-            };
-
-            found = await userRepository.GetDocumentByFieldValues(fieldNames, fieldValues) != null;
+            found = await userRepository.GetDocumentByFieldDictionary(fieldDict) != null;
 
             return found;
         }
@@ -52,19 +53,13 @@ namespace Database.Collections
         // Get the user that matches the given username and password
         public async Task<User?> Get(string username, string password)
         {
-            List<string> fieldNames = new List<string>
+            Dictionary<string, string> fieldDict = new(2)
             {
-                "Username",
-                "Password"
+                {"Username", username},
+                {"Password", password}
             };
 
-            List<string> fieldValues = new List<string>
-            {
-                username,
-                password
-            };
-
-            return await userRepository.GetDocumentByFieldValues(fieldNames, fieldValues);
+            return await userRepository.GetDocumentByFieldDictionary(fieldDict);
 
         }
 
