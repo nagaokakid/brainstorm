@@ -28,9 +28,16 @@ class SignalRChatRoom {
     async makeConnection() {
         console.log("----> Starting connection to chatroom services");
         await this.connection.start();
+    }
+
+    /**
+     * Set a callback function that will be called when a new member joins the chat room
+     * @param callBackFunction A function that will be called when a new member joins the chat room
+     */
+    setReceiveNewMemberCallback(callBackFunction: () => void) {
         this.connection.on("NewMemberJoined", (userInfo: userInfoObject, chatId: string) => {
             UserInfo.addNewMember(userInfo, chatId);
-            console.log("----> New member joined callback")
+            callBackFunction();
         });
     }
 
@@ -51,6 +58,10 @@ class SignalRChatRoom {
      */
     setReceiveChatRoomInfoCallback(callBackFunction: () => void) {
         this.connection.on("ReceiveChatRoomInfo", (info: chatRoomObject) => {
+            console.log("get Called");
+            
+            console.log("----> Receive chatroom info callback", info);
+            
             UserInfo.addNewChatRoom(info);
             callBackFunction();
         });
@@ -73,7 +84,10 @@ class SignalRChatRoom {
      */
     async joinChatRoom(joinCode: string, type: string) {
         console.log("----> Joining chatroom:", joinCode);
-        await this.connection.send("JoinChatRoom", joinCode, type, UserInfo.getUserId(), UserInfo.getFirstName(), UserInfo.getLastName()).catch(() => console.log("----> Join chatroom failed"));
+        await this.connection.send("JoinChatRoom", joinCode, type, UserInfo.getUserId(), UserInfo.getFirstName(), UserInfo.getLastName()).catch(() => {
+            console.log("----> Join chatroom failed");
+            alert("Join chatroom failed");
+        });
     }
 
     /**

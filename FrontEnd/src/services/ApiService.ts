@@ -142,6 +142,36 @@ class ApiService {
     }
 
     /**
+     * 
+     * @param code The join code of the chatroom
+     */
+    async joinChatRoom(code: string) {
+        const resp = await fetch(UserInfo.BaseURL + "api/chatroom/join",
+            {
+                method: 'POST',
+                headers:
+                {
+                    'content-type': 'application/json',
+                    'authorization': 'Bearer ' + UserInfo.getToken()
+                },
+                body: JSON.stringify({
+                    code: code
+                }),
+
+            });
+
+        if (resp.ok) {
+            const data: chatRoomObject = (await resp.json())["chatRoom"];
+            UserInfo.addNewChatRoom(data);
+            console.log("----> Join chatroom success");
+            await this.connectChatRoom(data.joinCode);
+            console.log("----> Connected to chatroom");
+        }
+
+        return resp;
+    }
+
+    /**
      * Build the connection to the backend for each chatroom
      */
     async connectChatRooms() {
@@ -197,6 +227,11 @@ class ApiService {
             value.setReceiveChatRoomInfoCallback(() => {
                 console.log("----> Receive chatroom info callback");
                 Callback(4);
+            }));
+        await SignalRChatRoom.getInstance().then(value =>
+            value.setReceiveNewMemberCallback(() => {
+                console.log("----> Receive chatroom member callback");
+                Callback(3);
             }));
     }
 }

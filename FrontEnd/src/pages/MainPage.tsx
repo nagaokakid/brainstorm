@@ -15,7 +15,6 @@ function MainPage() {
 
     const context = useContext(DataContext);
 
-
     // If the user is not logged in, redirect to the login page
     if (localStorage.getItem("token") === null || localStorage.getItem("token") !== UserInfo.getToken()) {
         // window.location.href = "/";
@@ -34,18 +33,24 @@ function MainPage() {
         if (context === undefined) {
             throw new Error('useDataContext must be used within a DataContext');
         }
-        if (type === 1 || type === 2 ) {
+        if (type === 1 || type === 2 || type === 4) {
             const updateData = context[1];
             updateData(true)
         }
     }
 
     useEffect(() => {
-        // Get a user info and store locally
-        // To-do: Get the user info from the server
-        console.log("----> Build callback");
-        const apiService = ApiService;
-        apiService.buildCallBack(Render);
+        const hasEffectRunBefore = localStorage.getItem('hasEffectRunBefore');
+        if (!hasEffectRunBefore) {
+            // Get user info and store it locally
+            // To-do: Get the user info from the server
+            console.log("----> Build callback");
+            const apiService = ApiService;
+            apiService.buildCallBack(Render);
+
+            // Set the flag in local storage to indicate that the effect has run
+            localStorage.setItem('hasEffectRunBefore', 'true');
+        }
     }, []);
 
     return (

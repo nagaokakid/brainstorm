@@ -16,6 +16,7 @@ function NavigationBar(props: NavigationBarProps) {
      * Logs the user out of the application and remove the token from the local storage
      */
     function logOut() {
+        localStorage.removeItem("hasEffectRunBefore");
         localStorage.removeItem("token");
         localStorage.removeItem("username");
         navigate("/");
