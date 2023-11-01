@@ -1,8 +1,11 @@
 ﻿using Database.CollectionContracts;
+using Logic.Data;
 using Logic.DTOs.Messages;
 using Logic.DTOs.User;
+using Logic.Helpers;
 using Logic.Services;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Logic.Hubs
 {
@@ -10,11 +13,13 @@ namespace Logic.Hubs
     {
         private readonly ChatRoomService chatRoomService;
         private readonly IUserCollection userCollection;
+        private readonly BrainstormService brainstormService;
 
-        public ChatRoomHub(ChatRoomService chatRoomService, IUserCollection userCollection)
+        public ChatRoomHub(ChatRoomService chatRoomService, IUserCollection userCollection, BrainstormService brainstormService)
         {
             this.chatRoomService = chatRoomService;
             this.userCollection = userCollection;
+            this.brainstormService = brainstormService;
         }
 
         public async Task JoinChatRoom(string joinCode, string first, string userId, string firstName, string lastName)
@@ -82,6 +87,79 @@ namespace Logic.Hubs
         public override Task OnConnectedAsync()
         {
             return base.OnConnectedAsync();
+        }
+
+        public async Task CreateBrainstormSession(string title, string description, string chatRoomId, string creatorId, string creatorFirstName, string creatorLastName)
+        {
+            if (title != null && description != null && chatRoomId != null && creatorId != null)
+            {
+                var creator = new FriendlyUserInfo { UserId = creatorId, FirstName = creatorFirstName, LastName = creatorLastName };
+                var session = new BrainstormSession { Title = title, Description = description, ChatRoomId = chatRoomId, CanJoin = true, Creator = creator, SessionId = Guid.NewGuid().ToString(), Ideas = new List<string>(), JoinedMembers = new List<FriendlyUserInfo> { creator } , IdeasAvailable = DateTime.Now.AddDays(1)};
+                await brainstormService.Add(session);
+
+                await Groups.AddToGroupAsync(Context.ConnectionId, session.SessionId);
+
+                // send message to chatroom saying a new brainstorming session has started
+                var msg = new MessageInfoJoinSession
+                {
+                    ChatRoomId = chatRoomId,
+                    Message = $"Join {title}",
+                    FromUserInfo = creator,
+                    Timestamp = DateTime.Now,
+                    Brainstorm = session.ToDTO(),
+                };
+                Clients.Group(session.ChatRoomId).SendAsync("ReceiveChatRoomMessage", msg);
+            }
+        }
+
+        public async Task Join(string sessionId, string userId, string firstName, string lastName)
+        {
+            if (sessionId != null && userId != null)
+            {
+                var user = new FriendlyUserInfo { UserId = userId, FirstName = firstName, LastName = lastName };
+                await brainstormService.Join(sessionId, user);
+
+                // notify all joined members that a new user has joined
+                Clients.Group(sessionId).SendAsync("UserJoinedBrainstormingSession", user);
+            }
+        }
+
+        public async Task StartSession(string sessionId)
+        {
+            if(sessionId != null)
+            {
+                await brainstormService.StartSession(sessionId);
+                
+                // let all users know that brainstorm session has started
+                Clients.Group(sessionId).SendAsync("BrainstormSessionStarted", sessionId);
+            }
+        }
+
+        public async Task EndSession(string sessionId)
+        {
+            if (sessionId != null)
+            {
+                await brainstormService.EndSession(sessionId);
+                // notify all users that sessionId has ended
+                Clients.Group(sessionId).SendAsync("BrainstormSessionEnded", sessionId);
+            }
+        }
+
+        public async Task SendAllIdeas(string sessionId)
+        {
+            if(sessionId != null)
+            {
+                var result = await brainstormService.GetAllIdeas(sessionId);
+                Clients.Group(sessionId).SendAsync("ReceiveAllIdeas", sessionId, result);
+            }
+        }
+
+        public async Task RemoveSession(string sessionId)
+        {
+            if(sessionId != null)
+            {
+                await brainstormService.RemoveSession(sessionId);
+            }
         }
     }
 }
