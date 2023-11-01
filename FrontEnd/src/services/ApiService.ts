@@ -228,6 +228,11 @@ class ApiService {
                 console.log("----> Receive chatroom info callback");
                 Callback(4);
             }));
+        await SignalRChatRoom.getInstance().then(value =>
+            value.setReceiveNewMemberCallback(() => {
+                console.log("----> Receive chatroom member callback");
+                Callback(3);
+            }));
     }
 }
 

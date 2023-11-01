@@ -1,4 +1,5 @@
 import ApiService from "../services/ApiService";
+import SignalRChatRoom from "../services/ChatRoomConnection";
 import "../styles/HeaderNavBar.css";
 
 /**
@@ -9,16 +10,7 @@ function HeaderNavBar() {
 
     async function joinCode() {
         const code = document.getElementById("JoinCode") as HTMLInputElement;
-        const apiService = ApiService;
-        const response = await apiService.joinChatRoom(code.value);
-
-        if (response.ok) {
-            alert("Joined successfully");
-            window.location.reload();
-        }
-        else {
-            alert("Couldn't join");
-        }
+        await SignalRChatRoom.getInstance().then(value => value.joinChatRoom(code.value, "First"));
     }
 
     return (

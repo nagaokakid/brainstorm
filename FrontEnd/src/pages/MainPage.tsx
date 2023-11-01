@@ -33,7 +33,7 @@ function MainPage() {
         if (context === undefined) {
             throw new Error('useDataContext must be used within a DataContext');
         }
-        if (type === 1 || type === 2) {
+        if (type === 1 || type === 2 || type === 4) {
             const updateData = context[1];
             updateData(true)
         }

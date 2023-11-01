@@ -221,7 +221,15 @@ class UserInfo {
      */
     static addNewChatRoom(chatRoom: chatRoomObject) {
         console.log("----> Adding new chat room");
-        return this.getChatRoomsList().push(chatRoom) ?? null;
+        const list = this.getChatRoomsList();
+        if (list.find(current => current.id === chatRoom.id)) {
+            alert("Chat room already exists");
+            return null;
+        }
+        else {
+            console.log("----> Added new chat room");
+            return list.push(chatRoom);
+        }
     }
 
     /**
