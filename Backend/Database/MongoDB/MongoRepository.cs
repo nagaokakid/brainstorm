@@ -1,6 +1,7 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Driver;
 using System.Diagnostics;
+using System.Transactions;
 
 namespace Database.MongoDB
 {
@@ -12,7 +13,7 @@ namespace Database.MongoDB
         private IMongoDatabase database;
 
         // Hard-coded to avoid file location issues when using Docker
-        private const string CONNECTION_STRING = "mongodb+srv://comp4350:O954Xbw6kQ488jym@brainstorm.aj9h1fd.mongodb.net/?retryWrites=true&w=majority";
+        private const string CONNECTION_STRING = "mongodb+srv://comp4350:pHPx243FmFpd645F@brainstorm.btgsxmb.mongodb.net/?retryWrites=true&w=majority";
 
         // Constructor: connect to MongoDB database and link to a specific collection
         public MongoRepository(string databaseName, string collectionName)
@@ -82,17 +83,22 @@ namespace Database.MongoDB
         }
 
         // Get a single document that matches the given field names and values
-        public async Task<TDocument> GetDocumentByFieldValues(List<string> fieldNames, List<string> fieldValues)
+        public async Task<TDocument> GetDocumentByFieldDictionary(Dictionary<string, string> fieldDict)
         {
             try
             {
                 var filterBuilder = Builders<TDocument>.Filter;
                 var filter = filterBuilder.Empty;
 
-                for (int i = 0; i < fieldNames.Count; i++)
+                foreach (var field in fieldDict)
+                {
+                    filter &= filterBuilder.Eq(field.Key, field.Value);
+                }
+
+/*                for (int i = 0; i < fieldNames.Count; i++)
                 {
                     filter = filter & filterBuilder.Eq(fieldNames[i], fieldValues[i]);
-                }
+                }*/
 
                 return await collection.Find(filter).FirstOrDefaultAsync();
             }
@@ -111,17 +117,22 @@ namespace Database.MongoDB
         }
 
         // Get all documents that match the given the field names and their values
-        public async Task<List<TDocument>> GetAllDocumentsByFieldValues(List<string> fieldNames, List<string> fieldValues)
+        public async Task<List<TDocument>> GetAllDocumentsByFieldDictionary(Dictionary<string, string> fieldDict)
         {
             try
             {
                 var filterBuilder = Builders<TDocument>.Filter;
                 var filter = filterBuilder.Empty;
 
-                for (int i = 0; i < fieldNames.Count; i++)
+                foreach (var field in fieldDict)
+                {
+                    filter &= filterBuilder.Eq(field.Key, field.Value);
+                }
+
+/*                for (int i = 0; i < fieldNames.Count; i++)
                 {
                     filter &= filterBuilder.Eq(fieldNames[i], fieldValues[i]);
-                }
+                }*/
 
                 return await collection.Find(filter).ToListAsync();
             }
@@ -138,6 +149,13 @@ namespace Database.MongoDB
                 throw;
             }
 
+        }
+
+        // Get all documents where the given field name matches any of the values in the given list
+        public async Task<List<TDocument>> GetAllDocumentsByValueList(string fieldName, List<string> valueList)
+        {
+            var filter = Builders<TDocument>.Filter.In(fieldName, valueList);
+            return await collection.Find(filter).ToListAsync();
         }
 
         // Create a new document

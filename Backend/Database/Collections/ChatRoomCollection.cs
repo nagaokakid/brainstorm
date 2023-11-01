@@ -39,17 +39,12 @@ namespace Database.Collections
 
         public async Task<ChatRoom?> GetByJoinCode(string joinCode)
         {
-            List<string> fieldNames = new List<string>
+            Dictionary<string, string> fieldDict = new(1)
             {
-                "JoinCode"
+                {"JoinCode", joinCode }
             };
 
-            List<string> fieldValues = new List<string>
-            {
-                joinCode
-            };
-
-            return await chatRoomRepository.GetDocumentByFieldValues(fieldNames, fieldValues);
+            return await chatRoomRepository.GetDocumentByFieldDictionary(fieldDict);
         }
     }
 }
