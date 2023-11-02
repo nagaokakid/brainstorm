@@ -31,4 +31,4 @@ jobs:
           context: FrontEnd
           push: true
           target: final
-          tags: ${{ secrets.DOCKER_USERNAME }}/${{ github.event.repository.name }}_FrontEnd:latest
+          tags: ${{ secrets.DOCKER_USERNAME }}/${{ github.event.repository.name }}_frontend:latest
