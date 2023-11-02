@@ -8,7 +8,7 @@ RUN npm install react-scripts@4.0.3 -g
 COPY . ./
 RUN npm run build
 
-FROM nginx:1.21.3-alpine
+FROM nginx:1.21.3-alpine as final
 COPY --from=build /FrontEnd/dist /usr/share/nginx/html
 EXPOSE 8005
 CMD ["nginx", "-g", "daemon off;"]
