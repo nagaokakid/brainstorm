@@ -1,16 +1,21 @@
 import '../styles/CreateRoomCustomize.css'
 
+interface CreateRoomCustomizeProps {
+    callBackFunction: (e: string) => void;
+    style: string;
+}
+
 /**
  * 
  * @param {*} callBackFunction The function to be called when an option is selected
  * @param {*} style The style of the component
  * @returns 
  */
-function CreateRoomCustomize(props) {
+function CreateRoomCustomize(props: CreateRoomCustomizeProps) {
     // Set the component to be hidden and pass back the selected option
-    function handleOptionClick(e: string) {
-        props.callBackFunction(e)
-    }
+    // function handleOptionClick(e: string) {
+    //     props.callBackFunction(e)
+    // }
 
     // // Prevent the child from being clicked
     // function handleChildClick(e) {
@@ -52,7 +57,7 @@ function CreateRoomCustomize(props) {
     // }    
 
     return (
-        <div className='OptionContainer' style={{ display: props.style }} onClick={() => handleOptionClick("none")}>
+        <div className='OptionContainer' style={{ display: props.style }}>
             {/* <div className="btn-group" role="group" aria-label="Basic example" onClick={handleChildClick}>
                 <button type="button" className="btn btn-primary" onClick={() => handleCreateRoomButton()}>
                     <img className='btn-icon' src={icon1} alt="" />
