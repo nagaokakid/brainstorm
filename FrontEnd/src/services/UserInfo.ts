@@ -37,12 +37,12 @@ class UserInfo {
                             },
                             "chatRoomId": "1111",
                             "message": "I'm first user",
-                            "timestamp": "2023-10-13T23:35:59.786Z", 
+                            "timestamp": "2023-10-13T23:35:59.786Z",
                             "bs_session": {
                                 title: "",
                                 description: "",
-                                sessionId:"", 
-                                creatorId:"",
+                                sessionId: "",
+                                creatorId: "",
                             }
                         },
                         {
@@ -88,8 +88,8 @@ class UserInfo {
                     "bs_session": {
                         title: "",
                         description: "",
-                        brainstormingId:"", 
-                        creatorId:"",
+                        brainstormingId: "",
+                        creatorId: "",
                     }
                 },
                 {
@@ -217,11 +217,11 @@ class UserInfo {
      * @param {*} chatId The chat room id
      */
     static addNewMember(userInfo: userInfoObject, chatId: string) {
-        console.log("----> Adding new member");
+        console.log("----> Trying to add new member to local.");
         this.getChatRoomsList().forEach(chatRoom => {
             if (chatRoom.id === chatId) {
                 chatRoom.members.push(userInfo);
-                console.log("----> Added new member");
+                console.log("----> Added new member.");
             }
         });
     }
@@ -232,7 +232,7 @@ class UserInfo {
      * @returns 
      */
     static addNewChatRoom(chatRoom: chatRoomObject) {
-        console.log("----> Adding new chat room");
+        console.log("----> Trying to add new chat room to local.");
         return this.getChatRoomsList().push(chatRoom) ?? null;
     }
 
