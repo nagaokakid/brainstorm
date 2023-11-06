@@ -30,7 +30,7 @@ function MainPage() {
     }
 
     useEffect(() => {
-        const hasEffectRunBefore = localStorage.getItem('hasEffectRunBefore');
+        const hasEffectRunBefore = sessionStorage.getItem('hasEffectRunBefore');
         if (!hasEffectRunBefore) {
             console.log("----> Build callback");
             const render = (type: number) => {
@@ -38,7 +38,7 @@ function MainPage() {
                 if (context === undefined) {
                     throw new Error('useDataContext must be used within a DataContext');
                 }
-                if (type === 1 || type === 2 || type === 4) {
+                if (type === 1 || type === 2 || type === 4 || type === 3) {
                     const updateData = context[1];
                     updateData(true)
                 }
@@ -48,7 +48,7 @@ function MainPage() {
             apiService.buildCallBack(render);
 
             // Set the flag in local storage to indicate that the effect has run
-            localStorage.setItem('hasEffectRunBefore', 'true');
+            sessionStorage.setItem('hasEffectRunBefore', 'true');
         }
     }, []);
 

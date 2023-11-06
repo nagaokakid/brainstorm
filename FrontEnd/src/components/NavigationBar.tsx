@@ -20,9 +20,9 @@ function NavigationBar(props: NavigationBarProps) {
     async function logOut() {
         await SignalRChatRoom.disconnect();
         await SignalRDirect.disconnect();
-        localStorage.removeItem("hasEffectRunBefore");
-        localStorage.removeItem("token");
-        localStorage.removeItem("username");
+        sessionStorage.removeItem("hasEffectRunBefore");
+        sessionStorage.removeItem("token");
+        sessionStorage.removeItem("username");
         navigate("/");
     }
 
