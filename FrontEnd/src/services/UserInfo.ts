@@ -235,11 +235,11 @@ class UserInfo {
         console.log("----> Trying to add new chat room to local.");
         const list = this.getChatRoomsList();
         if (list.find(current => current.id === chatRoom.id)) {
-            alert("Chat room already exists");
+            alert("Chat room already exists.");
             return null;
         }
         else {
-            console.log("----> Added new chat room");
+            console.log("----> Added new chat room.");
             return list.push(chatRoom);
         }
     }
@@ -251,6 +251,7 @@ class UserInfo {
      */
     static addNewDirectMessage(newDirectMessage: newDirectMessageObject) {
         let result = null;
+        console.log("----> Trying to add new direct message to local.");
 
         this.getDirectMessagesList().map((current) => {
             if (newDirectMessage.toUserInfo.userId === current.user2.userId) {
@@ -290,8 +291,8 @@ class UserInfo {
      * @returns 
      */
     static addChatRoomMessage(message: chatRoomMessageObject) {
-        console.log("----> Adding new chat room message");
         let result = null;
+        console.log("----> Trying to add new chat room message to local.");
         this.getChatRoomsList().forEach(chatRoom => {
             if (chatRoom.id === message.chatRoomId) {
                 console.log("----> Added new chat room message");

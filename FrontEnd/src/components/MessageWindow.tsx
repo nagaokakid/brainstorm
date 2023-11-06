@@ -21,10 +21,7 @@ interface MessageWindowProps {
 function MessageWindow(props: MessageWindowProps) {
 
     const context = useDataContext();
-
     const msg = context[0];
-    console.log("----> MessageWindow");
-
 
     // Set the message to the display
     const [messages, setMessages] = useState<[] | chatRoomMessageObject[] | { message: string, timestamp: string }[]>([]);

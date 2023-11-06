@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import "../styles/MainPage.css";
 import HeaderNavBar from "../components/HeaderNavBar";
 import NavigationBar from "../components/NavigationBar";
@@ -28,25 +29,23 @@ function MainPage() {
         setChatType(childData);
     }
 
-    function Render(type: number) {
-        console.log("---->callback", type);
-        if (context === undefined) {
-            throw new Error('useDataContext must be used within a DataContext');
-        }
-        if (type === 1 || type === 2 || type === 4) {
-            const updateData = context[1];
-            updateData(true)
-        }
-    }
-
     useEffect(() => {
         const hasEffectRunBefore = localStorage.getItem('hasEffectRunBefore');
         if (!hasEffectRunBefore) {
-            // Get user info and store it locally
-            // To-do: Get the user info from the server
             console.log("----> Build callback");
+            const render = (type: number) => {
+                console.log("---->callback", type);
+                if (context === undefined) {
+                    throw new Error('useDataContext must be used within a DataContext');
+                }
+                if (type === 1 || type === 2 || type === 4) {
+                    const updateData = context[1];
+                    updateData(true)
+                }
+            };
+
             const apiService = ApiService;
-            apiService.buildCallBack(Render);
+            apiService.buildCallBack(render);
 
             // Set the flag in local storage to indicate that the effect has run
             localStorage.setItem('hasEffectRunBefore', 'true');

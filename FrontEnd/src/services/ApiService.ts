@@ -80,7 +80,7 @@ class ApiService {
      * @param {*} description The chat room description
      * @returns A json object that contains the response from the backend
      */
-    async CreateChatRoom(title: string, description: string|null|undefined) {
+    async CreateChatRoom(title: string, description: string | null | undefined) {
         const resp = await fetch(UserInfo.BaseURL + "api/chatroom",
             {
                 method: 'POST',
@@ -197,16 +197,6 @@ class ApiService {
         console.log("----> Connecting to chatroom");
         await connection.joinChatRoom(joinCode, "Second");
     }
-
-    /**
-     * Build the connection to the backend for direct messaging
-     */
-    // async connectDirectMessaging() {
-    //     const conn = await SignalRDirect.getInstance();
-    //     conn.setReceiveDirectMessageCallback((msg) => {
-    //         console.log("----> Receive direct message callback");
-    //     });
-    // }
 
     /**
      * Set all the call back functions for the SignalR
