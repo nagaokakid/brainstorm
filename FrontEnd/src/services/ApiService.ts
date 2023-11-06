@@ -27,17 +27,21 @@ class ApiService {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({ Username: username, Password: password }),
+            })
+            .then(async (response) => {
+                if (response.ok) {
+                    UserInfo.loginRegisterResponse = await response.json();
+                    sessionStorage.setItem("token", UserInfo.getToken());
+                    await this.connectChatRooms();
+                    return true;
+                } else {
+                    return false;
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+                return false;
             });
-
-        // if response is okay, assign to appinfo for later use
-        if (resp.ok) {
-            UserInfo.loginRegisterResponse = await resp.json();
-            localStorage.setItem("token", UserInfo.getToken());
-            console.log("----> Login success");
-            await this.connectChatRooms();
-            // await this.connectDirectMessaging();
-            console.log("----> Connected to chatrooms and direct messaging");
-        }
 
         return resp;
     }
@@ -60,16 +64,20 @@ class ApiService {
                 },
                 body: JSON.stringify({ Username: username, Password: password, FirstName: firstName, LastName: lastName }),
 
+            })
+            .then(async (response) => {
+                if (response.ok) {
+                    UserInfo.loginRegisterResponse = await response.json();
+                    sessionStorage.setItem("token", UserInfo.getToken());
+                    return true;
+                } else {
+                    return false;
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+                return false;
             });
-
-        // if response is okay, assign to appinfo for later use
-        if (resp.ok) {
-            UserInfo.loginRegisterResponse = await resp.json();
-            localStorage.setItem("token", UserInfo.getToken());
-            console.log("----> Register success");
-            // await this.connectDirectMessaging();
-            console.log("----> Connected to direct messaging");
-        }
 
         return resp;
     }
@@ -127,16 +135,22 @@ class ApiService {
                     code: code
                 }),
 
-            });
-
-        // if response is okay, assign to appinfo for later use
-        if (resp.ok) {
-            UserInfo.loginRegisterResponse = await resp.json(); // Or generate a new guest info here
-            localStorage.setItem("token", UserInfo.getToken());
-            console.log("----> Guest join success");
-            await this.connectChatRooms();
-            console.log("----> Connected to chatrooms");
-        }
+            })
+            .then(async (response) => {
+                if (response.ok) {
+                    UserInfo.loginRegisterResponse = await response.json(); // Or generate a new guest info here
+                    localStorage.setItem("token", UserInfo.getToken());
+                    await this.connectChatRooms();
+                    return true;
+                } else {
+                    return false;
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+                return false;
+            }
+            );
 
         return resp;
     }

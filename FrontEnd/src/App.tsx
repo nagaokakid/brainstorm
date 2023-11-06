@@ -4,7 +4,6 @@ import { DataContextProvider } from "./contexts/DataContext";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 function App() {
-  localStorage.clear();
   return (
     <DataContextProvider>
       <BrowserRouter>
