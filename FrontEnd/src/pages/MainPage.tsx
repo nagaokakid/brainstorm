@@ -13,7 +13,6 @@ import { DataContext } from "../contexts/DataContext";
  * @returns The main page of the application
  */
 function MainPage() {
-
     const context = useContext(DataContext);
 
     // If the user is not logged in, redirect to the login page

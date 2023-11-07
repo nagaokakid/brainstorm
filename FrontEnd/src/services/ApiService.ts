@@ -123,6 +123,21 @@ class ApiService {
      * @returns A json object that contains the response from the backend
      */
     async GuestJoin(code: string) {
+        // UserInfo.loginRegisterResponse =
+        // {
+        //     userInfo: {
+        //         userId: "00000000-0000-0000-0000-000000000000",
+        //         firstName: "Guest",
+        //         lastName: "",
+        //         isGuest: true
+        //     },
+        //     token: "",
+        //     chatRooms: [],
+        //     directMessages: []
+        // }
+        //let the user go to the main page.
+        // await SignalRChatRoom.getInstance().then(value => value.joinChatRoom(code, "First"));
+
         const resp = await fetch(UserInfo.BaseURL + "api/chatroom/guest",
             {
                 method: 'POST',
@@ -139,7 +154,7 @@ class ApiService {
             .then(async (response) => {
                 if (response.ok) {
                     UserInfo.loginRegisterResponse = await response.json(); // Or generate a new guest info here
-                    localStorage.setItem("token", UserInfo.getToken());
+                    sessionStorage.setItem("token", UserInfo.getToken());
                     await this.connectChatRooms();
                     return true;
                 } else {
@@ -149,38 +164,7 @@ class ApiService {
             .catch((error) => {
                 console.log(error);
                 return false;
-            }
-            );
-
-        return resp;
-    }
-
-    /**
-     * 
-     * @param code The join code of the chatroom
-     */
-    async joinChatRoom(code: string) {
-        const resp = await fetch(UserInfo.BaseURL + "api/chatroom/join",
-            {
-                method: 'POST',
-                headers:
-                {
-                    'content-type': 'application/json',
-                    'authorization': 'Bearer ' + UserInfo.getToken()
-                },
-                body: JSON.stringify({
-                    code: code
-                }),
-
             });
-
-        if (resp.ok) {
-            const data: chatRoomObject = (await resp.json())["chatRoom"];
-            UserInfo.addNewChatRoom(data);
-            console.log("----> Join chatroom success");
-            await this.connectChatRoom(data.joinCode);
-            console.log("----> Connected to chatroom");
-        }
 
         return resp;
     }
