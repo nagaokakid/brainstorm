@@ -112,5 +112,11 @@ namespace Logic.Services
             }
             return result;
         }
+
+        public async Task<bool> IsJoinCodeValid(string joinCode)
+        {
+            var result = await chatRoomCollection.GetByJoinCode(joinCode);
+            return result != null;
+        }
     }
 }
