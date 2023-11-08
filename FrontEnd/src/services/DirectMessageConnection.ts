@@ -9,7 +9,7 @@ const DIRECT_URL = UserInfo.BaseURL + "direct";
 
 class SignalRDirect {
 
-    private static instance: SignalRDirect;
+    private static instance: SignalRDirect | null;
     private connection: signalR.HubConnection;
 
     /**
@@ -20,6 +20,11 @@ class SignalRDirect {
             .withUrl(DIRECT_URL)
             .withAutomaticReconnect()
             .build();
+    }
+
+    async reset(){
+        await this.connection.stop();
+        SignalRDirect.instance = null;
     }
 
     /**

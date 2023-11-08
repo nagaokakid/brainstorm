@@ -10,7 +10,7 @@ const DIRECT_URL = UserInfo.BaseURL + "chatroom";
 
 class SignalRChatRoom {
 
-    private static instance: SignalRChatRoom;
+    private static instance: SignalRChatRoom | null;
     private connection: signalR.HubConnection;
 
     /**
@@ -21,6 +21,15 @@ class SignalRChatRoom {
             .withUrl(DIRECT_URL)
             .withAutomaticReconnect()
             .build();
+    }
+
+    async reset(){
+        await this.connection.stop();
+        SignalRChatRoom.instance = null;
+    }
+
+    async joinGuestChatRoom(joinCode: string, user: FriendlyUser){
+        await this.connection.send("JoinGuestChatRoom", joinCode, user.userId, user.firstName, user.lastName);
     }
 
     /**

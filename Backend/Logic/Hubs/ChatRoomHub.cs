@@ -4,6 +4,7 @@ using Logic.DTOs.Messages;
 using Logic.DTOs.User;
 using Logic.Helpers;
 using Logic.Services;
+using Microsoft.AspNetCore.Mvc.TagHelpers.Cache;
 using Microsoft.AspNetCore.SignalR;
 
 namespace Logic.Hubs
@@ -60,7 +61,6 @@ namespace Logic.Hubs
                 }
             }
         }
-        
         public async Task SendChatRoomMessage(string userId, string chatRoomId, string firstName, string lastName, string msg)
         {
             if (chatRoomId != null && userId != null && firstName != null && msg != null)
