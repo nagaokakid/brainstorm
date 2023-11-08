@@ -4,7 +4,6 @@ using Logic.DTOs.Messages;
 using Logic.DTOs.User;
 using Logic.Helpers;
 using Logic.Services;
-using Microsoft.AspNetCore.Mvc.TagHelpers.Cache;
 using Microsoft.AspNetCore.SignalR;
 
 namespace Logic.Hubs
@@ -44,12 +43,16 @@ namespace Logic.Hubs
 
                     if (first == "First")
                     {
-                        await Clients.Client(Context.ConnectionId).SendAsync("ReceiveChatRoomInfo", foundChatRoom);
+                        var users = await userCollection.GetAll();
+                        if (users != null)
+                        {
+                            await Clients.Client(Context.ConnectionId).SendAsync("ReceiveChatRoomInfo", foundChatRoom.ToDTO(users));
+                        }
                     }
 
                     // check if user is already a member of the chatroom when they join
                     var found = foundChatRoom.MemberIds.FirstOrDefault(x => x == userId);
-                    if (found == null)
+                    if (found == null && userId.Length != 1)
                     {
                         // add new member to chatroom
                         await chatRoomService.AddNewUserToChatRoom(userId, foundChatRoom.Id);
@@ -80,12 +83,12 @@ namespace Logic.Hubs
                 await chatRoomService.AddMessageToChatRoom(msgInfo.ChatRoomId, msgInfo);
             }
         }
-        
+
         public override Task OnDisconnectedAsync(Exception? exception)
         {
             return base.OnDisconnectedAsync(exception);
         }
-        
+
         public override Task OnConnectedAsync()
         {
             return base.OnConnectedAsync();
@@ -97,7 +100,7 @@ namespace Logic.Hubs
             {
                 var creator = new FriendlyUserInfo { UserId = creatorId, FirstName = creatorFirstName, LastName = creatorLastName };
                 var session = new BrainstormSession { Title = title, Description = description, ChatRoomId = chatRoomId, CanJoin = true, Creator = creator, SessionId = Guid.NewGuid().ToString(), Ideas = new List<string>(), JoinedMembers = new List<FriendlyUserInfo> { creator }, IdeasAvailable = DateTime.Now.AddDays(1) };
-                
+
                 // add created session to dictionary
                 await brainstormService.Add(session);
 
