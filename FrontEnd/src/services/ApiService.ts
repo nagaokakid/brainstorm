@@ -3,13 +3,13 @@ import SignalRChatRoom from "./ChatRoomConnection";
 import SignalRDirect from "./DirectMessageConnection";
 
 type chatRoomObject = {
-    id: string,
-    title: string,
-    description: string,
-    joinCode: string,
-    messages: [],
-    members: []
-}
+  id: string;
+  title: string;
+  description: string;
+  joinCode: string;
+  messages: [];
+  members: [];
+};
 
 class ApiService {
     /**
@@ -43,8 +43,8 @@ class ApiService {
                 return false;
             });
 
-        return resp;
-    }
+    return resp;
+  }
 
     /**
      * Do a Register API call to the backend and connect to direct messaging
@@ -79,8 +79,8 @@ class ApiService {
                 return false;
             });
 
-        return resp;
-    }
+    return resp;
+  }
 
     /**
      * Do a GetChatRooms API call to the backend and build the connection to the chat room
@@ -105,17 +105,30 @@ class ApiService {
 
             });
 
-        // if response is okay, assign to appinfo for later use
-        if (resp.ok) {
-            const data: chatRoomObject = (await resp.json())["chatRoom"];
-            UserInfo.addNewChatRoom(data);
-            console.log("----> Create chatroom success");
-            await this.connectChatRoom(data.joinCode);
-            console.log("----> Connected to chatroom");
-        }
-
-        return resp;
+    // if response is okay, assign to appinfo for later use
+    if (resp.ok) {
+      const data: chatRoomObject = (await resp.json())["chatRoom"];
+      UserInfo.addNewChatRoom(data);
+      console.log("----> Create chatroom success");
+      await this.connectChatRoom(data.joinCode);
+      console.log("----> Connected to chatroom");
     }
+
+    return resp;
+  }
+
+  async IsJoinCodeValid(joinCode: string) {
+    const resp = await fetch(UserInfo.BaseURL + "api/chatroom/" + joinCode, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (resp.ok) {
+        return await resp.json();
+    }
+  }
 
     /**
      * Do a chatroom join API call to the backend without an account
@@ -166,25 +179,25 @@ class ApiService {
                 return false;
             });
 
-        return resp;
-    }
+    return resp;
+  }
 
-    /**
-     * Build the connection to the backend for each chatroom
-     */
-    async connectChatRooms() {
-        const connection = await SignalRChatRoom.getInstance();
-        const chatRooms = UserInfo.getChatRoomsList();
+  /**
+   * Build the connection to the backend for each chatroom
+   */
+  async connectChatRooms() {
+    const connection = await SignalRChatRoom.getInstance();
+    const chatRooms = UserInfo.getChatRoomsList();
 
-        // Build connection only if there are chatrooms
-        if (chatRooms) {
-            console.log("----> Connecting to chatrooms");
-            for (let index = 0; index < chatRooms.length; index++) {
-                const element = chatRooms[index];
-                await connection.joinChatRoom(element.joinCode, "Second");
-            }
-        }
+    // Build connection only if there are chatrooms
+    if (chatRooms) {
+      console.log("----> Connecting to chatrooms");
+      for (let index = 0; index < chatRooms.length; index++) {
+        const element = chatRooms[index];
+        await connection.joinChatRoom(element.joinCode, "Second");
+      }
     }
+  }
 
     /**
      * Build the connection to the backend for a specific chatroom
@@ -196,32 +209,36 @@ class ApiService {
         await connection.joinChatRoom(joinCode, "Second");
     }
 
-    /**
-     * Set all the call back functions for the SignalR
-     * @param {*} callback A function that will be called when a message is received
-     */
-    async buildCallBack(Callback: (type: number) => void) {
-        await SignalRDirect.getInstance().then(value =>
-            value.setReceiveDirectMessageCallback(() => {
-                console.log("----> Receive direct message callback");
-                Callback(2);
-            }));
-        await SignalRChatRoom.getInstance().then(value =>
-            value.setReceiveChatRoomMessageCallback(() => {
-                console.log("----> Receive chatroom message callback");
-                Callback(1);
-            }));
-        await SignalRChatRoom.getInstance().then(value =>
-            value.setReceiveChatRoomInfoCallback(() => {
-                console.log("----> Receive chatroom info callback");
-                Callback(4);
-            }));
-        await SignalRChatRoom.getInstance().then(value =>
-            value.setReceiveNewMemberCallback(() => {
-                console.log("----> Receive chatroom member callback");
-                Callback(3);
-            }));
-    }
+  /**
+   * Set all the call back functions for the SignalR
+   * @param {*} callback A function that will be called when a message is received
+   */
+  async buildCallBack(Callback: (type: number) => void) {
+    await SignalRDirect.getInstance().then((value) =>
+      value.setReceiveDirectMessageCallback(() => {
+        console.log("----> Receive direct message callback");
+        Callback(2);
+      })
+    );
+    await SignalRChatRoom.getInstance().then((value) =>
+      value.setReceiveChatRoomMessageCallback(() => {
+        console.log("----> Receive chatroom message callback");
+        Callback(1);
+      })
+    );
+    await SignalRChatRoom.getInstance().then((value) =>
+      value.setReceiveChatRoomInfoCallback(() => {
+        console.log("----> Receive chatroom info callback");
+        Callback(4);
+      })
+    );
+    await SignalRChatRoom.getInstance().then((value) =>
+      value.setReceiveNewMemberCallback(() => {
+        console.log("----> Receive chatroom member callback");
+        Callback(3);
+      })
+    );
+  }
 }
 
 export default new ApiService();
