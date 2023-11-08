@@ -2,7 +2,8 @@ export type userInfoObject = {
     userId: string,
     firstName: string,
     lastName: string,
-    isGuest?: boolean
+    isGuest?: boolean,
+    firstRoom?: string
 }
 
 export type chatRoomObject = {

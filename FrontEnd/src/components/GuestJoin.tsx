@@ -7,6 +7,7 @@ import {
 } from 'mdb-react-ui-kit'
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import UserInfo from '../services/UserInfo';
 
 function GuestJoin() {
 
@@ -30,12 +31,25 @@ function GuestJoin() {
 
         if (code) {
             button.disabled = true;
-            apiService.GuestJoin(code).then((response) => {
-                button.disabled = false;
+            apiService.IsJoinCodeValid(code).then((response) => {
                 if (response) {
-                    navigate('/mainPage')
+                    UserInfo.loginRegisterResponse =
+                    {
+                        userInfo: {
+                            userId: "00000000-0000-0000-0000-000000000000",
+                            firstName: "Guest",
+                            lastName: "",
+                            isGuest: true,
+                            firstRoom: code
+                        },
+                        token: "",
+                        chatRooms: [],
+                        directMessages: []
+                    }
+                    navigate('/main')
                 }
                 else {
+                    button.disabled = false;
                     alert("Invalid Code")
                 }
             });

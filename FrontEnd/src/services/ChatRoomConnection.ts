@@ -28,10 +28,6 @@ class SignalRChatRoom {
         SignalRChatRoom.instance = null;
     }
 
-    async joinGuestChatRoom(joinCode: string, user: FriendlyUser){
-        await this.connection.send("JoinGuestChatRoom", joinCode, user.userId, user.firstName, user.lastName);
-    }
-
     /**
      * This is the function that actually makes the connection
      */
@@ -171,15 +167,6 @@ class SignalRChatRoom {
         }
 
         return SignalRChatRoom.instance;
-    }
-
-    /**
-     * Disconnect the SignalRChatRoom
-     */
-    static async disconnect() {
-        if (SignalRChatRoom.instance != null) {
-            await SignalRChatRoom.instance.connection.stop();
-        }
     }
 }
 

@@ -17,6 +17,12 @@ function MemberList(props: MemberListProps) {
     const onlineMembers = props.memberList ?? []
 
     function handleMemberClick(id: string, name: string) {
+
+        if (UserInfo.loginRegisterResponse.userInfo.isGuest) {
+            alert("Guest cannot send direct message");
+            return;
+        }
+
         const temp = prompt("Enter your message to " + name);
 
         if (!temp) return;

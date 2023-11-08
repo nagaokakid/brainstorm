@@ -95,15 +95,6 @@ class SignalRDirect {
 
         return SignalRDirect.instance;
     }
-
-    /**
-     * Disconnect the SignalR direct message connection
-     */
-    static async disconnect() {
-        if (SignalRDirect.instance) {
-            await SignalRDirect.instance.connection.stop();
-        }
-    }
 }
 
 export default SignalRDirect

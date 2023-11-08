@@ -19,7 +19,8 @@ class UserInfo {
                 userId: "0000",
                 firstName: "Current",
                 lastName: "User",
-                isGuest: false
+                isGuest: false,
+                firstRoom: ""
             },
             token: "0000-1111-2222-3333",
             chatRooms: [

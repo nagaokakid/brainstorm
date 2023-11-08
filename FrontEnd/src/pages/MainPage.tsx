@@ -7,6 +7,7 @@ import ApiService from "../services/ApiService";
 import UserInfo from "../services/UserInfo";
 import { useEffect, useState, useContext } from "react";
 import { DataContext } from "../contexts/DataContext";
+import SignalRChatRoom from "../services/ChatRoomConnection";
 
 /**
  * 
@@ -25,7 +26,12 @@ function MainPage() {
 
     // Handle the callback from the NavigationBar component
     function handleCallBack(childData: string) {
-        setChatType(childData);
+        if (UserInfo.loginRegisterResponse.userInfo.isGuest && childData === "Direct Message List") {
+            alert("Guest cannot use Direct Message Features");
+            return;
+        } else {
+            setChatType(childData);
+        }
     }
 
     useEffect(() => {
@@ -49,6 +55,16 @@ function MainPage() {
             // Set the flag in local storage to indicate that the effect has run
             sessionStorage.setItem('hasEffectRunBefore', 'true');
         }
+
+        if (UserInfo.loginRegisterResponse.userInfo.isGuest && sessionStorage.getItem('isGuest') === null) {
+            SignalRChatRoom.getInstance().then((value) => {
+                value.joinChatRoom(UserInfo.loginRegisterResponse.userInfo.firstRoom, "First");
+                sessionStorage.setItem('isGuest', 'true');
+            }).catch((error) => {
+                console.log(error);
+            });
+        }
+
     }, []);
 
     return (
