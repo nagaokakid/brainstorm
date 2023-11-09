@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import '../styles/CreateBrainStormCustomize.css';
 
 interface CreateBrainStormCustomizeProps {
@@ -6,9 +7,21 @@ interface CreateBrainStormCustomizeProps {
 
 function CreateBrainStormCustomize(props: CreateBrainStormCustomizeProps) {
 
+    const Navigate = useNavigate();
+
     function handleCreateClick() {
         const name = (document.getElementById('name') as HTMLInputElement).value;
         const description = (document.getElementById('description') as HTMLInputElement).value;
+
+        if (name === "" || description === "") {
+            alert("Please fill in all the fields");
+            return;
+        } else {
+            (document.getElementById('name') as HTMLInputElement).value = "";
+            (document.getElementById('description') as HTMLInputElement).value = "";
+
+            // Navigate("/BrainStorm")
+        }
     }
 
     return (
