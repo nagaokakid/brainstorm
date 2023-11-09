@@ -1,3 +1,5 @@
+import SignalRChatRoom from "../services/ChatRoomConnection";
+import SignalRDirect from "../services/DirectMessageConnection";
 import "../styles/NavigationBar.css";
 import { useNavigate } from 'react-router-dom';
 
@@ -15,10 +17,13 @@ function NavigationBar(props: NavigationBarProps) {
     /**
      * Logs the user out of the application and remove the token from the local storage
      */
-    function logOut() {
-        localStorage.removeItem("hasEffectRunBefore");
-        localStorage.removeItem("token");
-        localStorage.removeItem("username");
+    async function logOut() {
+        await SignalRChatRoom.getInstance().then((value) => value.reset());
+        await SignalRDirect.getInstance().then((value) => value.reset());
+        sessionStorage.removeItem("isGuest");
+        sessionStorage.removeItem("hasEffectRunBefore");
+        sessionStorage.removeItem("token");
+        sessionStorage.removeItem("username");
         navigate("/");
     }
 

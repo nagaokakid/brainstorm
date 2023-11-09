@@ -1,4 +1,3 @@
-import ApiService from "../services/ApiService";
 import SignalRChatRoom from "../services/ChatRoomConnection";
 import "../styles/HeaderNavBar.css";
 

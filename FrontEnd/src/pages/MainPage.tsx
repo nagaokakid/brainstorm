@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import "../styles/MainPage.css";
 import HeaderNavBar from "../components/HeaderNavBar";
 import NavigationBar from "../components/NavigationBar";
@@ -6,13 +7,13 @@ import ApiService from "../services/ApiService";
 import UserInfo from "../services/UserInfo";
 import { useEffect, useState, useContext } from "react";
 import { DataContext } from "../contexts/DataContext";
+import SignalRChatRoom from "../services/ChatRoomConnection";
 
 /**
  * 
  * @returns The main page of the application
  */
 function MainPage() {
-
     const context = useContext(DataContext);
 
     // If the user is not logged in, redirect to the login page
@@ -25,32 +26,45 @@ function MainPage() {
 
     // Handle the callback from the NavigationBar component
     function handleCallBack(childData: string) {
-        setChatType(childData);
-    }
-
-    function Render(type: number) {
-        console.log("---->callback", type);
-        if (context === undefined) {
-            throw new Error('useDataContext must be used within a DataContext');
-        }
-        if (type === 1 || type === 2 || type === 4) {
-            const updateData = context[1];
-            updateData(true)
+        if (UserInfo.loginRegisterResponse.userInfo.isGuest && childData === "Direct Message List") {
+            alert("Guest cannot use Direct Message Features");
+            return;
+        } else {
+            setChatType(childData);
         }
     }
 
     useEffect(() => {
-        const hasEffectRunBefore = localStorage.getItem('hasEffectRunBefore');
+        const hasEffectRunBefore = sessionStorage.getItem('hasEffectRunBefore');
         if (!hasEffectRunBefore) {
-            // Get user info and store it locally
-            // To-do: Get the user info from the server
             console.log("----> Build callback");
+            const render = (type: number) => {
+                console.log("---->callback", type);
+                if (context === undefined) {
+                    throw new Error('useDataContext must be used within a DataContext');
+                }
+                else if (type === 1 || type === 2 || type === 4 || type === 3) {
+                    const updateData = context[1];
+                    updateData(true)
+                }
+            };
+
             const apiService = ApiService;
-            apiService.buildCallBack(Render);
+            apiService.buildCallBack(render);
 
             // Set the flag in local storage to indicate that the effect has run
-            localStorage.setItem('hasEffectRunBefore', 'true');
+            sessionStorage.setItem('hasEffectRunBefore', 'true');
         }
+
+        if (UserInfo.loginRegisterResponse.userInfo.isGuest && sessionStorage.getItem('isGuest') === null) {
+            SignalRChatRoom.getInstance().then((value) => {
+                value.joinChatRoom(UserInfo.loginRegisterResponse.userInfo.firstRoom, "First");
+                sessionStorage.setItem('isGuest', 'true');
+            }).catch((error) => {
+                console.log(error);
+            });
+        }
+
     }, []);
 
     return (

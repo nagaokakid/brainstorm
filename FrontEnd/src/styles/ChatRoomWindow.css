@@ -1,5 +1,4 @@
-.WindowContainer
-{
+.WindowContainer {
     position: relative;
     display: flex;
     flex-direction: row;
@@ -8,8 +7,7 @@
     background-color: #f5f5f5;
 }
 
-.WindowContainer .MsgContainer
-{
+.WindowContainer .MsgContainer {
     display: flex;
     width: 85%;
     min-width: 600px;
@@ -17,8 +15,7 @@
     flex-direction: column;
 }
 
-.WindowContainer .MsgContainer .ChatHeader
-{
+.WindowContainer .MsgContainer .ChatHeader {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -29,8 +26,13 @@
     background-color: rgb(167, 165, 165);
 }
 
-.WindowContainer .MsgContainer .MsgSection
-{
+.WindowContainer .MsgContainer .ChatHeader h1 {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.WindowContainer .MsgContainer .MsgSection {
     display: flex;
     flex-direction: column;
     height: 100%;
@@ -39,8 +41,7 @@
     overflow-y: auto;
 }
 
-.WindowContainer .MemberListContainer
-{
+.WindowContainer .MemberListContainer {
     display: flex;
     flex-direction: column;
     width: 15%;
