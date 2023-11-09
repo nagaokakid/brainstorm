@@ -64,10 +64,7 @@ class SignalRChatRoom {
      */
     setReceiveChatRoomInfoCallback(callBackFunction: () => void) {
         this.connection.on("ReceiveChatRoomInfo", (info: chatRoomObject) => {
-            console.log("get Called");
-
             console.log("----> Receive chatroom info callback", info);
-
             UserInfo.addNewChatRoom(info);
             callBackFunction();
         });
