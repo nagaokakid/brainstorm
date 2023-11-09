@@ -14,12 +14,12 @@ public interface IBrainstormService
     Task Join(string sessionId, FriendlyUserInfo user);
     Task RemoveSession(string sessionId);
     Task StartSession(string sessionId);
+    Task AddFinalResult(BrainstormResult result);
 }
 namespace Logic.Services
 {
     public class BrainstormService : IBrainstormService
     {
-<<<<<<< HEAD
         ConcurrentDictionary<string, BrainstormSession> sessions = new ();
         private readonly IBrainstormResultCollection brainstormResultCollection;
 
@@ -27,9 +27,6 @@ namespace Logic.Services
         {
             brainstormResultCollection = collection;
         }
-=======
-        ConcurrentDictionary<string, BrainstormSession> sessions = new();
->>>>>>> origin/dev
 
         public async Task Add(BrainstormSession session)
         {
