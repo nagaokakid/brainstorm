@@ -25,8 +25,12 @@ function ChatRoomWindow(props: ChatRoomWindowProps) {
             <div className='MsgContainer' style={type === "Direct Message List" ? { width: "100%" } : {}}>
                 <div className='ChatHeader'>
                     <h1 className='ChatTitle'>
-                        {chatHeader + "  " + joinCode}
+                        {chatHeader}
                     </h1>
+                    <h2 className='RoomCode' style={type === "Direct Message List" ? { display: "none"} : {display: "flex"}}>
+                        Room Code: {joinCode}
+                    </h2>
+                    <a href="" style={type === "Direct Message List" ? { display: "none"} : {display: "flex"}}>BrainStorm Session</a>
                 </div>
                 <div className='MsgSection'>
                     <MessageWindow chatId={chatId} chatType={type} />

@@ -50,20 +50,36 @@ function LogRes() {
     }
 
     /**
+     * 
+     * @param e This will handle the enter key press
+     */
+    const handleKey = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.code === "Enter" || e.code === "NumpadEnter") {
+            if (justifyActive === 'tab1') {
+                handleLogin();
+            }
+            else {
+                handleRegister();
+            }
+        }
+    };
+
+    /**
      * This will handle the login request
      */
     function handleLogin() {
+        const button = (document.getElementById('login') as HTMLButtonElement);
         const apiService = ApiService;
 
         if (input.Username == "" || input.Password == "") {
             alert("Please complete the form");
         }
         else {
+            button.disabled = true;
             apiService.Login(input.Username, input.Password).then((resp) => {
-                // To-Do: Handle the response and create UI for different responses
-                if (resp.ok) {
+                button.disabled = false;
+                if (resp) {
                     // if good
-                    console.log("Navigating to main page");
                     navigate('/main');
                 }
                 else {
@@ -78,6 +94,7 @@ function LogRes() {
      * This will handle the register request
      */
     function handleRegister() {
+        const button = (document.getElementById('register') as HTMLButtonElement);
         const apiService = ApiService;
 
         if (input.Username == "" || input.Password == "" || input.RePassword == "" || input.FirstName == "" || input.LastName == "") {
@@ -87,15 +104,14 @@ function LogRes() {
             alert("Passwords do not match");
         }
         else {
+            button.disabled = true;
             apiService.Register(input.Username, input.Password, input.FirstName, input.LastName).then((resp) => {
-
-                // To-Do: Handle the response and create UI for different responses
-                if (resp.ok) {
-                    console.log("Navigating to main page");
+                button.disabled = false;
+                if (resp) {
                     navigate('/main');
 
                 } else {
-                    alert('Unable to create account with the given information');
+                    alert('Failed to create account');
                 }
             });
         }
@@ -120,8 +136,8 @@ function LogRes() {
                     <MDBTabsPane show={justifyActive === 'tab1'}>
                         <h3 className='SignInTitle'>Sign In:</h3>
                         <MDBInput wrapperClass='mb-4' label='Username' id='Username' type='text' onChange={handleChanged} />
-                        <MDBInput wrapperClass='mb-4' label='Password' id='Password' type='password' onChange={handleChanged} />
-                        <MDBBtn className="mb-4 w-100" onClick={() => handleLogin()}>Sign in</MDBBtn>
+                        <MDBInput wrapperClass='mb-4' label='Password' id='Password' type='password' onChange={handleChanged} onKeyDown={handleKey} />
+                        <MDBBtn className="mb-4 w-100" id='login' onClick={() => handleLogin()}>Sign in</MDBBtn>
                     </MDBTabsPane>
                     <MDBTabsPane show={justifyActive === 'tab2'}>
                         <h3 className='RegisterTitle'>Create Account:</h3>
@@ -129,8 +145,8 @@ function LogRes() {
                         <MDBInput wrapperClass='mb-4' label='First Name' id='FirstName' type='text' onChange={handleChanged} />
                         <MDBInput wrapperClass='mb-4' label='Last Name' id='LastName' type='text' onChange={handleChanged} />
                         <MDBInput wrapperClass='mb-4' label='Password' id='Password' type='password' onChange={handleChanged} />
-                        <MDBInput wrapperClass='mb-4' label='Re-Password' id='RePassword' type='password' onChange={handleChanged} />
-                        <MDBBtn className="mb-4 w-100" onClick={() => handleRegister()}>Sign up</MDBBtn>
+                        <MDBInput wrapperClass='mb-4' label='Re-Password' id='RePassword' type='password' onChange={handleChanged} onKeyDown={handleKey} />
+                        <MDBBtn className="mb-4 w-100" id='register' onClick={() => handleRegister()}>Sign up</MDBBtn>
                     </MDBTabsPane>
                 </MDBTabsContent>
             </MDBContainer>

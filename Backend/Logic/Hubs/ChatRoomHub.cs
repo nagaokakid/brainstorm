@@ -10,11 +10,11 @@ namespace Logic.Hubs
 {
     public class ChatRoomHub : Hub
     {
-        private readonly ChatRoomService chatRoomService;
+        private readonly IChatRoomService chatRoomService;
         private readonly IUserCollection userCollection;
-        private readonly BrainstormService brainstormService;
+        private readonly IBrainstormService brainstormService;
 
-        public ChatRoomHub(ChatRoomService chatRoomService, IUserCollection userCollection, BrainstormService brainstormService)
+        public ChatRoomHub(IChatRoomService chatRoomService, IUserCollection userCollection, IBrainstormService brainstormService)
         {
             this.chatRoomService = chatRoomService;
             this.userCollection = userCollection;
@@ -43,12 +43,16 @@ namespace Logic.Hubs
 
                     if (first == "First")
                     {
-                        await Clients.Client(Context.ConnectionId).SendAsync("ReceiveChatRoomInfo", foundChatRoom);
+                        var users = await userCollection.GetAll();
+                        if (users != null)
+                        {
+                            await Clients.Client(Context.ConnectionId).SendAsync("ReceiveChatRoomInfo", foundChatRoom.ToDTO(users));
+                        }
                     }
 
                     // check if user is already a member of the chatroom when they join
                     var found = foundChatRoom.MemberIds.FirstOrDefault(x => x == userId);
-                    if (found == null)
+                    if (found == null && userId.Length != 1)
                     {
                         // add new member to chatroom
                         await chatRoomService.AddNewUserToChatRoom(userId, foundChatRoom.Id);
@@ -60,7 +64,6 @@ namespace Logic.Hubs
                 }
             }
         }
-        
         public async Task SendChatRoomMessage(string userId, string chatRoomId, string firstName, string lastName, string msg)
         {
             if (chatRoomId != null && userId != null && firstName != null && msg != null)
@@ -73,19 +76,19 @@ namespace Logic.Hubs
                     Timestamp = DateTime.Now
                 };
 
-                // send message to everyone in the chatRoom
-                await Clients.Group(chatRoomId).SendAsync("ReceiveChatRoomMessage", msgInfo);
-
                 // add message to chatroom
-                await chatRoomService.AddMessageToChatRoom(msgInfo.ChatRoomId, msgInfo);
+                chatRoomService.AddMessageToChatRoom(msgInfo.ChatRoomId, msgInfo);
+
+                // send message to everyone in the chatRoom
+                Clients.Group(chatRoomId).SendAsync("ReceiveChatRoomMessage", msgInfo);
             }
         }
-        
+
         public override Task OnDisconnectedAsync(Exception? exception)
         {
             return base.OnDisconnectedAsync(exception);
         }
-        
+
         public override Task OnConnectedAsync()
         {
             return base.OnConnectedAsync();
@@ -97,7 +100,7 @@ namespace Logic.Hubs
             {
                 var creator = new FriendlyUserInfo { UserId = creatorId, FirstName = creatorFirstName, LastName = creatorLastName };
                 var session = new BrainstormSession { Title = title, Description = description, ChatRoomId = chatRoomId, CanJoin = true, Creator = creator, SessionId = Guid.NewGuid().ToString(), Ideas = new List<string>(), JoinedMembers = new List<FriendlyUserInfo> { creator }, IdeasAvailable = DateTime.Now.AddDays(1) };
-                
+
                 // add created session to dictionary
                 await brainstormService.Add(session);
 

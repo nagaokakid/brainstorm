@@ -4,11 +4,22 @@ using Logic.Data;
 using Logic.DTOs.User;
 using System.Collections.Concurrent;
 using System.Diagnostics;
-
+public interface IBrainstormService
+{
+    Task Add(BrainstormSession session);
+    Task AddIdeas(string sessionId, List<string> ideas);
+    Task EndSession(string sessionId);
+    Task<List<string>> GetAllIdeas(string sessionId);
+    Task<BrainstormSession?> GetSession(string sessionId);
+    Task Join(string sessionId, FriendlyUserInfo user);
+    Task RemoveSession(string sessionId);
+    Task StartSession(string sessionId);
+}
 namespace Logic.Services
 {
-    public class BrainstormService
+    public class BrainstormService : IBrainstormService
     {
+<<<<<<< HEAD
         ConcurrentDictionary<string, BrainstormSession> sessions = new ();
         private readonly IBrainstormResultCollection brainstormResultCollection;
 
@@ -16,6 +27,9 @@ namespace Logic.Services
         {
             brainstormResultCollection = collection;
         }
+=======
+        ConcurrentDictionary<string, BrainstormSession> sessions = new();
+>>>>>>> origin/dev
 
         public async Task Add(BrainstormSession session)
         {
@@ -55,7 +69,7 @@ namespace Logic.Services
             Debug.Assert(sessionId != null);
 
             sessions.TryGetValue(sessionId, out var session);
-            if(session != null && DateTime.Now <= session.IdeasAvailable)
+            if (session != null && DateTime.Now <= session.IdeasAvailable)
             {
                 session.Ideas.AddRange(ideas);
             }
@@ -82,7 +96,7 @@ namespace Logic.Services
             var result = await GetSession(sessionId);
 
             // when session ends, users have 1 second to send all their ideas. Because after 1 second the results are send to the users
-            if(result != null) result.IdeasAvailable = DateTime.Now.AddSeconds(1);
+            if (result != null) result.IdeasAvailable = DateTime.Now.AddSeconds(1);
         }
 
         public async Task AddFinalResult(BrainstormResult brainstormResult)

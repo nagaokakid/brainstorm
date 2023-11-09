@@ -9,7 +9,7 @@ const DIRECT_URL = UserInfo.BaseURL + "direct";
 
 class SignalRDirect {
 
-    private static instance: SignalRDirect;
+    private static instance: SignalRDirect | null;
     private connection: signalR.HubConnection;
 
     /**
@@ -22,6 +22,11 @@ class SignalRDirect {
             .build();
     }
 
+    async reset(){
+        await this.connection.stop();
+        SignalRDirect.instance = null;
+    }
+
     /**
      * This is the function that actually makes the connection and join the direct message
      */
@@ -29,7 +34,6 @@ class SignalRDirect {
         console.log("----> Starting connection to direct message");
         try {
             await this.connection.start();
-            console.log("----> Connection to direct message successful");
             await this.join();
             console.log("----> Joined direct Message");
         } catch (error) {
@@ -54,7 +58,8 @@ class SignalRDirect {
      */
     async sendMessage(msg: sendMessageObject) {
         console.log("----> Sending Direct Message");
-        await this.connection.send("SendDirectMessage", msg.user1.userId, msg.user1.firstName, msg.user1.lastName, msg.user2.userId, msg.user2.firstName, msg.user2.lastName, msg.message).catch(() => console.log("----> Send Direct Message failed"));
+        await this.connection.send("SendDirectMessage", msg.user1.userId, msg.user1.firstName, msg.user1.lastName, msg.user2.userId, msg.user2.firstName, msg.user2.lastName, msg.message)
+            .catch(() => console.log("----> Send Direct Message failed"));
     }
 
     /**
@@ -63,7 +68,8 @@ class SignalRDirect {
     async join() {
         console.log("----> Joining Direct Messaging");
         const user = UserInfo.getCurrentFriendlyUserInfo();
-        await this.connection.send("JoinDirect", user.userId, user.firstName, user.lastName).catch(() => console.log("----> Join direct message failed"));
+        await this.connection.send("JoinDirect", user.userId, user.firstName, user.lastName)
+            .catch(() => console.log("----> Join direct message failed"));
     }
 
     /**
@@ -73,7 +79,8 @@ class SignalRDirect {
      */
     async getDirectMessageHistory(fromId: string, toId: string) {
         console.log("----> Getting Direct Message History");
-        await this.connection.send("GetChatHistory", fromId, toId).catch(() => console.log("----> Get Direct Message History failed"));
+        await this.connection.send("GetChatHistory", fromId, toId)
+            .catch(() => console.log("----> Get Direct Message History failed"));
     }
 
     /**
