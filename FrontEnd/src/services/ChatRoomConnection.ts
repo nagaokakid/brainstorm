@@ -1,6 +1,6 @@
 import * as signalR from "@microsoft/signalr";
 import UserInfo from "./UserInfo";
-import { chatRoomMessageObject, chatRoomObject, userInfoObject } from "./TypesDefine";
+import { brainstormDTO, chatRoomMessageObject, chatRoomObject, userInfoObject } from "./TypesDefine";
 import FriendlyUser from "../models/FriendlyUser";
 
 /**
@@ -23,7 +23,7 @@ class SignalRChatRoom {
             .build();
     }
 
-    async reset(){
+    async reset() {
         await this.connection.stop();
         SignalRChatRoom.instance = null;
     }
