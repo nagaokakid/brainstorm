@@ -76,11 +76,11 @@ namespace Logic.Hubs
                     Timestamp = DateTime.Now
                 };
 
-                // send message to everyone in the chatRoom
-                await Clients.Group(chatRoomId).SendAsync("ReceiveChatRoomMessage", msgInfo);
-
                 // add message to chatroom
-                await chatRoomService.AddMessageToChatRoom(msgInfo.ChatRoomId, msgInfo);
+                chatRoomService.AddMessageToChatRoom(msgInfo.ChatRoomId, msgInfo);
+
+                // send message to everyone in the chatRoom
+                Clients.Group(chatRoomId).SendAsync("ReceiveChatRoomMessage", msgInfo);
             }
         }
 
