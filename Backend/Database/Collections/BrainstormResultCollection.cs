@@ -9,10 +9,37 @@ namespace Database.Collections
         private MongoRepository<BrainstormResult> brainstormResultRepository = new("brainstorm", "BrainstormResult");
         private MongoRepository<User> userRepository = new("brainstorm", "User");
 
+        // Add a brainstorm result document to the collection
         public async Task Add(BrainstormResult brainstormResult)
         {
-
+            await brainstormResultRepository.CreateDocument(brainstormResult);
         }
+
+        // Get a single brainstorm result document by ID
+        public async Task<BrainstormResult> Get(string id)
+        {
+            return await brainstormResultRepository.GetDocumentById(id);
+        }
+
+        // Get all brainstorm result documents belonging to a single user ID
+        public async Task<List<BrainstormResult>> GetAllByUserId(string userId)
+        {
+            var user = await userRepository.GetDocumentById(userId);
+            var resultIds = user.BrainstormResultIds;
+
+            return await brainstormResultRepository.GetAllDocumentsByValueList("_id", resultIds);
+        }
+
+        // Get all brainstorm result documents that match the given chatroom ID
+        public async Task<List<BrainstormResult>> GetAllByChatroomId(string chatroomId)
+        {
+            List<string> chatroomIdList = new(1)
+            {
+                chatroomId
+            };
+            return await brainstormResultRepository.GetAllDocumentsByValueList("ChatroomId", chatroomIdList);
+        }
+
 
     }
 }

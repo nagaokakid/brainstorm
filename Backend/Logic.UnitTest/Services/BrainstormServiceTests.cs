@@ -1,4 +1,5 @@
-﻿using Logic.Data;
+﻿using Database.Collections;
+using Logic.Data;
 using Logic.DTOs.User;
 using Logic.Services;
 
@@ -13,7 +14,7 @@ namespace Logic.UnitTest.Services
         [SetUp]
         public void SetUp()
         {
-            service = new BrainstormService();
+            service = new BrainstormService(new BrainstormResultCollection());
             var creator = new FriendlyUserInfo { UserId = Guid.NewGuid().ToString(), FirstName = "first", LastName = "last" };
             session = new BrainstormSession { Title = "title", Description = "desc", ChatRoomId = Guid.NewGuid().ToString(), CanJoin = true, Creator = creator, SessionId = Guid.NewGuid().ToString(), Ideas = new List<string>(), JoinedMembers = new List<FriendlyUserInfo> { creator }, IdeasAvailable = DateTime.Now.AddDays(1) };
 
