@@ -10,11 +10,11 @@ namespace Logic.Hubs
 {
     public class ChatRoomHub : Hub
     {
-        private readonly ChatRoomService chatRoomService;
+        private readonly IChatRoomService chatRoomService;
         private readonly IUserCollection userCollection;
-        private readonly BrainstormService brainstormService;
+        private readonly IBrainstormService brainstormService;
 
-        public ChatRoomHub(ChatRoomService chatRoomService, IUserCollection userCollection, BrainstormService brainstormService)
+        public ChatRoomHub(IChatRoomService chatRoomService, IUserCollection userCollection, IBrainstormService brainstormService)
         {
             this.chatRoomService = chatRoomService;
             this.userCollection = userCollection;
@@ -76,11 +76,11 @@ namespace Logic.Hubs
                     Timestamp = DateTime.Now
                 };
 
-                // send message to everyone in the chatRoom
-                await Clients.Group(chatRoomId).SendAsync("ReceiveChatRoomMessage", msgInfo);
-
                 // add message to chatroom
-                await chatRoomService.AddMessageToChatRoom(msgInfo.ChatRoomId, msgInfo);
+                chatRoomService.AddMessageToChatRoom(msgInfo.ChatRoomId, msgInfo);
+
+                // send message to everyone in the chatRoom
+                Clients.Group(chatRoomId).SendAsync("ReceiveChatRoomMessage", msgInfo);
             }
         }
 

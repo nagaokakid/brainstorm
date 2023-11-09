@@ -7,10 +7,10 @@ namespace Logic.Hubs
 {
     public class DirectMessagingHub : Hub
     {
-        private readonly OnlineUserService onlineUserService;
+        private readonly IOnlineUserService onlineUserService;
         private readonly DirectMessageService directMessageService;
 
-        public DirectMessagingHub(OnlineUserService onlineUserService, DirectMessageService directMessageService)
+        public DirectMessagingHub(IOnlineUserService onlineUserService, DirectMessageService directMessageService)
         {
             this.onlineUserService = onlineUserService;
             this.directMessageService = directMessageService;
