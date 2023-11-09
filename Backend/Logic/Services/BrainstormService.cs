@@ -1,4 +1,6 @@
-﻿using Logic.Data;
+﻿using Database.CollectionContracts;
+using Database.Data;
+using Logic.Data;
 using Logic.DTOs.User;
 using System.Collections.Concurrent;
 using System.Diagnostics;
@@ -12,12 +14,19 @@ public interface IBrainstormService
     Task Join(string sessionId, FriendlyUserInfo user);
     Task RemoveSession(string sessionId);
     Task StartSession(string sessionId);
+    Task AddFinalResult(BrainstormResult result);
 }
 namespace Logic.Services
 {
     public class BrainstormService : IBrainstormService
     {
-        ConcurrentDictionary<string, BrainstormSession> sessions = new();
+        ConcurrentDictionary<string, BrainstormSession> sessions = new ();
+        private readonly IBrainstormResultCollection brainstormResultCollection;
+
+        public BrainstormService(IBrainstormResultCollection collection)
+        {
+            brainstormResultCollection = collection;
+        }
 
         public async Task Add(BrainstormSession session)
         {
@@ -85,6 +94,11 @@ namespace Logic.Services
 
             // when session ends, users have 1 second to send all their ideas. Because after 1 second the results are send to the users
             if (result != null) result.IdeasAvailable = DateTime.Now.AddSeconds(1);
+        }
+
+        public async Task AddFinalResult(BrainstormResult brainstormResult)
+        {
+            brainstormResultCollection.Add(brainstormResult);
         }
     }
 }
