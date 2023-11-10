@@ -99,7 +99,7 @@ namespace Logic.Hubs
             if (title != null && description != null && chatRoomId != null && creatorId != null)
             {
                 var creator = new FriendlyUserInfo { UserId = creatorId, FirstName = creatorFirstName, LastName = creatorLastName };
-                var session = new BrainstormSession { Title = title, Description = description, ChatRoomId = chatRoomId, CanJoin = true, Creator = creator, SessionId = Guid.NewGuid().ToString(), Ideas = new List<string>(), JoinedMembers = new List<FriendlyUserInfo> { creator }, IdeasAvailable = DateTime.Now.AddDays(1) };
+                var session = new BrainstormSession { Title = title, Description = description, ChatRoomId = chatRoomId, CanJoin = true, Creator = creator, SessionId = Guid.NewGuid().ToString(), Ideas = new Dictionary<string, Idea>(), JoinedMembers = new List<FriendlyUserInfo> { creator }, IdeasAvailable = DateTime.Now.AddDays(1) };
 
                 // add created session to dictionary
                 await brainstormService.Add(session);
@@ -167,6 +167,28 @@ namespace Logic.Hubs
             if (sessionId != null)
             {
                 await brainstormService.RemoveSession(sessionId);
+            }
+        }
+
+        public async Task SendAllVotes(string sessionId)
+        {
+            await Clients.Group(sessionId).SendAsync("SendVotes");
+
+            // set timer to send all votes after x time
+            brainstormService.SendVotesTimer(sessionId, SendVoteResults);
+        }
+
+        public async Task ReceiveVotes(string sessionId, List<Idea> ideas)
+        {
+            await brainstormService.AddVotes(sessionId, ideas);
+        }
+
+        public void SendVoteResults(string sessionId)
+        {
+            var result = brainstormService.GetAllIdeas(sessionId).Result;
+            if (result != null)
+            {
+                Clients.Group(sessionId).SendAsync("ReceiveVoteResults", result);
             }
         }
     }

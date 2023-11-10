@@ -11,7 +11,8 @@ namespace Logic.Data
         public FriendlyUserInfo Creator { get; set; }
         public bool CanJoin { get; set; } = true;
         public List<FriendlyUserInfo> JoinedMembers { get; set; }
-        public List<string> Ideas { get; set; }
+        public Dictionary<string, Idea> Ideas { get; set; }
         public DateTime IdeasAvailable { get; set; }
+        public Timer? SendVoteTimer { get; set; }
     }
 }
