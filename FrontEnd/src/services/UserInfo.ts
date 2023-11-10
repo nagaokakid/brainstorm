@@ -39,13 +39,7 @@ class UserInfo {
                             },
                             "chatRoomId": "1111",
                             "message": "I'm first user",
-                            "timestamp": "2023-10-13T23:35:59.786Z",
-                            "bs_session": {
-                                title: "",
-                                description: "",
-                                sessionId: "",
-                                creatorId: "",
-                            }
+                            "timestamp": "2023-10-13T23:35:59.786Z"
                         },
                         {
                             "fromUserInfo":
@@ -88,10 +82,15 @@ class UserInfo {
                         }
                     ],
                     "bs_session": {
-                        title: "",
-                        description: "",
-                        brainstormingId: "",
-                        creatorId: "",
+                        SessionId: "",
+                        Title: "",
+                        Description: "",
+                        Creator: {
+                            userId: "0000",
+                            firstName: "Current",
+                            lastName: "User",
+                        },
+                        Members: []
                     }
                 },
                 {
@@ -305,6 +304,10 @@ class UserInfo {
             if (chatRoom.id === message.chatRoomId) {
                 console.log("----> Added new chat room message");
                 result = chatRoom.messages.push(message);
+
+                if (message.brainstormDTO) {
+                    chatRoom.bs_session = message.brainstormDTO;
+                }
             }
         });
 
