@@ -3,6 +3,7 @@ import UserInfo from "../services/UserInfo";
 import CreateRoomCustomize from "./CreateRoomCustomize";
 import { chatRoomObject, directMessageObject } from "../services/TypesDefine";
 import { lazy, useState, Suspense, useEffect } from "react";
+import CreateBrainStormCustomize from "./CreateBrainStormCustomize";
 
 interface ChatListProps {
     chatType: string;
@@ -19,10 +20,13 @@ function ChatList(props: ChatListProps) {
     const [chatList, setChatList] = useState<(chatRoomObject | directMessageObject)[]>([]);
 
     // Track the current selected chat
-    const [selectedChat, setSelectedChat] = useState<null | chatRoomObject | directMessageObject>(null);
+    const [selectedChat, setSelectedChat] = useState<chatRoomObject | directMessageObject | null>(null);
 
     // Set the default display of the create chat room option to be hidden
     const [display, setDisplay] = useState("none");
+
+    // Set the default display of the create brainstorm option to be hidden
+    const [displayBrainstorm, setDisplayBrainstorm] = useState("none");
 
     // Lazy load the chat room window component
     const ChatRoomWindow = lazy(() => import("./ChatRoomWindow"));
@@ -41,6 +45,11 @@ function ChatList(props: ChatListProps) {
         } else {
             setDisplay(e)
         }
+    }
+
+    // Set the display of the create brainstorm option
+    const handleCreateBrainstormButton = (e: string) => {
+        setDisplayBrainstorm(e)
     }
 
     useEffect(() => {
@@ -82,11 +91,12 @@ function ChatList(props: ChatListProps) {
             <div className="ChatWindowContainer">
                 {selectedChat && (
                     <Suspense fallback={"Loading...."}>
-                        <ChatRoomWindow chat={selectedChat} />
+                        <ChatRoomWindow chat={selectedChat} callBackFunction={handleCreateBrainstormButton} />
                     </Suspense>
                 )}
             </div>
             <CreateRoomCustomize style={display} callBackFunction={handleCreateRoomButton} />
+            <CreateBrainStormCustomize style={displayBrainstorm} chat={selectedChat} callBackFunction={handleCreateBrainstormButton} />
         </div>
     );
 }
