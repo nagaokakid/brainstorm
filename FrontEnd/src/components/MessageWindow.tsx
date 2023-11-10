@@ -5,7 +5,7 @@ import UserInfo from "../services/UserInfo";
 import MessageInput from "./MessageInput";
 import { useDataContext } from "../contexts/DataContext";
 import { useEffect, useState } from "react";
-import { chatRoomMessageObject } from "../services/TypesDefine";
+import { brainstormDTO, chatRoomMessageObject } from "../services/TypesDefine";
 
 interface MessageWindowProps {
     chatId: string;
@@ -21,10 +21,7 @@ interface MessageWindowProps {
 function MessageWindow(props: MessageWindowProps) {
 
     const context = useDataContext();
-
     const msg = context[0];
-    console.log("----> MessageWindow");
-
 
     // Set the message to the display
     const [messages, setMessages] = useState<[] | chatRoomMessageObject[] | { message: string, timestamp: string }[]>([]);

@@ -1,9 +1,15 @@
-﻿using Logic.DTOs.User;
-using System.Collections.Concurrent;
+﻿using System.Collections.Concurrent;
 
 namespace Logic.Services
 {
-    public class OnlineUserService
+    public interface IOnlineUserService
+    {
+        Task Add(string userId, string connectionId);
+        string? Get(string userId);
+        void Remove(string connectionId);
+    }
+
+    public class OnlineUserService : IOnlineUserService
     {
         private ConcurrentDictionary<string, string> onlineUsers;
         public OnlineUserService()
@@ -13,7 +19,7 @@ namespace Logic.Services
 
         public async Task Add(string userId, string connectionId)
         {
-            if(!onlineUsers.TryAdd(userId, connectionId))
+            if (!onlineUsers.TryAdd(userId, connectionId))
             {
                 onlineUsers[userId] = connectionId;
             }

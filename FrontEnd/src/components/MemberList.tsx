@@ -15,9 +15,14 @@ interface MemberListProps {
 function MemberList(props: MemberListProps) {
 
     const onlineMembers = props.memberList ?? []
-    // const offlineMembers = ["Member 4", "Member 5", "Member 6"];
 
     function handleMemberClick(id: string, name: string) {
+
+        if (UserInfo.loginRegisterResponse.userInfo.isGuest) {
+            alert("Guest cannot send direct message");
+            return;
+        }
+
         const temp = prompt("Enter your message to " + name);
 
         if (!temp) return;
@@ -46,14 +51,6 @@ function MemberList(props: MemberListProps) {
                     ))}
                 </ul>
             </div>
-            {/* <div className="offline-members">
-                <h2>Offline Members</h2>
-                <ul>
-                    {offlineMembers.map((member, index) => (
-                        <li key={index}>{member}</li>
-                    ))}
-                </ul>
-            </div> */}
         </div>
     );
 }

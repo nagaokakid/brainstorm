@@ -1,5 +1,4 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
-using MongoDB.Bson;
 
 namespace Database.Data
 {
@@ -14,5 +13,6 @@ namespace Database.Data
         public string LastName { get; set; }
         public List<string> ChatroomIds { get; set; }
         public List<string> DirectMessageHistoryIds {  get; set; }
+        public List<string> BrainstormResultIds { get; set; }
     }
 }

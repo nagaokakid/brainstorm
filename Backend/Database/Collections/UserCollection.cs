@@ -29,6 +29,11 @@ namespace Database.Collections
             await userRepository.AddToArrayInDocument(userId, "DirectMessageHistoryIds", directMessageHistoryId);
         }
 
+        public async Task AddBrainstormResultToUser(string userId, string brainstormResultId)
+        {
+            await userRepository.AddToArrayInDocument(userId, "BrainstormResultIds", brainstormResultId);
+        }
+
         // Check if username already exists in User collection
         public async Task<bool> DoesUsernameExist(string username)
         {

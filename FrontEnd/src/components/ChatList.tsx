@@ -33,9 +33,14 @@ function ChatList(props: ChatListProps) {
         setSelectedChat(chat);
     }
 
-    // // Set the display of the create chat room option
+    // Set the display of the create chat room option
     const handleCreateRoomButton = (e: string) => {
-        setDisplay(e)
+        if (UserInfo.loginRegisterResponse.userInfo.isGuest) {
+            alert("Guest cannot create chat room");
+            return;
+        } else {
+            setDisplay(e)
+        }
     }
 
     useEffect(() => {
