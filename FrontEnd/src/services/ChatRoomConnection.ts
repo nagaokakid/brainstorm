@@ -1,6 +1,6 @@
 import * as signalR from "@microsoft/signalr";
 import UserInfo from "./UserInfo";
-import { brainstormDTO, chatRoomMessageObject, chatRoomObject, userInfoObject } from "./TypesDefine";
+import { chatRoomMessageObject, chatRoomObject, userInfoObject } from "./TypesDefine";
 import FriendlyUser from "../models/FriendlyUser";
 
 /**
