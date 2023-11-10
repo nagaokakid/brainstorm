@@ -18,7 +18,9 @@ class UserInfo {
             {
                 userId: "0000",
                 firstName: "Current",
-                lastName: "User"
+                lastName: "User",
+                isGuest: false,
+                firstRoom: ""
             },
             token: "0000-1111-2222-3333",
             chatRooms: [
@@ -37,7 +39,13 @@ class UserInfo {
                             },
                             "chatRoomId": "1111",
                             "message": "I'm first user",
-                            "timestamp": "2023-10-13T23:35:59.786Z"
+                            "timestamp": "2023-10-13T23:35:59.786Z",
+                            "bs_session": {
+                                title: "",
+                                description: "",
+                                sessionId: "",
+                                creatorId: "",
+                            }
                         },
                         {
                             "fromUserInfo":
@@ -78,7 +86,13 @@ class UserInfo {
                             "firstName": "Second",
                             "lastName": "User"
                         }
-                    ]
+                    ],
+                    "bs_session": {
+                        title: "",
+                        description: "",
+                        brainstormingId: "",
+                        creatorId: "",
+                    }
                 },
                 {
                     "id": "2222",
@@ -192,11 +206,17 @@ class UserInfo {
     }
 
     static getChatRoomsList(): chatRoomObject[] {
-        return this.loginRegisterResponse.chatRooms ?? [];
+        if (this.loginRegisterResponse.chatRooms === null) {
+            this.loginRegisterResponse.chatRooms = [];
+        }
+        return this.loginRegisterResponse.chatRooms;
     }
 
     static getDirectMessagesList(): directMessageObject[] {
-        return this.loginRegisterResponse.directMessages ?? [];
+        if (this.loginRegisterResponse.directMessages === null) {
+            this.loginRegisterResponse.directMessages = [];
+        }
+        return this.loginRegisterResponse.directMessages;
     }
 
     /**
@@ -205,11 +225,11 @@ class UserInfo {
      * @param {*} chatId The chat room id
      */
     static addNewMember(userInfo: userInfoObject, chatId: string) {
-        console.log("----> Adding new member");
+        console.log("----> Trying to add new member to local.");
         this.getChatRoomsList().forEach(chatRoom => {
             if (chatRoom.id === chatId) {
                 chatRoom.members.push(userInfo);
-                console.log("----> Added new member");
+                console.log("----> Added new member.");
             }
         });
     }
@@ -220,8 +240,16 @@ class UserInfo {
      * @returns 
      */
     static addNewChatRoom(chatRoom: chatRoomObject) {
-        console.log("----> Adding new chat room");
-        return this.getChatRoomsList().push(chatRoom) ?? null;
+        console.log("----> Trying to add new chat room to local.");
+        const list = this.getChatRoomsList();
+        if (list.find(current => current.id === chatRoom.id)) {
+            alert("Chat room already exists.");
+            return null;
+        }
+        else {
+            console.log("----> Added new chat room.");
+            return list.push(chatRoom);
+        }
     }
 
     /**
@@ -231,9 +259,10 @@ class UserInfo {
      */
     static addNewDirectMessage(newDirectMessage: newDirectMessageObject) {
         let result = null;
+        console.log("----> Trying to add new direct message to local.");
 
         this.getDirectMessagesList().map((current) => {
-            if (newDirectMessage.toUserInfo.userId === current.user2.userId) {
+            if (newDirectMessage.toUserInfo.userId === current.user2.userId || newDirectMessage.fromUserInfo.userId === current.user2.userId) {
                 const newMsg =
                 {
                     message: newDirectMessage.message,
@@ -247,8 +276,8 @@ class UserInfo {
         if (result === null) {
             console.log("----> Create a new Direct Message Object");
             const newMsgObject = {
-                user1: newDirectMessage.fromUserInfo,
-                user2: newDirectMessage.toUserInfo,
+                user1: UserInfo.getCurrentFriendlyUserInfo(),
+                user2: newDirectMessage.toUserInfo.userId === UserInfo.getUserId() ? newDirectMessage.fromUserInfo : newDirectMessage.toUserInfo,
                 directMessages: [
                     {
                         message: newDirectMessage.message,
@@ -270,8 +299,8 @@ class UserInfo {
      * @returns 
      */
     static addChatRoomMessage(message: chatRoomMessageObject) {
-        console.log("----> Adding new chat room message");
         let result = null;
+        console.log("----> Trying to add new chat room message to local.");
         this.getChatRoomsList().forEach(chatRoom => {
             if (chatRoom.id === message.chatRoomId) {
                 console.log("----> Added new chat room message");

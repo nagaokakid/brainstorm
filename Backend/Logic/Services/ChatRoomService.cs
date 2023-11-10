@@ -4,11 +4,20 @@ using Logic.DTOs.ChatRoom;
 using Logic.DTOs.Messages;
 using Logic.DTOs.User;
 using Logic.Exceptions;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Logic.Services
 {
-    public class ChatRoomService
+    public interface IChatRoomService
+    {
+        Task AddMessageToChatRoom(string chatRoomId, MessageInfo msg);
+        Task AddNewUserToChatRoom(string userId, string chatRoomId);
+        Task<CreateChatRoomResponse> CreateChatRoom(CreateChatRoomRequest request);
+        Task<List<ChatRoom>> GetChatRooms(List<string> chatRoomIds);
+        Task<ChatRoom?> GetRoomByJoinCode(string chatRoomJoinCode);
+        Task<bool> IsJoinCodeValid(string joinCode);
+    }
+
+    public class ChatRoomService : IChatRoomService
     {
         private readonly IChatRoomCollection chatRoomCollection;
         private readonly IUserCollection userCollection;
@@ -34,7 +43,7 @@ namespace Logic.Services
             await chatRoomCollection.AddMessage(chatRoomId, new ChatRoomMessage
             {
                 FromUserId = msg.FromUserInfo.UserId,
-                Message = msg.Message, 
+                Message = msg.Message,
                 Timestamp = msg.Timestamp,
             });
         }
@@ -107,10 +116,16 @@ namespace Logic.Services
             {
                 var found = await chatRoomCollection.GetById(id);
                 if (found == null) throw new ChatRoomNotFound();
-                
+
                 result.Add(found);
             }
             return result;
+        }
+
+        public async Task<bool> IsJoinCodeValid(string joinCode)
+        {
+            var result = await chatRoomCollection.GetByJoinCode(joinCode);
+            return result != null;
         }
     }
 }

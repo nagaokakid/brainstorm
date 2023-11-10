@@ -1,6 +1,6 @@
 import "../styles/LoginPage.css"
 import LogRes from "../components/LogRes"
-// import GuestJoin from "../components/GuestJoin"
+import GuestJoin from "../components/GuestJoin"
 
 /**
  * 
@@ -19,7 +19,7 @@ function LoginPage() {
                     <div className="VerticalLine"></div>
                     <div className="GuestContainer">
                         <div className="GuestFormContainer">
-                            {/* <GuestJoin /> */}
+                            <GuestJoin />
                         </div>
                     </div>
                 </div>

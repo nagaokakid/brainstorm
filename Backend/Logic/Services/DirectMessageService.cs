@@ -16,7 +16,12 @@ namespace Logic.Services
         }
         public async Task AddNewMessage(MessageInfo msg)
         {
-            await directMessageCollection.Add(msg.FromUserInfo.UserId, msg.ToUserInfo.UserId, msg.FromDTO());
+            var returnId = await directMessageCollection.Add(msg.FromUserInfo.UserId, msg.ToUserInfo.UserId, msg.FromDTO());
+            if (returnId != null) // new direct message history was created in db; add ID to both users
+            {
+                await userCollection.AddDirectMessageHistoryToUser(msg.FromUserInfo.UserId, returnId);
+                await userCollection.AddDirectMessageHistoryToUser(msg.ToUserInfo.UserId, returnId);
+            }
         }
 
         public async Task<FriendlyDirectMessageHistory?> GetMessagesByUserId(string userId1, string userId2)
