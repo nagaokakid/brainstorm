@@ -14,7 +14,8 @@ export type chatRoomObject = {
     description: string,
     joinCode: string,
     messages: chatRoomMessageObject[],
-    members: userInfoObject[]
+    members: userInfoObject[],
+    bs_session?: brainstormDTO
 }
 
 export type chatRoomMessageObject = {
