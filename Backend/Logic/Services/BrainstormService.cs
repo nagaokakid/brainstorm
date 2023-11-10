@@ -22,7 +22,12 @@ namespace Logic.Services
     public class BrainstormService : IBrainstormService
     {
         ConcurrentDictionary<string, BrainstormSession> sessions = new ();
+        private readonly IBrainstormResultCollection brainstormResultCollection;
 
+        public BrainstormService(IBrainstormResultCollection brainstormResultCollection)
+        {
+            this.brainstormResultCollection = brainstormResultCollection;
+        }
         public async Task Add(BrainstormSession session)
         {
             Debug.Assert(session != null);
@@ -129,8 +134,6 @@ namespace Logic.Services
                     timer.Dispose();
                 }, null, 2000, Timeout.Infinite);
             }
-            // when session ends, users have 1 second to send all their ideas. Because after 1 second the results are send to the users
-            if (result != null) result.IdeasAvailable = DateTime.Now.AddSeconds(1);
         }
 
         public async Task AddFinalResult(BrainstormResult brainstormResult)
