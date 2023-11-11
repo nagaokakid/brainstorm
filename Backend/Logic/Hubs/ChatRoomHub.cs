@@ -148,17 +148,20 @@ namespace Logic.Hubs
             if (sessionId != null)
             {
                 await brainstormService.EndSession(sessionId);
+
                 // notify all users that sessionId has ended
                 Clients.Group(sessionId).SendAsync("BrainstormSessionEnded", sessionId);
+
+                // start timer to send all ideas
+                brainstormService.SendAllIdeasTimer(sessionId, SendAllIdeas);
             }
         }
 
-        public async Task SendAllIdeas(string sessionId)
+        public void SendAllIdeas(string sessionId, List<Idea> ideas)
         {
             if (sessionId != null)
             {
-                var result = await brainstormService.GetAllIdeas(sessionId);
-                Clients.Group(sessionId).SendAsync("ReceiveAllIdeas", sessionId, result);
+                Clients.Group(sessionId).SendAsync("ReceiveAllIdeas", sessionId, ideas);
             }
         }
 
@@ -185,7 +188,7 @@ namespace Logic.Hubs
 
         public void SendVoteResults(string sessionId, List<Idea> votes)
         {
-            Clients.Group(sessionId).SendAsync("ReceiveVoteResults", votes);
+            Clients.Group(sessionId).SendAsync("ReceiveVoteResults", sessionId, votes);
         }
     }
 }
