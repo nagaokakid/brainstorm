@@ -14,5 +14,13 @@ namespace Logic.Data
         public Dictionary<string, Idea> Ideas { get; set; }
         public DateTime IdeasAvailable { get; set; }
         public Timer? SendVoteTimer { get; set; }
+
+        public void SetVoteTimer(Action<string, List<Idea>> action)
+        {
+            this.SendVoteTimer = new Timer((obj) =>
+            {
+                action(this.SessionId, this.Ideas.Values.ToList());
+            }, null, 1000, Timeout.Infinite);
+        }
     }
 }

@@ -131,8 +131,73 @@ namespace Logic.UnitTest.Services
             // Assert
             Assert.That(result.All(x=>x.Likes == 2), Is.True);
         }
+        [Test]
+        public async Task AddVotes_InputInvalidSession()
+        {
+            // Act
+            await service.Add(session);
+            await service.StartSession(session.SessionId);
+            await service.AddIdeas(session.SessionId, new List<string> { "hi", "wow" });
+            var ideas = await service.GetAllIdeas(session.SessionId);
+            await service.AddVotes(null, ideas.Select(x => new Idea { Id = x.Id, Thought = x.Thought, Likes = 1, Dislikes = 1 }).ToList());
+            await service.AddVotes(null, ideas.Select(x => new Idea { Id = x.Id, Thought = x.Thought, Likes = 1, Dislikes = 1 }).ToList());
+            var result = await service.GetAllIdeas(session.SessionId);
+
+            // Assert
+            Assert.That(result.All(x => x.Likes == 0), Is.True);
+        }
+
+        [Test]
+        public async Task AddVotes_InputInvalidIdeas()
+        {
+            // Act
+            await service.Add(session);
+            await service.StartSession(session.SessionId);
+            await service.AddIdeas(session.SessionId, new List<string> { "hi", "wow" });
+            var ideas = await service.GetAllIdeas(session.SessionId);
+            await service.AddVotes(session.SessionId, null);
+            await service.AddVotes(session.SessionId, null);
+            var result = await service.GetAllIdeas(session.SessionId);
+
+            // Assert
+            Assert.That(result.All(x => x.Likes == 0), Is.True);
+        }
+
+        [Test]
+        public async Task SendVotesTimer_InputValid1100ms()
+        {
+            bool called = false;
+            void callback(string param1, List<Idea> ideas)
+            {
+                called = true;
+            }
+            // Act
+            await service.Add(session);
+            await service.SendVotesTimer(session.SessionId, callback) ;
+            await Task.Delay(1100);
+
+            // Assert
+            Assert.That(called, Is.True);
+        }
 
 
+
+        [Test]
+        public async Task SendVotesTimer_InputInvalid900ms()
+        {
+            bool called = false;
+            void callback(string param1, List<Idea> ideas)
+            {
+                called = true;
+            }
+            // Act
+            await service.Add(session);
+            await service.SendVotesTimer(session.SessionId, callback);
+            await Task.Delay(900);
+
+            // Assert
+            Assert.That(called, Is.False);
+        }
         [Test]
         public async Task RemoveSession_InputValid()
         {
@@ -143,6 +208,15 @@ namespace Logic.UnitTest.Services
 
             // Assert
             Assert.That(result, Is.Null);
+        }
+        [Test]
+        public async Task AddFinalResult_InputValid()
+        {
+            // Act
+            await service.AddFinalResult(null);
+
+            // Assert
+            Assert.Pass();
         }
     }
 }

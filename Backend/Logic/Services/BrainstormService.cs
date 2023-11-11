@@ -14,14 +14,14 @@ public interface IBrainstormService
     Task<BrainstormSession?> GetSession(string sessionId);
     Task Join(string sessionId, FriendlyUserInfo user);
     Task RemoveSession(string sessionId);
-    Task SendVotesTimer(string sessionId, Action<string> callback);
+    Task SendVotesTimer(string sessionId, Action<string, List<Idea>> callback);
     Task StartSession(string sessionId);
 }
 namespace Logic.Services
 {
     public class BrainstormService : IBrainstormService
     {
-        ConcurrentDictionary<string, BrainstormSession> sessions = new ();
+        ConcurrentDictionary<string, BrainstormSession> sessions = new();
         private readonly IBrainstormResultCollection brainstormResultCollection;
 
         public BrainstormService(IBrainstormResultCollection brainstormResultCollection)
@@ -107,33 +107,26 @@ namespace Logic.Services
 
         public async Task AddVotes(string sessionId, List<Idea> ideas)
         {
-            var result = await GetSession(sessionId);
-            if (result != null)
+            if (sessionId != null && ideas != null)
             {
-                foreach (var i in ideas)
+                var result = await GetSession(sessionId);
+                if (result != null)
                 {
-                    if (result.Ideas.TryGetValue(i.Id, out Idea idea))
+                    foreach (var i in ideas)
                     {
-                        idea.Likes += i.Likes;
-                        idea.Dislikes += i.Dislikes;
+                        if (result.Ideas.TryGetValue(i.Id, out Idea? idea))
+                        {
+                            idea.Likes += i.Likes;
+                            idea.Dislikes += i.Dislikes;
+                        }
                     }
                 }
             }
         }
 
-        public async Task SendVotesTimer(string sessionId, Action<string> callback)
+        public async Task SendVotesTimer(string sessionId, Action<string, List<Idea>> callback)
         {
-            var session = await GetSession(sessionId);
-            if (session != null)
-            {
-                session.SendVoteTimer = new Timer((obj) =>
-                {
-                    callback(sessionId);
-                    Timer timer = (Timer)obj;
-                    timer.Change(Timeout.Infinite, Timeout.Infinite);
-                    timer.Dispose();
-                }, null, 2000, Timeout.Infinite);
-            }
+            (await GetSession(sessionId))?.SetVoteTimer(callback);
         }
 
         public async Task AddFinalResult(BrainstormResult brainstormResult)
