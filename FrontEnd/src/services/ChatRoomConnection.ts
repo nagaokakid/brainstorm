@@ -154,6 +154,16 @@ class SignalRChatRoom {
     }
 
     /**
+     * Remove all the brainstorm session call back functions
+     */
+    removeBSCallBack() {
+        this.connection.off("UserJoinedBrainstormingSession");
+        this.connection.off("BrainstormSessionStarted");
+        this.connection.off("BrainstormSessionEnded");
+        this.connection.off("ReceiveAllIdeas");
+    }
+
+    /**
      * Get the instance of the SignalRChatRoom
      * @returns The instance of the SignalRChatRoom
      */
