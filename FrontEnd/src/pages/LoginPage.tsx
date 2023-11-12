@@ -2,10 +2,6 @@ import "../styles/LoginPage.css"
 import LogRes from "../components/LogRes"
 import GuestJoin from "../components/GuestJoin"
 
-/**
- * 
- * @returns The login page of the application
- */
 function LoginPage() {
     return (
         <>
