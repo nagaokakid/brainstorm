@@ -4,6 +4,7 @@ using Logic.Data;
 using Logic.DTOs.User;
 using System.Collections.Concurrent;
 using System.Diagnostics;
+
 public interface IBrainstormService
 {
     Task Add(BrainstormSession session);
@@ -14,6 +15,7 @@ public interface IBrainstormService
     Task<BrainstormSession?> GetSession(string sessionId);
     Task Join(string sessionId, FriendlyUserInfo user);
     Task RemoveSession(string sessionId);
+    Task SendAllIdeasTimer(string sessionId, Action<string, List<Idea>> callback);
     Task SendVotesTimer(string sessionId, Action<string, List<Idea>> callback);
     Task StartSession(string sessionId);
 }
@@ -127,6 +129,11 @@ namespace Logic.Services
         public async Task SendVotesTimer(string sessionId, Action<string, List<Idea>> callback)
         {
             (await GetSession(sessionId))?.SetVoteTimer(callback);
+        }
+
+        public async Task SendAllIdeasTimer(string sessionId, Action<string, List<Idea>> callback)
+        {
+            (await GetSession(sessionId))?.SetAllIdeasTimer(callback);
         }
 
         public async Task AddFinalResult(BrainstormResult brainstormResult)

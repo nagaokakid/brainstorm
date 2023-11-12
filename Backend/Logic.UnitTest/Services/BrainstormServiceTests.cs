@@ -180,8 +180,39 @@ namespace Logic.UnitTest.Services
             Assert.That(called, Is.True);
         }
 
+        [Test]
+        public async Task SendAllIdeasTimer_InputValid1100ms()
+        {
+            bool called = false;
+            void callback(string param1, List<Idea> ideas)
+            {
+                called = true;
+            }
+            // Act
+            await service.Add(session);
+            await service.SendAllIdeasTimer(session.SessionId, callback);
+            await Task.Delay(1100);
 
+            // Assert
+            Assert.That(called, Is.True);
+        }
 
+        [Test]
+        public async Task SendAllIdeasTimer_InputInvalid900ms()
+        {
+            bool called = false;
+            void callback(string param1, List<Idea> ideas)
+            {
+                called = true;
+            }
+            // Act
+            await service.Add(session);
+            await service.SendAllIdeasTimer(session.SessionId, callback);
+            await Task.Delay(900);
+
+            // Assert
+            Assert.That(called, Is.False);
+        }
         [Test]
         public async Task SendVotesTimer_InputInvalid900ms()
         {

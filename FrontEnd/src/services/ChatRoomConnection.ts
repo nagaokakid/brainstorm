@@ -145,7 +145,6 @@ class SignalRChatRoom {
         });
     }
 
-
     setReceiveAllIdeasCallback(callBackFunction: (sessionId: string, ideas: string[]) => void) {
         this.connection.on("ReceiveAllIdeas", (sessionId: string, ideas: string[]) => {
 
@@ -153,13 +152,15 @@ class SignalRChatRoom {
             callBackFunction(sessionId, ideas);
         });
     }
-    setReceiveVoteResultsCallback(callBackFunction: () => void) {
-        this.connection.on("ReceiveVoteResults", () => {
+
+    setReceiveVoteResultsCallback(callBackFunction: (sessionId: string, ideas: Idea[]) => void) {
+        this.connection.on("ReceiveVoteResults", (sessionId: string, ideas: Idea[]) => {
 
             // receive the voting results
-            callBackFunction();
+            callBackFunction(sessionId, ideas);
         });
     }
+
     setSendVotesCallback(callBackFunction: (ideas: Idea[]) => void) {
         this.connection.on("SendVotes", (ideas: Idea[]) => {
 
@@ -168,8 +169,8 @@ class SignalRChatRoom {
         });
     }
 
-    async sendVotes(votes: Idea[]) {
-        await this.connection.send("ReceiveVotes", votes)
+    async sendVotes(sessionId: string, votes: Idea[]) {
+        await this.connection.send("ReceiveVotes", sessionId, votes)
     }
 
     async clientsShouldSendAllVotes(sessionId: string) {
