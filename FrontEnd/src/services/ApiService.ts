@@ -187,6 +187,38 @@ class ApiService {
             })
         );
     }
+
+    async buildBSCallBack() {
+        await SignalRChatRoom.getInstance().then((value) =>
+            value.setUserJoinedBrainstormSessionCallback(() => {
+                console.log("----> Receive BS Join Info message callback");
+            })
+        );
+
+        await SignalRChatRoom.getInstance().then((value) =>
+            value.setBrainstormSessionStartedCallback(() => {
+                console.log("----> Receive BS started message callback");
+            })
+        );
+
+        await SignalRChatRoom.getInstance().then((value) =>
+            value.setBrainstormSessionEndedCallback(() => {
+                console.log("----> Receive BS ended message callback");
+            })
+        );
+
+        await SignalRChatRoom.getInstance().then((value) =>
+            value.setReceiveAllIdeasCallback(() => {
+                console.log("----> Receive BS idea receive message callback");
+            })
+        );
+    }
+
+    async leaveBSSession(){
+        await SignalRChatRoom.getInstance().then((value) =>
+            value.removeBSCallBack()
+        );
+    }
 }
 
 export default new ApiService();
