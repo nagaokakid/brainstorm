@@ -36,11 +36,11 @@ function CreateBrainStormCustomize(props: CreateBrainStormCustomizeProps) {
         } else {
             (document.getElementById('BSname') as HTMLInputElement).value = "";
             (document.getElementById('BSdescription') as HTMLInputElement).value = "";
-            
+
             await SignalRChatRoom.getInstance().then((value) => {
                 value.createBrainstormSession(name, description, props.chat ? ("id" in props.chat ? props.chat.id : "") : "").then(() => {
                     handleOptionClick("none");
-                    Navigate("/BrainStorm");
+                    Navigate("/BrainStorm", { state: { chatId: (props.chat ? ("id" in props.chat ? props.chat.id : "") : "") } });
                 }).catch((error) => {
                     console.log(error);
                     alert("Lost connection to server");
