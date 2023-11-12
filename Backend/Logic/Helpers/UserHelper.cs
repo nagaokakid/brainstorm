@@ -15,7 +15,8 @@ namespace Logic.Helpers
                 FirstName = request.FirstName,
                 LastName = request.LastName,
                 ChatroomIds = new List<string>(),
-                DirectMessageHistoryIds = new List<string>()
+                DirectMessageHistoryIds = new List<string>(),
+                BrainstormResultIds = new List<string>()
             };
         }
 

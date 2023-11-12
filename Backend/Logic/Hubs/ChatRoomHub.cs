@@ -99,7 +99,7 @@ namespace Logic.Hubs
             if (title != null && description != null && chatRoomId != null && creatorId != null)
             {
                 var creator = new FriendlyUserInfo { UserId = creatorId, FirstName = creatorFirstName, LastName = creatorLastName };
-                var session = new BrainstormSession { Title = title, Description = description, ChatRoomId = chatRoomId, CanJoin = true, Creator = creator, SessionId = Guid.NewGuid().ToString(), Ideas = new List<string>(), JoinedMembers = new List<FriendlyUserInfo> { creator }, IdeasAvailable = DateTime.Now.AddDays(1) };
+                var session = new BrainstormSession { Title = title, Description = description, ChatRoomId = chatRoomId, CanJoin = true, Creator = creator, SessionId = Guid.NewGuid().ToString(), Ideas = new Dictionary<string, Idea>(), JoinedMembers = new List<FriendlyUserInfo> { creator }, IdeasAvailable = DateTime.Now.AddDays(1) };
 
                 // add created session to dictionary
                 await brainstormService.Add(session);
@@ -148,17 +148,20 @@ namespace Logic.Hubs
             if (sessionId != null)
             {
                 await brainstormService.EndSession(sessionId);
+
                 // notify all users that sessionId has ended
                 Clients.Group(sessionId).SendAsync("BrainstormSessionEnded", sessionId);
+
+                // start timer to send all ideas
+                brainstormService.SendAllIdeasTimer(sessionId, SendAllIdeas);
             }
         }
 
-        public async Task SendAllIdeas(string sessionId)
+        public void SendAllIdeas(string sessionId, List<Idea> ideas)
         {
             if (sessionId != null)
             {
-                var result = await brainstormService.GetAllIdeas(sessionId);
-                Clients.Group(sessionId).SendAsync("ReceiveAllIdeas", sessionId, result);
+                Clients.Group(sessionId).SendAsync("ReceiveAllIdeas", sessionId, ideas);
             }
         }
 
@@ -168,6 +171,24 @@ namespace Logic.Hubs
             {
                 await brainstormService.RemoveSession(sessionId);
             }
+        }
+
+        public async Task SendAllVotes(string sessionId)
+        {
+            await Clients.Group(sessionId).SendAsync("SendVotes");
+
+            // set timer to send all votes after x time
+            await brainstormService.SendVotesTimer(sessionId, SendVoteResults);
+        }
+
+        public async Task ReceiveVotes(string sessionId, List<Idea> ideas)
+        {
+            await brainstormService.AddVotes(sessionId, ideas);
+        }
+
+        public void SendVoteResults(string sessionId, List<Idea> votes)
+        {
+            Clients.Group(sessionId).SendAsync("ReceiveVoteResults", sessionId, votes);
         }
     }
 }

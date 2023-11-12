@@ -44,9 +44,9 @@ namespace Logic.UnitTest.Services
             chatRoomCollectionService.Setup(x => x.GetById("id")).Returns(async () => null);
             var chatRoomService = new ChatRoomService(chatRoomCollectionService.Object, userCollection.Object);
 
-            Assert.That(() => chatRoomService.GetChatRooms(new List<string>() { "id"}), Throws.TypeOf<ChatRoomNotFound>());
+            Assert.That(() => chatRoomService.GetChatRooms(new List<string>() { "id" }), Throws.TypeOf<ChatRoomNotFound>());
         }
-        
+
         [Test]
         public async Task GetChatrooms_InputValid_NewList()
         {
@@ -85,6 +85,34 @@ namespace Logic.UnitTest.Services
 
             // Assert
             Assert.That(result.JoinCode == "123");
+        }
+
+        [Test]
+        public async Task IsJoinCodeValid_InputReturnNull()
+        {
+            // Arrange
+            chatRoomCollectionService.Setup(x => x.GetByJoinCode("123")).ReturnsAsync(() => null);
+            var service = new ChatRoomService(chatRoomCollectionService.Object, userCollection.Object);
+            // Act
+            var result = await service.IsJoinCodeValid("123");
+
+            // Assert
+            Assert.That(result, Is.False);
+
+        }
+
+        [Test]
+        public async Task IsJoinCodeValid_InputReturnObject()
+        {
+            // Arrange
+            chatRoomCollectionService.Setup(x => x.GetByJoinCode("123")).ReturnsAsync(() => new ChatRoom { Title="hi"});
+            var service = new ChatRoomService(chatRoomCollectionService.Object, userCollection.Object);
+            // Act
+            var result = await service.IsJoinCodeValid("123");
+
+            // Assert
+            Assert.That(result, Is.True);
+
         }
     }
 }

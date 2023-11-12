@@ -36,6 +36,7 @@ namespace Logic
             builder.Services.AddSingleton<IUserCollection, UserCollection>();
             builder.Services.AddSingleton<IDirectMessageCollection, DirectMessageCollection>();
             builder.Services.AddSingleton<IChatRoomCollection, ChatRoomCollection>();
+            builder.Services.AddSingleton<IBrainstormResultCollection, BrainstormResultCollection>();
             builder.Services.AddSingleton<BrainstormService>();
 
             builder.Services.AddControllers();

@@ -2,6 +2,7 @@ import * as signalR from "@microsoft/signalr";
 import UserInfo from "./UserInfo";
 import { chatRoomMessageObject, chatRoomObject, userInfoObject } from "./TypesDefine";
 import FriendlyUser from "../models/FriendlyUser";
+import Idea from "../models/Idea";
 
 /**
  * This is the URL for the SignalR chatroom Hub
@@ -144,13 +145,36 @@ class SignalRChatRoom {
         });
     }
 
-
     setReceiveAllIdeasCallback(callBackFunction: (sessionId: string, ideas: string[]) => void) {
         this.connection.on("ReceiveAllIdeas", (sessionId: string, ideas: string[]) => {
 
             // receive all ideas from brainstorm session
             callBackFunction(sessionId, ideas);
         });
+    }
+
+    setReceiveVoteResultsCallback(callBackFunction: (sessionId: string, ideas: Idea[]) => void) {
+        this.connection.on("ReceiveVoteResults", (sessionId: string, ideas: Idea[]) => {
+
+            // receive the voting results
+            callBackFunction(sessionId, ideas);
+        });
+    }
+
+    setSendVotesCallback(callBackFunction: (ideas: Idea[]) => void) {
+        this.connection.on("SendVotes", (ideas: Idea[]) => {
+
+            // instruction to send all votes
+            callBackFunction(ideas);
+        });
+    }
+
+    async sendVotes(sessionId: string, votes: Idea[]) {
+        await this.connection.send("ReceiveVotes", sessionId, votes)
+    }
+
+    async clientsShouldSendAllVotes(sessionId: string) {
+        await this.connection.send("SendAllVotes", sessionId)
     }
 
     /**

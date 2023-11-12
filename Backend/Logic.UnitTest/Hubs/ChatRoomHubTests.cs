@@ -1,5 +1,4 @@
 ﻿using Database.CollectionContracts;
-using Logic.Data;
 using Logic.DTOs.Messages;
 using Logic.DTOs.User;
 using Logic.Hubs;
@@ -7,22 +6,11 @@ using Logic.Services;
 using Microsoft.AspNetCore.SignalR;
 using Moq;
 
-public interface IClientContract
-{
-    void Broadcast(string message);
-}
 namespace Logic.UnitTest.Hubs
 {
     [TestFixture]
     public class ChatRoomHubTests
     {
-        MessageInfo msgInfo = new MessageInfo
-        {
-            FromUserInfo = new FriendlyUserInfo { UserId = "123", FirstName = "first", LastName = "last" },
-            ChatRoomId = "123",
-            Message = "msg",
-            Timestamp = DateTime.Now
-        };
         [Test]
         public async Task JoinChatRoom_InputValid()
         {
