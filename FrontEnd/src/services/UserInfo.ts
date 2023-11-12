@@ -179,6 +179,12 @@ class UserInfo {
             ]
         }
 
+    static localIdeas = [] as string[];
+
+    static getLocalIdeas() {
+        return this.localIdeas;
+    }
+
     static getCurrentFriendlyUserInfo() {
         return this.loginRegisterResponse.userInfo ?? {};
     }
@@ -216,6 +222,39 @@ class UserInfo {
             this.loginRegisterResponse.directMessages = [];
         }
         return this.loginRegisterResponse.directMessages;
+    }
+
+    /**
+     * Get the chat room information or direct message information
+     * @param {*} chatId Can be the chat room id or the to_user_id
+     * @param {*} chatType Can be either 'Direct Message List' or 'Chat Room List'
+     * @returns 
+     */
+    static getListHistory(chatId: string, chatType: string) {
+        if (chatType === "Direct Message List") {
+            console.log("----> Getting direct message history");
+            const result = this.getDirectMessagesList().find(chat => chat.user2.userId === chatId);
+            return result ? result.directMessages : [];
+        }
+        else if (chatType === "ChatRoom List") {
+            console.log("----> Getting chat room message history");
+            const result = this.getChatRoomsList().find(chat => chat.id === chatId);
+            return result ? result.messages : [];
+        }
+        else {
+            console.log("----> Invalid chat type");
+            return [];
+        }
+    }
+
+    /**
+     * Get the Brainstorm session information
+     * @param chatId The chat room id
+     * @returns The brainstorm session object
+     */
+    static getBS_Session(chatId: string) {
+        const result = this.getChatRoomsList().find(chat => chat.id === chatId);
+        return result?.bs_session ?? null;
     }
 
     /**
@@ -314,27 +353,34 @@ class UserInfo {
         return result;
     }
 
+    static addNewIdea(idea: string) {
+        this.localIdeas.push(idea);
+        sessionStorage.setItem("bs_user", JSON.stringify(this.localIdeas));
+    }
+
+    static deleteIdea(position: number) {
+        this.localIdeas.splice(position, 1);
+        sessionStorage.setItem("bs_user", JSON.stringify(this.localIdeas));
+    }
+
     /**
-     * Get the chat room information or direct message information
-     * @param {*} chatId Can be the chat room id or the to_user_id
-     * @param {*} chatType Can be either 'Direct Message List' or 'Chat Room List'
-     * @returns 
+     * Check if the user is the host of the brainstorm session
+     * @param id The chat room id
+     * @returns True if the user is the host of the brainstorm session
      */
-    static getListHistory(chatId: string, chatType: string) {
-        if (chatType === "Direct Message List") {
-            console.log("----> Getting direct message history");
-            const result = this.getDirectMessagesList().find(chat => chat.user2.userId === chatId);
-            return result ? result.directMessages : [];
+    static isHost(id: string) {
+        const chatRoom = this.getChatRoomsList().find(chat => chat.id === id);
+
+        if (chatRoom?.bs_session) {
+            return chatRoom.bs_session.Creator.userId === this.getUserId();
         }
-        else if (chatType === "ChatRoom List") {
-            console.log("----> Getting chat room message history");
-            const result = this.getChatRoomsList().find(chat => chat.id === chatId);
-            return result ? result.messages : [];
+    }
+
+    static bsUserSetup() {
+        if (sessionStorage.getItem("bs_user") === null) {
+            sessionStorage.setItem("bs_user", JSON.stringify(this.localIdeas));
         }
-        else {
-            console.log("----> Invalid chat type");
-            return [];
-        }
+        this.localIdeas = JSON.parse(sessionStorage.getItem("bs_user") ?? "");
     }
 }
 
