@@ -168,6 +168,13 @@ namespace Logic.Hubs
             }
         }
 
+        public async Task ReceiveAllIdeas(string sessionId, List<string> ideas)
+        {
+            if (sessionId != null && ideas != null)
+            {
+                await brainstormService.AddIdeas(sessionId, ideas);
+            }
+        }
         public void SendAllIdeas(string sessionId, List<Idea> ideas)
         {
             if (sessionId != null)
