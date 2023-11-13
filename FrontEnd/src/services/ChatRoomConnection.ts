@@ -101,14 +101,15 @@ class SignalRChatRoom {
     }
 
     async createBrainstormSession(title: string, description: string, chatRoomId: string) {
-        await this.connection.send("CreateBrainstormSession", title, description, chatRoomId, UserInfo.getUserId(), UserInfo.getFirstName(), UserInfo.getLastName()).then(() => {
+        const result = await this.connection.send("CreateBrainstormSession", title, description, chatRoomId, UserInfo.getUserId(), UserInfo.getFirstName(), UserInfo.getLastName()).then(() => {
             console.log("----> Create brainstorm session success");
             return true;
         }).catch(() => {
             console.log("----> Create brainstorm session failed");
             return false;
         });
-        return null;
+
+        return result;
     }
 
     async joinBrainstormSession(sessionId: string) {
@@ -146,7 +147,6 @@ class SignalRChatRoom {
             callBackFunction(sessionId);
         });
     }
-
 
     setBrainstormSessionEndedCallback(callBackFunction: (sessionId: string) => void) {
         this.connection.on("BrainstormSessionEnded", (sessionId: string) => {
@@ -195,13 +195,13 @@ class SignalRChatRoom {
         this.connection.off("NewMemberJoined");
         this.connection.off("ReceiveChatRoomMessage");
         this.connection.off("ReceiveChatRoomInfo");
+        this.connection.off("UserJoinedBrainstormingSession");
     }
 
     /**
      * Remove all the brainstorm session call back functions
      */
     removeBSCallBack() {
-        this.connection.off("UserJoinedBrainstormingSession");
         this.connection.off("BrainstormSessionStarted");
         this.connection.off("BrainstormSessionEnded");
         this.connection.off("ReceiveAllIdeas");

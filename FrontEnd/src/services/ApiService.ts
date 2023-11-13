@@ -193,15 +193,14 @@ class ApiService {
                 Callback(3);
             })
         );
-    }
-
-    async buildBSCallBack() {
         await SignalRChatRoom.getInstance().then((value) =>
             value.setUserJoinedBrainstormSessionCallback(() => {
                 console.log("----> Receive BS Join Info message callback");
             })
         );
+    }
 
+    async buildBSCallBack() {
         await SignalRChatRoom.getInstance().then((value) =>
             value.setBrainstormSessionStartedCallback(() => {
                 console.log("----> Receive BS started message callback");
