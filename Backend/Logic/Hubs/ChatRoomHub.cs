@@ -127,8 +127,19 @@ namespace Logic.Hubs
                 var user = new FriendlyUserInfo { UserId = userId, FirstName = firstName, LastName = lastName };
                 await brainstormService.Join(sessionId, user);
 
-                // notify all joined members that a new user has joined
-                Clients.Group(sessionId).SendAsync("UserJoinedBrainstormingSession", sessionId, user);
+                var session = await brainstormService.GetSession(sessionId);
+
+                if (session != null && session.CanJoin)
+                {
+                    // notify all joined members that a new user has joined
+                    await Groups.AddToGroupAsync(Context.ConnectionId, sessionId);
+                    await Clients.Group(session.SessionId).SendAsync("UserJoinedBrainstormingSession", sessionId, user);
+                }
+                else
+                {
+                    // notify joining member that the session has already started
+                    Clients.Clients(Context.ConnectionId).SendAsync("SessionStartedNotAllowedToJoin", session.SessionId);
+                }
             }
         }
 
