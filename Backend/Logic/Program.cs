@@ -30,14 +30,14 @@ namespace Logic
             // Add services to the container.
             builder.Services.AddScoped<AuthService>();
             builder.Services.AddScoped<UserService>();
-            builder.Services.AddSingleton<OnlineUserService>();
+            builder.Services.AddSingleton<IOnlineUserService, OnlineUserService>();
             builder.Services.AddScoped<DirectMessageService>();
-            builder.Services.AddScoped<ChatRoomService>();
+            builder.Services.AddScoped<IChatRoomService, ChatRoomService>();
             builder.Services.AddSingleton<IUserCollection, UserCollection>();
             builder.Services.AddSingleton<IDirectMessageCollection, DirectMessageCollection>();
             builder.Services.AddSingleton<IChatRoomCollection, ChatRoomCollection>();
             builder.Services.AddSingleton<IBrainstormResultCollection, BrainstormResultCollection>();
-            builder.Services.AddSingleton<BrainstormService>();
+            builder.Services.AddSingleton<IBrainstormService, BrainstormService>();
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
