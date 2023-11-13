@@ -112,8 +112,8 @@ class SignalRChatRoom {
         await this.connection.send("EndSession", sessionId)
     }
 
-    async sendAllIdeas(sessionId: string) {
-        await this.connection.send("SendAllIdeas", sessionId)
+    async sendAllIdeas(sessionId: string, ideas: string[]) {
+        await this.connection.send("ReceiveAllIdeas", sessionId, ideas)
     }
 
     async removeSession(sessionId: string) {
@@ -152,8 +152,8 @@ class SignalRChatRoom {
         });
     }
 
-    setReceiveAllIdeasCallback(callBackFunction: (sessionId: string, ideas: string[]) => void) {
-        this.connection.on("ReceiveAllIdeas", (sessionId: string, ideas: string[]) => {
+    setReceiveAllIdeasCallback(callBackFunction: (sessionId: string, ideas: Idea[]) => void) {
+        this.connection.on("ReceiveAllIdeas", (sessionId: string, ideas: Idea[]) => {
 
             // receive all ideas from brainstorm session
             callBackFunction(sessionId, ideas);
