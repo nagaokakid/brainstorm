@@ -2,7 +2,6 @@ import * as signalR from "@microsoft/signalr";
 import UserInfo from "./UserInfo";
 import { chatRoomMessageObject, chatRoomObject, userInfoObject } from "./TypesDefine";
 import Idea from "../models/Idea";
-import FriendlyUser from "../models/FriendlyUser";
 
 /**
  * This is the URL for the SignalR chatroom Hub
@@ -141,9 +140,7 @@ class SignalRChatRoom {
     }
 
     setUserJoinedBrainstormSessionCallback(callBackFunction: (sessionId: string) => void) {
-        this.connection.on("UserJoinedBrainstormingSession", (sessionId: string, user: FriendlyUser) => {
-            console.log("receive a call back");
-            
+        this.connection.on("UserJoinedBrainstormingSession", (sessionId: string) => {
             // new user joined brainstorming session
             callBackFunction(sessionId);
         });

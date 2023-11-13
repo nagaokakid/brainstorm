@@ -207,22 +207,25 @@ class ApiService {
         );
     }
 
-    async buildBSCallBack() {
+    async buildBSCallBack(Callback: (type: number) => void) {
         await SignalRChatRoom.getInstance().then((value) =>
             value.setBrainstormSessionStartedCallback(() => {
                 console.log("----> Receive BS started message callback");
+                Callback(1);
             })
         );
 
         await SignalRChatRoom.getInstance().then((value) =>
             value.setBrainstormSessionEndedCallback(() => {
                 console.log("----> Receive BS ended message callback");
+                Callback(2);
             })
         );
 
         await SignalRChatRoom.getInstance().then((value) =>
             value.setReceiveAllIdeasCallback(() => {
                 console.log("----> Receive BS idea receive message callback");
+                Callback(3);
             })
         );
     }

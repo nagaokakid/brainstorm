@@ -279,14 +279,8 @@ class UserInfo {
         }
 
         this.getChatRoomsList().map(chatRoom => {
-            console.log("inhere1");
-            
             chatRoom.bs_session?.map(bs => {
-                console.log("inhere2");
-                
                 if (bs.sessionId === bsid) {
-                    console.log("inhere3");
-                    
                     result = bs;
                 }
             });
@@ -382,9 +376,9 @@ class UserInfo {
             if (chatRoom.id === message.chatRoomId) {
                 console.log("----> Added new chat room message");
                 result = chatRoom.messages.push(message);
-                
+
                 if (message.brainstorm) {
-                    
+
                     if (chatRoom.bs_session) {
                         chatRoom.bs_session?.push(message.brainstorm);
                     } else if (!chatRoom.bs_session) {

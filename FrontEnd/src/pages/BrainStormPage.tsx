@@ -15,6 +15,7 @@ function BrainStormPage() {
 
     const [localIdeaList, setLocalIdeaList] = useState([] as string[]);
     const [leaveContainer, setLeaveContainer] = useState("none");
+    const [input, setInput] = useState(true);
     const Navigate = useNavigate();
     const location = useLocation().state as { bsid: string };
     const bs_Info = UserInfo.getBS_Session(location ? location.bsid : "");
@@ -72,14 +73,30 @@ function BrainStormPage() {
      * End the session
      */
     function handleEndSessionClick() {
-        SignalRChatRoom.getInstance().then((instance) => {
-            instance.endSession(sessionId);
-        });
+        if (!input) {
+            SignalRChatRoom.getInstance().then((instance) => {
+                instance.endSession(sessionId);
+            });
+        } else {
+            alert("Session has already ended or has not started yet.");
+        }
     }
 
     useEffect(() => {
         if (sessionStorage.getItem("bs_callBack") === null) {
-            ApiService.buildBSCallBack();
+
+            const callBackFunction = (type: number) => {
+                if (type === 1) {
+                    setInput(false);
+                    alert("Session has started\nYou can now send messages");
+                } else if (type === 2) {
+                    setInput(true);
+                    alert("Session has ended\nYou can no longer send messages\nAll the ideas have been saved to backend");
+                } else if (type === 3) {
+
+                }
+            };
+            ApiService.buildBSCallBack(callBackFunction);
             sessionStorage.setItem("bs_callBack", "true");
             console.log("BS call back built");
         }
@@ -98,7 +115,7 @@ function BrainStormPage() {
                 <div className='BS_ContentContainer'>
                     <BS_OnlineIdeaList content={["hello"]} />
                     <BS_LocalIdeaList content={localIdeaList} />
-                    <BS_SendPrompt sendFunction={handleSendClick} />
+                    <BS_SendPrompt sendFunction={handleSendClick} input={input} />
                 </div>
                 <div className='BS_RightSideContainer'>
                     <div className='BS_MemberContainer'>
