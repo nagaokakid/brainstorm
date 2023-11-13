@@ -1,9 +1,9 @@
 import "../styles/ChatList.css";
 import UserInfo from "../services/UserInfo";
 import CreateRoomCustomize from "./CreateRoomCustomize";
+import CreateBrainStormCustomize from "./CreateBrainStormCustomize";
 import { chatRoomObject, directMessageObject } from "../services/TypesDefine";
 import { lazy, useState, Suspense, useEffect } from "react";
-import CreateBrainStormCustomize from "./CreateBrainStormCustomize";
 
 interface ChatListProps {
     chatType: string;
@@ -56,8 +56,7 @@ function ChatList(props: ChatListProps) {
         if (props.chatType === "Direct Message List") {
             console.log("----> Displaying direct messages list");
             setChatList(UserInfo.getDirectMessagesList());
-        }
-        else if (props.chatType === "ChatRoom List") {
+        } else if (props.chatType === "ChatRoom List") {
             console.log("----> Displaying chat rooms list");
             setChatList(UserInfo.getChatRoomsList());
         }
@@ -68,7 +67,7 @@ function ChatList(props: ChatListProps) {
             <div className="chat-list">
                 <h3 className="ChatListTitle">{props.chatType}</h3>
                 <div className="search-bar">
-                    <input type="text" placeholder="Search Chats" />
+                    {/* <input type="text" placeholder="Search Chats" /> */}
                 </div>
                 <div className="chats">
                     {chatList.map((chat, index) => (
