@@ -24,7 +24,11 @@ class SignalRChatRoom {
             .build();
     }
 
+    /**
+     * This will reset the connection to the chat room
+     */
     async reset() {
+        this.removeCallBack();
         await this.connection.stop();
         SignalRChatRoom.instance = null;
     }
@@ -97,7 +101,14 @@ class SignalRChatRoom {
     }
 
     async createBrainstormSession(title: string, description: string, chatRoomId: string) {
-        await this.connection.send("CreateBrainstormSession", title, description, chatRoomId, UserInfo.getUserId(), UserInfo.getFirstName(), UserInfo.getLastName())
+        await this.connection.send("CreateBrainstormSession", title, description, chatRoomId, UserInfo.getUserId(), UserInfo.getFirstName(), UserInfo.getLastName()).then(() => {
+            console.log("----> Create brainstorm session success");
+            return true;
+        }).catch(() => {
+            console.log("----> Create brainstorm session failed");
+            return false;
+        });
+        return null;
     }
 
     async joinBrainstormSession(sessionId: string) {
@@ -175,6 +186,15 @@ class SignalRChatRoom {
 
     async clientsShouldSendAllVotes(sessionId: string) {
         await this.connection.send("SendAllVotes", sessionId)
+    }
+
+    /**
+     * Remove all the call back functions
+     */
+    removeCallBack() {
+        this.connection.off("NewMemberJoined");
+        this.connection.off("ReceiveChatRoomMessage");
+        this.connection.off("ReceiveChatRoomInfo");
     }
 
     /**

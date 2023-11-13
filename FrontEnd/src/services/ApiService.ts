@@ -31,6 +31,7 @@ class ApiService {
             .then(async (response) => {
                 if (response.ok) {
                     UserInfo.loginRegisterResponse = await response.json();
+                    UserInfo.setupUser();
                     sessionStorage.setItem("token", UserInfo.getToken());
                     await this.connectChatRooms();
                     return true;
@@ -40,7 +41,7 @@ class ApiService {
             })
             .catch((error) => {
                 console.log(error);
-                return false;
+                return null;
             });
 
         return resp;
@@ -68,6 +69,7 @@ class ApiService {
             .then(async (response) => {
                 if (response.ok) {
                     UserInfo.loginRegisterResponse = await response.json();
+                    UserInfo.setupUser();
                     sessionStorage.setItem("token", UserInfo.getToken());
                     return true;
                 } else {
@@ -76,7 +78,7 @@ class ApiService {
             })
             .catch((error) => {
                 console.log(error);
-                return false;
+                return null;
             });
 
         return resp;
@@ -117,6 +119,11 @@ class ApiService {
         return resp;
     }
 
+    /**
+     * 
+     * @param joinCode The join code of the chatroom
+     * @returns 
+     */
     async IsJoinCodeValid(joinCode: string) {
         const resp = await fetch(UserInfo.BaseURL + "api/chatroom/" + joinCode, {
             method: "GET",
@@ -214,7 +221,7 @@ class ApiService {
         );
     }
 
-    async leaveBSSession(){
+    async leaveBSSession() {
         await SignalRChatRoom.getInstance().then((value) =>
             value.removeBSCallBack()
         );
