@@ -24,7 +24,7 @@ function MessageWindow(props: MessageWindowProps) {
     const msg = context[0];
 
     // Set the message to the display
-    const [messages, setMessages] = useState<[] | chatRoomMessageObject[] | { message: string, timestamp: string }[]>([]);
+    const [messages, setMessages] = useState<[] | chatRoomMessageObject[] | { message: string, timestamp: string, brainstormDTO?: brainstormDTO }[]>([]);
 
     useEffect(() => {
         setMessages(UserInfo.getListHistory(props.chatId, props.chatType));
@@ -34,7 +34,9 @@ function MessageWindow(props: MessageWindowProps) {
         <div className="MsgWindowContainer">
             <div className="MsgSection">
                 {messages.map((e, index) => (
-                    <MessageBox message={e.message} key={index} user={'fromUserInfo' in e ? e.fromUserInfo.userId : null} />
+                    'brainstorm' in e ?
+                        <MessageBox message={e.message} key={index} user={'fromUserInfo' in e ? [e.fromUserInfo.userId, e.fromUserInfo.firstName] : []} isBrainstorm={true} bsId={e.brainstorm?.SessionId} /> :
+                        <MessageBox message={e.message} key={index} user={'fromUserInfo' in e ? [e.fromUserInfo.userId, e.fromUserInfo.firstName] : []} isBrainstorm={false}/>
                 ))}
             </div>
             <div className='InputSection'>
