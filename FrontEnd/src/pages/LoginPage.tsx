@@ -3,6 +3,7 @@ import LogRes from "../components/LogRes"
 import GuestJoin from "../components/GuestJoin"
 
 function LoginPage() {
+    sessionStorage.clear();
     return (
         <>
             <div className="PageContainer">
