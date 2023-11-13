@@ -186,6 +186,9 @@ class UserInfo {
     }
 
     static getCurrentFriendlyUserInfo() {
+        if (sessionStorage.getItem("currentUser") !== null) {
+            this.loginRegisterResponse = JSON.parse(sessionStorage.getItem("currentUser") ?? "");
+        }
         return this.loginRegisterResponse.userInfo ?? {};
     }
 
@@ -207,10 +210,16 @@ class UserInfo {
     }
 
     static getToken() {
+        if (sessionStorage.getItem("currentUser") !== null) {
+            this.loginRegisterResponse = JSON.parse(sessionStorage.getItem("currentUser") ?? "");
+        }
         return this.loginRegisterResponse.token ?? "";
     }
 
     static getChatRoomsList(): chatRoomObject[] {
+        if (sessionStorage.getItem("currentUser") !== null) {
+            this.loginRegisterResponse = JSON.parse(sessionStorage.getItem("currentUser") ?? "");
+        }
         if (this.loginRegisterResponse.chatRooms === null) {
             this.loginRegisterResponse.chatRooms = [];
         }
@@ -218,6 +227,9 @@ class UserInfo {
     }
 
     static getDirectMessagesList(): directMessageObject[] {
+        if (sessionStorage.getItem("currentUser") !== null) {
+            this.loginRegisterResponse = JSON.parse(sessionStorage.getItem("currentUser") ?? "");
+        }
         if (this.loginRegisterResponse.directMessages === null) {
             this.loginRegisterResponse.directMessages = [];
         }
@@ -282,11 +294,10 @@ class UserInfo {
         const list = this.getChatRoomsList();
         if (list.find(current => current.id === chatRoom.id)) {
             alert("Chat room already exists.");
-            return null;
         }
         else {
             console.log("----> Added new chat room.");
-            return list.push(chatRoom);
+            list.push(chatRoom);
         }
     }
 
@@ -307,6 +318,7 @@ class UserInfo {
                     timestamp: newDirectMessage.timestamp
                 }
                 result = current.directMessages.push(newMsg);
+                this.setupUser(true);
                 console.log("----> Added incoming direct message to existing direct message list");
             }
         });
@@ -314,8 +326,8 @@ class UserInfo {
         if (result === null) {
             console.log("----> Create a new Direct Message Object");
             const newMsgObject = {
-                user1: UserInfo.getCurrentFriendlyUserInfo(),
-                user2: newDirectMessage.toUserInfo.userId === UserInfo.getUserId() ? newDirectMessage.fromUserInfo : newDirectMessage.toUserInfo,
+                user1: this.getCurrentFriendlyUserInfo(),
+                user2: newDirectMessage.toUserInfo.userId === this.getUserId() ? newDirectMessage.fromUserInfo : newDirectMessage.toUserInfo,
                 directMessages: [
                     {
                         message: newDirectMessage.message,
@@ -324,7 +336,8 @@ class UserInfo {
                 ]
             }
             console.log("----> Added new direct message to direct message list");
-            return this.loginRegisterResponse.directMessages.push(newMsgObject);
+            this.loginRegisterResponse.directMessages.push(newMsgObject);
+            this.setupUser(true);
         }
         else {
             return result;
@@ -343,9 +356,10 @@ class UserInfo {
             if (chatRoom.id === message.chatRoomId) {
                 console.log("----> Added new chat room message");
                 result = chatRoom.messages.push(message);
+                this.setupUser(true);
 
-                if (message.brainstormDTO) {
-                    chatRoom.bs_session = message.brainstormDTO;
+                if (message.brainstorm) {
+                    chatRoom.bs_session = message.brainstorm;
                 }
             }
         });
@@ -376,8 +390,10 @@ class UserInfo {
         }
     }
 
-    static setupUser() {
+    static setupUser(forceUpdate?: boolean) {
         if (sessionStorage.getItem("currentUser") === null) {
+            sessionStorage.setItem("currentUser", JSON.stringify(this.loginRegisterResponse));
+        } else if (forceUpdate) {
             sessionStorage.setItem("currentUser", JSON.stringify(this.loginRegisterResponse));
         }
         this.loginRegisterResponse = JSON.parse(sessionStorage.getItem("currentUser") ?? "");

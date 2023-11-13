@@ -23,7 +23,7 @@ export type chatRoomMessageObject = {
     chatRoomId: string,
     message: string,
     timestamp: string,
-    brainstormDTO?: brainstormDTO
+    brainstorm?: brainstormDTO
 }
 
 export type directMessageObject = {
