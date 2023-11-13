@@ -168,7 +168,7 @@ class ApiService {
      * Set all the call back functions for the SignalR
      * @param {*} callback A function that will be called when a message is received
      */
-    async buildCallBack(Callback: (type: number) => void) {
+    async buildCallBack(Callback: (type: number, bsid?: string) => void) {
         await SignalRDirect.getInstance().then((value) =>
             value.setReceiveDirectMessageCallback(() => {
                 console.log("----> Receive direct message callback");
@@ -176,9 +176,9 @@ class ApiService {
             })
         );
         await SignalRChatRoom.getInstance().then((value) =>
-            value.setReceiveChatRoomMessageCallback(() => {
-                console.log("----> Receive chatroom message callback");
-                Callback(1);
+            value.setReceiveChatRoomMessageCallback((bsid?: string) => {
+                console.log("----> Receive chatroom message callback", bsid);
+                Callback(1, bsid);
             })
         );
         await SignalRChatRoom.getInstance().then((value) =>
@@ -194,8 +194,15 @@ class ApiService {
             })
         );
         await SignalRChatRoom.getInstance().then((value) =>
-            value.setUserJoinedBrainstormSessionCallback(() => {
+            value.setUserJoinedBrainstormSessionCallback((id) => {
                 console.log("----> Receive BS Join Info message callback");
+                Callback(5, id);
+            })
+        );
+        await SignalRChatRoom.getInstance().then((value) =>
+            value.setBrainstormSessionAlreadyStartedErrorCallback(() => {
+                console.log("----> Receive BS unable to join message callback");
+                Callback(6);
             })
         );
     }

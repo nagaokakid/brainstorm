@@ -23,7 +23,6 @@ function BS_LocalIdeaList(props: BS_LocalIdeaListProps) {
         } else {
             setDisplay("block");
         }
-        console.log("inUseEffect");
 
     }, [props.content, forceUpdate]);
 

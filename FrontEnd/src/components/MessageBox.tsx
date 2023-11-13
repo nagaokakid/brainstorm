@@ -26,8 +26,10 @@ function MsgBox(props: MsgBoxProps) {
     }
 
     function handleJoinBrainstorm() {
+        console.log("Joining brainstorm session");
+        
         SignalRChatRoom.getInstance().then((value) => {
-            value.joinBrainstormSession(props.bsId!);
+            value.joinBrainstormSession(props.bsId ?? "");
         });
     }
 

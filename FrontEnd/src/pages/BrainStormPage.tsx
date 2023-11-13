@@ -16,12 +16,12 @@ function BrainStormPage() {
     const [localIdeaList, setLocalIdeaList] = useState([] as string[]);
     const [leaveContainer, setLeaveContainer] = useState("none");
     const Navigate = useNavigate();
-    const location = useLocation().state as { chatId: string };
-    const bs_Info = UserInfo.getBS_Session(location ? location.chatId : "");
-    const sessionId = bs_Info ? bs_Info.SessionId : "No Valid Id";
-    const sessionTitle = bs_Info ? bs_Info.Title : "No Title";
-    const sessionDescription = bs_Info ? bs_Info.Description : "No Description";
-    const chatId = location ? location.chatId : "";
+    const location = useLocation().state as { bsid: string };
+    const bs_Info = UserInfo.getBS_Session(location ? location.bsid : "");
+    const sessionId = bs_Info ? bs_Info.sessionId : "";
+    const sessionTitle = bs_Info ? bs_Info.title : "";
+    const sessionDescription = bs_Info ? bs_Info.description : "";
+    const creatorId = bs_Info ? bs_Info.creator.userId : "";
 
     /**
      * Prevent the user from going back to the previous page
@@ -104,7 +104,7 @@ function BrainStormPage() {
                     <div className='BS_MemberContainer'>
                         <BS_MemberList />
                     </div>
-                    <div className='BS_ButtonContainer' style={{ display: UserInfo.isHost(chatId) ? "flex" : "none" }}>
+                    <div className='BS_ButtonContainer' style={{ display: UserInfo.isHost(creatorId) ? "flex" : "none" }}>
                         <button onClick={handleStartSessionClick}>Start Session</button>
                         <button onClick={handleEndSessionClick}>End Session</button>
                     </div>

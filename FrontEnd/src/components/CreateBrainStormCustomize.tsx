@@ -1,4 +1,3 @@
-import { useNavigate } from 'react-router-dom';
 import '../styles/CreateBrainStormCustomize.css';
 import SignalRChatRoom from '../services/ChatRoomConnection';
 import { chatRoomObject, directMessageObject } from '../services/TypesDefine';
@@ -10,8 +9,6 @@ interface CreateBrainStormCustomizeProps {
 }
 
 function CreateBrainStormCustomize(props: CreateBrainStormCustomizeProps) {
-
-    const Navigate = useNavigate();
 
     // Set the component to be hidden and pass back the selected option
     function handleOptionClick(e: string) {
@@ -40,7 +37,6 @@ function CreateBrainStormCustomize(props: CreateBrainStormCustomizeProps) {
                 value.createBrainstormSession(name, description, props.chat ? ("id" in props.chat ? props.chat.id : "") : "").then((value) => {
                     if (value) {
                         handleOptionClick("none");
-                        Navigate("/BrainStorm", { state: { chatId: (props.chat ? ("id" in props.chat ? props.chat.id : "") : "") } });
                     } else {
                         alert("Failed to create brainstorm session");
                     }

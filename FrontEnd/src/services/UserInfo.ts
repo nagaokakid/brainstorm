@@ -4,6 +4,7 @@ import {
     newDirectMessageObject,
     chatRoomMessageObject,
     directMessageObject,
+    brainstormDTO,
 } from "./TypesDefine";
 
 class UserInfo {
@@ -81,17 +82,17 @@ class UserInfo {
                             "lastName": "User"
                         }
                     ],
-                    "bs_session": {
-                        SessionId: "",
-                        Title: "",
-                        Description: "",
-                        Creator: {
+                    "bs_session": [{
+                        sessionId: "",
+                        title: "",
+                        description: "",
+                        creator: {
                             userId: "0000",
                             firstName: "Current",
                             lastName: "User",
                         },
-                        Members: []
-                    }
+                        members: []
+                    }]
                 },
                 {
                     "id": "2222",
@@ -261,12 +262,37 @@ class UserInfo {
 
     /**
      * Get the Brainstorm session information
-     * @param chatId The chat room id
+     * @param bsid The brainstorm id
      * @returns The brainstorm session object
      */
-    static getBS_Session(chatId: string) {
-        const result = this.getChatRoomsList().find(chat => chat.id === chatId);
-        return result?.bs_session ?? null;
+    static getBS_Session(bsid: string) {
+        let result: brainstormDTO = {
+            sessionId: "No Valid Session",
+            title: "No Valid Session",
+            description: "No Valid Session",
+            creator: {
+                userId: "",
+                firstName: "",
+                lastName: ""
+            },
+            members: [],
+        }
+
+        this.getChatRoomsList().map(chatRoom => {
+            console.log("inhere1");
+            
+            chatRoom.bs_session?.map(bs => {
+                console.log("inhere2");
+                
+                if (bs.sessionId === bsid) {
+                    console.log("inhere3");
+                    
+                    result = bs;
+                }
+            });
+        });
+
+        return result;
     }
 
     /**
@@ -356,11 +382,17 @@ class UserInfo {
             if (chatRoom.id === message.chatRoomId) {
                 console.log("----> Added new chat room message");
                 result = chatRoom.messages.push(message);
-                this.setupUser(true);
-
+                
                 if (message.brainstorm) {
-                    chatRoom.bs_session = message.brainstorm;
+                    
+                    if (chatRoom.bs_session) {
+                        chatRoom.bs_session?.push(message.brainstorm);
+                    } else if (!chatRoom.bs_session) {
+                        chatRoom.bs_session = [message.brainstorm];
+                    }
                 }
+
+                this.setupUser(true);
             }
         });
 
@@ -379,15 +411,11 @@ class UserInfo {
 
     /**
      * Check if the user is the host of the brainstorm session
-     * @param id The chat room id
+     * @param bsid The brainstorm session id
      * @returns True if the user is the host of the brainstorm session
      */
     static isHost(id: string) {
-        const chatRoom = this.getChatRoomsList().find(chat => chat.id === id);
-
-        if (chatRoom?.bs_session) {
-            return chatRoom.bs_session.Creator.userId === this.getUserId();
-        }
+        return this.getUserId() == id;
     }
 
     static setupUser(forceUpdate?: boolean) {

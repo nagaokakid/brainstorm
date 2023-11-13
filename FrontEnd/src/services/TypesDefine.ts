@@ -1,4 +1,4 @@
-import FriendlyUser from "../models/FriendlyUser"
+import {friendlyUser} from "../models/FriendlyUser"
 
 export type userInfoObject = {
     userId: string,
@@ -15,7 +15,7 @@ export type chatRoomObject = {
     joinCode: string,
     messages: chatRoomMessageObject[],
     members: userInfoObject[],
-    bs_session?: brainstormDTO
+    bs_session?: brainstormDTO[]
 }
 
 export type chatRoomMessageObject = {
@@ -46,9 +46,9 @@ export type sendMessageObject = {
 }
 
 export type brainstormDTO = {
-    SessionId: string;
-    Title: string;
-    Description: string;
-    Creator: FriendlyUser;
-    Members: FriendlyUser[];
+    sessionId: string;
+    title: string;
+    description: string;
+    creator: friendlyUser;
+    members: friendlyUser[];
 }

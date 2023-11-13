@@ -35,7 +35,7 @@ function MessageWindow(props: MessageWindowProps) {
             <div className="MsgSection">
                 {messages.map((e, index) => (
                     'brainstorm' in e ?
-                        <MessageBox message={e.message} key={index} user={'fromUserInfo' in e ? [e.fromUserInfo.userId, e.fromUserInfo.firstName] : []} isBrainstorm={true} bsId={e.brainstorm?.SessionId} /> :
+                        <MessageBox message={e.message} key={index} user={'fromUserInfo' in e ? [e.fromUserInfo.userId, e.fromUserInfo.firstName] : []} isBrainstorm={true} bsId={e.brainstorm?.sessionId} /> :
                         <MessageBox message={e.message} key={index} user={'fromUserInfo' in e ? [e.fromUserInfo.userId, e.fromUserInfo.firstName] : []} isBrainstorm={false}/>
                 ))}
             </div>
