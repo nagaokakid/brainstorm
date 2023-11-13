@@ -376,6 +376,13 @@ class UserInfo {
         }
     }
 
+    static setupUser() {
+        if (sessionStorage.getItem("currentUser") === null) {
+            sessionStorage.setItem("currentUser", JSON.stringify(this.loginRegisterResponse));
+        }
+        this.loginRegisterResponse = JSON.parse(sessionStorage.getItem("currentUser") ?? "");
+    }
+
     static bsUserSetup() {
         if (sessionStorage.getItem("bs_user") === null) {
             sessionStorage.setItem("bs_user", JSON.stringify(this.localIdeas));
