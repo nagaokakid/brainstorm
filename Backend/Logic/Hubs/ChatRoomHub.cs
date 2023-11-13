@@ -132,7 +132,8 @@ namespace Logic.Hubs
                 if (session != null && session.CanJoin)
                 {
                     // notify all joined members that a new user has joined
-                    Clients.Group(sessionId).SendAsync("UserJoinedBrainstormingSession", sessionId, user);
+                    await Groups.AddToGroupAsync(Context.ConnectionId, sessionId);
+                    await Clients.Group(session.SessionId).SendAsync("UserJoinedBrainstormingSession", sessionId, user);
                 }
                 else
                 {
@@ -167,6 +168,13 @@ namespace Logic.Hubs
             }
         }
 
+        public async Task ReceiveAllIdeas(string sessionId, List<string> ideas)
+        {
+            if (sessionId != null && ideas != null)
+            {
+                await brainstormService.AddIdeas(sessionId, ideas);
+            }
+        }
         public void SendAllIdeas(string sessionId, List<Idea> ideas)
         {
             if (sessionId != null)
