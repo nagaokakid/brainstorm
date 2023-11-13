@@ -148,6 +148,14 @@ class SignalRChatRoom {
         });
     }
 
+    setBrainstormSessionAlreadyStartedErrorCallback(callBackFunction: (sessionId: string) => void) {
+        this.connection.on("SessionStartedNotAllowedToJoin", (sessionId: string) => {
+
+            // brainstorm session has already started
+            callBackFunction(sessionId);
+        });
+    }
+
     setBrainstormSessionEndedCallback(callBackFunction: (sessionId: string) => void) {
         this.connection.on("BrainstormSessionEnded", (sessionId: string) => {
 
