@@ -14,9 +14,9 @@ interface CreateRoomCustomizeProps {
  */
 function CreateRoomCustomize(props: CreateRoomCustomizeProps) {
     // Set the component to be hidden and pass back the selected option
-    // function handleOptionClick(e: string) {
-    //     props.callBackFunction(e)
-    // }
+    function handleOptionClick(e: string) {
+        props.callBackFunction(e)
+    }
 
     // Prevent the child from being clicked
     function handleChildClick(e: React.MouseEvent<HTMLDivElement>) {

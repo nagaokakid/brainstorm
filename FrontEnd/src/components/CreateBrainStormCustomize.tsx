@@ -13,7 +13,6 @@ function CreateBrainStormCustomize(props: CreateBrainStormCustomizeProps) {
 
     const Navigate = useNavigate();
 
-
     // Set the component to be hidden and pass back the selected option
     function handleOptionClick(e: string) {
         props.callBackFunction(e)
@@ -38,16 +37,14 @@ function CreateBrainStormCustomize(props: CreateBrainStormCustomizeProps) {
             (document.getElementById('BSdescription') as HTMLInputElement).value = "";
 
             await SignalRChatRoom.getInstance().then((value) => {
-                value.createBrainstormSession(name, description, props.chat ? ("id" in props.chat ? props.chat.id : "") : "").then(() => {
-                    handleOptionClick("none");
-                    Navigate("/BrainStorm", { state: { chatId: (props.chat ? ("id" in props.chat ? props.chat.id : "") : "") } });
-                }).catch((error) => {
-                    console.log(error);
-                    alert("Lost connection to server");
+                value.createBrainstormSession(name, description, props.chat ? ("id" in props.chat ? props.chat.id : "") : "").then((value) => {
+                    if (value) {
+                        handleOptionClick("none");
+                        Navigate("/BrainStorm", { state: { chatId: (props.chat ? ("id" in props.chat ? props.chat.id : "") : "") } });
+                    } else {
+                        alert("Failed to create brainstorm session");
+                    }
                 });
-            }).catch((error) => {
-                console.log(error);
-                alert("Failed to create brainstorm session");
             });
             button.disabled = false;
         }
