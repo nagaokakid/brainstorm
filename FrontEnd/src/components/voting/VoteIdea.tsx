@@ -17,7 +17,7 @@ const VoteIdea = ({ idea }: props) => {
 
     return (
         <div className='IdeaBox'>
-            <div className='IdeaThought'>${idea.thought}</div>
+            <div className='IdeaThought'>{idea.thought}</div>
             <div className='IdeaButton'>
                 <button onClick={clickedLike}>Like</button>
                 <button onClick={clickedDislike}>Disike</button>

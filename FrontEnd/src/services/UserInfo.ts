@@ -407,32 +407,32 @@ class UserInfo {
     }
 
     static addNewIdea(idea: string) {
-        this.localIdeas.push(idea);
+        this.getLocalIdeas().push(idea);
         sessionStorage.setItem("bs_user", JSON.stringify(this.localIdeas));
     }
 
     static addLikes(id: string) {
-        this.ideasList.map(idea => {
+        this.getIdeasList().map(idea => {
             if (idea.id === id) {
                 idea.likes=1;
                 idea.dislikes=0;
             }
         });
-        sessionStorage.setItem("bs_ideaList", JSON.stringify(this.ideasList));
+        // sessionStorage.setItem("bs_ideaList", JSON.stringify(this.ideasList));
     }
 
     static addDislikes(id: string) {
-        this.ideasList.map(idea => {
+        this.getIdeasList().map(idea => {
             if (idea.id === id) {
                 idea.likes=0;
                 idea.dislikes=1;
             }
         });
-        sessionStorage.setItem("bs_ideaList", JSON.stringify(this.ideasList));
+        // sessionStorage.setItem("bs_ideaList", JSON.stringify(this.ideasList));
     }
 
     static deleteIdea(position: number) {
-        this.localIdeas.splice(position, 1);
+        this.getLocalIdeas().splice(position, 1);
         sessionStorage.setItem("bs_user", JSON.stringify(this.localIdeas));
     }
 
@@ -466,11 +466,13 @@ class UserInfo {
 
     static bsUserSetup() {
         if (sessionStorage.getItem("bs_user") === null) {
+            this.localIdeas = [];
             sessionStorage.setItem("bs_user", JSON.stringify(this.localIdeas));
         }
         this.localIdeas = JSON.parse(sessionStorage.getItem("bs_user") ?? "");
 
         if (sessionStorage.getItem("bs_ideaList") === null) {
+            this.ideasList = [];
             sessionStorage.setItem("bs_ideaList", JSON.stringify(this.ideasList));
         }
         this.ideasList = JSON.parse(sessionStorage.getItem("bs_ideaList") ?? "");

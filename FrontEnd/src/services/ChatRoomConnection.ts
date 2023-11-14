@@ -174,8 +174,6 @@ class SignalRChatRoom {
         this.connection.on("ReceiveAllIdeas", (sessionId: string, ideas: Idea[]) => {
 
             // receive all ideas from brainstorm session
-            console.log(ideas);
-            
             callBackFunction(sessionId, ideas);
         });
     }

@@ -53,6 +53,7 @@ function BrainStormPage() {
         sessionStorage.removeItem("bs_callBack");
         sessionStorage.removeItem("bs_userSetup");
         sessionStorage.removeItem("bs_user");
+        sessionStorage.removeItem("bs_ideaList");
         Navigate("/main");
     }
 
@@ -69,9 +70,11 @@ function BrainStormPage() {
      * Start the session
      */
     function handleStartSessionClick() {
-        SignalRChatRoom.getInstance().then((instance) => {
-            instance.startSession(sessionId);
-        });
+        if (input) {
+            SignalRChatRoom.getInstance().then((instance) => {
+                instance.startSession(sessionId);
+            });
+        }
     }
 
     /**
@@ -83,7 +86,7 @@ function BrainStormPage() {
                 instance.endSession(sessionId);
             });
         } else {
-            alert("Session has already ended or has not started yet.");
+            // alert("Session has already ended or has not started yet.");
         }
     }
 
@@ -96,7 +99,7 @@ function BrainStormPage() {
                 instance.clientsShouldSendAllVotes(sessionId);
             });
         } else {
-            alert("Voting has already ended or has not started yet.");
+            // alert("Voting has already ended or has not started yet.");
         }
     }
 
@@ -106,21 +109,25 @@ function BrainStormPage() {
             const callBackFunction = (type: number, ideas?: Idea[]) => {
                 if (type === 1) {
                     setInput(false);
-                    alert("Session has started\nYou can now send messages");
+                    // alert("Session has started\nYou can now send messages");
                 } else if (type === 2) {
                     setInput(true);
                     SignalRChatRoom.getInstance().then((instance) => {
+                        console.log(UserInfo.getLocalIdeas());
+                        
                         instance.sendAllIdeas(sessionId, UserInfo.getLocalIdeas());
                         UserInfo.clearIdea();
                     });
                     setLocalIdeaList([]);
-                    alert("Session has ended\nYou can no longer send messages\nAll the ideas have been saved to backend");
+                    // alert("Session has ended\nYou can no longer send messages\nAll the ideas have been saved to backend");
                 } else if (type === 3) {
                     sessionStorage.setItem("bs_ideaList", JSON.stringify(ideas));
                     setIsVoting(true);
+                    UserInfo.bsUserSetup();
+                    setIdeaList(UserInfo.getIdeasList());
                 } else if (type === 4) {
                     setIdeaList(ideas ? ideas : []);
-                    alert("Voting results have been updated");
+                    // alert("Voting results have been updated");
                 } else if (type === 5) {
                     SignalRChatRoom.getInstance().then((instance) => {
                         instance.sendVotes(sessionId, UserInfo.getIdeasList());
@@ -128,7 +135,7 @@ function BrainStormPage() {
                     });
                     setIsVoting(false);
                     setIdeaList([]);
-                    alert("Voting has ended\nYou can no longer vote\nAll the votes have been saved to backend");
+                    // alert("Voting has ended\nYou can no longer vote\nAll the votes have been saved to backend");
                 }
             };
             ApiService.buildBSCallBack(callBackFunction);
@@ -149,7 +156,7 @@ function BrainStormPage() {
             </div>
             <div className='BS_BodyContainer'>
                 <div className='BS_ContentContainer'>
-                    <BS_OnlineIdeaList content={ideaList} voting={isVoting}/>
+                    <BS_OnlineIdeaList content={ideaList} voting={isVoting} />
                     <BS_LocalIdeaList content={localIdeaList} />
                     <BS_SendPrompt sendFunction={handleSendClick} input={input} />
                 </div>

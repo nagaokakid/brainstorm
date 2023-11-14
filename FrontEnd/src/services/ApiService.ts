@@ -178,7 +178,7 @@ class ApiService {
         );
         await SignalRChatRoom.getInstance().then((value) =>
             value.setReceiveChatRoomMessageCallback((bsid?: string) => {
-                console.log("----> Receive chatroom message callback", bsid);
+                console.log("----> Receive chatroom message callback");
                 Callback(1, bsid);
             })
         );
