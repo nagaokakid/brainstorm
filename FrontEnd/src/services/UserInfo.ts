@@ -46,6 +46,12 @@ class UserInfo {
         this.ideasList = ideas;
     }
 
+    static setToken() {
+        if (sessionStorage.getItem("token") === null) {
+            sessionStorage.setItem("token", this.getToken());
+        }
+    }
+
     /**
      * Get the user info from session storage
      * @returns The user object that contains the user info
