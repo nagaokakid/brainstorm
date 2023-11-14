@@ -1,7 +1,11 @@
 import '../styles/BS_OnlineIdeaList.css';
+import VoteIdea from './voting/VoteIdea';
+import VoteResult from './voting/VoteResult';
+import Idea from '../models/Idea';
 
 interface BS_OnlineIdeaListProps {
-    content: string[],
+    content: Idea[],
+    voting: boolean,
 }
 
 function BS_OnlineIdeaList(props: BS_OnlineIdeaListProps) {
@@ -10,9 +14,10 @@ function BS_OnlineIdeaList(props: BS_OnlineIdeaListProps) {
         <div className="OnlineIdeasContainer">
             {props.content.map((idea) => {
                 return (
-                    <div className="Idea">
-                        {idea+"sdsd"}
-                    </div>
+                    props.voting ?
+                        <VoteIdea idea={idea} />
+                        :
+                        <VoteResult idea={idea} />
                 );
             })}
         </div>

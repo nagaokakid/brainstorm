@@ -31,7 +31,7 @@ function BS_LocalIdeaList(props: BS_LocalIdeaListProps) {
             <h1>Current Ideas:</h1>
             {props.content.map((idea, id) => {
                 return (
-                    <div className="Idea">
+                    <div className="Idea" key={id}>
                         {idea}
                         <button onClick={() => handleDeleteClick(id)}>X</button>
                     </div>

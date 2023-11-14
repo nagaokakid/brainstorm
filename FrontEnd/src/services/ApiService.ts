@@ -1,6 +1,7 @@
 import UserInfo from "./UserInfo";
 import SignalRChatRoom from "./ChatRoomConnection";
 import SignalRDirect from "./DirectMessageConnection";
+import Idea from "../models/Idea";
 
 type chatRoomObject = {
     id: string;
@@ -207,7 +208,7 @@ class ApiService {
         );
     }
 
-    async buildBSCallBack(Callback: (type: number) => void) {
+    async buildBSCallBack(Callback: (type: number, ideas?: Idea[]) => void) {
         await SignalRChatRoom.getInstance().then((value) =>
             value.setBrainstormSessionStartedCallback(() => {
                 console.log("----> Receive BS started message callback");
@@ -223,9 +224,23 @@ class ApiService {
         );
 
         await SignalRChatRoom.getInstance().then((value) =>
-            value.setReceiveAllIdeasCallback(() => {
+            value.setReceiveAllIdeasCallback((id: string, ideas: Idea[]) => {
                 console.log("----> Receive BS idea receive message callback");
-                Callback(3);
+                Callback(3, ideas);
+            })
+        );
+
+        await SignalRChatRoom.getInstance().then((value) =>
+            value.setReceiveVoteResultsCallback((id: string, ideas: Idea[]) => {
+                console.log("----> Receive BS vote results message callback");
+                Callback(4, ideas);
+            })
+        );
+
+        await SignalRChatRoom.getInstance().then((value) =>
+            value.setSendVotesCallback(() => {
+                console.log("----> Receive BS send vote message callback");
+                Callback(5);
             })
         );
     }

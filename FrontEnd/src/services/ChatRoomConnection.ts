@@ -210,6 +210,7 @@ class SignalRChatRoom {
         this.connection.off("ReceiveChatRoomMessage");
         this.connection.off("ReceiveChatRoomInfo");
         this.connection.off("UserJoinedBrainstormingSession");
+        this.connection.off("SessionStartedNotAllowedToJoin");
     }
 
     /**
@@ -219,6 +220,8 @@ class SignalRChatRoom {
         this.connection.off("BrainstormSessionStarted");
         this.connection.off("BrainstormSessionEnded");
         this.connection.off("ReceiveAllIdeas");
+        this.connection.off("ReceiveVoteResults");
+        this.connection.off("SendVotes");
     }
 
     /**
