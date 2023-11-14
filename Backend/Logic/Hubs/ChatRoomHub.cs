@@ -160,10 +160,10 @@ namespace Logic.Hubs
                 await brainstormService.EndSession(sessionId);
 
                 // notify all users that sessionId has ended
-                Clients.Group(sessionId).SendAsync("BrainstormSessionEnded", sessionId);
+                await Clients.Group(sessionId).SendAsync("BrainstormSessionEnded", sessionId);
 
                 // start timer to send all ideas
-                brainstormService.SendAllIdeasTimer(sessionId, SendAllIdeas);
+                await brainstormService.SendAllIdeasTimer(sessionId);
             }
         }
 

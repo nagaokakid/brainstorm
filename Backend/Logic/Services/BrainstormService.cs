@@ -2,6 +2,8 @@
 using Database.Data;
 using Logic.Data;
 using Logic.DTOs.User;
+using Logic.Hubs;
+using Microsoft.AspNetCore.SignalR;
 using System.Collections.Concurrent;
 using System.Diagnostics;
 
@@ -15,7 +17,7 @@ public interface IBrainstormService
     Task<BrainstormSession?> GetSession(string sessionId);
     Task Join(string sessionId, FriendlyUserInfo user);
     Task RemoveSession(string sessionId);
-    Task SendAllIdeasTimer(string sessionId, Action<string, List<Idea>> callback);
+    Task SendAllIdeasTimer(string sessionId);
     Task SendVotesTimer(string sessionId, Action<string, List<Idea>> callback);
     Task StartSession(string sessionId);
 }
@@ -25,10 +27,12 @@ namespace Logic.Services
     {
         ConcurrentDictionary<string, BrainstormSession> sessions = new();
         private readonly IBrainstormResultCollection brainstormResultCollection;
+        private readonly IHubContext<ChatRoomHub> chatRoomHubContext;
 
-        public BrainstormService(IBrainstormResultCollection brainstormResultCollection)
+        public BrainstormService(IBrainstormResultCollection brainstormResultCollection, IHubContext<ChatRoomHub> chatRoomHubContext)
         {
             this.brainstormResultCollection = brainstormResultCollection;
+            this.chatRoomHubContext = chatRoomHubContext;
         }
         public async Task Add(BrainstormSession session)
         {
@@ -131,9 +135,14 @@ namespace Logic.Services
             (await GetSession(sessionId))?.SetVoteTimer(callback);
         }
 
-        public async Task SendAllIdeasTimer(string sessionId, Action<string, List<Idea>> callback)
+        public async Task SendAllIdeasTimer(string sessionId)
         {
-            (await GetSession(sessionId))?.SetAllIdeasTimer(callback);
+            (await GetSession(sessionId))?.SetAllIdeasTimer(SendAllIdeas);
+        }
+
+        private void SendAllIdeas(string sessionId, List<Idea> ideas)
+        {
+            this.chatRoomHubContext.Clients.Groups(sessionId).SendAsync("ReceiveAllIdeas", sessionId, ideas);
         }
 
         public async Task AddFinalResult(BrainstormResult brainstormResult)
