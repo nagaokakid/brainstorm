@@ -18,7 +18,7 @@ public interface IBrainstormService
     Task Join(string sessionId, FriendlyUserInfo user);
     Task RemoveSession(string sessionId);
     Task SendAllIdeasTimer(string sessionId);
-    Task SendVotesTimer(string sessionId, Action<string, List<Idea>> callback);
+    Task SendVotesTimer(string sessionId);
     Task StartSession(string sessionId);
 }
 namespace Logic.Services
@@ -131,9 +131,9 @@ namespace Logic.Services
             }
         }
 
-        public async Task SendVotesTimer(string sessionId, Action<string, List<Idea>> callback)
+        public async Task SendVotesTimer(string sessionId)
         {
-            (await GetSession(sessionId))?.SetVoteTimer(callback);
+            (await GetSession(sessionId))?.SetVoteTimer(SendAllVotes);
         }
 
         public async Task SendAllIdeasTimer(string sessionId)
@@ -144,6 +144,11 @@ namespace Logic.Services
         private void SendAllIdeas(string sessionId, List<Idea> ideas)
         {
             this.chatRoomHubContext.Clients.Groups(sessionId).SendAsync("ReceiveAllIdeas", sessionId, ideas);
+        }
+
+        private void SendAllVotes(string sessionId, List<Idea> votes)
+        {
+            this.chatRoomHubContext.Clients.Group(sessionId).SendAsync("ReceiveVoteResults", sessionId, votes);
         }
 
         public async Task AddFinalResult(BrainstormResult brainstormResult)
