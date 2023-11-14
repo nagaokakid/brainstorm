@@ -9,9 +9,9 @@ namespace Logic.Controllers
     [ApiController]
     public class ChatRoomController : ControllerBase
     {
-        private readonly ChatRoomService chatRoomService;
+        private readonly IChatRoomService chatRoomService;
 
-        public ChatRoomController(ChatRoomService chatRoomService)
+        public ChatRoomController(IChatRoomService chatRoomService)
         {
             this.chatRoomService = chatRoomService;
         }
