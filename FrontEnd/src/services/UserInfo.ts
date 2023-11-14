@@ -1,3 +1,4 @@
+import Idea from "../models/Idea";
 import {
     userInfoObject,
     chatRoomObject,
@@ -182,8 +183,20 @@ class UserInfo {
 
     static localIdeas = [] as string[];
 
+    static ideasList = [] as Idea[];
+
     static getLocalIdeas() {
+        if (sessionStorage.getItem("bs_user") !== null) {
+            this.localIdeas = JSON.parse(sessionStorage.getItem("bs_user") ?? "");
+        }
         return this.localIdeas;
+    }
+
+    static getIdeasList() {
+        if (sessionStorage.getItem("bs_ideaList") !== null) {
+            this.localIdeas = JSON.parse(sessionStorage.getItem("bs_ideaList") ?? "");
+        }
+        return this.ideasList;
     }
 
     static getCurrentFriendlyUserInfo() {
@@ -279,14 +292,8 @@ class UserInfo {
         }
 
         this.getChatRoomsList().map(chatRoom => {
-            console.log("inhere1");
-            
             chatRoom.bs_session?.map(bs => {
-                console.log("inhere2");
-                
                 if (bs.sessionId === bsid) {
-                    console.log("inhere3");
-                    
                     result = bs;
                 }
             });
@@ -382,9 +389,9 @@ class UserInfo {
             if (chatRoom.id === message.chatRoomId) {
                 console.log("----> Added new chat room message");
                 result = chatRoom.messages.push(message);
-                
+
                 if (message.brainstorm) {
-                    
+
                     if (chatRoom.bs_session) {
                         chatRoom.bs_session?.push(message.brainstorm);
                     } else if (!chatRoom.bs_session) {
@@ -404,9 +411,39 @@ class UserInfo {
         sessionStorage.setItem("bs_user", JSON.stringify(this.localIdeas));
     }
 
+    static addLikes(id: string) {
+        this.ideasList.map(idea => {
+            if (idea.id === id) {
+                idea.likes=1;
+                idea.dislikes=0;
+            }
+        });
+        sessionStorage.setItem("bs_ideaList", JSON.stringify(this.ideasList));
+    }
+
+    static addDislikes(id: string) {
+        this.ideasList.map(idea => {
+            if (idea.id === id) {
+                idea.likes=0;
+                idea.dislikes=1;
+            }
+        });
+        sessionStorage.setItem("bs_ideaList", JSON.stringify(this.ideasList));
+    }
+
     static deleteIdea(position: number) {
         this.localIdeas.splice(position, 1);
         sessionStorage.setItem("bs_user", JSON.stringify(this.localIdeas));
+    }
+
+    static clearIdea() {
+        this.localIdeas = [];
+        sessionStorage.setItem("bs_user", JSON.stringify(this.localIdeas));
+    }
+
+    static clearIdeaList() {
+        this.ideasList = [];
+        sessionStorage.setItem("bs_ideaList", JSON.stringify(this.ideasList));
     }
 
     /**

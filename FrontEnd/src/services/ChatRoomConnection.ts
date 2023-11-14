@@ -2,7 +2,6 @@ import * as signalR from "@microsoft/signalr";
 import UserInfo from "./UserInfo";
 import { chatRoomMessageObject, chatRoomObject, userInfoObject } from "./TypesDefine";
 import Idea from "../models/Idea";
-import FriendlyUser from "../models/FriendlyUser";
 
 /**
  * This is the URL for the SignalR chatroom Hub
@@ -132,8 +131,8 @@ class SignalRChatRoom {
         await this.connection.send("EndSession", sessionId)
     }
 
-    async sendAllIdeas(sessionId: string) {
-        await this.connection.send("SendAllIdeas", sessionId)
+    async sendAllIdeas(sessionId: string, ideas: string[]) {
+        await this.connection.send("ReceiveAllIdeas", sessionId, ideas)
     }
 
     async removeSession(sessionId: string) {
@@ -141,9 +140,7 @@ class SignalRChatRoom {
     }
 
     setUserJoinedBrainstormSessionCallback(callBackFunction: (sessionId: string) => void) {
-        this.connection.on("UserJoinedBrainstormingSession", (sessionId: string, user: FriendlyUser) => {
-            console.log("receive a call back");
-            
+        this.connection.on("UserJoinedBrainstormingSession", (sessionId: string) => {
             // new user joined brainstorming session
             callBackFunction(sessionId);
         });
@@ -173,8 +170,8 @@ class SignalRChatRoom {
         });
     }
 
-    setReceiveAllIdeasCallback(callBackFunction: (sessionId: string, ideas: string[]) => void) {
-        this.connection.on("ReceiveAllIdeas", (sessionId: string, ideas: string[]) => {
+    setReceiveAllIdeasCallback(callBackFunction: (sessionId: string, ideas: Idea[]) => void) {
+        this.connection.on("ReceiveAllIdeas", (sessionId: string, ideas: Idea[]) => {
 
             // receive all ideas from brainstorm session
             callBackFunction(sessionId, ideas);
@@ -213,6 +210,7 @@ class SignalRChatRoom {
         this.connection.off("ReceiveChatRoomMessage");
         this.connection.off("ReceiveChatRoomInfo");
         this.connection.off("UserJoinedBrainstormingSession");
+        this.connection.off("SessionStartedNotAllowedToJoin");
     }
 
     /**
@@ -222,6 +220,8 @@ class SignalRChatRoom {
         this.connection.off("BrainstormSessionStarted");
         this.connection.off("BrainstormSessionEnded");
         this.connection.off("ReceiveAllIdeas");
+        this.connection.off("ReceiveVoteResults");
+        this.connection.off("SendVotes");
     }
 
     /**

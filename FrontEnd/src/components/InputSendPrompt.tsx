@@ -1,7 +1,8 @@
 import '../styles/InputSendPrompt.css';
 
 interface InputSendPromptProps {
-    sendFunction: (e: string) => void
+    sendFunction: (e: string) => void,
+    input: boolean,
 }
 
 function InputSendPrompt(props: InputSendPromptProps) {
@@ -30,8 +31,8 @@ function InputSendPrompt(props: InputSendPromptProps) {
 
     return (
         <div className="InputSendContainer">
-            <input className="InputSection" type="text" placeholder="Enter Ideas here..." onKeyDown={handleKeyDown}></input>
-            <button className="SendSection" onClick={handleSendClick}>Send</button>
+            <input className="InputSection" type="text" placeholder="Enter Ideas here..." onKeyDown={handleKeyDown} disabled={props.input}></input>
+            <button className="SendSection" onClick={handleSendClick} disabled={props.input}>Send</button>
         </div>
     );
 }

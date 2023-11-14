@@ -80,6 +80,7 @@ namespace Logic.Services
                     Likes = 0,
                     Dislikes = 0,
                 });
+
                 foreach (var i in newIdeas)
                 {
                     session.Ideas.Add(i.Id, i);
