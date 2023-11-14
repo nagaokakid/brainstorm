@@ -1,7 +1,10 @@
 ﻿using Database.Collections;
 using Logic.Data;
 using Logic.DTOs.User;
+using Logic.Hubs;
 using Logic.Services;
+using Microsoft.AspNetCore.SignalR;
+using Moq;
 
 namespace Logic.UnitTest.Services
 {
@@ -14,7 +17,8 @@ namespace Logic.UnitTest.Services
         [SetUp]
         public void SetUp()
         {
-            service = new BrainstormService(new BrainstormResultCollection());
+            var context = new Mock<IHubContext<ChatRoomHub>>();
+            service = new BrainstormService(new BrainstormResultCollection(), context.Object);
             var creator = new FriendlyUserInfo { UserId = Guid.NewGuid().ToString(), FirstName = "first", LastName = "last" };
             session = new BrainstormSession { Title = "title", Description = "desc", ChatRoomId = Guid.NewGuid().ToString(), CanJoin = true, Creator = creator, SessionId = Guid.NewGuid().ToString(), Ideas = new Dictionary<string, Idea>(), JoinedMembers = new List<FriendlyUserInfo> { creator }, IdeasAvailable = DateTime.Now.AddDays(1) };
 
