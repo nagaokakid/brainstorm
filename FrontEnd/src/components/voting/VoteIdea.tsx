@@ -1,34 +1,29 @@
-import React from 'react'
+import '../../styles/VoteIdea.css'
 import Idea from '../../models/Idea'
+import UserInfo from '../../services/UserInfo'
 
 interface props {
     idea: Idea
 }
-const VoteIdea = ({idea}: props) => {
-    function clickedLike(){
-        if(idea.likes == 0){
-            idea.likes = 1
-        } else{
-            idea.likes = 0
-        }
+
+const VoteIdea = ({ idea }: props) => {
+    function clickedLike() {
+        UserInfo.addLikes(idea.id)
     }
 
-    function clickedDislike(){
-        if(idea.dislikes == 0){
-            idea.dislikes = 1
-        } else{
-            idea.dislikes = 0
-        }
+    function clickedDislike() {
+        UserInfo.addDislikes(idea.id)
     }
-  return (
-    <div>
-        <div>${idea.thought}</div>
-        <div>
-            <button onClick={clickedLike}>Like</button>
-            <button onClick={clickedDislike}>Disike</button>
+
+    return (
+        <div className='IdeaBox'>
+            <div className='IdeaThought'>{idea.thought}</div>
+            <div className='IdeaButton'>
+                <button onClick={clickedLike}>Like</button>
+                <button onClick={clickedDislike}>Disike</button>
+            </div>
         </div>
-    </div>
-  )
+    )
 }
 
 export default VoteIdea

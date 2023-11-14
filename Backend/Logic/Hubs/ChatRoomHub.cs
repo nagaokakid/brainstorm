@@ -161,10 +161,10 @@ namespace Logic.Hubs
                 await brainstormService.EndSession(sessionId);
 
                 // notify all users that sessionId has ended
-                Clients.Group(sessionId).SendAsync("BrainstormSessionEnded", sessionId);
+                await Clients.Group(sessionId).SendAsync("BrainstormSessionEnded", sessionId);
 
                 // start timer to send all ideas
-                brainstormService.SendAllIdeasTimer(sessionId, SendAllIdeas);
+                await brainstormService.SendAllIdeasTimer(sessionId, null);
             }
         }
 
@@ -173,13 +173,6 @@ namespace Logic.Hubs
             if (sessionId != null && ideas != null)
             {
                 await brainstormService.AddIdeas(sessionId, ideas);
-            }
-        }
-        public void SendAllIdeas(string sessionId, List<Idea> ideas)
-        {
-            if (sessionId != null)
-            {
-                Clients.Group(sessionId).SendAsync("ReceiveAllIdeas", sessionId, ideas);
             }
         }
 
@@ -196,17 +189,12 @@ namespace Logic.Hubs
             await Clients.Group(sessionId).SendAsync("SendVotes");
 
             // set timer to send all votes after x time
-            await brainstormService.SendVotesTimer(sessionId, SendVoteResults);
+            await brainstormService.SendVotesTimer(sessionId, null);
         }
 
         public async Task ReceiveVotes(string sessionId, List<Idea> ideas)
         {
             await brainstormService.AddVotes(sessionId, ideas);
-        }
-
-        public void SendVoteResults(string sessionId, List<Idea> votes)
-        {
-            Clients.Group(sessionId).SendAsync("ReceiveVoteResults", sessionId, votes);
         }
     }
 }

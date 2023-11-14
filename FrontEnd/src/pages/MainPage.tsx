@@ -5,20 +5,19 @@ import NavigationBar from "../components/NavigationBar";
 import ChatList from "../components/ChatList";
 import ApiService from "../services/ApiService";
 import UserInfo from "../services/UserInfo";
+import SignalRChatRoom from "../services/ChatRoomConnection";
 import { useEffect, useState, useContext } from "react";
 import { DataContext } from "../contexts/DataContext";
-import SignalRChatRoom from "../services/ChatRoomConnection";
+import { useNavigate } from "react-router";
 
-/**
- * 
- * @returns The main page of the application
- */
 function MainPage() {
+
     const context = useContext(DataContext);
+    const navigate = useNavigate();
 
     // If the user is not logged in, redirect to the login page
-    if (localStorage.getItem("token") === null || localStorage.getItem("token") !== UserInfo.getToken()) {
-        // window.location.href = "/";
+    if (sessionStorage.getItem("token") === null || sessionStorage.getItem("token") !== UserInfo.getToken()) {
+        //window.location.href = "/";
     }
 
     // Set the default chat type to be "Direct Message List"
@@ -35,36 +34,36 @@ function MainPage() {
     }
 
     useEffect(() => {
-        const hasEffectRunBefore = sessionStorage.getItem('hasEffectRunBefore');
-        if (!hasEffectRunBefore) {
-            console.log("----> Build callback");
-            const render = (type: number) => {
-                console.log("---->callback", type);
+        if (sessionStorage.getItem("callBack") === null) {
+            const render = (type: number, bsid?: string) => {
                 if (context === undefined) {
                     throw new Error('useDataContext must be used within a DataContext');
-                }
-                else if (type === 1 || type === 2 || type === 4 || type === 3) {
+                } else if (type === 1 || type === 2 || type === 4 || type === 3) {
                     const updateData = context[1];
                     updateData(true)
+                } else if (type === 5) {
+                    navigate("/BrainStorm", { state: { bsid } });
+                } else if (type === 6) {
+                    alert("The session has started.");
+                }
+                
+                if (type === 1 && bsid) {
+                    navigate("/BrainStorm", { state: { bsid } });
                 }
             };
 
-            const apiService = ApiService;
-            apiService.buildCallBack(render);
-
-            // Set the flag in local storage to indicate that the effect has run
-            sessionStorage.setItem('hasEffectRunBefore', 'true');
+            // Set the flag in session storage to indicate that the effect has run
+            sessionStorage.setItem("callBack", 'true');
+            ApiService.buildCallBack(render);
+            console.log("call back built");
         }
 
         if (UserInfo.loginRegisterResponse.userInfo.isGuest && sessionStorage.getItem('isGuest') === null) {
             SignalRChatRoom.getInstance().then((value) => {
                 value.joinChatRoom(UserInfo.loginRegisterResponse.userInfo.firstRoom, "First");
                 sessionStorage.setItem('isGuest', 'true');
-            }).catch((error) => {
-                console.log(error);
             });
         }
-
     }, []);
 
     return (

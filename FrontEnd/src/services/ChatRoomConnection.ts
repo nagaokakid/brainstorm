@@ -1,7 +1,6 @@
 import * as signalR from "@microsoft/signalr";
 import UserInfo from "./UserInfo";
-import { brainstormDTO, chatRoomMessageObject, chatRoomObject, userInfoObject } from "./TypesDefine";
-import FriendlyUser from "../models/FriendlyUser";
+import { chatRoomMessageObject, chatRoomObject, userInfoObject } from "./TypesDefine";
 import Idea from "../models/Idea";
 
 /**
@@ -24,7 +23,11 @@ class SignalRChatRoom {
             .build();
     }
 
+    /**
+     * This will reset the connection to the chat room
+     */
     async reset() {
+        this.removeCallBack();
         await this.connection.stop();
         SignalRChatRoom.instance = null;
     }
@@ -52,10 +55,15 @@ class SignalRChatRoom {
      * Set a callback function that will be called when a chat room message is received
      * @param {*} callBackFunction A function that will be called when a chat room message is received
      */
-    setReceiveChatRoomMessageCallback(callBackFunction: () => void) {
+    setReceiveChatRoomMessageCallback(callBackFunction: (bsid?: string) => void) {
         this.connection.on("ReceiveChatRoomMessage", (msg: chatRoomMessageObject) => {
             UserInfo.addChatRoomMessage(msg);
-            callBackFunction();
+
+            if (msg.brainstorm && msg.brainstorm.creator.userId === UserInfo.getUserId()) {
+                callBackFunction(msg.brainstorm.sessionId);
+            } else {
+                callBackFunction();
+            }
         });
     }
 
@@ -97,11 +105,22 @@ class SignalRChatRoom {
     }
 
     async createBrainstormSession(title: string, description: string, chatRoomId: string) {
-        await this.connection.send("CreateBrainstormSession", title, description, chatRoomId, UserInfo.getUserId(), UserInfo.getFirstName(), UserInfo.getLastName())
+        const result = await this.connection.send("CreateBrainstormSession", title, description, chatRoomId, UserInfo.getUserId(), UserInfo.getFirstName(), UserInfo.getLastName()).then(() => {
+            console.log("----> Create brainstorm session success");
+            return true;
+        }).catch(() => {
+            console.log("----> Create brainstorm session failed");
+            return false;
+        });
+
+        return result;
     }
 
     async joinBrainstormSession(sessionId: string) {
-        await this.connection.send("JoinBrainstormSession", sessionId, UserInfo.getUserId(), UserInfo.getFirstName(), UserInfo.getLastName())
+        console.log("----> Joining brainstorm session:", sessionId);
+        await this.connection.send("JoinBrainstormSession", sessionId, UserInfo.getUserId(), UserInfo.getFirstName(), UserInfo.getLastName()).catch(() => {
+            console.log("----> Join brainstorm session failed");
+        });
     }
 
     async startSession(sessionId: string) {
@@ -120,18 +139,9 @@ class SignalRChatRoom {
         await this.connection.send("RemoveSession", sessionId)
     }
 
-    setUserJoinedBrainstormSessionCallback(callBackFunction: (sessionId: string, user: FriendlyUser) => void) {
-        this.connection.on("UserJoinedBrainstormingSession", (sessionId: string, user: FriendlyUser) => {
-
+    setUserJoinedBrainstormSessionCallback(callBackFunction: (sessionId: string) => void) {
+        this.connection.on("UserJoinedBrainstormingSession", (sessionId: string) => {
             // new user joined brainstorming session
-            callBackFunction(sessionId, user);
-        });
-    }
-
-    setBrainstormSessionStartedCallback(callBackFunction: (sessionId: string) => void) {
-        this.connection.on("BrainstormSessionStarted", (sessionId: string) => {
-
-            // brainstorm session started
             callBackFunction(sessionId);
         });
     }
@@ -140,6 +150,14 @@ class SignalRChatRoom {
         this.connection.on("SessionStartedNotAllowedToJoin", (sessionId: string) => {
 
             // brainstorm session has already started
+            callBackFunction(sessionId);
+        });
+    }
+
+    setBrainstormSessionStartedCallback(callBackFunction: (sessionId: string) => void) {
+        this.connection.on("BrainstormSessionStarted", (sessionId: string) => {
+
+            // brainstorm session started
             callBackFunction(sessionId);
         });
     }
@@ -182,6 +200,28 @@ class SignalRChatRoom {
 
     async clientsShouldSendAllVotes(sessionId: string) {
         await this.connection.send("SendAllVotes", sessionId)
+    }
+
+    /**
+     * Remove all the call back functions
+     */
+    removeCallBack() {
+        this.connection.off("NewMemberJoined");
+        this.connection.off("ReceiveChatRoomMessage");
+        this.connection.off("ReceiveChatRoomInfo");
+        this.connection.off("UserJoinedBrainstormingSession");
+        this.connection.off("SessionStartedNotAllowedToJoin");
+    }
+
+    /**
+     * Remove all the brainstorm session call back functions
+     */
+    removeBSCallBack() {
+        this.connection.off("BrainstormSessionStarted");
+        this.connection.off("BrainstormSessionEnded");
+        this.connection.off("ReceiveAllIdeas");
+        this.connection.off("ReceiveVoteResults");
+        this.connection.off("SendVotes");
     }
 
     /**
