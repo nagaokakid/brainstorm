@@ -23,6 +23,30 @@ class UserInfo {
     static ideasList = [] as Idea[];
 
     /**
+     * Set the user info to the user object
+     * @param user The user object that contains the user info
+     */
+    static setCurrentUser(user: user) {
+        this.currentUser = user;
+    }
+
+    /**
+     * Set the ideas list to the session storage
+     * @param ideas The ideas list
+     */
+    static setLocalIdeas(ideas: string[]) {
+        this.localIdeas = ideas;
+    }
+
+    /**
+     * Set the ideas list to the session storage
+     * @param ideas The ideas list
+     */
+    static setIdeasList(ideas: Idea[]) {
+        this.ideasList = ideas;
+    }
+
+    /**
      * Get the user info from session storage
      * @returns The user object that contains the user info
      */
@@ -312,7 +336,7 @@ class UserInfo {
         } else if (forceUpdate) {
             sessionStorage.setItem("currentUser", JSON.stringify(this.currentUser));
         }
-        this.currentUser = JSON.parse(sessionStorage.getItem("currentUser") ?? "");
+        this.setCurrentUser(JSON.parse(sessionStorage.getItem("currentUser") ?? ""));
     }
 
     /**
@@ -325,7 +349,7 @@ class UserInfo {
         } else if (forceUpdate) {
             sessionStorage.setItem("localIdea", JSON.stringify(this.localIdeas));
         }
-        this.localIdeas = JSON.parse(sessionStorage.getItem("localIdea") ?? "");
+        this.setLocalIdeas(JSON.parse(sessionStorage.getItem("localIdea") ?? ""));
     }
 
     /**
@@ -338,7 +362,7 @@ class UserInfo {
         } else if (forceUpdate) {
             sessionStorage.setItem("ideaList", JSON.stringify(this.ideasList));
         }
-        this.ideasList = JSON.parse(sessionStorage.getItem("ideaList") ?? "");
+        this.setIdeasList(JSON.parse(sessionStorage.getItem("ideaList") ?? ""));
     }
 }
 
