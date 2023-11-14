@@ -17,8 +17,8 @@ public interface IBrainstormService
     Task<BrainstormSession?> GetSession(string sessionId);
     Task Join(string sessionId, FriendlyUserInfo user);
     Task RemoveSession(string sessionId);
-    Task SendAllIdeasTimer(string sessionId);
-    Task SendVotesTimer(string sessionId);
+    Task SendAllIdeasTimer(string sessionId, Action<string, List<Idea>>? callback);
+    Task SendVotesTimer(string sessionId, Action<string, List<Idea>>? callback);
     Task StartSession(string sessionId);
 }
 namespace Logic.Services
@@ -131,14 +131,28 @@ namespace Logic.Services
             }
         }
 
-        public async Task SendVotesTimer(string sessionId)
+        public async Task SendVotesTimer(string sessionId, Action<string, List<Idea>>? callback)
         {
-            (await GetSession(sessionId))?.SetVoteTimer(SendAllVotes);
+            if(callback != null)
+            {
+                (await GetSession(sessionId))?.SetVoteTimer(callback);
+            }
+            else
+            {
+                (await GetSession(sessionId))?.SetVoteTimer(SendAllVotes);
+            }
         }
 
-        public async Task SendAllIdeasTimer(string sessionId)
+        public async Task SendAllIdeasTimer(string sessionId, Action<string, List<Idea>>? callback)
         {
-            (await GetSession(sessionId))?.SetAllIdeasTimer(SendAllIdeas);
+            if (callback != null)
+            {
+                (await GetSession(sessionId))?.SetAllIdeasTimer(callback);
+            }
+            else
+            {
+                (await GetSession(sessionId))?.SetAllIdeasTimer(SendAllIdeas);
+            }
         }
 
         private void SendAllIdeas(string sessionId, List<Idea> ideas)
