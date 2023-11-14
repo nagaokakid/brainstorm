@@ -2,24 +2,15 @@ import UserInfo from "./UserInfo";
 import SignalRChatRoom from "./ChatRoomConnection";
 import SignalRDirect from "./DirectMessageConnection";
 import Idea from "../models/Idea";
-
-type chatRoomObject = {
-    id: string;
-    title: string;
-    description: string;
-    joinCode: string;
-    messages: [];
-    members: [];
-};
+import { loginObject, chatRoomObject } from "../models/TypesDefine";
 
 class ApiService {
     /**
      * Do a Login API call to the backend and connect to all chatrooms and direct messaging
-     * @param {*} username The username of the user
-     * @param {*} password The password of the user
+     * @param {*} loginInfo The login object that contains the username and password
      * @returns A json object that contains the response from the backend
      */
-    async Login(username: string, password: string) {
+    async Login(loginInfo: loginObject) {
         const resp = await fetch(UserInfo.BaseURL + "api/users/login",
             {
                 method: 'POST',
@@ -27,13 +18,13 @@ class ApiService {
                 {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ Username: username, Password: password }),
+                body: JSON.stringify({ Username: loginInfo.Username, Password: loginInfo.Password }),
             })
             .then(async (response) => {
                 if (response.ok) {
-                    UserInfo.loginRegisterResponse = await response.json();
-                    UserInfo.setupUser();
-                    sessionStorage.setItem("token", UserInfo.getToken());
+                    UserInfo.setCurrentUser(await response.json()); // set current user
+                    UserInfo.updateUser(true); // update user info to session storage
+                    UserInfo.setToken(); // set token to session storage
                     await this.connectChatRooms();
                     return true;
                 } else {
@@ -50,13 +41,10 @@ class ApiService {
 
     /**
      * Do a Register API call to the backend and connect to direct messaging
-     * @param {*} username The username of the user
-     * @param {*} password The password of the user
-     * @param {*} firstName The first name of the user
-     * @param {*} lastName The last name of the user
+     * @param {*} registerInfo The register object that contains the username, password, first name and last name
      * @returns A json object that contains the response from the backend
      */
-    async Register(username: string, password: string, firstName: string, lastName: string) {
+    async Register(registerInfo: loginObject) {
         const resp = await fetch(UserInfo.BaseURL + "api/users",
             {
                 method: 'POST',
@@ -64,14 +52,14 @@ class ApiService {
                 {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ Username: username, Password: password, FirstName: firstName, LastName: lastName }),
+                body: JSON.stringify({ Username: registerInfo.Username, Password: registerInfo.Password, FirstName: registerInfo.FirstName, LastName: registerInfo.LastName }),
 
             })
             .then(async (response) => {
                 if (response.ok) {
-                    UserInfo.loginRegisterResponse = await response.json();
-                    UserInfo.setupUser();
-                    sessionStorage.setItem("token", UserInfo.getToken());
+                    UserInfo.setCurrentUser(await response.json()); // set current user
+                    UserInfo.updateUser(true); // update user info to session storage
+                    UserInfo.setToken(); // set token to session storage
                     return true;
                 } else {
                     return false;
