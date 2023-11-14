@@ -19,8 +19,8 @@ function LogRes() {
     const navigate = useNavigate();
     const [justifyActive, setJustifyActive] = useState('tab1'); // Store the state of the tabs
     const [input, setInput] = useState({} as loginObject); // This handle the state of the inputs; Username, Password, Re-Password, First Name, Last Name
-    const [errorMsg, setErrorMsg] = useState('' as string); // This will display the error message if the input is empty
-    const [errorDisplay, setErrorDisplay] = useState('none' as string); // This will display the error message if the input is empty
+    const [errorMsg, setErrorMsg] = useState('' as string); // This store the error message
+    const [errorDisplay, setErrorDisplay] = useState('none' as string); // This handle the error message display
 
     // This will handle the tabs and change the state
     function handleJustifyClick(value: string) {
