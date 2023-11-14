@@ -469,6 +469,11 @@ class UserInfo {
             sessionStorage.setItem("bs_user", JSON.stringify(this.localIdeas));
         }
         this.localIdeas = JSON.parse(sessionStorage.getItem("bs_user") ?? "");
+
+        if (sessionStorage.getItem("bs_ideaList") === null) {
+            sessionStorage.setItem("bs_ideaList", JSON.stringify(this.ideasList));
+        }
+        this.ideasList = JSON.parse(sessionStorage.getItem("bs_ideaList") ?? "");
     }
 }
 

@@ -111,9 +111,9 @@ function BrainStormPage() {
                     setInput(true);
                     SignalRChatRoom.getInstance().then((instance) => {
                         instance.sendAllIdeas(sessionId, UserInfo.getLocalIdeas());
+                        UserInfo.clearIdea();
                     });
                     setLocalIdeaList([]);
-                    UserInfo.clearIdea();
                     alert("Session has ended\nYou can no longer send messages\nAll the ideas have been saved to backend");
                 } else if (type === 3) {
                     sessionStorage.setItem("bs_ideaList", JSON.stringify(ideas));
@@ -124,10 +124,10 @@ function BrainStormPage() {
                 } else if (type === 5) {
                     SignalRChatRoom.getInstance().then((instance) => {
                         instance.sendVotes(sessionId, UserInfo.getIdeasList());
+                        UserInfo.clearIdeaList();
                     });
                     setIsVoting(false);
                     setIdeaList([]);
-                    UserInfo.clearIdeaList();
                     alert("Voting has ended\nYou can no longer vote\nAll the votes have been saved to backend");
                 }
             };

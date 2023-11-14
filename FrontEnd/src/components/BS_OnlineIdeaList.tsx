@@ -12,12 +12,12 @@ function BS_OnlineIdeaList(props: BS_OnlineIdeaListProps) {
 
     return (
         <div className="OnlineIdeasContainer">
-            {props.content.map((idea) => {
+            {props.content.map((idea, id) => {
                 return (
                     props.voting ?
-                        <VoteIdea idea={idea} />
+                        <VoteIdea idea={idea} key={id}/>
                         :
-                        <VoteResult idea={idea} />
+                        <VoteResult idea={idea} key={id} />
                 );
             })}
         </div>
