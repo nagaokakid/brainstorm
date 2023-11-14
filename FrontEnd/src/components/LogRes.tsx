@@ -1,6 +1,6 @@
 import '../styles/LogRes.css';
-import ApiService from '../services/ApiService';
 import 'mdb-react-ui-kit/dist/css/mdb.min.css';
+import ApiService from '../services/ApiService';
 import { loginObject } from '../models/TypesDefine';
 import {
     MDBContainer,
@@ -16,14 +16,11 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 function LogRes() {
-
     const navigate = useNavigate();
-
-    //  Store the state of the tabs
-    const [justifyActive, setJustifyActive] = useState('tab1');
-
-    // This handle the state of the inputs; Username, Password, Re-Password, First Name, Last Name
-    const [input, setInput] = useState({} as loginObject);
+    const [justifyActive, setJustifyActive] = useState('tab1'); // Store the state of the tabs
+    const [input, setInput] = useState({} as loginObject); // This handle the state of the inputs; Username, Password, Re-Password, First Name, Last Name
+    const [errorMsg, setErrorMsg] = useState('' as string); // This will display the error message if the input is empty
+    const [errorDisplay, setErrorDisplay] = useState('none' as string); // This will display the error message if the input is empty
 
     // This will handle the tabs and change the state
     function handleJustifyClick(value: string) {
@@ -31,11 +28,15 @@ function LogRes() {
             return;
         }
 
-        // if the tab is not active, change the state
-        setJustifyActive(value);
+        setInput({} as loginObject); // Reset the input state
+        setJustifyActive(value); // if the tab is not active, change the state
+        setErrorDisplay('none'); // Hide the error message
     }
 
-    // This will keep track of the inputs and update the state
+    /**
+     * This will keep track of the inputs and update the state
+     * @param value
+     */
     function handleChanged(value: React.ChangeEvent<HTMLInputElement>) {
         const id = value.target.id;
         const info = value.target.value;
@@ -44,10 +45,10 @@ function LogRes() {
 
     /**
      * This will handle the enter key press
-     * @param e This will handle the enter key press
+     * @param value
      */
-    function handleKey(e: React.KeyboardEvent<HTMLInputElement>) {
-        if (e.code === "Enter" || e.code === "NumpadEnter") {
+    function handleKey(value: React.KeyboardEvent<HTMLInputElement>) {
+        if (value.code === "Enter" || value.code === "NumpadEnter") { // Detect if the key pressed is the enter key or the numpad enter key
             if (justifyActive === 'tab1') {
                 handleLogin();
             } else {
@@ -60,21 +61,26 @@ function LogRes() {
      * This will handle the login request
      */
     function handleLogin() {
-        const button = (document.getElementById('login') as HTMLButtonElement);
+        setErrorDisplay('none'); // Hide the error message
+        const button = (document.getElementById('login') as HTMLButtonElement); // Get the button element
 
-        if (input.Username == "" || input.Password == "") {
-            alert("Please complete the form");
-        }
-        else {
-            button.disabled = true;
+        if (!input.Username || !input.Password) { // Check if the input is empty
+            setErrorMsg('Please complete the form'); // Apply the correct error message
+            setErrorDisplay('block'); // Display the error message
+        } else {
+            button.disabled = true; // Disable the button
+
             ApiService.Login(input.Username, input.Password).then((resp) => {
-                button.disabled = false;
-                if (resp) {
+                button.disabled = false; // Enable the button
+
+                if (resp) { // login success
                     navigate('/main');
                 } else if (resp === false) {
-                    alert('Account does not exist');
+                    setErrorMsg('Account does not exist'); // Apply the correct error message
+                    setErrorDisplay('block'); // Display the error message
                 } else {
-                    alert('Failed to login');
+                    setErrorMsg('Failed to login'); // Apply the correct error message
+                    setErrorDisplay('block'); // Display the error message
                 }
             });
         }
@@ -84,24 +90,29 @@ function LogRes() {
      * This will handle the register request
      */
     function handleRegister() {
-        const button = (document.getElementById('register') as HTMLButtonElement);
+        setErrorDisplay('none'); // Hide the error message
+        const button = (document.getElementById('register') as HTMLButtonElement); // Get the button element
 
-        if (input.Username == "" || input.Password == "" || input.RePassword == "" || input.FirstName == "" || input.LastName == "") {
-            alert("Please complete the form");
-        }
-        else if (input.Password != input.RePassword) {
-            alert("Passwords do not match");
-        }
-        else {
-            button.disabled = true;
+        if (!input.Username || !input.Password || !input.RePassword || !input.FirstName || !input.LastName) { // Check if the input is empty
+            setErrorMsg('Please complete the form'); // Apply the correct error message
+            setErrorDisplay('block'); // Display the error message
+        } else if (input.Password != input.RePassword) {
+            setErrorMsg('Passwords do not match'); // Apply the correct error message
+            setErrorDisplay('block'); // Display the error message
+        } else {
+            button.disabled = true; // Disable the button
+
             ApiService.Register(input.Username, input.Password, input.FirstName, input.LastName).then((resp) => {
-                button.disabled = false;
-                if (resp) {
+                button.disabled = false; // Enable the button
+
+                if (resp) { // register success
                     navigate('/main');
                 } else if (resp === false) {
-                    alert('Duplicate account');
+                    setErrorMsg('Duplicated account'); // Apply the correct error message
+                    setErrorDisplay('block'); // Display the error message
                 } else {
-                    alert('Failed to create account');
+                    setErrorMsg('Failed to create account'); // Apply the correct error message
+                    setErrorDisplay('block'); // Display the error message
                 }
             });
         }
@@ -137,6 +148,7 @@ function LogRes() {
                     <MDBInput wrapperClass='mb-4' label='Re-Password' id='RePassword' type='password' onChange={handleChanged} onKeyDown={handleKey} />
                     <MDBBtn className="mb-4 w-100" id='register' onClick={() => handleRegister()}>Sign up</MDBBtn>
                 </MDBTabsPane>
+                <h5 className='ErrorMsg' style={{ display: errorDisplay }}>{errorMsg}</h5>
             </MDBTabsContent>
         </MDBContainer>
     )
