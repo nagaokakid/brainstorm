@@ -1,7 +1,7 @@
 import "../styles/MemberList.css";
 import UserInfo from "../services/UserInfo";
 import SignalRDirect from "../services/DirectMessageConnection";
-import { userInfoObject } from "../services/TypesDefine";
+import { userInfoObject } from "../models/TypesDefine";
 
 interface MemberListProps {
     memberList: userInfoObject[] | null;

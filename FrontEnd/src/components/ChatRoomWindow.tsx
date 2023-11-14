@@ -1,7 +1,7 @@
 import '../styles/ChatRoomWindow.css';
 import MessageWindow from './MessageWindow';
 import MemberList from './MemberList';
-import { chatRoomObject, directMessageObject } from '../services/TypesDefine';
+import { chatRoomObject, directMessageObject } from '../models/TypesDefine';
 
 interface ChatRoomWindowProps {
     chat: (chatRoomObject | directMessageObject),

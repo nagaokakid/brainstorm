@@ -2,7 +2,7 @@ import "../styles/ChatList.css";
 import UserInfo from "../services/UserInfo";
 import CreateRoomCustomize from "./CreateRoomCustomize";
 import CreateBrainStormCustomize from "./CreateBrainStormCustomize";
-import { chatRoomObject, directMessageObject } from "../services/TypesDefine";
+import { chatRoomObject, directMessageObject } from "../models/TypesDefine";
 import { lazy, useState, Suspense, useEffect } from "react";
 
 interface ChatListProps {

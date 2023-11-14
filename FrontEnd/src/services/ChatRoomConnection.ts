@@ -1,6 +1,6 @@
 import * as signalR from "@microsoft/signalr";
 import UserInfo from "./UserInfo";
-import { chatRoomMessageObject, chatRoomObject, userInfoObject } from "./TypesDefine";
+import { chatRoomMessageObject, chatRoomObject, userInfoObject } from "../models/TypesDefine";
 import Idea from "../models/Idea";
 
 /**

@@ -1,4 +1,12 @@
-import {friendlyUser} from "../models/FriendlyUser"
+import { friendlyUser } from "./FriendlyUser"
+
+export type loginObject = {
+    Username: string,
+    Password: string,
+    RePassword: string,
+    FirstName: string,
+    LastName: string,
+}
 
 export type userInfoObject = {
     userId: string,

@@ -1,6 +1,7 @@
 import '../styles/LogRes.css';
 import ApiService from '../services/ApiService';
 import 'mdb-react-ui-kit/dist/css/mdb.min.css';
+import { loginObject } from '../models/TypesDefine';
 import {
     MDBContainer,
     MDBTabs,
@@ -22,20 +23,15 @@ function LogRes() {
     const [justifyActive, setJustifyActive] = useState('tab1');
 
     // This handle the state of the inputs; Username, Password, Re-Password, First Name, Last Name
-    const [input, setInput] = useState({
-        Username: '',
-        Password: '',
-        RePassword: '',
-        FirstName: '',
-        LastName: ''
-    });
+    const [input, setInput] = useState({} as loginObject);
 
     // This will handle the tabs and change the state
     function handleJustifyClick(value: string) {
-        if (value === justifyActive) {
+        if (value === justifyActive) { // if the tab is already active, do nothing
             return;
         }
 
+        // if the tab is not active, change the state
         setJustifyActive(value);
     }
 

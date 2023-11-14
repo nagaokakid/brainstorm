@@ -6,7 +6,7 @@ import {
     chatRoomMessageObject,
     directMessageObject,
     brainstormDTO,
-} from "./TypesDefine";
+} from "../models/TypesDefine";
 
 class UserInfo {
 

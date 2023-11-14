@@ -1,6 +1,6 @@
 import * as signalR from "@microsoft/signalr";
 import UserInfo from "./UserInfo";
-import { newDirectMessageObject, sendMessageObject } from "./TypesDefine";
+import { newDirectMessageObject, sendMessageObject } from "../models/TypesDefine";
 
 /**
  * This is the URL for the SignalR direct message Hub

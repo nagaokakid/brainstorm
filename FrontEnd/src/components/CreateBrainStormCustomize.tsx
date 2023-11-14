@@ -1,6 +1,6 @@
 import '../styles/CreateBrainStormCustomize.css';
 import SignalRChatRoom from '../services/ChatRoomConnection';
-import { chatRoomObject, directMessageObject } from '../services/TypesDefine';
+import { chatRoomObject, directMessageObject } from '../models/TypesDefine';
 
 interface CreateBrainStormCustomizeProps {
     style: string,

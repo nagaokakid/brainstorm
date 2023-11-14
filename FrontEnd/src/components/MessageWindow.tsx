@@ -5,7 +5,7 @@ import UserInfo from "../services/UserInfo";
 import MessageInput from "./MessageInput";
 import { useDataContext } from "../contexts/DataContext";
 import { useEffect, useState } from "react";
-import { brainstormDTO, chatRoomMessageObject } from "../services/TypesDefine";
+import { brainstormDTO, chatRoomMessageObject } from "../models/TypesDefine";
 
 interface MessageWindowProps {
     chatId: string;
