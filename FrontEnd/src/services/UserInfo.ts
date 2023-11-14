@@ -4,7 +4,6 @@ import {
     chatRoomObject,
     newDirectMessageObject,
     chatRoomMessageObject,
-    directMessageObject,
     brainstormDTO,
     user,
 } from "../models/TypesDefine";
@@ -23,7 +22,10 @@ class UserInfo {
     // the list of ideas from backend
     static ideasList = [] as Idea[];
 
-    // get the user info from session storage
+    /**
+     * Get the user info from session storage
+     * @returns The user object that contains the user info
+     */
     static getCurrentUser() {
         if (sessionStorage.getItem("currentUser") !== null) {
             this.currentUser = JSON.parse(sessionStorage.getItem("currentUser") ?? "");
@@ -31,27 +33,42 @@ class UserInfo {
         return this.currentUser;
     }
 
-    // get the user info
+    /**
+     * Get the user info from the user object
+     * @returns The user info object
+     */
     static getUserInfo() {
         return this.getCurrentUser().userInfo;
     }
 
-    // get the token
+    /**
+     * Get the token from the user object
+     * @returns The token
+     */
     static getToken() {
         return this.getCurrentUser().token;
     }
 
-    // get the chat room list
+    /**
+     * Get the chat room list from the user object
+     * @returns The chat room list
+     */
     static getChatRoomsList() {
         return this.getCurrentUser().chatRooms;
     }
 
-    // get the direct message list
+    /**
+     * Get the direct message list from the user object
+     * @returns The direct message list
+     */
     static getDirectMessagesList() {
         return this.getCurrentUser().directMessages;
     }
 
-    // get the local ideas
+    /**
+     * Get the local ideas list from the session storage
+     * @returns The local ideas list
+     */
     static getLocalIdeas() {
         if (sessionStorage.getItem("localIdea") !== null) {
             this.localIdeas = JSON.parse(sessionStorage.getItem("localIdea") ?? "");
@@ -59,7 +76,10 @@ class UserInfo {
         return this.localIdeas;
     }
 
-    // get the ideas list
+    /**
+     * Get the ideas list from the session storage
+     * @returns The ideas list
+     */
     static getIdeasList() {
         if (sessionStorage.getItem("ideaList") !== null) {
             this.localIdeas = JSON.parse(sessionStorage.getItem("ideaList") ?? "");
@@ -67,43 +87,51 @@ class UserInfo {
         return this.ideasList;
     }
 
-
+    /**
+     * Get the user id from the user info object
+     * @returns The user id
+     */
     static getUserId() {
-        return this.getUserInfo().userId ?? "";
+        return this.getUserInfo().userId;
     }
 
+    /**
+     * Get the first name from the user info object
+     * @returns The first name
+     */
     static getFirstName() {
-        return this.getUserInfo().firstName ?? "";
+        return this.getUserInfo().firstName;
     }
 
+    /**
+     * Get the last name from the user info object
+     * @returns The last name
+     */
     static getLastName() {
-        return this.getUserInfo().lastName ?? "";
+        return this.getUserInfo().lastName;
     }
 
+    /**
+     * Get the user name from the user info object
+     * @returns The user name
+     */
     static getUserName() {
         const temp = this.getUserInfo();
         return temp.firstName + " " + temp.lastName;
     }
 
     /**
-     * Get the chat room information or direct message information
+     * Get the message history from the direct message list or the chat room list
      * @param {*} chatId Can be the chat room id or the to_user_id
      * @param {*} chatType Can be either 'Direct Message List' or 'Chat Room List'
      * @returns 
      */
-    static getListHistory(chatId: string, chatType: string) {
-        if (chatType === "Direct Message List") {
-            console.log("----> Getting direct message history");
-            const result = this.getDirectMessagesList().find(chat => chat.user2.userId === chatId);
-            return result ? result.directMessages : [];
-        }
-        else if (chatType === "ChatRoom List") {
-            console.log("----> Getting chat room message history");
-            const result = this.getChatRoomsList().find(chat => chat.id === chatId);
-            return result ? result.messages : [];
-        }
-        else {
-            console.log("----> Invalid chat type");
+    static getMessageHistory(chatId: string, chatType: string) {
+        if (chatType === "Direct Message List") { // Search the direct message list
+            return this.getDirectMessagesList().find(chat => chat.user2.userId === chatId)?.directMessages ?? [];
+        } else if (chatType === "ChatRoom List") { // Search the chat room list
+            return this.getChatRoomsList().find(chat => chat.id === chatId)?.messages ?? [];
+        } else {
             return [];
         }
     }
@@ -114,17 +142,7 @@ class UserInfo {
      * @returns The brainstorm session object
      */
     static getBS_Session(bsid: string) {
-        let result: brainstormDTO = {
-            sessionId: "No Valid Session",
-            title: "No Valid Session",
-            description: "No Valid Session",
-            creator: {
-                userId: "",
-                firstName: "",
-                lastName: ""
-            },
-            members: [],
-        }
+        let result = {} as brainstormDTO;
 
         this.getChatRoomsList().map(chatRoom => {
             chatRoom.bs_session?.map(bs => {
@@ -143,13 +161,7 @@ class UserInfo {
      * @param {*} chatId The chat room id
      */
     static addNewMember(userInfo: userInfoObject, chatId: string) {
-        console.log("----> Trying to add new member to local.");
-        this.getChatRoomsList().forEach(chatRoom => {
-            if (chatRoom.id === chatId) {
-                chatRoom.members.push(userInfo);
-                console.log("----> Added new member.");
-            }
-        });
+        this.getChatRoomsList().find(chatRoom => chatRoom.id === chatId)?.members.push(userInfo);
     }
 
     /**
@@ -158,13 +170,10 @@ class UserInfo {
      * @returns 
      */
     static addNewChatRoom(chatRoom: chatRoomObject) {
-        console.log("----> Trying to add new chat room to local.");
         const list = this.getChatRoomsList();
         if (list.find(current => current.id === chatRoom.id)) {
             alert("Chat room already exists.");
-        }
-        else {
-            console.log("----> Added new chat room.");
+        } else {
             list.push(chatRoom);
         }
     }
@@ -175,41 +184,29 @@ class UserInfo {
      * @returns 
      */
     static addNewDirectMessage(newDirectMessage: newDirectMessageObject) {
-        let result = null;
-        console.log("----> Trying to add new direct message to local.");
 
-        this.getDirectMessagesList().map((current) => {
-            if (newDirectMessage.toUserInfo.userId === current.user2.userId || newDirectMessage.fromUserInfo.userId === current.user2.userId) {
-                const newMsg =
-                {
-                    message: newDirectMessage.message,
-                    timestamp: newDirectMessage.timestamp
-                }
-                result = current.directMessages.push(newMsg);
-                this.setupUser(true);
-                console.log("----> Added incoming direct message to existing direct message list");
-            }
-        });
+        // Create a new message object
+        const msg = {
+            message: newDirectMessage.message,
+            timestamp: newDirectMessage.timestamp
+        }
 
-        if (result === null) {
-            console.log("----> Create a new Direct Message Object");
+        // Search the direct message list to see if there is a direct message object that contains the user
+        const result = this.getDirectMessagesList().find(current => newDirectMessage.toUserInfo.userId === current.user2.userId || newDirectMessage.fromUserInfo.userId === current.user2.userId);
+
+        if (result) { // If there is a direct message object that contains the user, add the new message to the direct message object
+            result.directMessages.push(msg);
+        } else { // If there is no direct message object that contains the user, create a new direct message object
             const newMsgObject = {
                 user1: this.getUserInfo(),
                 user2: newDirectMessage.toUserInfo.userId === this.getUserId() ? newDirectMessage.fromUserInfo : newDirectMessage.toUserInfo,
                 directMessages: [
-                    {
-                        message: newDirectMessage.message,
-                        timestamp: newDirectMessage.timestamp
-                    }
+                    msg
                 ]
             }
-            console.log("----> Added new direct message to direct message list");
-            this.currentUser.directMessages.push(newMsgObject);
-            this.setupUser(true);
+            this.getDirectMessagesList().push(newMsgObject);
         }
-        else {
-            return result;
-        }
+        this.updateUser(true);
     }
 
     /**
@@ -218,67 +215,82 @@ class UserInfo {
      * @returns 
      */
     static addChatRoomMessage(message: chatRoomMessageObject) {
-        let result = null;
-        console.log("----> Trying to add new chat room message to local.");
-        this.getChatRoomsList().forEach(chatRoom => {
-            if (chatRoom.id === message.chatRoomId) {
-                console.log("----> Added new chat room message");
-                result = chatRoom.messages.push(message);
+        const result = this.getChatRoomsList().find(chatRoom => chatRoom.id === message.chatRoomId);
 
-                if (message.brainstorm) {
+        if (result) { // If there is a chat room that contains the chat room id, add the new message to the chat room
+            result.messages.push(message);
 
-                    if (chatRoom.bs_session) {
-                        chatRoom.bs_session?.push(message.brainstorm);
-                    } else if (!chatRoom.bs_session) {
-                        chatRoom.bs_session = [message.brainstorm];
-                    }
+            if (message.brainstorm) { // If the message contains a brainstorm session, add the brainstorm session to the chat room
+
+                if (result.bs_session) { // If the chat room already has a brainstorm session, add the new brainstorm session to the chat room
+                    result.bs_session?.push(message.brainstorm);
+                } else if (!result.bs_session) { // If the chat room does not have a brainstorm session, create a new brainstorm session
+                    result.bs_session = [message.brainstorm];
                 }
-
-                this.setupUser(true);
             }
-        });
 
-        return result;
+            this.updateUser(true);
+        }
     }
 
+    /**
+     * Add new idea to the local idea list
+     * @param idea The idea to be added
+     */
     static addNewIdea(idea: string) {
         this.getLocalIdeas().push(idea);
-        sessionStorage.setItem("bs_user", JSON.stringify(this.localIdeas));
+        this.updateLocalIdea(true);
     }
 
+    /**
+     * Add likes to idea
+     * @param id The idea id
+     */
     static addLikes(id: string) {
-        this.getIdeasList().map(idea => {
-            if (idea.id === id) {
-                idea.likes = 1;
-                idea.dislikes = 0;
-            }
-        });
-        // sessionStorage.setItem("bs_ideaList", JSON.stringify(this.ideasList));
+        const result = this.getIdeasList().find(idea => idea.id === id);
+        if (result) {
+            result.likes = 1;
+            result.dislikes = 0;
+        }
+        this.updateIdeaList(true);
     }
 
+    /**
+     * Add dislikes to idea
+     * @param id The idea id
+     */
     static addDislikes(id: string) {
-        this.getIdeasList().map(idea => {
-            if (idea.id === id) {
-                idea.likes = 0;
-                idea.dislikes = 1;
-            }
-        });
-        // sessionStorage.setItem("bs_ideaList", JSON.stringify(this.ideasList));
+        const result = this.getIdeasList().find(idea => idea.id === id);
+        if (result) {
+            result.likes = 0;
+            result.dislikes = 1;
+        }
+        this.updateIdeaList(true);
     }
 
+    /**
+     * Remove a specific idea from the local idea list
+     * @param position The position of the idea in the local idea list
+     */
     static deleteIdea(position: number) {
         this.getLocalIdeas().splice(position, 1);
-        sessionStorage.setItem("bs_user", JSON.stringify(this.localIdeas));
+        this.updateLocalIdea(true);
     }
 
+    /**
+     * Empty the local idea list
+     */
     static clearIdea() {
         this.localIdeas = [];
-        sessionStorage.setItem("bs_user", JSON.stringify(this.localIdeas));
+        this.updateLocalIdea(true);
     }
 
+    /**
+     * Empty the idea list
+     */
     static clearIdeaList() {
         this.ideasList = [];
-        sessionStorage.setItem("bs_ideaList", JSON.stringify(this.ideasList));
+        this.updateIdeaList(true);
     }
 
     /**
@@ -287,10 +299,14 @@ class UserInfo {
      * @returns True if the user is the host of the brainstorm session
      */
     static isHost(id: string) {
-        return this.getUserId() == id;
+        return this.getUserId() === id;
     }
 
-    static setupUser(forceUpdate?: boolean) {
+    /**
+     * Check store user info in the session storage
+     * @param forceUpdate Force update the user info
+     */
+    static updateUser(forceUpdate?: boolean) {
         if (sessionStorage.getItem("currentUser") === null) {
             sessionStorage.setItem("currentUser", JSON.stringify(this.currentUser));
         } else if (forceUpdate) {
@@ -299,22 +315,30 @@ class UserInfo {
         this.currentUser = JSON.parse(sessionStorage.getItem("currentUser") ?? "");
     }
 
-    static bsUserSetup() {
-        if (sessionStorage.getItem("bs_user") === null) {
-            this.localIdeas = [];
-            sessionStorage.setItem("bs_user", JSON.stringify(this.localIdeas));
+    /**
+     * Check store idea list in the session storage
+     * @param forceUpdate Force update the idea list
+     */
+    static updateLocalIdea(forceUpdate?: boolean) {
+        if (sessionStorage.getItem("localIdea") === null) {
+            sessionStorage.setItem("localIdea", JSON.stringify(this.localIdeas));
+        } else if (forceUpdate) {
+            sessionStorage.setItem("localIdea", JSON.stringify(this.localIdeas));
         }
-        this.localIdeas = JSON.parse(sessionStorage.getItem("bs_user") ?? "");
-
-        if (sessionStorage.getItem("bs_ideaList") === null) {
-            this.ideasList = [];
-            sessionStorage.setItem("bs_ideaList", JSON.stringify(this.ideasList));
-        }
-        this.ideasList = JSON.parse(sessionStorage.getItem("bs_ideaList") ?? "");
+        this.localIdeas = JSON.parse(sessionStorage.getItem("localIdea") ?? "");
     }
 
-    static updateUserInfo() {
-        this.setupUser(true);
+    /**
+     * Check store idea list in the session storage
+     * @param forceUpdate Force update the idea list
+     */
+    static updateIdeaList(forceUpdate?: boolean) {
+        if (sessionStorage.getItem("ideaList") === null) {
+            sessionStorage.setItem("ideaList", JSON.stringify(this.ideasList));
+        } else if (forceUpdate) {
+            sessionStorage.setItem("ideaList", JSON.stringify(this.ideasList));
+        }
+        this.ideasList = JSON.parse(sessionStorage.getItem("ideaList") ?? "");
     }
 }
 
