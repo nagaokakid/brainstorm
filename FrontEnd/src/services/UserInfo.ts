@@ -6,248 +6,83 @@ import {
     chatRoomMessageObject,
     directMessageObject,
     brainstormDTO,
+    user,
 } from "../models/TypesDefine";
 
 class UserInfo {
 
-    constructor() { }
-
+    // The url of the backend
     static BaseURL = "http://localhost:5135/"
 
-    static loginRegisterResponse =
-        {
-            userInfo:
-            {
-                userId: "0000",
-                firstName: "Current",
-                lastName: "User",
-                isGuest: false,
-                firstRoom: ""
-            },
-            token: "0000-1111-2222-3333",
-            chatRooms: [
-                {
-                    "id": "1111",
-                    "title": "first chat room",
-                    "description": "This is the first chat room",
-                    "joinCode": "Hello World",
-                    "messages": [
-                        {
-                            "fromUserInfo":
-                            {
-                                "userId": "0001",
-                                "firstName": "First",
-                                "lastName": "User"
-                            },
-                            "chatRoomId": "1111",
-                            "message": "I'm first user",
-                            "timestamp": "2023-10-13T23:35:59.786Z"
-                        },
-                        {
-                            "fromUserInfo":
-                            {
-                                "userId": "0002",
-                                "firstName": "Second",
-                                "lastName": "User"
-                            },
-                            "chatRoomId": "1111",
-                            "message": "I'm second user",
-                            "timestamp": "2023-10-13T23:35:59.786Z"
-                        },
-                        {
-                            "fromUserInfo":
-                            {
-                                "userId": "0000",
-                                "firstName": "Current",
-                                "lastName": "User"
-                            },
-                            "chatRoomId": "1111",
-                            "message": "I'm current user",
-                            "timestamp": "2023-10-13T23:35:59.786Z"
-                        }
-                    ],
-                    "members": [
-                        {
-                            "userId": "0001",
-                            "firstName": "First",
-                            "lastName": "User"
-                        },
-                        {
-                            "userId": "0000",
-                            "firstName": "Current",
-                            "lastName": "User"
-                        },
-                        {
-                            "userId": "0002",
-                            "firstName": "Second",
-                            "lastName": "User"
-                        }
-                    ],
-                    "bs_session": [{
-                        sessionId: "",
-                        title: "",
-                        description: "",
-                        creator: {
-                            userId: "0000",
-                            firstName: "Current",
-                            lastName: "User",
-                        },
-                        members: []
-                    }]
-                },
-                {
-                    "id": "2222",
-                    "title": "Second chat room",
-                    "description": "This is Chat Room 2",
-                    "joinCode": "Goodbye World",
-                    "messages": [
-                        {
-                            "fromUserInfo":
-                            {
-                                "userId": "0000",
-                                "firstName": "Current",
-                                "lastName": "User"
-                            },
-                            "chatRoomId": "2222",
-                            "message": "I'm here",
-                            "timestamp": "2023-10-13T23:35:59.786Z"
-                        }
-                    ],
-                    "members": [
-                        {
-                            "userId": "0005",
-                            "firstName": "Fifth",
-                            "lastName": "User"
-                        },
-                        {
-                            "userId": "0000",
-                            "firstName": "Current",
-                            "lastName": "User"
-                        }
-                    ]
-                }
-            ],
-            directMessages: [
-                {
-                    "user1":
-                    {
-                        "userId": "0000",
-                        "firstName": "Current",
-                        "lastName": "User"
-                    },
-                    "user2":
-                    {
-                        "userId": "0001",
-                        "firstName": "First",
-                        "lastName": "User"
-                    },
+    // the object that contains the user info
+    static currentUser = {} as user;
 
-                    "directMessages": [
-                        {
-                            "message": "What's up?",
-                            "timestamp": "2023-10-13T23:35:59.786Z"
-                        },
-                        {
-                            "message": "You are first user",
-                            "timestamp": "2023-10-13T23:35:59.786Z"
-                        }
-                    ],
-                },
-                {
-                    "user1":
-                    {
-                        "userId": "0003",
-                        "firstName": "Third",
-                        "lastName": "User"
-                    },
-                    "user2":
-                    {
-                        "userId": "0000",
-                        "firstName": "Current",
-                        "lastName": "User"
-                    },
-
-                    "directMessages": [
-                        {
-                            "message": "Goodbye World",
-                            "timestamp": "2023-10-13T23:35:59.786Z"
-                        },
-                        {
-                            "message": "Really?",
-                            "timestamp": "2023-10-13T23:35:59.786Z"
-                        }
-                    ],
-                }
-            ]
-        }
-
+    // the list of local ideas
     static localIdeas = [] as string[];
 
+    // the list of ideas from backend
     static ideasList = [] as Idea[];
 
+    // get the user info from session storage
+    static getCurrentUser() {
+        if (sessionStorage.getItem("currentUser") !== null) {
+            this.currentUser = JSON.parse(sessionStorage.getItem("currentUser") ?? "");
+        }
+        return this.currentUser;
+    }
+
+    // get the user info
+    static getUserInfo() {
+        return this.getCurrentUser().userInfo;
+    }
+
+    // get the token
+    static getToken() {
+        return this.getCurrentUser().token;
+    }
+
+    // get the chat room list
+    static getChatRoomsList() {
+        return this.getCurrentUser().chatRooms;
+    }
+
+    // get the direct message list
+    static getDirectMessagesList() {
+        return this.getCurrentUser().directMessages;
+    }
+
+    // get the local ideas
     static getLocalIdeas() {
-        if (sessionStorage.getItem("bs_user") !== null) {
-            this.localIdeas = JSON.parse(sessionStorage.getItem("bs_user") ?? "");
+        if (sessionStorage.getItem("localIdea") !== null) {
+            this.localIdeas = JSON.parse(sessionStorage.getItem("localIdea") ?? "");
         }
         return this.localIdeas;
     }
 
+    // get the ideas list
     static getIdeasList() {
-        if (sessionStorage.getItem("bs_ideaList") !== null) {
-            this.localIdeas = JSON.parse(sessionStorage.getItem("bs_ideaList") ?? "");
+        if (sessionStorage.getItem("ideaList") !== null) {
+            this.localIdeas = JSON.parse(sessionStorage.getItem("ideaList") ?? "");
         }
         return this.ideasList;
     }
 
-    static getCurrentFriendlyUserInfo() {
-        if (sessionStorage.getItem("currentUser") !== null) {
-            this.loginRegisterResponse = JSON.parse(sessionStorage.getItem("currentUser") ?? "");
-        }
-        return this.loginRegisterResponse.userInfo ?? {};
-    }
 
     static getUserId() {
-        return this.getCurrentFriendlyUserInfo().userId ?? "";
+        return this.getUserInfo().userId ?? "";
     }
 
     static getFirstName() {
-        return this.getCurrentFriendlyUserInfo().firstName ?? "";
+        return this.getUserInfo().firstName ?? "";
     }
 
     static getLastName() {
-        return this.getCurrentFriendlyUserInfo().lastName ?? "";
+        return this.getUserInfo().lastName ?? "";
     }
 
     static getUserName() {
-        const temp = this.getCurrentFriendlyUserInfo();
+        const temp = this.getUserInfo();
         return temp.firstName + " " + temp.lastName;
-    }
-
-    static getToken() {
-        if (sessionStorage.getItem("currentUser") !== null) {
-            this.loginRegisterResponse = JSON.parse(sessionStorage.getItem("currentUser") ?? "");
-        }
-        return this.loginRegisterResponse.token ?? "";
-    }
-
-    static getChatRoomsList(): chatRoomObject[] {
-        if (sessionStorage.getItem("currentUser") !== null) {
-            this.loginRegisterResponse = JSON.parse(sessionStorage.getItem("currentUser") ?? "");
-        }
-        if (this.loginRegisterResponse.chatRooms === null) {
-            this.loginRegisterResponse.chatRooms = [];
-        }
-        return this.loginRegisterResponse.chatRooms;
-    }
-
-    static getDirectMessagesList(): directMessageObject[] {
-        if (sessionStorage.getItem("currentUser") !== null) {
-            this.loginRegisterResponse = JSON.parse(sessionStorage.getItem("currentUser") ?? "");
-        }
-        if (this.loginRegisterResponse.directMessages === null) {
-            this.loginRegisterResponse.directMessages = [];
-        }
-        return this.loginRegisterResponse.directMessages;
     }
 
     /**
@@ -359,7 +194,7 @@ class UserInfo {
         if (result === null) {
             console.log("----> Create a new Direct Message Object");
             const newMsgObject = {
-                user1: this.getCurrentFriendlyUserInfo(),
+                user1: this.getUserInfo(),
                 user2: newDirectMessage.toUserInfo.userId === this.getUserId() ? newDirectMessage.fromUserInfo : newDirectMessage.toUserInfo,
                 directMessages: [
                     {
@@ -369,7 +204,7 @@ class UserInfo {
                 ]
             }
             console.log("----> Added new direct message to direct message list");
-            this.loginRegisterResponse.directMessages.push(newMsgObject);
+            this.currentUser.directMessages.push(newMsgObject);
             this.setupUser(true);
         }
         else {
@@ -414,8 +249,8 @@ class UserInfo {
     static addLikes(id: string) {
         this.getIdeasList().map(idea => {
             if (idea.id === id) {
-                idea.likes=1;
-                idea.dislikes=0;
+                idea.likes = 1;
+                idea.dislikes = 0;
             }
         });
         // sessionStorage.setItem("bs_ideaList", JSON.stringify(this.ideasList));
@@ -424,8 +259,8 @@ class UserInfo {
     static addDislikes(id: string) {
         this.getIdeasList().map(idea => {
             if (idea.id === id) {
-                idea.likes=0;
-                idea.dislikes=1;
+                idea.likes = 0;
+                idea.dislikes = 1;
             }
         });
         // sessionStorage.setItem("bs_ideaList", JSON.stringify(this.ideasList));
@@ -457,11 +292,11 @@ class UserInfo {
 
     static setupUser(forceUpdate?: boolean) {
         if (sessionStorage.getItem("currentUser") === null) {
-            sessionStorage.setItem("currentUser", JSON.stringify(this.loginRegisterResponse));
+            sessionStorage.setItem("currentUser", JSON.stringify(this.currentUser));
         } else if (forceUpdate) {
-            sessionStorage.setItem("currentUser", JSON.stringify(this.loginRegisterResponse));
+            sessionStorage.setItem("currentUser", JSON.stringify(this.currentUser));
         }
-        this.loginRegisterResponse = JSON.parse(sessionStorage.getItem("currentUser") ?? "");
+        this.currentUser = JSON.parse(sessionStorage.getItem("currentUser") ?? "");
     }
 
     static bsUserSetup() {
@@ -476,6 +311,10 @@ class UserInfo {
             sessionStorage.setItem("bs_ideaList", JSON.stringify(this.ideasList));
         }
         this.ideasList = JSON.parse(sessionStorage.getItem("bs_ideaList") ?? "");
+    }
+
+    static updateUserInfo() {
+        this.setupUser(true);
     }
 }
 
