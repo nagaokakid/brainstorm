@@ -70,7 +70,7 @@ function LogRes() {
         } else {
             button.disabled = true; // Disable the button
 
-            ApiService.Login(input.Username, input.Password).then((resp) => {
+            ApiService.Login(input).then((resp) => {
                 button.disabled = false; // Enable the button
 
                 if (resp) { // login success
@@ -102,7 +102,7 @@ function LogRes() {
         } else {
             button.disabled = true; // Disable the button
 
-            ApiService.Register(input.Username, input.Password, input.FirstName, input.LastName).then((resp) => {
+            ApiService.Register(input).then((resp) => {
                 button.disabled = false; // Enable the button
 
                 if (resp) { // register success
