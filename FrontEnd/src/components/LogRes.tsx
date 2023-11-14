@@ -1,7 +1,5 @@
 import '../styles/LogRes.css';
 import 'mdb-react-ui-kit/dist/css/mdb.min.css';
-import ApiService from '../services/ApiService';
-import { loginObject } from '../models/TypesDefine';
 import {
     MDBContainer,
     MDBTabs,
@@ -12,6 +10,8 @@ import {
     MDBBtn,
     MDBInput
 } from 'mdb-react-ui-kit'
+import ApiService from '../services/ApiService';
+import { loginObject } from '../models/TypesDefine';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
