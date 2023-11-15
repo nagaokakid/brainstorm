@@ -1,6 +1,7 @@
 import "../styles/HeaderNavBar.css";
 import SignalRChatRoom from "../services/ChatRoomConnection";
 import { useState } from "react";
+import UserInfo from "../services/UserInfo";
 
 interface HeaderNavBarProps {
     noticeFunction: (msg: string) => void;
@@ -34,7 +35,7 @@ function HeaderNavBar(props: HeaderNavBarProps) {
         <div className="header-nav-bar">
             <div className="user-name">BRAINSTORM</div>
             <div className="JoinCodeSection">
-                <input className="JoinCodeInput" type="text" id="JoinCode" />
+                <input className="JoinCodeInput" type="text" id="JoinCode" placeholder="Chat Room Join Code..." />
                 <button className="JoinCodeButton" onClick={() => joinCode()}>Join</button>
                 <h5 className="ErrorMsg" style={{ display: display }}>{errorMsg}</h5>
             </div>
@@ -43,6 +44,7 @@ function HeaderNavBar(props: HeaderNavBarProps) {
                 <button className="notifications-icon" onClick={() => alert("Not available at the moment")}>Notifications</button>
                 <button className="picture-button" onClick={() => alert("Not available at the moment")}>User Picture</button> */}
             </div>
+            <div>Current User: {UserInfo.getUserName()}</div>
         </div>
     );
 }
