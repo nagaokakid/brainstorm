@@ -283,6 +283,7 @@ class UserInfo {
             sessionId: "No Valid Session",
             title: "No Valid Session",
             description: "No Valid Session",
+            timer: 20,
             creator: {
                 userId: "",
                 firstName: "",
