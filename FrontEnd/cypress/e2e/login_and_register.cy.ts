@@ -1,12 +1,13 @@
 /* 
 This is for simulating acceptance testing for the login/register page:
-- test register
-- test login
-- test failed register (username already taken OR passwords don't match)
-- test failed login (password is incorrect OR username doesn't exist in db)
+- successful register
+- successful login
+- failed register (username already taken, passwords don't match, or form is empty)
+- failed login (password is incorrect OR username doesn't exist in db)
 */
 
-describe("Testing Login/Register Page of Brainstorm App", () => {
+describe("Testing Login/Register Page", () => 
+{
     
     // navigate to home page before each test
     beforeEach(() => 
@@ -50,8 +51,8 @@ describe("Testing Login/Register Page of Brainstorm App", () => {
         
     })
 
-    // Test 2: attempt registry of existing user; expect 400 error response
-    it('try to register an existing user account', () => 
+    // Test 2: attempt registry of existing user
+    it('fail to register an existing user account', () => 
     {
         cy.contains('Register').should('exist').click()     // click "Register" button
 
@@ -77,8 +78,8 @@ describe("Testing Login/Register Page of Brainstorm App", () => {
         })
     })
 
-    // Test 3: attempt registry with non-matching passwords; expect alert message
-    it('try to register with non-matching passwords', () => 
+    // Test 3: attempt registry with non-matching passwords
+    it('fail to register with non-matching passwords', () => 
     {
         cy.contains('Register').should('exist').click()     // click "Register" button
 
@@ -97,7 +98,19 @@ describe("Testing Login/Register Page of Brainstorm App", () => {
         })
     })
 
-    // Test 4: login with existing user account
+    // Test 4: attempt registry with empty form
+    it('fail to register with an empty form', () => 
+    {
+        cy.contains('Register').should('exist').click()     // click "Register" button
+        cy.get('.tab-pane.fade.show.active').invoke('show').should('be.visible');
+        cy.get('#register').should('be.visible').click();   // click "Sign Up" button
+        cy.on('window:alert', (alertMsg) => 
+        {
+            expect(alertMsg).to.equal("Please complete the form")     // verify alert message
+        })
+    })
+    
+    // Test 5: login with existing user account
     it('login with existing user account', () => 
     {
         cy.get('.nav-link.active').should('be.visible');
@@ -121,8 +134,50 @@ describe("Testing Login/Register Page of Brainstorm App", () => {
         cy.url().should('include', '/main')     // verify URL change
     })
 
+    // Test 6: try login with incorrect password for an existing user
+    it('fail to login with incorrect password', () => 
+    {
+        cy.get('.nav-link.active').should('be.visible');
+        cy.contains('Login').should('exist').click();
+    
+        cy.get('.tab-pane.fade.show.active').find('#Username').type('cypress');
+        cy.get('.tab-pane.fade.show.active').find('#Password').type('notThePassword'); // incorrect password
+    
+        cy.intercept('POST', '/api/users/login').as('fetchRequest'); // setup intercept for http responses
+    
+        cy.get('#login').click();       // click "Sign In" button
+        cy.wait('@fetchRequest').then((interception) => 
+        {
+            expect(interception.response.statusCode).to.equal(401);     // verify response code
+        })
+        cy.on('window:alert', (alertMsg) => 
+        {
+            expect(alertMsg).to.equal("Login credentials are invalid. Please ensure the username and password are correct.")     // verify alert message
+        })
+    })
+
+    // Test 7: try login with invalid username
+    it('fail to login with invalid username', () => 
+    {
+        cy.get('.nav-link.active').should('be.visible');
+        cy.contains('Login').should('exist').click();
+    
+        cy.get('.tab-pane.fade.show.active').find('#Username').type('notAValidUsername');   // invalid username
+        cy.get('.tab-pane.fade.show.active').find('#Password').type('whatPassword?');
+    
+        cy.intercept('POST', '/api/users/login').as('fetchRequest'); // setup intercept for http responses
+    
+        cy.get('#login').click();       // click "Sign In" button
+        cy.wait('@fetchRequest').then((interception) => 
+        {
+            expect(interception.response.statusCode).to.equal(401);     // verify response code
+        })
+        cy.on('window:alert', (alertMsg) => 
+        {
+            expect(alertMsg).to.equal("Login credentials are invalid. Please ensure the username and password are correct.")     // verify alert message
+        })
+    })
+        
 
 
-
-
-})
+}) // end

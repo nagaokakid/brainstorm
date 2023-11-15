@@ -84,7 +84,7 @@ function LogRes() {
                 }
                 else {
                     // if error
-                    alert('Account does not exist');
+                    alert('Login credentials are invalid. Please ensure the username and password are correct.');
                 }
             });
         }
