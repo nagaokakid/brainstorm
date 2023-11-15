@@ -44,7 +44,7 @@ function HeaderNavBar(props: HeaderNavBarProps) {
                 <button className="notifications-icon" onClick={() => alert("Not available at the moment")}>Notifications</button>
                 <button className="picture-button" onClick={() => alert("Not available at the moment")}>User Picture</button> */}
             </div>
-            <div>Current User: {UserInfo.getUserName()}</div>
+            <div className="UserProfile">Current User: {UserInfo.getUserName()}</div>
         </div>
     );
 }
