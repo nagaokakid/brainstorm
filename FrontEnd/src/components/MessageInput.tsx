@@ -10,61 +10,53 @@ interface MsgInputFieldProps {
     chatId: string;
 }
 
-/**
- * 
- * @param {*} chatType The type of chat list to be displayed; either "Direct Message List" or "ChatRoom List"
- * @param {*} chatId Either the chat room id or the direct message to_user id 
- * @returns 
- */
 function MsgInputField(props: MsgInputFieldProps) {
+    const [text, setText] = useState("" as string); // Set the default state of the text
 
-    // Set the default state of the text
-    const [text, setText] = useState("");
+    /**
+     * Handle the send button click event
+     * @returns 
+     */
+    function handleSend() {
 
-    // Send message
-    const handleSend = () => {
-        // check if text is empty
-        console.log("----> clicked");
-
-        if (!text) return;
-
-        if (props.chatType === "Direct Message List") {
-            // create message object
-            const msg = {
-                user1: UserInfo.getCurrentFriendlyUserInfo(),
-                user2: { userId: props.chatId, firstName: "", lastName: "" },
-                message: text,
-            };
-            SignalRDirect.getInstance().then(async (value) => {
-                await value.sendMessage(msg);
-                console.log("----> Sent Direct Message");
-            });
+        if (!text) {
+            return;
+        } else {
+            if (props.chatType === "Direct Message List") {
+                const msg = {
+                    user1: UserInfo.getUserInfo(),
+                    user2: { userId: props.chatId, firstName: "", lastName: "" },
+                    message: text,
+                };
+                SignalRDirect.getInstance().then(async (value) => {
+                    await value.sendMessage(msg);
+                });
+            }
+            else if (props.chatType === "ChatRoom List") {
+                const msg = {
+                    fromUserInfo: UserInfo.getUserInfo(),
+                    chatRoomId: props.chatId,
+                    message: text,
+                    timestamp: new Date().toUTCString(),
+                };
+                SignalRChatRoom.getInstance().then(async (value) => {
+                    await value.sendChatRoomMessage(msg);
+                });
+            }
+            setText("");
         }
-        else if (props.chatType === "ChatRoom List") {
-            // create message object
-            const msg = {
-                fromUserInfo: UserInfo.getCurrentFriendlyUserInfo(),
-                chatRoomId: props.chatId,
-                message: text,
-                timestamp: new Date().toUTCString(),
-            };
-            SignalRChatRoom.getInstance().then(async (value) => {
-                await value.sendChatRoomMessage(msg);
-                console.log("----> Sent Chat Room Message");
-            });
-        }
+    }
 
-        setText("");
-    };
-
-    // Send message on enter key
-    const handleKey = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    /**
+     * Handle the key down event
+     * @param e 
+     */
+    function handleKey(e: React.KeyboardEvent<HTMLInputElement>) {
         if (e.code === "Enter" || e.code === "NumpadEnter") {
             handleSend();
         }
-    };
+    }
 
-    // Clean the input bar when the chat id changes
     useEffect(() => {
         setText("");
     }, [props.chatId]);
