@@ -8,7 +8,7 @@ class ApiService {
     /**
      * Do a Login API call to the backend and connect to all chatrooms and direct messaging
      * @param {*} loginInfo The login object that contains the username and password
-     * @returns A json object that contains the response from the backend
+     * @returns boolean that indicates if the login is successful
      */
     async Login(loginInfo: loginObject) {
         const resp = await fetch(UserInfo.BaseURL + "api/users/login",
@@ -42,7 +42,7 @@ class ApiService {
     /**
      * Do a Register API call to the backend and connect to direct messaging
      * @param {*} registerInfo The register object that contains the username, password, first name and last name
-     * @returns A json object that contains the response from the backend
+     * @returns boolean that indicates if the register is successful
      */
     async Register(registerInfo: loginObject) {
         const resp = await fetch(UserInfo.BaseURL + "api/users",
@@ -74,7 +74,7 @@ class ApiService {
     }
 
     /**
-     * Do a GetChatRooms API call to the backend and build the connection to the chat room
+     * Do a CreateChatRooms API call to the backend and build the connection to the chat room
      * @param {*} title The chat room name or title
      * @param {*} description The chat room description
      * @returns A json object that contains the response from the backend
@@ -94,36 +94,49 @@ class ApiService {
                     description: description
                 }),
 
+            })
+            .then(async (response) => {
+                if (response.ok) {
+                    const data: chatRoomObject = (await response.json())["chatRoom"];
+                    UserInfo.addNewChatRoom(data);
+                    await this.connectChatRoom(data.joinCode);
+                    return true;
+                } else {
+                    return false;
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+                return null;
             });
-
-        // if response is okay, assign to appinfo for later use
-        if (resp.ok) {
-            const data: chatRoomObject = (await resp.json())["chatRoom"];
-            UserInfo.addNewChatRoom(data);
-            console.log("----> Create chatroom success");
-            await this.connectChatRoom(data.joinCode);
-            console.log("----> Connected to chatroom");
-        }
 
         return resp;
     }
 
     /**
-     * 
+     * Do a check if the join code is valid
      * @param joinCode The join code of the chatroom
-     * @returns 
+     * @returns boolean that indicates if the join code is valid
      */
     async IsJoinCodeValid(joinCode: string) {
-        const resp = await fetch(UserInfo.BaseURL + "api/chatroom/" + joinCode, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-            },
-        });
+        const resp = await fetch(UserInfo.BaseURL + "api/chatroom/" + joinCode,
+            {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            }).then(async (response) => {
+                if (response.ok) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }).catch((error) => {
+                console.log(error);
+                return null;
+            });
 
-        if (resp.ok) {
-            return await resp.json();
-        }
+        return resp;
     }
 
     /**
