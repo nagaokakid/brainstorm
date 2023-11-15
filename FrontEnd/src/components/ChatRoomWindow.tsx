@@ -1,7 +1,10 @@
 import '../styles/ChatRoomWindow.css';
 import MessageWindow from './MessageWindow';
 import MemberList from './MemberList';
-import { chatRoomObject, directMessageObject } from '../models/TypesDefine';
+import UserInfo from '../services/UserInfo';
+import { useDataContext } from '../contexts/DataContext';
+import { chatRoomObject, directMessageObject, userInfoObject } from '../models/TypesDefine';
+import { useEffect, useState } from 'react';
 
 interface ChatRoomWindowProps {
     chat: (chatRoomObject | directMessageObject),
@@ -9,11 +12,19 @@ interface ChatRoomWindowProps {
 }
 
 function ChatRoomWindow(props: ChatRoomWindowProps) {
+    const context = useDataContext();
+    const update = context[0];
     const type = 'id' in props.chat ? "ChatRoom List" : "Direct Message List";
     const chatId = 'id' in props.chat ? props.chat.id : props.chat.user2.userId;
     const chatHeader = 'title' in props.chat ? props.chat.title : props.chat.user2.firstName + " " + props.chat.user2.lastName;
     const joinCode = 'joinCode' in props.chat ? props.chat.joinCode : null;
-    const memberList = 'members' in props.chat ? props.chat.members : null;
+    const [memberList, setMemberList] = useState([] as userInfoObject[]);
+
+    useEffect(() => {
+        if ('members' in props.chat) {
+            setMemberList(UserInfo.getMemberList(props.chat.id));
+        }
+    }, [props.chat, update]);
 
     return (
         <div className='WindowContainer'>
