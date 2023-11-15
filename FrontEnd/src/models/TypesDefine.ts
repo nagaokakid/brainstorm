@@ -1,11 +1,18 @@
 import { friendlyUser } from "./FriendlyUser"
 
+export type user = {
+    userInfo: userInfoObject,
+    token: string,
+    chatRooms: chatRoomObject[],
+    directMessages: directMessageObject[],
+}
+
 export type loginObject = {
     Username: string,
     Password: string,
-    RePassword: string,
-    FirstName: string,
-    LastName: string,
+    RePassword?: string,
+    FirstName?: string,
+    LastName?: string,
 }
 
 export type userInfoObject = {
@@ -13,7 +20,7 @@ export type userInfoObject = {
     firstName: string,
     lastName: string,
     isGuest?: boolean,
-    firstRoom?: string
+    firstRoom?: string,
 }
 
 export type chatRoomObject = {
