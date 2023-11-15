@@ -4,6 +4,7 @@ import GuestJoin from "../components/GuestJoin"
 
 function LoginPage() {
     sessionStorage.clear();
+    localStorage.clear();
     return (
         <>
             <div className="PageContainer">
