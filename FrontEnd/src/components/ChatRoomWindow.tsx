@@ -5,16 +5,10 @@ import { chatRoomObject, directMessageObject } from '../models/TypesDefine';
 
 interface ChatRoomWindowProps {
     chat: (chatRoomObject | directMessageObject),
-    callBackFunction: (e: string) => void;
+    brainstormButton: () => void,
 }
 
-/**
- * 
- * @param {*} chat The chat object to be displayed 
- * @returns The chat room window of the application
- */
 function ChatRoomWindow(props: ChatRoomWindowProps) {
-
     const type = 'id' in props.chat ? "ChatRoom List" : "Direct Message List";
     const chatId = 'id' in props.chat ? props.chat.id : props.chat.user2.userId;
     const chatHeader = 'title' in props.chat ? props.chat.title : props.chat.user2.firstName + " " + props.chat.user2.lastName;
@@ -22,7 +16,7 @@ function ChatRoomWindow(props: ChatRoomWindowProps) {
     const memberList = 'members' in props.chat ? props.chat.members : null;
 
     return (
-        <div className='WindowContainer' style={props.chat === null ? { display: "none" } : { display: "flex" }}>
+        <div className='WindowContainer'>
             <div className='MsgContainer' style={type === "Direct Message List" ? { width: "100%" } : {}}>
                 <div className='ChatHeader'>
                     <h1 className='ChatTitle'>
@@ -31,7 +25,7 @@ function ChatRoomWindow(props: ChatRoomWindowProps) {
                     <h2 className='RoomCode' style={type === "Direct Message List" ? { display: "none" } : { display: "flex" }}>
                         Room Code: {joinCode}
                     </h2>
-                    <a onClick={() => props.callBackFunction("flex")} style={type === "Direct Message List" ? { display: "none" } : { display: "flex" }}>BrainStorm Session</a>
+                    <a onClick={() => props.brainstormButton()} style={type === "Direct Message List" ? { display: "none" } : { display: "flex" }}>Create BrainStorm Session</a>
                 </div>
                 <div className='MsgSection'>
                     <MessageWindow chatId={chatId} chatType={type} />
