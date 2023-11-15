@@ -35,6 +35,7 @@ export type chatRoomObject = {
 
 export type chatRoomMessageObject = {
     fromUserInfo: userInfoObject,
+    toUserInfo?: userInfoObject,
     chatRoomId: string,
     message: string,
     timestamp: string,
