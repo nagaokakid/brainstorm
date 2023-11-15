@@ -3,7 +3,7 @@ import ApiService from '../services/ApiService';
 import { useEffect, useState } from 'react';
 
 interface CreateRoomCustomizeProps {
-    style: { display: string }
+    style: { display: string },
 }
 
 function CreateRoomCustomize(props: CreateRoomCustomizeProps) {
@@ -32,8 +32,7 @@ function CreateRoomCustomize(props: CreateRoomCustomizeProps) {
             (document.getElementById('chatRoomName') as HTMLInputElement).value = '';
             (document.getElementById('description') as HTMLInputElement).value = '';
             setStyle({ display: "none" });
-        }
-        else {
+        } else {
             setErrorMsg("Please enter a chat room name");
             setErrorDisplay({ display: "block" });
         }
@@ -41,7 +40,7 @@ function CreateRoomCustomize(props: CreateRoomCustomizeProps) {
 
     useEffect(() => {
         setStyle(props.style);
-    }, [props.style])
+    }, [props.style]);
 
     return (
         <div className='OptionContainer' style={style} onClick={() => setStyle({ display: "none" })}>

@@ -20,3 +20,9 @@
     height: 50%;
     border-radius: 10px;
 }
+
+.CreateBrainStormCustomizeWindow .BSinfoWindow .ErrorMsg {
+    color: red;
+    font-size: 20px;
+    margin-bottom: 10px;
+}
