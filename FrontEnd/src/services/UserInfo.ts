@@ -88,6 +88,15 @@ class UserInfo {
     }
 
     /**
+     * Get the chat room member list
+     * @param chatRoomId The chat room id
+     * @returns The member list
+     */
+    static getMemberList(chatRoomId: string) {
+        return this.getChatRoomsList().find(chatRoom => chatRoom.id === chatRoomId)?.members ?? [];
+    }
+
+    /**
      * Get the direct message list from the user object
      * @returns The direct message list
      */
