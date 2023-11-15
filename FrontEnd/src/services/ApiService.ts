@@ -1,6 +1,7 @@
 import UserInfo from "./UserInfo";
 import SignalRChatRoom from "./ChatRoomConnection";
 import SignalRDirect from "./DirectMessageConnection";
+import Idea from "../models/Idea";
 
 type chatRoomObject = {
     id: string;
@@ -31,6 +32,7 @@ class ApiService {
             .then(async (response) => {
                 if (response.ok) {
                     UserInfo.loginRegisterResponse = await response.json();
+                    UserInfo.setupUser();
                     sessionStorage.setItem("token", UserInfo.getToken());
                     await this.connectChatRooms();
                     return true;
@@ -40,7 +42,7 @@ class ApiService {
             })
             .catch((error) => {
                 console.log(error);
-                return false;
+                return null;
             });
 
         return resp;
@@ -68,6 +70,7 @@ class ApiService {
             .then(async (response) => {
                 if (response.ok) {
                     UserInfo.loginRegisterResponse = await response.json();
+                    UserInfo.setupUser();
                     sessionStorage.setItem("token", UserInfo.getToken());
                     return true;
                 } else {
@@ -76,7 +79,7 @@ class ApiService {
             })
             .catch((error) => {
                 console.log(error);
-                return false;
+                return null;
             });
 
         return resp;
@@ -117,6 +120,11 @@ class ApiService {
         return resp;
     }
 
+    /**
+     * 
+     * @param joinCode The join code of the chatroom
+     * @returns 
+     */
     async IsJoinCodeValid(joinCode: string) {
         const resp = await fetch(UserInfo.BaseURL + "api/chatroom/" + joinCode, {
             method: "GET",
@@ -161,7 +169,7 @@ class ApiService {
      * Set all the call back functions for the SignalR
      * @param {*} callback A function that will be called when a message is received
      */
-    async buildCallBack(Callback: (type: number) => void) {
+    async buildCallBack(Callback: (type: number, bsid?: string) => void) {
         await SignalRDirect.getInstance().then((value) =>
             value.setReceiveDirectMessageCallback(() => {
                 console.log("----> Receive direct message callback");
@@ -169,9 +177,9 @@ class ApiService {
             })
         );
         await SignalRChatRoom.getInstance().then((value) =>
-            value.setReceiveChatRoomMessageCallback(() => {
+            value.setReceiveChatRoomMessageCallback((bsid?: string) => {
                 console.log("----> Receive chatroom message callback");
-                Callback(1);
+                Callback(1, bsid);
             })
         );
         await SignalRChatRoom.getInstance().then((value) =>
@@ -185,6 +193,61 @@ class ApiService {
                 console.log("----> Receive chatroom member callback");
                 Callback(3);
             })
+        );
+        await SignalRChatRoom.getInstance().then((value) =>
+            value.setUserJoinedBrainstormSessionCallback((id) => {
+                console.log("----> Receive BS Join Info message callback");
+                Callback(5, id);
+            })
+        );
+        await SignalRChatRoom.getInstance().then((value) =>
+            value.setBrainstormSessionAlreadyStartedErrorCallback(() => {
+                console.log("----> Receive BS unable to join message callback");
+                Callback(6);
+            })
+        );
+    }
+
+    async buildBSCallBack(Callback: (type: number, ideas?: Idea[]) => void) {
+        await SignalRChatRoom.getInstance().then((value) =>
+            value.setBrainstormSessionStartedCallback(() => {
+                console.log("----> Receive BS started message callback");
+                Callback(1);
+            })
+        );
+
+        await SignalRChatRoom.getInstance().then((value) =>
+            value.setBrainstormSessionEndedCallback(() => {
+                console.log("----> Receive BS ended message callback");
+                Callback(2);
+            })
+        );
+
+        await SignalRChatRoom.getInstance().then((value) =>
+            value.setReceiveAllIdeasCallback((id: string, ideas: Idea[]) => {
+                console.log("----> Receive BS idea receive message callback");
+                Callback(3, ideas);
+            })
+        );
+
+        await SignalRChatRoom.getInstance().then((value) =>
+            value.setReceiveVoteResultsCallback((id: string, ideas: Idea[]) => {
+                console.log("----> Receive BS vote results message callback");
+                Callback(4, ideas);
+            })
+        );
+
+        await SignalRChatRoom.getInstance().then((value) =>
+            value.setSendVotesCallback(() => {
+                console.log("----> Receive BS send vote message callback");
+                Callback(5);
+            })
+        );
+    }
+
+    async leaveBSSession() {
+        await SignalRChatRoom.getInstance().then((value) =>
+            value.removeBSCallBack()
         );
     }
 }

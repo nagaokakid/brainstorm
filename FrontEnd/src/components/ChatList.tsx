@@ -1,6 +1,7 @@
 import "../styles/ChatList.css";
 import UserInfo from "../services/UserInfo";
 import CreateRoomCustomize from "./CreateRoomCustomize";
+import CreateBrainStormCustomize from "./CreateBrainStormCustomize";
 import { chatRoomObject, directMessageObject } from "../services/TypesDefine";
 import { lazy, useState, Suspense, useEffect } from "react";
 
@@ -19,10 +20,13 @@ function ChatList(props: ChatListProps) {
     const [chatList, setChatList] = useState<(chatRoomObject | directMessageObject)[]>([]);
 
     // Track the current selected chat
-    const [selectedChat, setSelectedChat] = useState<null | chatRoomObject | directMessageObject>(null);
+    const [selectedChat, setSelectedChat] = useState<chatRoomObject | directMessageObject | null>(null);
 
     // Set the default display of the create chat room option to be hidden
     const [display, setDisplay] = useState("none");
+
+    // Set the default display of the create brainstorm option to be hidden
+    const [displayBrainstorm, setDisplayBrainstorm] = useState("none");
 
     // Lazy load the chat room window component
     const ChatRoomWindow = lazy(() => import("./ChatRoomWindow"));
@@ -43,12 +47,16 @@ function ChatList(props: ChatListProps) {
         }
     }
 
+    // Set the display of the create brainstorm option
+    const handleCreateBrainstormButton = (e: string) => {
+        setDisplayBrainstorm(e)
+    }
+
     useEffect(() => {
         if (props.chatType === "Direct Message List") {
             console.log("----> Displaying direct messages list");
             setChatList(UserInfo.getDirectMessagesList());
-        }
-        else if (props.chatType === "ChatRoom List") {
+        } else if (props.chatType === "ChatRoom List") {
             console.log("----> Displaying chat rooms list");
             setChatList(UserInfo.getChatRoomsList());
         }
@@ -59,7 +67,7 @@ function ChatList(props: ChatListProps) {
             <div className="chat-list">
                 <h3 className="ChatListTitle">{props.chatType}</h3>
                 <div className="search-bar">
-                    <input type="text" placeholder="Search Chats" />
+                    {/* <input type="text" placeholder="Search Chats" /> */}
                 </div>
                 <div className="chats">
                     {chatList.map((chat, index) => (
@@ -82,11 +90,12 @@ function ChatList(props: ChatListProps) {
             <div className="ChatWindowContainer">
                 {selectedChat && (
                     <Suspense fallback={"Loading...."}>
-                        <ChatRoomWindow chat={selectedChat} />
+                        <ChatRoomWindow chat={selectedChat} callBackFunction={handleCreateBrainstormButton} />
                     </Suspense>
                 )}
             </div>
             <CreateRoomCustomize style={display} callBackFunction={handleCreateRoomButton} />
+            <CreateBrainStormCustomize style={displayBrainstorm} chat={selectedChat} callBackFunction={handleCreateBrainstormButton} />
         </div>
     );
 }

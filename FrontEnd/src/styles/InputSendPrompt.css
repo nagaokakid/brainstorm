@@ -1,0 +1,28 @@
+.InputSendContainer {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 5%;
+}
+
+.InputSendContainer .InputSection {
+    position: relative;
+    width: 70%;
+    height: 100%;
+    margin-left: 10%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.InputSendContainer .SendSection {
+    position: relative;
+    width: 20%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}

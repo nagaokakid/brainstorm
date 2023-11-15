@@ -22,7 +22,11 @@ class SignalRDirect {
             .build();
     }
 
+    /**
+     * This will reset the connection to the direct message
+     */
     async reset(){
+        this.removeCallBack();
         await this.connection.stop();
         SignalRDirect.instance = null;
     }
@@ -81,6 +85,13 @@ class SignalRDirect {
         console.log("----> Getting Direct Message History");
         await this.connection.send("GetChatHistory", fromId, toId)
             .catch(() => console.log("----> Get Direct Message History failed"));
+    }
+
+    /**
+     * This is the function that stop receive callback from backend.
+     */
+    removeCallBack() {
+        this.connection.off("ReceiveDirectMessage");
     }
 
     /**

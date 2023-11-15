@@ -1,5 +1,6 @@
 import '../styles/GuestJoin.css';
 import ApiService from '../services/ApiService';
+import UserInfo from '../services/UserInfo';
 import 'mdb-react-ui-kit/dist/css/mdb.min.css';
 import {
     MDBInput,
@@ -7,14 +8,16 @@ import {
 } from 'mdb-react-ui-kit'
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import UserInfo from '../services/UserInfo';
 
 function GuestJoin() {
 
     const navigate = useNavigate()
-
     const [input, setInput] = useState({ code: '' })
 
+    /**
+     * This will keep track the input and update the state
+     * @param value This will handle the change of the input
+     */
     function handleChange(value: React.ChangeEvent<HTMLInputElement>) {
         const id = value.target.id;
         const code = value.target.value;
@@ -24,14 +27,11 @@ function GuestJoin() {
     //This will verify the input and handle the request to the server
     async function RequestHandle() {
         const button = document.getElementById('join') as HTMLButtonElement;
-
-        // Create an Object of the apiService
-        const apiService = ApiService
         const code = input.code;
 
         if (code) {
             button.disabled = true;
-            apiService.IsJoinCodeValid(code).then((response) => {
+            ApiService.IsJoinCodeValid(code).then((response) => {
                 if (response) {
                     UserInfo.loginRegisterResponse =
                     {
@@ -46,6 +46,7 @@ function GuestJoin() {
                         chatRooms: [],
                         directMessages: []
                     }
+                    UserInfo.setupUser();
                     navigate('/main')
                 }
                 else {
@@ -53,8 +54,7 @@ function GuestJoin() {
                     alert("Invalid Code")
                 }
             });
-        }
-        else {
+        } else {
             alert("Please complete the form");
         }
     }
