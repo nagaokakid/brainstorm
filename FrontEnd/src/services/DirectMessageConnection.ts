@@ -71,7 +71,7 @@ class SignalRDirect {
      */
     async join() {
         console.log("----> Joining Direct Messaging");
-        const user = UserInfo.getCurrentFriendlyUserInfo();
+        const user = UserInfo.getUserInfo();
         await this.connection.send("JoinDirect", user.userId, user.firstName, user.lastName)
             .catch(() => console.log("----> Join direct message failed"));
     }
