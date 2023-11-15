@@ -104,8 +104,8 @@ class SignalRChatRoom {
             });
     }
 
-    async createBrainstormSession(title: string, description: string, chatRoomId: string) {
-        const result = await this.connection.send("CreateBrainstormSession", title, description, chatRoomId, UserInfo.getUserId(), UserInfo.getFirstName(), UserInfo.getLastName()).then(() => {
+    async createBrainstormSession(title: string, description: string, timer: string, chatRoomId: string) {
+        const result = await this.connection.send("CreateBrainstormSession", title, description, timer , chatRoomId, UserInfo.getUserId(), UserInfo.getFirstName(), UserInfo.getLastName()).then(() => {
             console.log("----> Create brainstorm session success");
             return true;
         }).catch(() => {
@@ -238,4 +238,4 @@ class SignalRChatRoom {
     }
 }
 
-export default SignalRChatRoom
+export default SignalRChatRoom;
