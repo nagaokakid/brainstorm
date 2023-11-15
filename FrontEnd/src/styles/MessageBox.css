@@ -6,7 +6,7 @@
     height: auto;
     justify-content: start;
     pointer-events: none;
-    z-index: 1000;
+    z-index: 10;
 }
 
 .MessageContainer p 
@@ -17,4 +17,9 @@
     border-radius: 1rem;
     background-color: blueviolet;
     pointer-events: auto;
+}
+
+.MessageContainer button {
+    width: auto;
+    height: auto;
 }
