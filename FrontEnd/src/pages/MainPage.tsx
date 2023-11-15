@@ -2,7 +2,7 @@
 import "../styles/MainPage.css";
 import HeaderNavBar from "../components/HeaderNavBar";
 import NavigationBar from "../components/NavigationBar";
-import ChatList from "../components/ChatList";
+import TabContent from "../components/ChatList";
 import ApiService from "../services/ApiService";
 import UserInfo from "../services/UserInfo";
 import SignalRChatRoom from "../services/ChatRoomConnection";
@@ -92,7 +92,7 @@ function MainPage() {
             </div>
             <div className="main-page-container">
                 <NavigationBar selectFunction={handleSelectedTab} />
-                <ChatList displayTab={currentTab} />
+                <TabContent displayTab={currentTab} />
             </div>
             <div className="NoticeClass" style={{ display: display }}>
                 <div><h1>{noticeMsg}</h1></div>
