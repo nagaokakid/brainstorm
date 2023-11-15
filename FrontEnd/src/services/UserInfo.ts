@@ -10,7 +10,7 @@ class UserInfo {
 
     constructor() { }
 
-    static BaseURL = "https://localhost:44363/"
+    static BaseURL = "http://localhost:5135/"
 
     static loginRegisterResponse =
         {
