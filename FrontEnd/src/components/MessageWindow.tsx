@@ -3,31 +3,22 @@ import "../styles/MessageWindow.css";
 import MessageBox from "./MessageBox";
 import UserInfo from "../services/UserInfo";
 import MessageInput from "./MessageInput";
+import { brainstormDTO, chatRoomMessageObject } from "../models/TypesDefine";
 import { useDataContext } from "../contexts/DataContext";
 import { useEffect, useState } from "react";
-import { brainstormDTO, chatRoomMessageObject } from "../models/TypesDefine";
 
 interface MessageWindowProps {
     chatId: string;
     chatType: string;
 }
 
-/**
- * 
- * @param {*} chatId The message's id history to be displayed
- * @param {*} chatType The type of chat list to be displayed; either "Direct Message List" or "ChatRoom List"
- * @returns 
- */
 function MessageWindow(props: MessageWindowProps) {
-
     const context = useDataContext();
     const msg = context[0];
-
-    // Set the message to the display
-    const [messages, setMessages] = useState<[] | chatRoomMessageObject[] | { message: string, timestamp: string, brainstormDTO?: brainstormDTO }[]>([]);
+    const [messages, setMessages] = useState([] as (chatRoomMessageObject | { message: string, timestamp: string, brainstormDTO?: brainstormDTO })[]); // Set the message to the display
 
     useEffect(() => {
-        setMessages(UserInfo.getListHistory(props.chatId, props.chatType));
+        setMessages(UserInfo.getMessageHistory(props.chatId, props.chatType));
     }, [props.chatId, msg]);
 
     return (
@@ -36,7 +27,7 @@ function MessageWindow(props: MessageWindowProps) {
                 {messages.map((e, index) => (
                     'brainstorm' in e ?
                         <MessageBox message={e.message} key={index} user={'fromUserInfo' in e ? [e.fromUserInfo.userId, e.fromUserInfo.firstName] : []} isBrainstorm={true} bsId={e.brainstorm?.sessionId} /> :
-                        <MessageBox message={e.message} key={index} user={'fromUserInfo' in e ? [e.fromUserInfo.userId, e.fromUserInfo.firstName] : []} isBrainstorm={false}/>
+                        <MessageBox message={e.message} key={index} user={'fromUserInfo' in e ? [e.fromUserInfo.userId, e.fromUserInfo.firstName] : []} isBrainstorm={false} />
                 ))}
             </div>
             <div className='InputSection'>
