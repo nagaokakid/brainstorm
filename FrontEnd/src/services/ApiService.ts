@@ -2,7 +2,7 @@ import UserInfo from "./UserInfo";
 import SignalRChatRoom from "./ChatRoomConnection";
 import SignalRDirect from "./DirectMessageConnection";
 import Idea from "../models/Idea";
-import { loginObject, chatRoomObject } from "../models/TypesDefine";
+import { loginObject, chatRoomObject, newDirectMessageObject, chatRoomMessageObject } from "../models/TypesDefine";
 
 class ApiService {
     /**
@@ -148,7 +148,6 @@ class ApiService {
 
         // Build connection only if there are chatrooms
         if (chatRooms) {
-            console.log("----> Connecting to chatrooms");
             for (let index = 0; index < chatRooms.length; index++) {
                 const element = chatRooms[index];
                 await connection.joinChatRoom(element.joinCode, "Second");
@@ -162,48 +161,44 @@ class ApiService {
      */
     async connectChatRoom(joinCode: string) {
         const connection = await SignalRChatRoom.getInstance();
-        console.log("----> Connecting to chatroom");
         await connection.joinChatRoom(joinCode, "Second");
     }
 
     /**
      * Set all the call back functions for the SignalR
-     * @param {*} callback A function that will be called when a message is received
+     * @param {*} Callback A function that will be called when a message is received
      */
-    async buildCallBack(Callback: (type: number, bsid?: string) => void) {
+    async buildCallBack(Callback: (type: number, bsid?: string, msgObject?: (chatRoomMessageObject | newDirectMessageObject)) => void) {
         await SignalRDirect.getInstance().then((value) =>
-            value.setReceiveDirectMessageCallback(() => {
+            value.setReceiveDirectMessageCallback((msgObject: newDirectMessageObject) => {
                 console.log("----> Receive direct message callback");
-                Callback(2);
+                Callback(2, undefined, msgObject);
             })
         );
         await SignalRChatRoom.getInstance().then((value) =>
-            value.setReceiveChatRoomMessageCallback((bsid?: string) => {
-                console.log("----> Receive chatroom message callback");
-                Callback(1, bsid);
+            value.setReceiveChatRoomMessageCallback((bsid: string | undefined, msgObject: chatRoomMessageObject) => {
+                Callback(1, bsid, msgObject);
             })
         );
         await SignalRChatRoom.getInstance().then((value) =>
             value.setReceiveChatRoomInfoCallback(() => {
-                console.log("----> Receive chatroom info callback");
                 Callback(4);
             })
         );
         await SignalRChatRoom.getInstance().then((value) =>
             value.setReceiveNewMemberCallback(() => {
-                console.log("----> Receive chatroom member callback");
                 Callback(3);
             })
         );
         await SignalRChatRoom.getInstance().then((value) =>
             value.setUserJoinedBrainstormSessionCallback((id) => {
-                console.log("----> Receive BS Join Info message callback");
+                console.log("----> Receive BS join message callback");
+                
                 Callback(5, id);
             })
         );
         await SignalRChatRoom.getInstance().then((value) =>
             value.setBrainstormSessionAlreadyStartedErrorCallback(() => {
-                console.log("----> Receive BS unable to join message callback");
                 Callback(6);
             })
         );
@@ -246,10 +241,14 @@ class ApiService {
         );
     }
 
-    async leaveBSSession() {
-        await SignalRChatRoom.getInstance().then((value) =>
-            value.removeBSCallBack()
-        );
+    async leaveBSSession(creator: string, sessionId: string) {
+        await SignalRChatRoom.getInstance().then(async (value) => {
+            
+            if (UserInfo.isHost(creator)) {
+                await value.removeSession(sessionId);
+            }
+            value.removeBSCallBack();
+        });
     }
 }
 

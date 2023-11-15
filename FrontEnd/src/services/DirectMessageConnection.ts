@@ -49,10 +49,10 @@ class SignalRDirect {
      * Set a callback function that will be called when a direct message is received
      * @param {*} callBackFunction A function that will be called when a direct message is received
      */
-    setReceiveDirectMessageCallback(callBackFunction: () => void) {
+    setReceiveDirectMessageCallback(callBackFunction: (msg: newDirectMessageObject) => void) {
         this.connection.on("ReceiveDirectMessage", (msg: newDirectMessageObject) => {
             UserInfo.addNewDirectMessage(msg);
-            callBackFunction();
+            callBackFunction(msg);
         });
     }
 

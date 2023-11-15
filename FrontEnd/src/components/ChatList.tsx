@@ -1,10 +1,11 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import "../styles/ChatList.css";
 import UserInfo from "../services/UserInfo";
 import ApiService from "../services/ApiService";
 import SignalRChatRoom from "../services/ChatRoomConnection";
 import CreateRoomCustomize from "./CreateRoomCustomize";
 import CreateBrainStormCustomize from "./CreateBrainStormCustomize";
-import { chatRoomObject, directMessageObject } from "../models/TypesDefine";
+import { chatRoomMessageObject, chatRoomObject, directMessageObject, newDirectMessageObject } from "../models/TypesDefine";
 import { DataContext } from "../contexts/DataContext";
 import { lazy, useState, Suspense, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
@@ -21,7 +22,7 @@ function ChatList(props: ChatListProps) {
     const [selectedChat, setSelectedChat] = useState({} as (chatRoomObject | directMessageObject)); // Track the current selected chat
     const [showCreateChatRoom, setShowCreateChatRoom] = useState({ display: "none" }); // Set the default display of the create chat room option to be hidden
     const [showCreateBrainstorm, setShowCreateBrainstorm] = useState({ display: "none" }); // Set the default display of the create brainstorm option to be hidden
-    const [trackCreate, setTrackCreate] = useState(false); // Track the create chat room option
+    const [forceRender, setForceRender] = useState(false); // Force the component to re-render
     const ChatRoomWindow = lazy(() => import("./ChatRoomWindow")); // Lazy load the chat room window component
 
     /**
@@ -47,20 +48,34 @@ function ChatList(props: ChatListProps) {
      * Set the display of the create brainstorm option
      */
     function handleCreateBrainstormButton() {
-        setShowCreateBrainstorm(prev => { return { ...prev, display: "flex" } });
+        if (UserInfo.getUserInfo().isGuest) {
+            props.noticeFunction("Guest cannot create brainstorm");
+        } else {
+            setShowCreateBrainstorm(prev => { return { ...prev, display: "flex" } });
+        }
     }
 
     useEffect(() => {
         if (sessionStorage.getItem("callBack") === null) {
-            const render = (type: number, bsid?: string) => {
+            const render = (type: number, bsid?: string, msgObject?: (chatRoomMessageObject | newDirectMessageObject)) => {
                 if (context === undefined) {
                     throw new Error('useDataContext must be used within a DataContext');
                 } else if (type === 1 || type === 2 || type === 3 || type === 4) {
-                    const updateData = context[1];
-                    updateData(true)
+
+                    if (type === 1 || type === 2) {
+                        const updateMsg = context[3];
+                        updateMsg(msgObject!);
+                    } else if (type === 4) {
+                        setForceRender(prev => !prev);
+                    } else if (type === 3) {
+                        const updateData = context[2];
+                        updateData(true);
+                    }
                 } else if (type === 5) {
                     navigate("/BrainStorm", { state: { bsid } });
                 } else if (type === 6) {
+                    console.log("The session has ended.");
+                    
                     props.noticeFunction("The session has ended.");
                 }
 
@@ -85,9 +100,7 @@ function ChatList(props: ChatListProps) {
         } else if (props.displayTab === "ChatRoom List") {
             setChatList(UserInfo.getChatRoomsList());
         }
-        console.log("test");
-
-    }, [props.displayTab, trackCreate, context]);
+    }, [props.displayTab, context, forceRender]);
 
     return (
         <div className="ChatListContainer">
@@ -121,7 +134,7 @@ function ChatList(props: ChatListProps) {
                     </Suspense>
                 )}
             </div>
-            <CreateRoomCustomize style={showCreateChatRoom} render={setTrackCreate} />
+            <CreateRoomCustomize style={showCreateChatRoom} />
             <CreateBrainStormCustomize style={showCreateBrainstorm} chat={selectedChat} />
         </div>
     );

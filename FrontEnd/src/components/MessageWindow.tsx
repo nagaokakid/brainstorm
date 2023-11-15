@@ -18,16 +18,16 @@ function MessageWindow(props: MessageWindowProps) {
     const [messages, setMessages] = useState([] as (chatRoomMessageObject | { message: string, timestamp: string })[]); // Set the message to the display
 
     useEffect(() => {
-        setMessages(UserInfo.getMessageHistory(props.chatId, props.chatType));
-    }, [props.chatId]);
-
-    useEffect(() => {
         if ("chatRoomId" in msg && msg.chatRoomId === props.chatId) {
             setMessages(prev => [...prev, msg]);
         } else if ("toUserInfo" in msg && msg.toUserInfo && msg.toUserInfo?.userId === props.chatId) {
             setMessages(prev => [...prev, msg]);
         }
     }, [msg]);
+
+    useEffect(() => {
+        setMessages(UserInfo.getMessageHistory(props.chatId, props.chatType));
+    }, [props.chatId]);
 
     return (
         <div className="MsgWindowContainer">
