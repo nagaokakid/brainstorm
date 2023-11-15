@@ -3,7 +3,7 @@ import "../styles/MessageWindow.css";
 import MessageBox from "./MessageBox";
 import UserInfo from "../services/UserInfo";
 import MessageInput from "./MessageInput";
-import { brainstormDTO, chatRoomMessageObject } from "../models/TypesDefine";
+import { chatRoomMessageObject } from "../models/TypesDefine";
 import { useDataContext } from "../contexts/DataContext";
 import { useEffect, useState } from "react";
 
@@ -14,12 +14,20 @@ interface MessageWindowProps {
 
 function MessageWindow(props: MessageWindowProps) {
     const context = useDataContext();
-    const msg = context[0];
-    const [messages, setMessages] = useState([] as (chatRoomMessageObject | { message: string, timestamp: string, brainstormDTO?: brainstormDTO })[]); // Set the message to the display
+    const msg = context[1];
+    const [messages, setMessages] = useState([] as (chatRoomMessageObject | { message: string, timestamp: string })[]); // Set the message to the display
 
     useEffect(() => {
         setMessages(UserInfo.getMessageHistory(props.chatId, props.chatType));
-    }, [props.chatId, msg]);
+    }, [props.chatId]);
+
+    useEffect(() => {
+        if ("chatRoomId" in msg && msg.chatRoomId === props.chatId) {
+            setMessages(prev => [...prev, msg]);
+        } else if ("toUserInfo" in msg && msg.toUserInfo && msg.toUserInfo?.userId === props.chatId) {
+            setMessages(prev => [...prev, msg]);
+        }
+    }, [msg]);
 
     return (
         <div className="MsgWindowContainer">
