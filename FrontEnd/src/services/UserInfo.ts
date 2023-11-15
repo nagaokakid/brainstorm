@@ -192,6 +192,7 @@ class UserInfo {
      */
     static addNewMember(userInfo: userInfoObject, chatId: string) {
         this.getChatRoomsList().find(chatRoom => chatRoom.id === chatId)?.members.push(userInfo);
+        this.updateUser(true);
     }
 
     /**
@@ -206,6 +207,7 @@ class UserInfo {
         } else {
             list.push(chatRoom);
         }
+        this.updateUser(true);
     }
 
     /**
@@ -214,6 +216,7 @@ class UserInfo {
      * @returns 
      */
     static addNewDirectMessage(newDirectMessage: newDirectMessageObject) {
+console.log(newDirectMessage);
 
         // Create a new message object
         const msg = {
@@ -222,8 +225,10 @@ class UserInfo {
         }
 
         // Search the direct message list to see if there is a direct message object that contains the user
-        const result = this.getDirectMessagesList().find(current => newDirectMessage.toUserInfo.userId === current.user2.userId || newDirectMessage.fromUserInfo.userId === current.user2.userId);
+        const result = this.getDirectMessagesList().find(current => (newDirectMessage.toUserInfo.userId === current.user2.userId || newDirectMessage.fromUserInfo.userId === current.user2.userId));
 
+        console.log(result);
+        
         if (result) { // If there is a direct message object that contains the user, add the new message to the direct message object
             result.directMessages.push(msg);
         } else { // If there is no direct message object that contains the user, create a new direct message object
@@ -232,10 +237,11 @@ class UserInfo {
                 user2: newDirectMessage.toUserInfo.userId === this.getUserId() ? newDirectMessage.fromUserInfo : newDirectMessage.toUserInfo,
                 directMessages: [
                     msg
-                ]
+                ],
             }
             this.getDirectMessagesList().push(newMsgObject);
         }
+        console.log(this.getDirectMessagesList());
         this.updateUser(true);
     }
 
