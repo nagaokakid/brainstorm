@@ -57,7 +57,7 @@ function ChatList(props: ChatListProps) {
 
     useEffect(() => {
         if (sessionStorage.getItem("callBack") === null) {
-            const render = (type: number, bsid?: string, msgObject?: (chatRoomMessageObject | newDirectMessageObject)) => {
+            const render = (type: number, bsid?: string, msgObject?: (chatRoomMessageObject | newDirectMessageObject), userId?: string) => {
                 if (context === undefined) {
                     throw new Error('useDataContext must be used within a DataContext');
                 } else if (type === 1 || type === 2 || type === 3 || type === 4) {
@@ -72,7 +72,9 @@ function ChatList(props: ChatListProps) {
                         updateData(true);
                     }
                 } else if (type === 5) {
-                    navigate("/BrainStorm", { state: { bsid } });
+                    if (userId === UserInfo.getUserId()) {
+                        navigate("/BrainStorm", { state: { bsid } });
+                    }
                 } else if (type === 6) {
                     console.log("The session has ended.");
 
