@@ -29,7 +29,7 @@ function CreateBrainStormCustomize(props: CreateBrainStormCustomizeProps) {
         const button = document.getElementById('createBs') as HTMLButtonElement;
         const name = (document.getElementById('BSname') as HTMLInputElement).value;
         const description = (document.getElementById('BSdescription') as HTMLInputElement).value;
-        const timer = (document.getElementById('BStimer') as HTMLInputElement).value;
+        // const timer = (document.getElementById('BStimer') as HTMLInputElement).value;
 
         button.disabled = true;
         if (name === "" || description === "") {
@@ -43,7 +43,7 @@ function CreateBrainStormCustomize(props: CreateBrainStormCustomizeProps) {
 
 
             await SignalRChatRoom.getInstance().then((value) => {
-                value.createBrainstormSession(name, description, timer , props.chat ? ("id" in props.chat ? props.chat.id : "") : "").then((value) => {
+                value.createBrainstormSession(name, description, props.chat ? ("id" in props.chat ? props.chat.id : "") : "").then((value) => {
                     if (value) {
                         setStyle({ display: "none" });
                     } else {
