@@ -1,0 +1,24 @@
+.IdeaBox {
+    width: auto;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+}
+
+.IdeaBox .IdeaThought {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.IdeaBox .IdeaButton {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}

@@ -1,0 +1,17 @@
+.OnlineIdeasContainer {
+    position: relative;
+    width: 100%;
+    height: 95%;
+    padding: 50px;
+    overflow-y: auto;
+}
+
+.OnlineIdeasContainer .Idea {
+    position: relative;
+    width: 100%;
+    height: auto;
+    border: 1px solid black;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    display: block;
+}

@@ -3,41 +3,43 @@ import "../styles/MessageWindow.css";
 import MessageBox from "./MessageBox";
 import UserInfo from "../services/UserInfo";
 import MessageInput from "./MessageInput";
+import { chatRoomMessageObject } from "../models/TypesDefine";
 import { useDataContext } from "../contexts/DataContext";
 import { useEffect, useState } from "react";
-import { chatRoomMessageObject } from "../services/TypesDefine";
 
 interface MessageWindowProps {
     chatId: string;
     chatType: string;
 }
 
-/**
- * 
- * @param {*} chatId The message's id history to be displayed
- * @param {*} chatType The type of chat list to be displayed; either "Direct Message List" or "ChatRoom List"
- * @returns 
- */
 function MessageWindow(props: MessageWindowProps) {
-
     const context = useDataContext();
-
-    const msg = context[0];
-    console.log("----> MessageWindow");
-
-
-    // Set the message to the display
-    const [messages, setMessages] = useState<[] | chatRoomMessageObject[] | { message: string, timestamp: string }[]>([]);
+    const msg = context[1];
+    const [messages, setMessages] = useState([] as (chatRoomMessageObject | { message: string, timestamp: string })[]); // Set the message to the display
 
     useEffect(() => {
-        setMessages(UserInfo.getListHistory(props.chatId, props.chatType));
-    }, [props.chatId, msg]);
+        if ("chatRoomId" in msg && msg.chatRoomId === props.chatId) {
+            setMessages(prev => [...prev, msg]);
+        } else if ("toUserInfo" in msg && msg.toUserInfo) {
+            const check1 = msg.toUserInfo.userId === UserInfo.getUserId() && msg.fromUserInfo.userId === props.chatId;
+            const check2 = msg.toUserInfo.userId === props.chatId && msg.fromUserInfo.userId === UserInfo.getUserId();
+            if (check1 || check2) {
+                setMessages(prev => [...prev, msg]);
+            }
+        }
+    }, [msg]);
+
+    useEffect(() => {
+        setMessages(UserInfo.getMessageHistory(props.chatId, props.chatType));
+    }, [props.chatId]);
 
     return (
         <div className="MsgWindowContainer">
             <div className="MsgSection">
                 {messages.map((e, index) => (
-                    <MessageBox message={e.message} key={index} user={'fromUserInfo' in e ? e.fromUserInfo.userId : null} />
+                    'brainstorm' in e ?
+                        <MessageBox message={e.message} key={index} user={'fromUserInfo' in e ? [e.fromUserInfo.userId, e.fromUserInfo.firstName] : []} isBrainstorm={true} bsId={e.brainstorm?.sessionId} /> :
+                        <MessageBox message={e.message} key={index} user={'fromUserInfo' in e ? [e.fromUserInfo.userId, e.fromUserInfo.firstName] : []} isBrainstorm={false} />
                 ))}
             </div>
             <div className='InputSection'>

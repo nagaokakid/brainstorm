@@ -1,0 +1,9 @@
+services:
+  api:
+    image: brainstorm4350/brainstorm
+    ports:
+      - "5135:80"
+  ui:
+    image: brainstorm4350/brainstorm_frontend
+    ports:
+      - "8006:80"

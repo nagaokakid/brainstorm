@@ -2,9 +2,24 @@
 {
     position: relative;
     display: flex;
-    width: 100%;
-    justify-content: start;
+    width: auto;
     height: auto;
+    justify-content: start;
     pointer-events: none;
-    z-index: 1000;
+    z-index: 10;
+}
+
+.MessageContainer p 
+{
+    font-weight: 500;
+    color: #fff;
+    padding: 5px;
+    border-radius: 1rem;
+    background-color: blueviolet;
+    pointer-events: auto;
+}
+
+.MessageContainer button {
+    width: auto;
+    height: auto;
 }

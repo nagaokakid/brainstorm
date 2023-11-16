@@ -24,3 +24,8 @@
     list-style: none;
     padding: 0;
   }
+
+  .member-list .online-members li:hover {
+    background-color: #9e9d9d;
+    transition: 0.5s;
+  }

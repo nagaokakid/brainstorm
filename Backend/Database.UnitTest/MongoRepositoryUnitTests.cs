@@ -1,8 +1,5 @@
-﻿using System.Text.Json;
-using Moq;
-using Database.MongoDB;
+﻿using Database.MongoDB;
 using Database.Data;
-using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace Database.UnitTest
@@ -10,7 +7,7 @@ namespace Database.UnitTest
     [TestFixture]
     public class MongoRepositoryUnitTests
     {
-        private const string CONNECTION_STRING = "mongodb+srv://comp4350:O954Xbw6kQ488jym@brainstorm.aj9h1fd.mongodb.net/?retryWrites=true&w=majority";
+        private const string CONNECTION_STRING = "mongodb+srv://comp4350:O954Xbw6kQ488jym@brainstorm.btgsxmb.mongodb.net/?retryWrites=true&w=majority";
         private const string DATABASE_NAME = "test";
 
         [SetUp]

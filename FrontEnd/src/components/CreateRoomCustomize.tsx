@@ -1,73 +1,65 @@
 import '../styles/CreateRoomCustomize.css'
+import ApiService from '../services/ApiService';
+import { useEffect, useState } from 'react';
 
 interface CreateRoomCustomizeProps {
-    callBackFunction: (e: string) => void;
-    style: string;
+    style: { display: string },
+    render: React.Dispatch<React.SetStateAction<boolean>>,
 }
 
-/**
- * 
- * @param {*} callBackFunction The function to be called when an option is selected
- * @param {*} style The style of the component
- * @returns 
- */
 function CreateRoomCustomize(props: CreateRoomCustomizeProps) {
-    // Set the component to be hidden and pass back the selected option
-    // function handleOptionClick(e: string) {
-    //     props.callBackFunction(e)
-    // }
+    const [style, setStyle] = useState({} as { display: string }); // Set the style of the component
+    const [errorMsg, setErrorMsg] = useState("" as string); // Set the error message
+    const [errorDisplay, setErrorDisplay] = useState({ display: "none" }); // Set the error display
 
-    // // Prevent the child from being clicked
-    // function handleChildClick(e) {
-    //     e.stopPropagation();
-    // }
+    /**
+     * Prevent the child from being clicked
+     * @param e 
+     */
+    function handleChildClick(e: React.MouseEvent<HTMLDivElement>) {
+        e.stopPropagation();
+    }
 
-    // async function handleCreateRoomButton()
-    // {
-    //     var chatRoomName = prompt("Please enter the Chat room name");
+    /**
+     * Handle the create room button
+     */
+    async function handleCreateRoomButton() {
+        setErrorDisplay({ display: "none" });
+        const chatRoomName = (document.getElementById('chatRoomName') as HTMLInputElement).value;
+        const description = (document.getElementById('description') as HTMLInputElement).value;
 
-    //     if (chatRoomName)
-    //     {
-    //         handleOptionClick("none")
-    //         const apiService = new ApiService();
-    //         await apiService.CreateChatRoom(chatRoomName, "description")
-    //         setChatRoomInfo(!chatRoomInfo);
-    //     }
-    // }
+        if (chatRoomName) {
+            await ApiService.CreateChatRoom(chatRoomName, description);
+            (document.getElementById('chatRoomName') as HTMLInputElement).value = '';
+            (document.getElementById('description') as HTMLInputElement).value = '';
+            setStyle({ display: "none" });
+            props.render(prev => !prev);
+        } else {
+            setErrorMsg("Please enter a chat room name");
+            setErrorDisplay({ display: "block" });
+        }
+    }
 
-    // /**
-    //  * Join a chat room
-    //  */
-    // async function handleJoinChatRoom()
-    // {
-    //     var input = prompt("Enter the chat room code");
-
-    //     if (input)
-    //     {
-    //         SignalRChatRoom.getInstance().then(async x =>
-    //         {
-    //             await x.joinChatRoom(input, "First", AppInfo.getUserId())
-    //             await x.setReceiveChatRoomInfoCallback((msg) =>
-    //             {
-    //                 console.log("----> Received chat room info: ", msg)
-    //                 setChatRoomInfo(!chatRoomInfo);
-    //             });
-    //         })
-    //     }
-    // }    
+    useEffect(() => {
+        setStyle(props.style);
+    }, [props.style]);
 
     return (
-        <div className='OptionContainer' style={{ display: props.style }}>
-            {/* <div className="btn-group" role="group" aria-label="Basic example" onClick={handleChildClick}>
-                <button type="button" className="btn btn-primary" onClick={() => handleCreateRoomButton()}>
-                    <img className='btn-icon' src={icon1} alt="" />
-                    Create Chat Room
-                </button>
-                <button type="button" className="btn btn-primary" onClick={() => handleJoinChatRoom()}>
-                    <img className='btn-icon' src={icon2} alt="" />
-                    Join a Chat Room
-                </button>
-            </div> */}
+        <div className='OptionContainer' style={style} onClick={() => setStyle({ display: "none" })}>
+            <div className='WindowSection' onClick={handleChildClick}>
+                <div className='WindowSectionTitle'>
+                    <h3 className='WindowSectionTitleText'>Create Chat Room</h3>
+                </div>
+                <div className='WindowSectionContent'>
+                    <div className='WindowSectionContentText'>
+                        <p className='WindowSectionContentText'>Create a chat room to chat with your friends!</p>
+                    </div>
+                    <input type="text" id='chatRoomName' placeholder='Chat Room Name' />
+                    <input type="text" id='description' placeholder='Description' />
+                    <button className='submitButton' onClick={() => handleCreateRoomButton()}>Create</button>
+                </div>
+                <h5 className='ErrorMsg' style={errorDisplay}>{errorMsg}</h5>
+            </div>
         </div>
     );
 }

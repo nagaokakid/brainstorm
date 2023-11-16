@@ -1,18 +1,19 @@
 /* HeaderNavBar.css */
 .header-nav-bar
 {
+  position: relative;
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
   background-color: #0088cc;
   width: 100%;
   min-width: 800px;
   height: 100%;
+  min-height: 50px;
   padding: 0px 10px;
 }
 
-.user-name
+.header-nav-bar .user-name
 {
   position: relative;
   display: flex;
@@ -25,7 +26,76 @@
   color: white;
 }
 
-.nav-icons
+.header-nav-bar .JoinCodeSection
+{
+  padding-left: 20px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  height: 100%;
+  gap: 10px;
+}
+
+.header-nav-bar .JoinCodeSection .JoinCodeInput
+{
+  position: relative;
+  width: 200px;
+  height: 30px;
+  border-radius: 5px;
+  border: none;
+  outline: none;
+  padding: 0px 10px;
+  font-size: 16px;
+}
+
+.header-nav-bar .JoinCodeSection .JoinCodeButton
+{
+  position: relative;
+  width: 50px;
+  height: auto;
+  background-color: #fff;
+  border: none;
+  border-radius: 5px;
+  outline: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.header-nav-bar .JoinCodeSection .JoinCodeButton:hover
+{
+  background-color: black;
+  color: white;
+  transition: 0.5s;
+}
+
+.header-nav-bar .JoinCodeSection .JoinCodeButton:active
+{
+  transition: 0s;
+  background-color: #cc0000;
+  color: white;
+}
+
+.header-nav-bar .JoinCodeSection .ErrorMsg
+{
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  height: 100%;
+  color: #cc0000;
+  font-size: 16px;
+}
+
+.header-nav-bar .UserProfile {
+  position: absolute;
+  right: 0%;
+  color: black;
+}
+
+.header-nav-bar .nav-icons
 {
   position: absolute;
   right: 0%;

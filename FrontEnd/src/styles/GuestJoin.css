@@ -1,0 +1,10 @@
+.GuestCodeContainer
+{
+    padding: 20px;
+}
+
+.GuestCodeContainer .ErrorMsg {
+    color: red;
+    font-size: 12px;
+    margin-top: 10px;
+}
