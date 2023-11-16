@@ -46,7 +46,7 @@ function MemberList(props: MemberListProps) {
     return (
         <div className="member-list">
             <div className="online-members">
-                <h2>Online Members</h2>
+                <h2>Members</h2>
                 <ul>
                     {onlineMembers.map((member, index) => (
                         <li key={index} onClick={() => handleMemberClick(member)}>{member.firstName}</li>
