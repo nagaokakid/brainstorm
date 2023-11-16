@@ -13,13 +13,34 @@
 {
     font-weight: 500;
     color: #fff;
-    padding: 5px;
     border-radius: 1rem;
-    background-color: blueviolet;
+    background-color: #0088cc;
     pointer-events: auto;
+}
+
+.MessageWrapper {
+    padding: 5px;
+    margin: 5px;
+    width: 100px;
+    min-width: 300px;
+    border-radius: 5px;
+    background-color: #0088cc;
+}
+
+.MessageUsername{
+    color: black;
 }
 
 .MessageContainer button {
     width: auto;
     height: auto;
+}
+
+.MessageJoinBS{
+    margin: 5px;
+    padding: 5px;
+    background-color: #016090;
+    color: white;
+    border: none;
+    border-radius: 5px;
 }

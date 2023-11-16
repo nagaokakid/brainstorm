@@ -34,7 +34,7 @@ function ChatRoomWindow(props: ChatRoomWindowProps) {
                         {chatHeader}
                     </h1>
                     <h2 className='RoomCode' style={type === "Direct Message List" ? { display: "none" } : { display: "flex" }}>
-                        Room Code: {joinCode}
+                        Code: {joinCode}
                     </h2>
                     <a onClick={() => props.brainstormButton()} style={type === "Direct Message List" ? { display: "none" } : { display: "flex" }}>Create BrainStorm Session</a>
                 </div>
