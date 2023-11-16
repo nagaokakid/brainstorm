@@ -1,4 +1,3 @@
-import React from "react";
 import Idea from "../../models/Idea";
 import VoteResult from "./VoteResult";
 
