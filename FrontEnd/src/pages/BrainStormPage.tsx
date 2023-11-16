@@ -11,7 +11,7 @@ import UserInfo from '../services/UserInfo';
 import Idea from '../models/Idea';
 import SignalRChatRoom from '../services/ChatRoomConnection';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 function BrainStormPage() {
     const Navigate = useNavigate();
@@ -28,8 +28,8 @@ function BrainStormPage() {
     const sessionTitle = bs_Info ? bs_Info.title : "";
     const sessionDescription = bs_Info ? bs_Info.description : "";
     const creatorId = bs_Info ? bs_Info.creator.userId : "";
-    const [timer,setTimer]  = useState( bs_Info?.timer ? bs_Info.timer: 20);
-    const interval = useRef(0);
+    const [timer]  = useState( bs_Info?.timer ? bs_Info.timer: 20);
+    // const interval = useRef(0);
     // useEffect(()=>{
     //     setTimeout(()=>{    
     //         setTimer((timer: number) => timer-1);
