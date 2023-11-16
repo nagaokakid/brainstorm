@@ -225,6 +225,7 @@ class ApiService {
             value.setReceiveAllIdeasCallback((id: string, ideas: Idea[]) => {
                 console.log("----> Receive BS idea receive message callback");
                 console.log(ideas);
+                console.log(id);
                 
                 Callback(3, ideas);
             })
@@ -234,6 +235,7 @@ class ApiService {
             value.setReceiveVoteResultsCallback((id: string, ideas: Idea[]) => {
                 console.log("----> Receive BS vote results message callback");
                 console.log(ideas);
+                console.log(id);
                 Callback(4, ideas);
             })
         );
