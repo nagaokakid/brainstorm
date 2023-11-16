@@ -81,10 +81,10 @@ class SignalRChatRoom {
      * Set a callback function that will be called when a new member joins the brainstorm session
      * @param callBackFunction A function that will be called when a new member joins the brainstorm session
      */
-    setUserJoinedBrainstormSessionCallback(callBackFunction: (sessionId: string) => void) {
-        this.connection.on("UserJoinedBrainstormingSession", (sessionId: string) => {
+    setUserJoinedBrainstormSessionCallback(callBackFunction: (sessionId: string, userId: string) => void) {
+        this.connection.on("UserJoinedBrainstormingSession", (sessionId: string, userId: string) => {
             // new user joined brainstorming session
-            callBackFunction(sessionId);
+            callBackFunction(sessionId, userId);
         });
     }
 
