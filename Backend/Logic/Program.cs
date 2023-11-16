@@ -30,7 +30,7 @@ namespace Logic
             });
 
             // allow data models in C# to be serializable for MongoDB BSON documents
-            var objectSerializer = new ObjectSerializer(type => ObjectSerializer.DefaultAllowedTypes(type) || type.FullName.StartsWith("Database"));
+            var objectSerializer = new ObjectSerializer(type => ObjectSerializer.DefaultAllowedTypes(type) || type.FullName.StartsWith("Database.Data"));
             BsonSerializer.RegisterSerializer(objectSerializer);
 
             // Add services to the container.
