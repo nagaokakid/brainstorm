@@ -77,6 +77,24 @@
   color: white;
 }
 
+.header-nav-bar .JoinCodeSection .ErrorMsg
+{
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  height: 100%;
+  color: #cc0000;
+  font-size: 16px;
+}
+
+.header-nav-bar .UserProfile {
+  position: absolute;
+  right: 0%;
+  color: black;
+}
+
 .header-nav-bar .nav-icons
 {
   position: absolute;

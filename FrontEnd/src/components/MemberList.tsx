@@ -1,44 +1,46 @@
 import "../styles/MemberList.css";
 import UserInfo from "../services/UserInfo";
 import SignalRDirect from "../services/DirectMessageConnection";
-import { userInfoObject } from "../services/TypesDefine";
+import { userInfoObject } from "../models/TypesDefine";
 
 interface MemberListProps {
     memberList: userInfoObject[] | null;
 }
 
-/**
- * 
- * @param {*} memberList The list of members to be displayed 
- * @returns 
- */
 function MemberList(props: MemberListProps) {
+    const onlineMembers = props.memberList ?? [];
 
-    const onlineMembers = props.memberList ?? []
+    /**
+     * Handle the click event of a member
+     * @param id The id of the member
+     * @param name The name of the member
+     * @returns 
+     */
+    function handleMemberClick(member: userInfoObject) {
 
-    function handleMemberClick(id: string, name: string) {
-
-        if (UserInfo.loginRegisterResponse.userInfo.isGuest) {
+        if (UserInfo.getUserInfo().isGuest) { // If the user is a guest, do not allow them to send direct message
             alert("Guest cannot send direct message");
             return;
+        } else {
+            const temp = prompt("Enter your message to " + member.firstName + " " + member.lastName);
+
+            if (!temp) {
+                return
+            } else {
+                const msg = {
+                    "user1": UserInfo.getUserInfo(),
+                    "user2":
+                    {
+                        "userId": member.userId,
+                        "firstName": member.firstName,
+                        "lastName": member.lastName,
+                    },
+                    "message": temp,
+                }
+
+                SignalRDirect.getInstance().then(async (value) => await value.sendMessage(msg));
+            }
         }
-
-        const temp = prompt("Enter your message to " + name);
-
-        if (!temp) return;
-
-        const msg = {
-            "user1": UserInfo.getCurrentFriendlyUserInfo(),
-            "user2":
-            {
-                "userId": id,
-                "firstName": name,
-                "lastName": name
-            },
-            "message": temp,
-        }
-
-        SignalRDirect.getInstance().then(async (value) => await value.sendMessage(msg));
     }
 
     return (
@@ -47,7 +49,7 @@ function MemberList(props: MemberListProps) {
                 <h2>Online Members</h2>
                 <ul>
                     {onlineMembers.map((member, index) => (
-                        <li key={index} onClick={() => handleMemberClick(member.userId, member.firstName)}>{member.firstName}</li>
+                        <li key={index} onClick={() => handleMemberClick(member)}>{member.firstName}</li>
                     ))}
                 </ul>
             </div>

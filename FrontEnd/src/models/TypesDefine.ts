@@ -1,11 +1,26 @@
-import {friendlyUser} from "../models/FriendlyUser"
+import { friendlyUser } from "./FriendlyUser"
+
+export type user = {
+    userInfo: userInfoObject,
+    token: string,
+    chatRooms: chatRoomObject[],
+    directMessages: directMessageObject[],
+}
+
+export type loginObject = {
+    Username: string,
+    Password: string,
+    RePassword?: string,
+    FirstName?: string,
+    LastName?: string,
+}
 
 export type userInfoObject = {
     userId: string,
     firstName: string,
     lastName: string,
     isGuest?: boolean,
-    firstRoom?: string
+    firstRoom?: string,
 }
 
 export type chatRoomObject = {
@@ -20,6 +35,7 @@ export type chatRoomObject = {
 
 export type chatRoomMessageObject = {
     fromUserInfo: userInfoObject,
+    toUserInfo?: userInfoObject,
     chatRoomId: string,
     message: string,
     timestamp: string,

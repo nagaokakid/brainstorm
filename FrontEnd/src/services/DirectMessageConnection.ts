@@ -1,6 +1,6 @@
 import * as signalR from "@microsoft/signalr";
 import UserInfo from "./UserInfo";
-import { newDirectMessageObject, sendMessageObject } from "./TypesDefine";
+import { newDirectMessageObject, sendMessageObject } from "../models/TypesDefine";
 
 /**
  * This is the URL for the SignalR direct message Hub
@@ -49,10 +49,10 @@ class SignalRDirect {
      * Set a callback function that will be called when a direct message is received
      * @param {*} callBackFunction A function that will be called when a direct message is received
      */
-    setReceiveDirectMessageCallback(callBackFunction: () => void) {
+    setReceiveDirectMessageCallback(callBackFunction: (msg: newDirectMessageObject) => void) {
         this.connection.on("ReceiveDirectMessage", (msg: newDirectMessageObject) => {
             UserInfo.addNewDirectMessage(msg);
-            callBackFunction();
+            callBackFunction(msg);
         });
     }
 
@@ -71,7 +71,7 @@ class SignalRDirect {
      */
     async join() {
         console.log("----> Joining Direct Messaging");
-        const user = UserInfo.getCurrentFriendlyUserInfo();
+        const user = UserInfo.getUserInfo();
         await this.connection.send("JoinDirect", user.userId, user.firstName, user.lastName)
             .catch(() => console.log("----> Join direct message failed"));
     }
