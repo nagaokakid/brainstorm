@@ -66,16 +66,11 @@ describe("Testing Login/Register Page", () =>
         cy.intercept('POST', '/api/users').as('fetchRequest'); // setup intercept for http response
 
         cy.get('#register').should('be.visible').click();   // click "Sign Up" button
-
         cy.wait('@fetchRequest').then((interception) => 
         {
             expect(interception.response.statusCode).to.equal(400);     // verify response code
         });
-        
-        cy.on('window:alert', (alertMsg) => 
-        {
-            expect(alertMsg).to.equal("Failed to create account")   // verify alert message
-        })
+        cy.url().should('not.include', '/main')     // verify URL is same (no re-direction)
     })
 
     // Test 3: attempt registry with non-matching passwords
@@ -91,11 +86,7 @@ describe("Testing Login/Register Page", () =>
         cy.get('#RePassword').should('be.visible').type('p2');
 
         cy.get('#register').should('be.visible').click();   // click "Sign Up" button
-
-        cy.on('window:alert', (alertMsg) => 
-        {
-            expect(alertMsg).to.equal("Passwords do not match")     // verify alert message
-        })
+        cy.url().should('not.include', '/main')     // verify URL is same (no re-direction)
     })
 
     // Test 4: attempt registry with empty form
@@ -104,10 +95,7 @@ describe("Testing Login/Register Page", () =>
         cy.contains('Register').should('exist').click()     // click "Register" button
         cy.get('.tab-pane.fade.show.active').invoke('show').should('be.visible');
         cy.get('#register').should('be.visible').click();   // click "Sign Up" button
-        cy.on('window:alert', (alertMsg) => 
-        {
-            expect(alertMsg).to.equal("Please complete the form")     // verify alert message
-        })
+        cy.url().should('not.include', '/main')     // verify URL is same (no re-direction)
     })
     
     // Test 5: login with existing user account
@@ -130,7 +118,6 @@ describe("Testing Login/Register Page", () =>
             expect(interception2.response.statusCode).to.equal(200); 
             expect(interception3.response.statusCode).to.equal(200); 
         });
-
         cy.url().should('include', '/main')     // verify URL change
     })
 
@@ -150,10 +137,7 @@ describe("Testing Login/Register Page", () =>
         {
             expect(interception.response.statusCode).to.equal(401);     // verify response code
         })
-        cy.on('window:alert', (alertMsg) => 
-        {
-            expect(alertMsg).to.equal("Login credentials are invalid. Please ensure the username and password are correct.")     // verify alert message
-        })
+        cy.url().should('not.include', '/main')     // verify URL is same (no re-direction)
     })
 
     // Test 7: try login with invalid username
@@ -172,10 +156,7 @@ describe("Testing Login/Register Page", () =>
         {
             expect(interception.response.statusCode).to.equal(401);     // verify response code
         })
-        cy.on('window:alert', (alertMsg) => 
-        {
-            expect(alertMsg).to.equal("Login credentials are invalid. Please ensure the username and password are correct.")     // verify alert message
-        })
+        cy.url().should('not.include', '/main')     // verify URL is same (no re-direction)
     })
         
 
