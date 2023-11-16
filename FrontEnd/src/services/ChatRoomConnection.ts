@@ -297,4 +297,4 @@ class SignalRChatRoom {
     }
 }
 
-export default SignalRChatRoom
+export default SignalRChatRoom;

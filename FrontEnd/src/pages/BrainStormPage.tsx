@@ -11,7 +11,7 @@ import UserInfo from '../services/UserInfo';
 import Idea from '../models/Idea';
 import SignalRChatRoom from '../services/ChatRoomConnection';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 function BrainStormPage() {
     const Navigate = useNavigate();
@@ -28,6 +28,33 @@ function BrainStormPage() {
     const sessionTitle = bs_Info ? bs_Info.title : "";
     const sessionDescription = bs_Info ? bs_Info.description : "";
     const creatorId = bs_Info ? bs_Info.creator.userId : "";
+    const [timer,setTimer]  = useState( bs_Info?.timer ? bs_Info.timer: 20);
+    const interval = useRef(0);
+    // useEffect(()=>{
+    //     setTimeout(()=>{    
+    //         setTimer((timer: number) => timer-1);
+    //     },1000)
+
+    //     if(timer===0){
+    //         handleEndSessionClick();
+    //     }
+    // })
+    useEffect(()=>{
+        if(timer>0){ 
+            interval.current = setInterval(()=>{    
+            setTimer((timer: number) => timer-1);
+        },1000); }
+    },[])
+
+    useEffect(()=>{
+        
+        if(timer===0){
+            clearInterval(interval.current);
+            handleEndSessionClick();
+            
+        }
+
+    })
 
     /**
      * Prevent the user from going back to the previous page
@@ -165,6 +192,7 @@ function BrainStormPage() {
             <div className='BS_HeaderContainer'>
                 <button className='LeaveSessionButton' onClick={() => setLeaveContainer("flex")}></button>
                 <BS_HeaderContent roomTitle={sessionTitle} roomDescription={sessionDescription} />
+                <div>Time Left: {timer}</div>
             </div>
             <div className='BS_BodyContainer'>
                 <div className='BS_ContentContainer'>

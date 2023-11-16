@@ -138,7 +138,7 @@ namespace Logic.Hubs
                 else
                 {
                     // notify joining member that the session has already started
-                    Clients.Clients(Context.ConnectionId).SendAsync("SessionStartedNotAllowedToJoin", session.SessionId);
+                    await Clients.Clients(Context.ConnectionId).SendAsync("SessionStartedNotAllowedToJoin", sessionId);
                 }
             }
         }
