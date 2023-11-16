@@ -107,7 +107,7 @@ function ChatList(props: ChatListProps) {
     return (
         <div className="ChatListContainer">
             <div className="chat-list">
-                <h3 className="ChatListTitle">{props.displayTab}</h3>
+                <h3 className="ChatListTitle">{props.displayTab === "ChatRoom List" ? "Chat Rooms" : "Direct Messages"}</h3>
                 <div className="search-bar">
                     {/* <input type="text" placeholder="Search Chats" /> */}
                 </div>
