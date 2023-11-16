@@ -25,7 +25,6 @@ function ChatList(props: ChatListProps) {
     const [forceRender, setForceRender] = useState(false); // Force the component to re-render
     const ChatRoomWindow = lazy(() => import("./ChatRoomWindow")); // Lazy load the chat room window component
 
-
     /**
      * Set the chat id and chat title when a chat is selected
      * @param chat The chat room or direct message selected
