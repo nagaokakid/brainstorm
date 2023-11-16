@@ -75,7 +75,7 @@ function BrainStormPage() {
 
         setTimeout(() => {
             setDisplay({ display: "none" });
-        }, 2000);
+        }, 1000);
     }
 
     /**
