@@ -39,22 +39,22 @@ function BrainStormPage() {
     //         handleEndSessionClick();
     //     }
     // })
-    useEffect(()=>{
-        if(timer>0){ 
-            interval.current = setInterval(()=>{    
-            setTimer((timer: number) => timer-1);
-        },1000); }
-    },[])
+    // useEffect(()=>{
+    //     if(timer>0){ 
+    //         interval.current = setInterval(()=>{    
+    //         setTimer((timer: number) => timer-1);
+    //     },1000); }
+    // },[])
 
-    useEffect(()=>{
+    // useEffect(()=>{
         
-        if(timer===0){
-            clearInterval(interval.current);
-            handleEndSessionClick();
+    //     if(timer===0){
+    //         clearInterval(interval.current);
+    //         handleEndSessionClick();
             
-        }
+    //     }
 
-    })
+    // })
 
     /**
      * Prevent the user from going back to the previous page
