@@ -20,8 +20,12 @@ function MessageWindow(props: MessageWindowProps) {
     useEffect(() => {
         if ("chatRoomId" in msg && msg.chatRoomId === props.chatId) {
             setMessages(prev => [...prev, msg]);
-        } else if ("toUserInfo" in msg && msg.toUserInfo && msg.toUserInfo?.userId === props.chatId) {
-            setMessages(prev => [...prev, msg]);
+        } else if ("toUserInfo" in msg && msg.toUserInfo) {
+            const check1 = msg.toUserInfo.userId === UserInfo.getUserId() && msg.fromUserInfo.userId === props.chatId;
+            const check2 = msg.toUserInfo.userId === props.chatId && msg.fromUserInfo.userId === UserInfo.getUserId();
+            if (check1 || check2) {
+                setMessages(prev => [...prev, msg]);
+            }
         }
     }, [msg]);
 

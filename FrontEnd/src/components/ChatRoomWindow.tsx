@@ -15,8 +15,8 @@ function ChatRoomWindow(props: ChatRoomWindowProps) {
     const context = useDataContext();
     const update = context[0];
     const type = 'id' in props.chat ? "ChatRoom List" : "Direct Message List";
-    const chatId = 'id' in props.chat ? props.chat.id : props.chat.user2.userId;
-    const chatHeader = 'title' in props.chat ? props.chat.title : props.chat.user2.firstName + " " + props.chat.user2.lastName;
+    const chatId = 'id' in props.chat ? props.chat.id : (props.chat.user1.userId === UserInfo.getUserId() ? props.chat.user2.userId : props.chat.user1.userId);
+    const chatHeader = 'title' in props.chat ? props.chat.title : (props.chat.user1.userId === UserInfo.getUserId() ? props.chat.user2.firstName : props.chat.user1.firstName);
     const joinCode = 'joinCode' in props.chat ? props.chat.joinCode : null;
     const [memberList, setMemberList] = useState([] as userInfoObject[]);
 
