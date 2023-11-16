@@ -130,9 +130,14 @@ class SignalRChatRoom {
      */
     setReceiveAllIdeasCallback(callBackFunction: (sessionId: string, ideas: Idea[]) => void) {
         this.connection.on("ReceiveAllIdeas", (sessionId: string, ideas: Idea[]) => {
-
+            // remove null elements from array
+            const ideasNew: Idea[] = [];
+            ideas.forEach(x=>{
+                if(x) ideasNew.push(x)
+            })
+        
             // receive all ideas from brainstorm session
-            callBackFunction(sessionId, ideas);
+            callBackFunction(sessionId, ideasNew);
         });
     }
 
