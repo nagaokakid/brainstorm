@@ -24,7 +24,7 @@ function ChatList(props: ChatListProps) {
     const [showCreateBrainstorm, setShowCreateBrainstorm] = useState({ display: "none" }); // Set the default display of the create brainstorm option to be hidden
     const [forceRender, setForceRender] = useState(false); // Force the component to re-render
     const ChatRoomWindow = lazy(() => import("./ChatRoomWindow")); // Lazy load the chat room window component
-    
+
 
     /**
      * Set the chat id and chat title when a chat is selected
@@ -76,7 +76,7 @@ function ChatList(props: ChatListProps) {
                     navigate("/BrainStorm", { state: { bsid } });
                 } else if (type === 6) {
                     console.log("The session has ended.");
-                    
+
                     props.noticeFunction("The session has ended.");
                 }
 
@@ -115,7 +115,7 @@ function ChatList(props: ChatListProps) {
                         <div className="chat-item" key={index} onClick={() => handleChatOnClick(chat)}>
                             <div className="chat-details">
                                 <div className="chat-title">
-                                    {'title' in chat ? chat.title : chat.user2?.firstName + " " + chat.user2?.lastName}
+                                    {'title' in chat ? chat.title : (chat.user1.userId === UserInfo.getUserId() ? chat.user2.firstName : chat.user1.firstName)}
                                 </div>
                                 <div className="last-message">
                                     {'description' in chat ? chat.description : chat.directMessages.slice(-1)[0].message}
@@ -135,7 +135,7 @@ function ChatList(props: ChatListProps) {
                     </Suspense>
                 )}
             </div>
-            <CreateRoomCustomize style={showCreateChatRoom} render={setForceRender}/>
+            <CreateRoomCustomize style={showCreateChatRoom} render={setForceRender} />
             <CreateBrainStormCustomize style={showCreateBrainstorm} chat={selectedChat} />
         </div>
     );

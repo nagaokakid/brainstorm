@@ -175,7 +175,7 @@ class UserInfo {
      */
     static getMessageHistory(chatId: string, chatType: string) {
         if (chatType === "Direct Message List") { // Search the direct message list
-            return this.getDirectMessagesList().find(chat => chat.user2.userId === chatId)?.directMessages ?? [];
+            return this.getDirectMessagesList().find(chat => (chat.user2.userId === chatId || chat.user1.userId === chatId))?.directMessages ?? [];
         } else if (chatType === "ChatRoom List") { // Search the chat room list
             return this.getChatRoomsList().find(chat => chat.id === chatId)?.messages ?? [];
         } else {
@@ -235,30 +235,47 @@ class UserInfo {
     static addNewDirectMessage(newDirectMessage: newDirectMessageObject) {
         console.log(newDirectMessage);
 
-        // Create a new message object
-        const msg = {
-            message: newDirectMessage.message,
-            timestamp: newDirectMessage.timestamp
-        }
-
-        // Search the direct message list to see if there is a direct message object that contains the user
-        const result = this.getDirectMessagesList().find(current => (newDirectMessage.toUserInfo.userId === current.user2.userId || newDirectMessage.fromUserInfo.userId === current.user2.userId));
-
-        console.log(result);
-
-        if (result) { // If there is a direct message object that contains the user, add the new message to the direct message object
-            result.directMessages.push(msg);
-        } else { // If there is no direct message object that contains the user, create a new direct message object
-            const newMsgObject = {
-                user1: this.getUserInfo(),
-                user2: newDirectMessage.toUserInfo.userId === this.getUserId() ? newDirectMessage.fromUserInfo : newDirectMessage.toUserInfo,
-                directMessages: [
-                    msg
-                ],
+        if (newDirectMessage.fromUserInfo.userId === this.getUserId()) { // If the message is sent by the current user, return
+            const result = this.getDirectMessagesList().find(current => (newDirectMessage.toUserInfo.userId === current.user1.userId || newDirectMessage.toUserInfo.userId === current.user2.userId));
+            if (result) {
+                result.directMessages.push({
+                    message: newDirectMessage.message,
+                    timestamp: newDirectMessage.timestamp
+                });
+            } else {
+                const newMsgObject = {
+                    user1: this.getUserInfo(),
+                    user2: newDirectMessage.toUserInfo.userId === this.getUserId() ? newDirectMessage.fromUserInfo : newDirectMessage.toUserInfo,
+                    directMessages: [
+                        {
+                            message: newDirectMessage.message,
+                            timestamp: newDirectMessage.timestamp
+                        }
+                    ],
+                }
+                this.getDirectMessagesList().push(newMsgObject);
             }
-            this.getDirectMessagesList().push(newMsgObject);
+        } else if (newDirectMessage.toUserInfo.userId === this.getUserId()) { // If the message is sent to the current user, add the message to the direct message list
+            const result = this.getDirectMessagesList().find(current => (newDirectMessage.fromUserInfo.userId === current.user1.userId || newDirectMessage.fromUserInfo.userId === current.user2.userId));
+            if (result) {
+                result.directMessages.push({
+                    message: newDirectMessage.message,
+                    timestamp: newDirectMessage.timestamp
+                });
+            } else {
+                const newMsgObject = {
+                    user1: newDirectMessage.fromUserInfo,
+                    user2: this.getUserInfo(),
+                    directMessages: [
+                        {
+                            message: newDirectMessage.message,
+                            timestamp: newDirectMessage.timestamp
+                        }
+                    ],
+                }
+                this.getDirectMessagesList().push(newMsgObject);
+            }
         }
-        console.log(this.getDirectMessagesList());
         this.updateUser(true);
     }
 
