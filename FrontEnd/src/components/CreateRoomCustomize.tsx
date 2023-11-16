@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 
 interface CreateRoomCustomizeProps {
     style: { display: string },
+    render: React.Dispatch<React.SetStateAction<boolean>>,
 }
 
 function CreateRoomCustomize(props: CreateRoomCustomizeProps) {
@@ -32,6 +33,7 @@ function CreateRoomCustomize(props: CreateRoomCustomizeProps) {
             (document.getElementById('chatRoomName') as HTMLInputElement).value = '';
             (document.getElementById('description') as HTMLInputElement).value = '';
             setStyle({ display: "none" });
+            props.render(prev => !prev);
         } else {
             setErrorMsg("Please enter a chat room name");
             setErrorDisplay({ display: "block" });

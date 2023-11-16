@@ -132,13 +132,13 @@ function BrainStormPage() {
                     });
                 } else if (type === 3) {
                     sessionStorage.setItem("ideaList", JSON.stringify(ideas));
-                    UserInfo.updateIdeaList(true);
+                    UserInfo.updateIdeaList();
                     setIdeaList(UserInfo.getIdeasList());
                     setIsVoting(true);
                     showNotice("Voting has started");
                 } else if (type === 4) {
                     sessionStorage.setItem("ideaList", JSON.stringify(ideas));
-                    UserInfo.updateIdeaList(true);
+                    UserInfo.updateIdeaList();
                     setIdeaList(UserInfo.getIdeasList());
                     showNotice("Here are the voting results");
                 } else if (type === 5) {

@@ -24,6 +24,7 @@ function ChatList(props: ChatListProps) {
     const [showCreateBrainstorm, setShowCreateBrainstorm] = useState({ display: "none" }); // Set the default display of the create brainstorm option to be hidden
     const [forceRender, setForceRender] = useState(false); // Force the component to re-render
     const ChatRoomWindow = lazy(() => import("./ChatRoomWindow")); // Lazy load the chat room window component
+    
 
     /**
      * Set the chat id and chat title when a chat is selected
@@ -134,7 +135,7 @@ function ChatList(props: ChatListProps) {
                     </Suspense>
                 )}
             </div>
-            <CreateRoomCustomize style={showCreateChatRoom} />
+            <CreateRoomCustomize style={showCreateChatRoom} render={setForceRender}/>
             <CreateBrainStormCustomize style={showCreateBrainstorm} chat={selectedChat} />
         </div>
     );

@@ -32,7 +32,7 @@ function InputSendPrompt(props: InputSendPromptProps) {
     return (
         <div className="InputSendContainer">
             <input className="InputSection" type="text" placeholder="Enter Ideas here..." onKeyDown={handleKeyDown} disabled={props.input}></input>
-            <button className="SendSection" onClick={handleSendClick} disabled={props.input}>Send</button>
+            <button className="SendSection" onClick={handleSendClick} disabled={props.input}>Add ideas</button>
         </div>
     );
 }

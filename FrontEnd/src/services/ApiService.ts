@@ -182,6 +182,8 @@ class ApiService {
         );
         await SignalRChatRoom.getInstance().then((value) =>
             value.setReceiveChatRoomInfoCallback(() => {
+                console.log("----> Receive chatroom info message callback");
+                
                 Callback(4);
             })
         );
@@ -222,6 +224,8 @@ class ApiService {
         await SignalRChatRoom.getInstance().then((value) =>
             value.setReceiveAllIdeasCallback((id: string, ideas: Idea[]) => {
                 console.log("----> Receive BS idea receive message callback");
+                console.log(ideas);
+                
                 Callback(3, ideas);
             })
         );
@@ -229,6 +233,7 @@ class ApiService {
         await SignalRChatRoom.getInstance().then((value) =>
             value.setReceiveVoteResultsCallback((id: string, ideas: Idea[]) => {
                 console.log("----> Receive BS vote results message callback");
+                console.log(ideas);
                 Callback(4, ideas);
             })
         );

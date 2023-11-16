@@ -84,6 +84,10 @@ class UserInfo {
      * @returns The chat room list
      */
     static getChatRoomsList() {
+        if (this.getCurrentUser().chatRooms === null) {
+            this.getCurrentUser().chatRooms = [];
+            this.updateUser(true);
+        }
         return this.getCurrentUser().chatRooms;
     }
 
@@ -101,6 +105,10 @@ class UserInfo {
      * @returns The direct message list
      */
     static getDirectMessagesList() {
+        if (this.getCurrentUser().directMessages === null) {
+            this.getCurrentUser().directMessages = [];
+            this.updateUser(true);
+        }
         return this.getCurrentUser().directMessages;
     }
 
@@ -225,7 +233,7 @@ class UserInfo {
      * @returns 
      */
     static addNewDirectMessage(newDirectMessage: newDirectMessageObject) {
-console.log(newDirectMessage);
+        console.log(newDirectMessage);
 
         // Create a new message object
         const msg = {
@@ -237,7 +245,7 @@ console.log(newDirectMessage);
         const result = this.getDirectMessagesList().find(current => (newDirectMessage.toUserInfo.userId === current.user2.userId || newDirectMessage.fromUserInfo.userId === current.user2.userId));
 
         console.log(result);
-        
+
         if (result) { // If there is a direct message object that contains the user, add the new message to the direct message object
             result.directMessages.push(msg);
         } else { // If there is no direct message object that contains the user, create a new direct message object
