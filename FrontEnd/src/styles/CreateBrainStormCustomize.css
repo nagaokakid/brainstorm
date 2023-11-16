@@ -8,6 +8,7 @@
     justify-content: center;
     background-color: rgba(128, 128, 128, 0.555);
     height: 100%;
+    z-index: 50;
 }
 
 .CreateBrainStormCustomizeWindow .BSinfoWindow {
@@ -19,4 +20,10 @@
     width: 50%;
     height: 50%;
     border-radius: 10px;
+}
+
+.CreateBrainStormCustomizeWindow .BSinfoWindow .ErrorMsg {
+    color: red;
+    font-size: 20px;
+    margin-bottom: 10px;
 }

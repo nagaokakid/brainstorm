@@ -8,19 +8,20 @@ import BS_LocalIdeaList from '../components/BS_LocalIdeaList';
 import LeaveBSPrompt from '../components/YesNoPrompt';
 import ApiService from '../services/ApiService';
 import UserInfo from '../services/UserInfo';
+import Idea from '../models/Idea';
 import SignalRChatRoom from '../services/ChatRoomConnection';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
-import Idea from '../models/Idea';
 
 function BrainStormPage() {
-
+    const Navigate = useNavigate();
     const [isVoting, setIsVoting] = useState(false);
     const [ideaList, setIdeaList] = useState([] as Idea[]);
     const [localIdeaList, setLocalIdeaList] = useState([] as string[]);
     const [leaveContainer, setLeaveContainer] = useState("none");
     const [input, setInput] = useState(true);
-    const Navigate = useNavigate();
+    const [display, setDisplay] = useState({ display: "none" });
+    const [noticeMsg, setNoticeMsg] = useState("" as string);
     const location = useLocation().state as { bsid: string };
     const bs_Info = UserInfo.getBS_Session(location ? location.bsid : "");
     const sessionId = bs_Info ? bs_Info.sessionId : "";
@@ -65,6 +66,19 @@ function BrainStormPage() {
     };
 
     /**
+     * Show the notice with the given message
+     * @param msg The message to be shown in the notice
+     */
+    function showNotice(msg: string) {
+        setNoticeMsg(msg);
+        setDisplay({ display: "flex" });
+
+        setTimeout(() => {
+            setDisplay({ display: "none" });
+        }, 2000);
+    }
+
+    /**
      * Set the leave container to be displayed or not
      * @param e Set the leave container to be displayed or not
      */
@@ -75,12 +89,11 @@ function BrainStormPage() {
     /**
      * Leave the session
      */
-    function handleLeaveClick() {
-        ApiService.leaveBSSession();
+    async function handleLeaveClick() {
+        await ApiService.leaveBSSession(creatorId, sessionId);
         sessionStorage.removeItem("bs_callBack");
-        sessionStorage.removeItem("bs_userSetup");
-        sessionStorage.removeItem("bs_user");
-        sessionStorage.removeItem("bs_ideaList");
+        sessionStorage.removeItem("localIdea");
+        sessionStorage.removeItem("ideaList");
         Navigate("/main");
     }
 
@@ -113,7 +126,7 @@ function BrainStormPage() {
                 instance.endSession(sessionId);
             });
         } else {
-            // alert("Session has already ended or has not started yet.");
+            showNotice("Session has not started yet");
         }
     }
 
@@ -126,51 +139,50 @@ function BrainStormPage() {
                 instance.clientsShouldSendAllVotes(sessionId);
             });
         } else {
-            // alert("Voting has already ended or has not started yet.");
+            showNotice("Voting has already ended or has not started yet.");
         }
     }
 
     useEffect(() => {
         if (sessionStorage.getItem("bs_callBack") === null) {
-
             const callBackFunction = (type: number, ideas?: Idea[]) => {
                 if (type === 1) {
                     setInput(false);
-                    // alert("Session has started\nYou can now send messages");
+                    showNotice("Session has started");
                 } else if (type === 2) {
                     setInput(true);
-                    SignalRChatRoom.getInstance().then((instance) => {
-                        console.log(UserInfo.getLocalIdeas());
-                        
-                        instance.sendAllIdeas(sessionId, UserInfo.getLocalIdeas());
+                    showNotice("Session has ended");
+                    SignalRChatRoom.getInstance().then(async (instance) => {
+                        await instance.sendAllIdeas(sessionId, UserInfo.getLocalIdeas());
                         UserInfo.clearIdea();
+                        setLocalIdeaList(UserInfo.getLocalIdeas());
                     });
-                    setLocalIdeaList([]);
-                    // alert("Session has ended\nYou can no longer send messages\nAll the ideas have been saved to backend");
                 } else if (type === 3) {
-                    sessionStorage.setItem("bs_ideaList", JSON.stringify(ideas));
-                    setIsVoting(true);
-                    UserInfo.bsUserSetup();
+                    sessionStorage.setItem("ideaList", JSON.stringify(ideas));
+                    UserInfo.updateIdeaList();
                     setIdeaList(UserInfo.getIdeasList());
+                    setIsVoting(true);
+                    showNotice("Voting has started");
                 } else if (type === 4) {
-                    setIdeaList(ideas ? ideas : []);
-                    // alert("Voting results have been updated");
+                    sessionStorage.setItem("ideaList", JSON.stringify(ideas));
+                    UserInfo.updateIdeaList();
+                    setIdeaList(UserInfo.getIdeasList());
+                    showNotice("Here are the voting results");
                 } else if (type === 5) {
-                    SignalRChatRoom.getInstance().then((instance) => {
-                        instance.sendVotes(sessionId, UserInfo.getIdeasList());
+                    SignalRChatRoom.getInstance().then(async (instance) => {
+                        await instance.sendVotes(sessionId, UserInfo.getIdeasList());
                         UserInfo.clearIdeaList();
+                        setIsVoting(false);
+                        setIdeaList(UserInfo.getIdeasList());
                     });
-                    setIsVoting(false);
-                    setIdeaList([]);
-                    // alert("Voting has ended\nYou can no longer vote\nAll the votes have been saved to backend");
+                    showNotice("Voting has ended");
                 }
             };
             ApiService.buildBSCallBack(callBackFunction);
             sessionStorage.setItem("bs_callBack", "true");
-            console.log("BS call back built");
         }
-        UserInfo.bsUserSetup();
-        console.log("BS user setup");
+        UserInfo.updateLocalIdea();
+        UserInfo.updateIdeaList();
         setLocalIdeaList(UserInfo.getLocalIdeas());
         setIdeaList(UserInfo.getIdeasList());
     }, []);
@@ -200,6 +212,9 @@ function BrainStormPage() {
                 </div>
             </div>
             <LeaveBSPrompt content={"Leave the Session?"} display={leaveContainer} yesFunction={handleLeaveClick} displayFunction={callLeaveContainer} />
+            <div className="NoticeClass" style={display}>
+                <div><h1>{noticeMsg}</h1></div>
+            </div>
         </div>
     );
 }

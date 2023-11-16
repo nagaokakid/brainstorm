@@ -2,24 +2,15 @@ import UserInfo from "./UserInfo";
 import SignalRChatRoom from "./ChatRoomConnection";
 import SignalRDirect from "./DirectMessageConnection";
 import Idea from "../models/Idea";
-
-type chatRoomObject = {
-    id: string;
-    title: string;
-    description: string;
-    joinCode: string;
-    messages: [];
-    members: [];
-};
+import { loginObject, chatRoomObject, newDirectMessageObject, chatRoomMessageObject } from "../models/TypesDefine";
 
 class ApiService {
     /**
      * Do a Login API call to the backend and connect to all chatrooms and direct messaging
-     * @param {*} username The username of the user
-     * @param {*} password The password of the user
-     * @returns A json object that contains the response from the backend
+     * @param {*} loginInfo The login object that contains the username and password
+     * @returns boolean that indicates if the login is successful
      */
-    async Login(username: string, password: string) {
+    async Login(loginInfo: loginObject) {
         const resp = await fetch(UserInfo.BaseURL + "api/users/login",
             {
                 method: 'POST',
@@ -27,13 +18,13 @@ class ApiService {
                 {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ Username: username, Password: password }),
+                body: JSON.stringify({ Username: loginInfo.Username, Password: loginInfo.Password }),
             })
             .then(async (response) => {
                 if (response.ok) {
-                    UserInfo.loginRegisterResponse = await response.json();
-                    UserInfo.setupUser();
-                    sessionStorage.setItem("token", UserInfo.getToken());
+                    UserInfo.setCurrentUser(await response.json()); // set current user
+                    UserInfo.updateUser(true); // update user info to session storage
+                    UserInfo.setToken(); // set token to session storage
                     await this.connectChatRooms();
                     return true;
                 } else {
@@ -50,13 +41,10 @@ class ApiService {
 
     /**
      * Do a Register API call to the backend and connect to direct messaging
-     * @param {*} username The username of the user
-     * @param {*} password The password of the user
-     * @param {*} firstName The first name of the user
-     * @param {*} lastName The last name of the user
-     * @returns A json object that contains the response from the backend
+     * @param {*} registerInfo The register object that contains the username, password, first name and last name
+     * @returns boolean that indicates if the register is successful
      */
-    async Register(username: string, password: string, firstName: string, lastName: string) {
+    async Register(registerInfo: loginObject) {
         const resp = await fetch(UserInfo.BaseURL + "api/users",
             {
                 method: 'POST',
@@ -64,14 +52,14 @@ class ApiService {
                 {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ Username: username, Password: password, FirstName: firstName, LastName: lastName }),
+                body: JSON.stringify({ Username: registerInfo.Username, Password: registerInfo.Password, FirstName: registerInfo.FirstName, LastName: registerInfo.LastName }),
 
             })
             .then(async (response) => {
                 if (response.ok) {
-                    UserInfo.loginRegisterResponse = await response.json();
-                    UserInfo.setupUser();
-                    sessionStorage.setItem("token", UserInfo.getToken());
+                    UserInfo.setCurrentUser(await response.json()); // set current user
+                    UserInfo.updateUser(true); // update user info to session storage
+                    UserInfo.setToken(); // set token to session storage
                     return true;
                 } else {
                     return false;
@@ -86,7 +74,7 @@ class ApiService {
     }
 
     /**
-     * Do a GetChatRooms API call to the backend and build the connection to the chat room
+     * Do a CreateChatRooms API call to the backend and build the connection to the chat room
      * @param {*} title The chat room name or title
      * @param {*} description The chat room description
      * @returns A json object that contains the response from the backend
@@ -106,36 +94,49 @@ class ApiService {
                     description: description
                 }),
 
+            })
+            .then(async (response) => {
+                if (response.ok) {
+                    const data: chatRoomObject = (await response.json())["chatRoom"];
+                    UserInfo.addNewChatRoom(data);
+                    await this.connectChatRoom(data.joinCode);
+                    return true;
+                } else {
+                    return false;
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+                return null;
             });
-
-        // if response is okay, assign to appinfo for later use
-        if (resp.ok) {
-            const data: chatRoomObject = (await resp.json())["chatRoom"];
-            UserInfo.addNewChatRoom(data);
-            console.log("----> Create chatroom success");
-            await this.connectChatRoom(data.joinCode);
-            console.log("----> Connected to chatroom");
-        }
 
         return resp;
     }
 
     /**
-     * 
+     * Do a check if the join code is valid
      * @param joinCode The join code of the chatroom
-     * @returns 
+     * @returns boolean that indicates if the join code is valid
      */
     async IsJoinCodeValid(joinCode: string) {
-        const resp = await fetch(UserInfo.BaseURL + "api/chatroom/" + joinCode, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-            },
-        });
+        const resp = await fetch(UserInfo.BaseURL + "api/chatroom/" + joinCode,
+            {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            }).then(async (response) => {
+                if (response.ok) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }).catch((error) => {
+                console.log(error);
+                return null;
+            });
 
-        if (resp.ok) {
-            return await resp.json();
-        }
+        return resp;
     }
 
     /**
@@ -147,7 +148,6 @@ class ApiService {
 
         // Build connection only if there are chatrooms
         if (chatRooms) {
-            console.log("----> Connecting to chatrooms");
             for (let index = 0; index < chatRooms.length; index++) {
                 const element = chatRooms[index];
                 await connection.joinChatRoom(element.joinCode, "Second");
@@ -161,48 +161,46 @@ class ApiService {
      */
     async connectChatRoom(joinCode: string) {
         const connection = await SignalRChatRoom.getInstance();
-        console.log("----> Connecting to chatroom");
         await connection.joinChatRoom(joinCode, "Second");
     }
 
     /**
      * Set all the call back functions for the SignalR
-     * @param {*} callback A function that will be called when a message is received
+     * @param {*} Callback A function that will be called when a message is received
      */
-    async buildCallBack(Callback: (type: number, bsid?: string) => void) {
+    async buildCallBack(Callback: (type: number, bsid?: string, msgObject?: (chatRoomMessageObject | newDirectMessageObject)) => void) {
         await SignalRDirect.getInstance().then((value) =>
-            value.setReceiveDirectMessageCallback(() => {
+            value.setReceiveDirectMessageCallback((msgObject: newDirectMessageObject) => {
                 console.log("----> Receive direct message callback");
-                Callback(2);
+                Callback(2, undefined, msgObject);
             })
         );
         await SignalRChatRoom.getInstance().then((value) =>
-            value.setReceiveChatRoomMessageCallback((bsid?: string) => {
-                console.log("----> Receive chatroom message callback");
-                Callback(1, bsid);
+            value.setReceiveChatRoomMessageCallback((bsid: string | undefined, msgObject: chatRoomMessageObject) => {
+                Callback(1, bsid, msgObject);
             })
         );
         await SignalRChatRoom.getInstance().then((value) =>
             value.setReceiveChatRoomInfoCallback(() => {
-                console.log("----> Receive chatroom info callback");
+                console.log("----> Receive chatroom info message callback");
+                
                 Callback(4);
             })
         );
         await SignalRChatRoom.getInstance().then((value) =>
             value.setReceiveNewMemberCallback(() => {
-                console.log("----> Receive chatroom member callback");
                 Callback(3);
             })
         );
         await SignalRChatRoom.getInstance().then((value) =>
             value.setUserJoinedBrainstormSessionCallback((id) => {
-                console.log("----> Receive BS Join Info message callback");
+                console.log("----> Receive BS join message callback");
+                
                 Callback(5, id);
             })
         );
         await SignalRChatRoom.getInstance().then((value) =>
             value.setBrainstormSessionAlreadyStartedErrorCallback(() => {
-                console.log("----> Receive BS unable to join message callback");
                 Callback(6);
             })
         );
@@ -226,6 +224,8 @@ class ApiService {
         await SignalRChatRoom.getInstance().then((value) =>
             value.setReceiveAllIdeasCallback((id: string, ideas: Idea[]) => {
                 console.log("----> Receive BS idea receive message callback");
+                console.log(ideas);
+                
                 Callback(3, ideas);
             })
         );
@@ -233,6 +233,7 @@ class ApiService {
         await SignalRChatRoom.getInstance().then((value) =>
             value.setReceiveVoteResultsCallback((id: string, ideas: Idea[]) => {
                 console.log("----> Receive BS vote results message callback");
+                console.log(ideas);
                 Callback(4, ideas);
             })
         );
@@ -245,10 +246,14 @@ class ApiService {
         );
     }
 
-    async leaveBSSession() {
-        await SignalRChatRoom.getInstance().then((value) =>
-            value.removeBSCallBack()
-        );
+    async leaveBSSession(creator: string, sessionId: string) {
+        await SignalRChatRoom.getInstance().then(async (value) => {
+            
+            if (UserInfo.isHost(creator)) {
+                await value.removeSession(sessionId);
+            }
+            value.removeBSCallBack();
+        });
     }
 }
 

@@ -1,22 +1,24 @@
 import '../styles/GuestJoin.css';
-import ApiService from '../services/ApiService';
-import UserInfo from '../services/UserInfo';
 import 'mdb-react-ui-kit/dist/css/mdb.min.css';
 import {
     MDBInput,
     MDBBtn
 } from 'mdb-react-ui-kit'
+import ApiService from '../services/ApiService';
+import UserInfo from '../services/UserInfo';
+import { chatRoomObject, directMessageObject } from '../models/TypesDefine';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 
 function GuestJoin() {
-
     const navigate = useNavigate()
-    const [input, setInput] = useState({ code: '' })
+    const [input, setInput] = useState({ code: '' }) // This handle the state of the input
+    const [errorMsg, setErrorMsg] = useState('' as string) // This store the error message
+    const [errorDisplay, setErrorDisplay] = useState('none' as string) // This handle the error message display
 
     /**
      * This will keep track the input and update the state
-     * @param value This will handle the change of the input
+     * @param value
      */
     function handleChange(value: React.ChangeEvent<HTMLInputElement>) {
         const id = value.target.id;
@@ -24,38 +26,41 @@ function GuestJoin() {
         setInput((prev: typeof input) => { return { ...prev, [id]: code } });
     }
 
-    //This will verify the input and handle the request to the server
+    /**
+     * This will verify the input and handle the request to the server
+     */
     async function RequestHandle() {
+        setErrorDisplay('none')
         const button = document.getElementById('join') as HTMLButtonElement;
-        const code = input.code;
 
-        if (code) {
+        if (input.code) {
             button.disabled = true;
-            ApiService.IsJoinCodeValid(code).then((response) => {
+            ApiService.IsJoinCodeValid(input.code).then((response) => {
                 if (response) {
-                    UserInfo.loginRegisterResponse =
-                    {
+                    const tempUser = {
                         userInfo: {
                             userId: "0",
                             firstName: "Guest",
                             lastName: "",
                             isGuest: true,
-                            firstRoom: code
+                            firstRoom: input.code,
                         },
                         token: "",
-                        chatRooms: [],
-                        directMessages: []
+                        chatRooms: [] as chatRoomObject[],
+                        directMessages: [] as directMessageObject[],
                     }
-                    UserInfo.setupUser();
-                    navigate('/main')
-                }
-                else {
+                    UserInfo.setCurrentUser(tempUser);
+                    UserInfo.updateUser(true);
+                    navigate('/main');
+                } else {
                     button.disabled = false;
-                    alert("Invalid Code")
+                    setErrorMsg('Invalid Code');
+                    setErrorDisplay('block')
                 }
             });
         } else {
-            alert("Please complete the form");
+            setErrorMsg('Please enter a code');
+            setErrorDisplay('block');
         }
     }
 
@@ -63,6 +68,7 @@ function GuestJoin() {
         <div className='GuestCodeContainer'>
             <MDBInput wrapperClass='mb-4' label='Chat Room Code' id='code' type='text' onChange={handleChange} />
             <MDBBtn className="mb-4 w-100" id='join' onClick={() => RequestHandle()}>Join Chat Room</MDBBtn>
+            <h5 className='ErrorMsg' style={{ display: errorDisplay }}>{errorMsg}</h5>
         </div>
     );
 }
