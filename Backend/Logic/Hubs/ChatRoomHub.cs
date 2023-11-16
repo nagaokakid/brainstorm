@@ -133,7 +133,7 @@ namespace Logic.Hubs
                 {
                     // notify all joined members that a new user has joined
                     await Groups.AddToGroupAsync(Context.ConnectionId, sessionId);
-                    await Clients.Group(session.SessionId).SendAsync("UserJoinedBrainstormingSession", sessionId, user);
+                    await Clients.Group(session.SessionId).SendAsync("UserJoinedBrainstormingSession", sessionId, userId);
                 }
                 else
                 {
