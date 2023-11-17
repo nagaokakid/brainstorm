@@ -50,7 +50,7 @@ describe('Testing Main Page (Logged In User)', () =>
     {
         cy.get('.navigation-bar').find('.nav-button').contains('Chat Rooms').click();
         cy.get('.CreateChatRoomButton').should('exist');
-        cy.get('.chat-list').find('.chats').should('exist');
+        cy.get('.chat-list').find('.chats').children().should('have.length.gt', 0);
     })
 
     // Test 2
@@ -58,7 +58,7 @@ describe('Testing Main Page (Logged In User)', () =>
     {
         cy.get('.navigation-bar').find('.nav-button').contains('Direct Message').click();
         cy.get('.CreateChatRoomButton').should('be.hidden');
-        cy.get('.chat-list').find('.chats').should('exist');
+        cy.get('.chat-list').find('.chats').children().should('have.length.gt', 0);
     })
 
     // Test 3
