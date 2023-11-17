@@ -28,7 +28,7 @@ function BrainStormPage() {
     const sessionTitle = bs_Info ? bs_Info.title : "";
     const sessionDescription = bs_Info ? bs_Info.description : "";
     const creatorId = bs_Info ? bs_Info.creator.userId : "";
-    const [timer]  = useState( bs_Info?.timer ? bs_Info.timer: 20);
+    const [timer] = useState(bs_Info?.timer ? bs_Info.timer : 20);
     // const interval = useRef(0);
     // useEffect(()=>{
     //     setTimeout(()=>{    
@@ -47,11 +47,11 @@ function BrainStormPage() {
     // },[])
 
     // useEffect(()=>{
-        
+
     //     if(timer===0){
     //         clearInterval(interval.current);
     //         handleEndSessionClick();
-            
+
     //     }
 
     // })
@@ -94,6 +94,8 @@ function BrainStormPage() {
         sessionStorage.removeItem("bs_callBack");
         sessionStorage.removeItem("localIdea");
         sessionStorage.removeItem("ideaList");
+        UserInfo.clearIdea();
+        UserInfo.clearIdeaList();
         Navigate("/main");
     }
 
@@ -207,7 +209,7 @@ function BrainStormPage() {
                     <div className='BS_ButtonContainer' style={{ display: UserInfo.isHost(creatorId) ? "flex" : "none" }}>
                         <button className='StartSessionButton' onClick={handleStartSessionClick}>Start Session</button>
                         <button className='EndSessionButton' onClick={handleEndSessionClick}>End Round</button>
-                        <button className='EndVoteButton'  onClick={handleVotingClick}>End Voting</button>
+                        <button className='EndVoteButton' onClick={handleVotingClick}>End Voting</button>
                         <button className='ExitButton' onClick={() => setLeaveContainer("flex")}>Exit</button>
                     </div>
                 </div>
