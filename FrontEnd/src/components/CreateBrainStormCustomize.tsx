@@ -31,7 +31,7 @@ function CreateBrainStormCustomize(props: CreateBrainStormCustomizeProps) {
     const description = (
       document.getElementById("BSdescription") as HTMLInputElement
     ).value;
-    // const timer = (document.getElementById('BStimer') as HTMLInputElement).value;
+    const timer = (document.getElementById('BStimer') as HTMLInputElement).value;
 
     button.disabled = true;
     if (name === "" || description === "") {
@@ -48,7 +48,8 @@ function CreateBrainStormCustomize(props: CreateBrainStormCustomizeProps) {
           .createBrainstormSession(
             name,
             description,
-            props.chat ? ("id" in props.chat ? props.chat.id : "") : ""
+            props.chat ? ("id" in props.chat ? props.chat.id : "") : "",
+            timer
           )
           .then((value) => {
             if (value) {
@@ -77,7 +78,7 @@ function CreateBrainStormCustomize(props: CreateBrainStormCustomizeProps) {
         <h1>Create Brain Storm</h1>
         <input className="Input" type="text" id="BSname" placeholder="Name" />
         <input className="Input"  type="text" id="BSdescription" placeholder="Description" />
-        <input className="Input"  type="text" id="BStimer" placeholder="Enter Time in Minutes" />
+        <input className="Input"  type="text" id="BStimer" placeholder="Enter Time in Seconds" />
         <div>
           <button className="CancelBtn" onClick={() => {
              (document.getElementById("BSname") as HTMLInputElement).value = "";

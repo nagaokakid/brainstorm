@@ -43,12 +43,12 @@ class SignalRChatRoom {
      * Set a callback function that will be called when a chat room message is received
      * @param {*} callBackFunction A function that will be called when a chat room message is received
      */
-    setReceiveChatRoomMessageCallback(callBackFunction: (bsid: string | undefined, msg: chatRoomMessageObject) => void) {
-        this.connection.on("ReceiveChatRoomMessage", (msg: chatRoomMessageObject) => {
+    setReceiveChatRoomMessageCallback(callBackFunction: (bsid: string | undefined, msg: chatRoomMessageObject, timer?: string) => void) {
+        this.connection.on("ReceiveChatRoomMessage", (msg: chatRoomMessageObject, timer?: string) => {
             UserInfo.addChatRoomMessage(msg);
 
             if (msg.brainstorm && msg.brainstorm.creator.userId === UserInfo.getUserId()) {
-                callBackFunction(msg.brainstorm.sessionId, msg);
+                callBackFunction(msg.brainstorm.sessionId, msg, timer);
             } else {
                 callBackFunction(undefined, msg);
             }
@@ -192,8 +192,8 @@ class SignalRChatRoom {
      * @param description The brainstorm session description
      * @param chatRoomId The chat room id
      */
-    async createBrainstormSession(title: string, description: string, chatRoomId: string) {
-        const result = await this.connection.send("CreateBrainstormSession", title, description, chatRoomId, UserInfo.getUserId(), UserInfo.getFirstName(), UserInfo.getLastName()).then(() => {
+    async createBrainstormSession(title: string, description: string, chatRoomId: string, timer: string) {
+        const result = await this.connection.send("CreateBrainstormSession", title, description, chatRoomId, UserInfo.getUserId(), UserInfo.getFirstName(), UserInfo.getLastName(), timer).then(() => {
             console.log("----> Create brainstorm session success");
             return true;
         }).catch(() => {
