@@ -133,7 +133,7 @@ namespace Logic.Services
 
         public async Task SendVotesTimer(string sessionId, Action<string, List<Idea>>? callback)
         {
-            if(callback != null)
+            if (callback != null)
             {
                 (await GetSession(sessionId))?.SetVoteTimer(callback);
             }
@@ -162,12 +162,35 @@ namespace Logic.Services
 
         private void SendAllVotes(string sessionId, List<Idea> votes)
         {
-            this.chatRoomHubContext.Clients.Group(sessionId).SendAsync("ReceiveVoteResults", sessionId, votes);
+            FilterIdeas(sessionId).Wait();
+            var result = GetSession(sessionId).Result;
+            this.chatRoomHubContext.Clients.Group(sessionId).SendAsync("ReceiveVoteResults", sessionId, result.Ideas.Select(x=>x.Value).ToList());
         }
 
         public async Task AddFinalResult(BrainstormResult brainstormResult)
         {
             brainstormResultCollection.Add(brainstormResult);
+        }
+
+        private async Task FilterIdeas(string sessionId)
+        {
+            var result = await GetSession(sessionId);
+            if (result != null)
+            {
+                var filtered = result.Ideas.Where(x => x.Value.Likes > x.Value.Dislikes)?.Select(x=>x.Value).ToList();
+                if(filtered != null)
+                {
+                    // create dictionary and replace in session
+                    Dictionary<string, Idea> newDict = new();
+                    foreach (var i in filtered)
+                    {
+                        newDict[i.Id] = i;
+                    }
+
+                    // replace ideas
+                    result.Ideas = newDict;
+                }
+            }
         }
     }
 }
