@@ -11,7 +11,6 @@ const VoteResult = ({ idea }: prop) => {
             <div className='IdeaThought'>{idea.thought}</div>
             <div className='IdeaButton'>
                 <div className='Like'>Likes: {idea.likes}</div>
-                <div className='Dislike'>Dislikes: {idea.dislikes}</div>
             </div>
         </div>
     );

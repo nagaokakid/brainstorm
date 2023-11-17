@@ -12,14 +12,14 @@ function BS_OnlineIdeaList(props: BS_OnlineIdeaListProps) {
 
     return (
         <div className="OnlineIdeasContainer">
-            {props.content.map((idea, id) => {
+            {props.content.length > 0 ? props.content.map((idea, id) => {
                 return (
                     props.voting ?
                         <VoteIdea idea={idea} key={id}/>
                         :
                         <VoteResult idea={idea} key={id} />
                 );
-            })}
+            }) : "No idea was liked by the majority."}
         </div>
     );
 }
