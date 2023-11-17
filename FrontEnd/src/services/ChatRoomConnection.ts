@@ -130,9 +130,14 @@ class SignalRChatRoom {
      */
     setReceiveAllIdeasCallback(callBackFunction: (sessionId: string, ideas: Idea[]) => void) {
         this.connection.on("ReceiveAllIdeas", (sessionId: string, ideas: Idea[]) => {
-
+            // remove null elements from array
+            const ideasNew: Idea[] = [];
+            ideas.forEach(x=>{
+                if(x) ideasNew.push(x)
+            })
+        
             // receive all ideas from brainstorm session
-            callBackFunction(sessionId, ideas);
+            callBackFunction(sessionId, ideasNew);
         });
     }
 
@@ -142,9 +147,9 @@ class SignalRChatRoom {
      */
     setReceiveVoteResultsCallback(callBackFunction: (sessionId: string, ideas: Idea[]) => void) {
         this.connection.on("ReceiveVoteResults", (sessionId: string, ideas: Idea[]) => {
-
+            const sort = ideas.sort(x=>x.dislikes).sort(x=>x.likes)
             // receive the voting results
-            callBackFunction(sessionId, ideas);
+            callBackFunction(sessionId, sort);
         });
     }
 

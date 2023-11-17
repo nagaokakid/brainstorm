@@ -56,7 +56,15 @@ function CreateRoomCustomize(props: CreateRoomCustomizeProps) {
                     </div>
                     <input type="text" id='chatRoomName' placeholder='Chat Room Name' />
                     <input type="text" id='description' placeholder='Description' />
-                    <button className='submitButton' onClick={() => handleCreateRoomButton()}>Create</button>
+                    <div>
+
+                        <button className='cancelButton' onClick={() => {
+                            (document.getElementById("chatRoomName") as HTMLInputElement).value = "";
+                            (document.getElementById("description") as HTMLInputElement).value = "";
+                            setStyle({ display: "none" })}
+                        }>Cancel</button>
+                        <button className='submitButton' onClick={() => handleCreateRoomButton()}>Create</button>
+                    </div>
                 </div>
                 <h5 className='ErrorMsg' style={errorDisplay}>{errorMsg}</h5>
             </div>

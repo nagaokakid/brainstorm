@@ -25,4 +25,10 @@
     flex-direction: row;
     align-items: center;
     justify-content: center;
+    font-weight: bold;
+    color: black;
+    background-color: yellow;
+    margin-left: 5px;
+    border: none;
+    border-radius: 5px;
 }

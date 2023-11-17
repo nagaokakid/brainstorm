@@ -10,8 +10,8 @@ const VoteResult = ({ idea }: prop) => {
         <div className='IdeaResultBox'>
             <div className='IdeaThought'>{idea.thought}</div>
             <div className='IdeaButton'>
-                <div>Likes: {idea.likes}</div>
-                <div>Dislikes: {idea.dislikes}</div>
+                <div className='Like'>Likes: {idea.likes}</div>
+                <div className='Dislike'>Dislikes: {idea.dislikes}</div>
             </div>
         </div>
     );

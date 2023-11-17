@@ -71,3 +71,23 @@
     font-weight: bold;
     color: red;
 }
+
+.submitButton{
+    color: white;
+    font-weight: bold;
+    padding: 5px;
+    background-color: green;
+    border: none;
+    margin: 5px;
+    border-radius: 5px;
+}
+
+.cancelButton{
+    margin: 5px;
+    color: white;
+    font-weight: bold;
+    padding: 5px;
+    background-color: orange;
+    border: none;
+    border-radius: 5px;
+}
