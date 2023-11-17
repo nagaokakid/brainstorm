@@ -33,5 +33,4 @@ To view the sequence diagrams for this project, click [here](https://github.com/
 To view the testing plan for the app, click [here](https://github.com/nagaokakid/brainstorm/blob/main/Brainstorm_Test_Plan.pdf).
 
 # To run app
-To Run app clone the project, then run "dotnet run" in the Logic folder. Whatever port and address you see. Please place that address in the App.Info URL static field.
-Then run "npm run dev" in the UI folder. This is only temporary. For sprint 3 these projects will be running in docker. 
+To Run app clone the project, then run "docker compose up" in a terminal in the root directory of this project. If you previously have docker images from this project, delete them first before running the command.
