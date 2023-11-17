@@ -168,7 +168,7 @@ class ApiService {
      * Set all the call back functions for the SignalR
      * @param {*} Callback A function that will be called when a message is received
      */
-    async buildCallBack(Callback: (type: number, bsid?: string, msgObject?: (chatRoomMessageObject | newDirectMessageObject)) => void) {
+    async buildCallBack(Callback: (type: number, bsid?: string, msgObject?: (chatRoomMessageObject | newDirectMessageObject), userId?: string, timer?: string) => void) {
         await SignalRDirect.getInstance().then((value) =>
             value.setReceiveDirectMessageCallback((msgObject: newDirectMessageObject) => {
                 console.log("----> Receive direct message callback");
@@ -176,8 +176,8 @@ class ApiService {
             })
         );
         await SignalRChatRoom.getInstance().then((value) =>
-            value.setReceiveChatRoomMessageCallback((bsid: string | undefined, msgObject: chatRoomMessageObject) => {
-                Callback(1, bsid, msgObject);
+            value.setReceiveChatRoomMessageCallback((bsid: string | undefined, msgObject: chatRoomMessageObject, timer?: string) => {
+                Callback(1, bsid, msgObject, undefined, timer);
             })
         );
         await SignalRChatRoom.getInstance().then((value) =>
@@ -193,10 +193,10 @@ class ApiService {
             })
         );
         await SignalRChatRoom.getInstance().then((value) =>
-            value.setUserJoinedBrainstormSessionCallback((id) => {
+            value.setUserJoinedBrainstormSessionCallback((id, userId) => {
                 console.log("----> Receive BS join message callback");
                 
-                Callback(5, id);
+                Callback(5, id, undefined, userId);
             })
         );
         await SignalRChatRoom.getInstance().then((value) =>
@@ -225,6 +225,7 @@ class ApiService {
             value.setReceiveAllIdeasCallback((id: string, ideas: Idea[]) => {
                 console.log("----> Receive BS idea receive message callback");
                 console.log(ideas);
+                console.log(id);
                 
                 Callback(3, ideas);
             })
@@ -234,6 +235,7 @@ class ApiService {
             value.setReceiveVoteResultsCallback((id: string, ideas: Idea[]) => {
                 console.log("----> Receive BS vote results message callback");
                 console.log(ideas);
+                console.log(id);
                 Callback(4, ideas);
             })
         );

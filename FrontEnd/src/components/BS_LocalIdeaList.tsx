@@ -33,7 +33,7 @@ function BS_LocalIdeaList(props: BS_LocalIdeaListProps) {
                 return (
                     <div className="Idea" key={id}>
                         {idea}
-                        <button onClick={() => handleDeleteClick(id)}>X</button>
+                        <button className='DeleteButton' onClick={() => handleDeleteClick(id)}>Delete</button>
                     </div>
                 );
             })}

@@ -94,7 +94,7 @@ namespace Logic.Hubs
             return base.OnConnectedAsync();
         }
 
-        public async Task CreateBrainstormSession(string title, string description, string chatRoomId, string creatorId, string creatorFirstName, string creatorLastName)
+        public async Task CreateBrainstormSession(string title, string description, string chatRoomId, string creatorId, string creatorFirstName, string creatorLastName, string timer)
         {
             if (title != null && description != null && chatRoomId != null && creatorId != null)
             {
@@ -116,7 +116,7 @@ namespace Logic.Hubs
                     Timestamp = DateTime.Now,
                     Brainstorm = session.ToDTO(),
                 };
-                Clients.Group(session.ChatRoomId).SendAsync("ReceiveChatRoomMessage", msg);
+                Clients.Group(session.ChatRoomId).SendAsync("ReceiveChatRoomMessage", msg, timer);
             }
         }
 
@@ -133,7 +133,7 @@ namespace Logic.Hubs
                 {
                     // notify all joined members that a new user has joined
                     await Groups.AddToGroupAsync(Context.ConnectionId, sessionId);
-                    await Clients.Group(session.SessionId).SendAsync("UserJoinedBrainstormingSession", sessionId, user);
+                    await Clients.Group(session.SessionId).SendAsync("UserJoinedBrainstormingSession", sessionId, userId);
                 }
                 else
                 {

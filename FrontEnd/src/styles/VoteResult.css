@@ -1,8 +1,10 @@
 .IdeaResultBox {
-    width: auto;
+    width: 100%;
     height: auto;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
+    margin: 5px;
+    border-radius: 5px;
 }
 
 .IdeaResultBox .IdeaThought {
@@ -10,15 +12,34 @@
     height: auto;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    justify-content: start;
+    align-items: start;
+    background-color: pink;
+    color: black;
+    font-size: large;
+    padding: 5px;
 }
 
 .IdeaResultBox .IdeaButton {
     width: 100%;
     height: auto;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    flex-direction: row;
+    justify-content: end;
+    align-items: end;
+    background-color: pink;
+}
+
+.Like{
+    font-weight: bold;
+    padding: 5px;
+    color: green;
+    font-size: small;
+}
+
+.Dislike{
+    font-weight: bold;
+    font-size: small;
+    color: red;
+    padding: 5px;
 }
