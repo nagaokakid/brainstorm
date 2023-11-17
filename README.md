@@ -25,7 +25,7 @@ Navigate to a directory on your local machine where you would like to store a lo
 <br>
 <br>
 ### 2. Create and run the docker containers
-If you have previously created docker images from this project, delete them first before proceeding further. In the root directory of your local copy of this project, run the following command: <br><br>`docker compose up`
+First, ensure that you have [Docker](https://docs.docker.com/get-docker/) installed on your machine. If you have previously created docker images from this project, delete them first before proceeding further. In the root directory of your local copy of this project, run the following command: <br><br>`docker compose up`
 <br>
 <br>
 ### 3. Navigate to the web page
