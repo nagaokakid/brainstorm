@@ -146,16 +146,71 @@ describe('Testing Main Page (Logged In User)', () =>
     })
 
     // Test 8
-    it.only('create a brainstorm session', () =>
+    it.only('create a brainstorm session, input ideas, vote, and leave the session', () =>
     {
+        // create brainstorm session
         cy.get('.navigation-bar').find('.nav-button').contains('Chat Rooms').click();
         cy.get('.chats').find('.chat-item').find('.chat-title').first().click();
         cy.get('.ChatHeader').find('a').contains('Create BrainStorm Session').click();
         var bsInfo = cy.get('.BSinfoWindow');
-        bsInfo.find('#BSname').type('test session');
-        bsInfo.find('#BSdescription').type('for cypress e2e');
-        bsInfo.find('#BStimer').type('15');
-        bsInfo.find('#createBs').click();
+        bsInfo.get('#BSname').type('test session');
+        bsInfo.get('#BSdescription').type('for cypress e2e');
+        bsInfo.get('#BStimer').type('10');
+        bsInfo.get('#createBs').click();
+        
+        // start session and add 4 ideas
+        cy.url().should('contain', '/BrainStorm');
+        cy.get('.StartSessionButton').click();
+        var input = cy.get('.InputSection');
+        var sendBtn = cy.get('.SendSection');
+        input.type('idea 1');
+        sendBtn.click();
+        input.type('idea 2');   // check for this idea after voting ends
+        sendBtn.click();
+        input.type('idea 3');
+        sendBtn.click();
+        input.type('idea 4');
+        sendBtn.click();
+
+        // Delete one of the ideas
+        cy.get('.LocalIdeasContainer').find('.Idea').first().find('.DeleteButton').click();
+        cy.get('.EndSessionButton').click();
+        cy.get('.OnlineIdeasContainer').children().should('have.length', 3);
+
+        // Vote on each idea differently
+        cy.get('.OnlineIdeasContainer').find('.IdeaBox').each(($element, index) => {
+            // var currIdeaButton = cy.wrap($element).find('.IdeaButton');
+            var likeBtn = cy.wrap($element).find('.LikeIdea');
+            var dislikeBtn = cy.wrap($element).find('.DislikeIdea');
+            
+            if (index === 0)    // Like first idea twice (but should register as 1 like vote)
+            {
+                likeBtn.click();
+                likeBtn.click();
+            }
+            if (index === 1)    // Dislike the second idea twice (but should register as 1 dislike vote)
+            {
+                dislikeBtn.click();
+                dislikeBtn.click();
+            }
+            if (index === 3)    // Like and dislike third idea
+            {
+                dislikeBtn.click();
+                likeBtn.click();
+                likeBtn.click();
+                likeBtn.click();
+            }
+        })
+
+        // End voting and verify the results
+        cy.get('.EndVoteButton').click();
+        cy.get('.OnlineIdeasContainer').children().should('have.length', 1);
+        cy.get('.OnlineIdeasContainer').find('.IdeaResultBox').find('.IdeaThought').should('contain', 'idea 2');
+        cy.get('.ExitButton').click();
+        cy.get('.YesBtn').click();
+        cy.url().should('contain', '/main');
     })
+
+
 
 }) // end
