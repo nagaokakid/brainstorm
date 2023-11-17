@@ -28,13 +28,13 @@ function BrainStormPage() {
   const sessionTitle = bs_Info ? bs_Info.title : "";
   const sessionDescription = bs_Info ? bs_Info.description : "";
   const creatorId = bs_Info ? bs_Info.creator.userId : "";
-  const [timer, setTimer] = useState(100000);
-  const interval = useRef(0);
+  const [timer, setTimer] = useState(100000 as number);
+  const interval = useRef() as React.MutableRefObject<NodeJS.Timeout>;
 
   function startTimer() {
     if (timer > 0) {
       interval.current = setInterval(() => {
-        setTimer((timer: number) => timer - 1);
+        setTimer((prevTimer) => prevTimer - 1);
       }, 1000);
     }
   }
