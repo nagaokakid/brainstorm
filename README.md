@@ -52,3 +52,8 @@ To view the sequence diagrams for this project, click [here](https://github.com/
 
 # Testing Plan
 To view the testing plan for the app, click [here](https://github.com/nagaokakid/brainstorm/blob/main/Brainstorm_Test_Plan.pdf).
+
+<br>
+
+# End-To-End Testing
+If you would like to run the simulated acceptance tests for this project, clone the repository and ensure you have [Node and npm installed](https://radixweb.com/blog/installing-npm-and-nodejs-on-windows-and-mac). Go to the directory named *FrontEnd* for this project. Now, run the command `npm install` to install the necessary front-end dependencies. Then, run the command `npm run e2e` to run the tests.
