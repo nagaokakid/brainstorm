@@ -14,6 +14,27 @@ Brainstorm is a web application that serves as a way for groups of people to col
 
 <br>
 
+# Getting Started
+To run the Brainstorm app, perform the following steps: <br><br>
+### 1. Clone the remote repository
+Navigate to a directory on your local machine where you would like to store a local copy of this project. Run one of the following commands:
+<br><br>Clone via HTTPS<br>
+`git clone https://github.com/nagaokakid/brainstorm.git`
+<br><br>Clone via SSH<br>
+`git@github.com:nagaokakid/brainstorm.git`
+<br>
+<br>
+### 2. Create and run the docker containers
+If you have previously created docker images from this project, delete them first before proceeding further. In the root directory of your local copy of this project, run the following command: <br><br>`docker compose up`
+<br>
+<br>
+### 3. Navigate to the web page
+On a web browser, go to the app's home page by entering the following URL: <br><br>`http://localhost:8006/`
+<br>
+<br>
+### Enjoy!
+<br>
+
 # Project Proposal
 To view the project proposal, click [here](https://github.com/nagaokakid/brainstorm/wiki/Project-Proposal).
 
@@ -32,5 +53,7 @@ To view the sequence diagrams for this project, click [here](https://github.com/
 # Testing Plan
 To view the testing plan for the app, click [here](https://github.com/nagaokakid/brainstorm/blob/main/Brainstorm_Test_Plan.pdf).
 
-# To run app
-To Run app clone the project, then run "docker compose up" in a terminal in the root directory of this project. If you previously have docker images from this project, delete them first before running the command.
+<br>
+
+# End-To-End Testing
+If you would like to run the simulated acceptance tests for this project, clone the repository and ensure you have [Node and npm installed](https://radixweb.com/blog/installing-npm-and-nodejs-on-windows-and-mac). Go to the directory named *FrontEnd* for this project. Now, run the command `npm install` to install the necessary front-end dependencies. Then, run the command `npm run e2e` to run the tests.
