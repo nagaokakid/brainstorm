@@ -6,6 +6,6 @@
     },
     "include": ["**/*.ts"],
     "env": {
-      "RUN_CONDITIONAL_TEST": "false"
+      "RUN_CONDITIONAL_TEST": "true"
     }
   }
