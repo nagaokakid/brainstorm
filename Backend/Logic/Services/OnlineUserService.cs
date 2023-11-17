@@ -27,9 +27,14 @@ namespace Logic.Services
 
         public void Remove(string connectionId)
         {
-            var result = onlineUsers.Where(x => x.Value == connectionId).FirstOrDefault();
-
-            onlineUsers.Remove(result.Key, out string? removedUser);
+            if(connectionId != null)
+            {
+                var result = onlineUsers.Where(x => x.Value == connectionId)?.FirstOrDefault();
+                if(result != null && result.HasValue)
+                {
+                    onlineUsers.Remove(result.Value.Key, out string? removedUser);
+                }
+            }
         }
 
         public string? Get(string userId)

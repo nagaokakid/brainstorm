@@ -57,7 +57,7 @@ function ChatList(props: ChatListProps) {
 
     useEffect(() => {
         if (sessionStorage.getItem("callBack") === null) {
-            const render = (type: number, bsid?: string, msgObject?: (chatRoomMessageObject | newDirectMessageObject), userId?: string) => {
+            const render = (type: number, bsid?: string, msgObject?: (chatRoomMessageObject | newDirectMessageObject), userId?: string, timer?: string) => {
                 if (context === undefined) {
                     throw new Error('useDataContext must be used within a DataContext');
                 } else if (type === 1 || type === 2 || type === 3 || type === 4) {
@@ -82,7 +82,7 @@ function ChatList(props: ChatListProps) {
                 }
 
                 if (type === 1 && bsid) {
-                    navigate("/BrainStorm", { state: { bsid } });
+                    navigate("/BrainStorm", { state: { bsid, timer } });
                 }
             };
 
@@ -107,10 +107,6 @@ function ChatList(props: ChatListProps) {
     return (
         <div className="ChatListContainer">
             <div className="chat-list">
-                <h3 className="ChatListTitle">{props.displayTab === "ChatRoom List" ? "Chat Rooms" : "Direct Messages"}</h3>
-                <div className="search-bar">
-                    {/* <input type="text" placeholder="Search Chats" /> */}
-                </div>
                 <div className="chats">
                     {chatList.map((chat, index) => (
                         <div className="chat-item" key={index} onClick={() => handleChatOnClick(chat)}>

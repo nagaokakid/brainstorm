@@ -1,31 +1,38 @@
 /* MemberList.css */
 .member-list {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    background-color: #f0f0f0;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    overflow-y: auto;
-  }
-  
-  .member-list .online-members h2, .member-list .offline-members h2
-  {
-    position: relative;
-    font-size: 22px;
-    display: flex;
-    justify-content: start;
-  }
-  
-  .member-list ul,
-  .member-list li {
-    cursor: pointer;
-    list-style: none;
-    padding: 0;
-  }
+  padding: 5px;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-color: #f0f0f0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  overflow-y: auto;
+}
 
-  .member-list .online-members li:hover {
-    background-color: #9e9d9d;
-    transition: 0.5s;
-  }
+.member-list .online-members h2,
+.member-list .offline-members h2 {
+  position: relative;
+  font-size: 22px;
+  display: flex;
+  justify-content: start;
+}
+
+.member-list ul {
+  cursor: pointer;
+  list-style: none;
+  padding: 0;
+}
+
+.member-list li {
+  margin-top: 2px;
+  cursor: pointer;
+  list-style: none;
+  padding: 0;
+}
+
+.member-list .online-members li:hover {
+  background-color: #e8e8e8;
+  transition: 0.5s;
+}

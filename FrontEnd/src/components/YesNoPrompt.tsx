@@ -22,9 +22,9 @@ function YesNoPrompt(props: YesNoPromptProps) {
     return (
         <div className="YNBGSection" style={{ display: props.display }} onClick={() => handleOptionClick("none")}>
             <div className="YNContentWindow" onClick={handleChildClick}>
-                <p>{props.content}</p>
-                <button onClick={props.yesFunction}>Yes</button>
-                <button onClick={() => handleOptionClick("none")}>No</button>
+                <p className='Leave'>{props.content}</p>
+                <button className='YesBtn' onClick={props.yesFunction}>Yes</button>
+                <button className='NoBtn' onClick={() => handleOptionClick("none")}>No</button>
             </div>
         </div>
     );

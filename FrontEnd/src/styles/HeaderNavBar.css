@@ -54,8 +54,9 @@
 {
   position: relative;
   width: 50px;
-  height: auto;
-  background-color: #fff;
+  height: 30px;
+  background-color: #016090;
+  color: white;
   border: none;
   border-radius: 5px;
   outline: none;
@@ -65,9 +66,8 @@
 
 .header-nav-bar .JoinCodeSection .JoinCodeButton:hover
 {
-  background-color: black;
+  background-color: #014f76;
   color: white;
-  transition: 0.5s;
 }
 
 .header-nav-bar .JoinCodeSection .JoinCodeButton:active
@@ -92,7 +92,8 @@
 .header-nav-bar .UserProfile {
   position: absolute;
   right: 0%;
-  color: black;
+  color: white;
+  margin-right: 10px;
 }
 
 .header-nav-bar .nav-icons

@@ -43,12 +43,12 @@ class SignalRChatRoom {
      * Set a callback function that will be called when a chat room message is received
      * @param {*} callBackFunction A function that will be called when a chat room message is received
      */
-    setReceiveChatRoomMessageCallback(callBackFunction: (bsid: string | undefined, msg: chatRoomMessageObject) => void) {
-        this.connection.on("ReceiveChatRoomMessage", (msg: chatRoomMessageObject) => {
+    setReceiveChatRoomMessageCallback(callBackFunction: (bsid: string | undefined, msg: chatRoomMessageObject, timer?: string) => void) {
+        this.connection.on("ReceiveChatRoomMessage", (msg: chatRoomMessageObject, timer?: string) => {
             UserInfo.addChatRoomMessage(msg);
 
             if (msg.brainstorm && msg.brainstorm.creator.userId === UserInfo.getUserId()) {
-                callBackFunction(msg.brainstorm.sessionId, msg);
+                callBackFunction(msg.brainstorm.sessionId, msg, timer);
             } else {
                 callBackFunction(undefined, msg);
             }
@@ -130,9 +130,14 @@ class SignalRChatRoom {
      */
     setReceiveAllIdeasCallback(callBackFunction: (sessionId: string, ideas: Idea[]) => void) {
         this.connection.on("ReceiveAllIdeas", (sessionId: string, ideas: Idea[]) => {
-
+            // remove null elements from array
+            const ideasNew: Idea[] = [];
+            ideas.forEach(x=>{
+                if(x) ideasNew.push(x)
+            })
+        
             // receive all ideas from brainstorm session
-            callBackFunction(sessionId, ideas);
+            callBackFunction(sessionId, ideasNew);
         });
     }
 
@@ -142,9 +147,9 @@ class SignalRChatRoom {
      */
     setReceiveVoteResultsCallback(callBackFunction: (sessionId: string, ideas: Idea[]) => void) {
         this.connection.on("ReceiveVoteResults", (sessionId: string, ideas: Idea[]) => {
-
+            const sort = ideas.sort(x=>x.dislikes).sort(x=>x.likes)
             // receive the voting results
-            callBackFunction(sessionId, ideas);
+            callBackFunction(sessionId, sort);
         });
     }
 
@@ -187,8 +192,8 @@ class SignalRChatRoom {
      * @param description The brainstorm session description
      * @param chatRoomId The chat room id
      */
-    async createBrainstormSession(title: string, description: string, chatRoomId: string) {
-        const result = await this.connection.send("CreateBrainstormSession", title, description, chatRoomId, UserInfo.getUserId(), UserInfo.getFirstName(), UserInfo.getLastName()).then(() => {
+    async createBrainstormSession(title: string, description: string, chatRoomId: string, timer: string) {
+        const result = await this.connection.send("CreateBrainstormSession", title, description, chatRoomId, UserInfo.getUserId(), UserInfo.getFirstName(), UserInfo.getLastName(), timer).then(() => {
             console.log("----> Create brainstorm session success");
             return true;
         }).catch(() => {

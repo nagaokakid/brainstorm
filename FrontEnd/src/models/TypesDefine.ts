@@ -65,7 +65,7 @@ export type brainstormDTO = {
     sessionId: string;
     title: string;
     description: string;
-    timer: number; // to be received in ms
+    timer: number; // to be received in seconds
     creator: friendlyUser;
     members: friendlyUser[];
 }
