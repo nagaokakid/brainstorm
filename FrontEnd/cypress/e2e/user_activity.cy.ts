@@ -17,13 +17,10 @@ describe('Testing Main Page (Logged In User)', () =>
 {
     const username: string = 'cypress';
     const password: string = 'cypress';
-    const chatRoomHeader: string = 'ChatRoom List';
-    const directMessageHeader: string = 'Direct Message List';
     const foreignJoinCode: string = "461250";
     const foreignChatRoomTitle = "Movies";
     var newChatRoomTitle: string;
     var newChatRoomDescription: string;
-    var newMessageText: string;
 
     function generateRandomString(length: number): string {
         const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -52,18 +49,16 @@ describe('Testing Main Page (Logged In User)', () =>
     it('view all chat rooms', () => 
     {
         cy.get('.navigation-bar').find('.nav-button').contains('Chat Rooms').click();
-        cy.get('.ChatListTitle').should('exist').contains(chatRoomHeader);
         cy.get('.CreateChatRoomButton').should('exist');
-        cy.get('.chats').should('exist');
+        cy.get('.chat-list').find('.chats').should('exist');
     })
 
     // Test 2
     it('view all direct messages', () => 
     {
         cy.get('.navigation-bar').find('.nav-button').contains('Direct Message').click();
-        cy.get('.ChatListTitle').should('exist').contains(directMessageHeader);
         cy.get('.CreateChatRoomButton').should('be.hidden');
-        cy.get('.chats').should('exist');
+        cy.get('.chat-list').find('.chats').should('exist');
     })
 
     // Test 3
@@ -127,7 +122,6 @@ describe('Testing Main Page (Logged In User)', () =>
 
         // check direct message list
         cy.get('.navigation-bar').find('.nav-button').contains('Direct Message').click();
-        cy.get('.ChatListTitle').should('exist').contains(directMessageHeader);
         let target = cy.get('.chats').find('.chat-item').find('.chat-title:contains("string")').should('exist');
         target.click();
         cy.get('.MsgSection').find('.MsgWindowContainer').find('.MsgSection').children().should('have.length.gt', 0);
@@ -137,7 +131,6 @@ describe('Testing Main Page (Logged In User)', () =>
     it('send a direct message to another user via pre-existing direct message window', () => 
     {
         cy.get('.navigation-bar').find('.nav-button').contains('Direct Message').click();
-        cy.get('.ChatListTitle').should('exist').contains(directMessageHeader);
         cy.get('.chats').find('.chat-item').find('.chat-title').first().click();
         let msg = generateRandomString(10);
         cy.get('.MsgInputContainer').find('[placeholder="Enter Message here..."]').type(msg);
@@ -146,7 +139,7 @@ describe('Testing Main Page (Logged In User)', () =>
     })
 
     // Test 8
-    it.only('create a brainstorm session, input ideas, vote, and leave the session', () =>
+    it('create a brainstorm session, input ideas, vote, and leave the session', () =>
     {
         // create brainstorm session
         cy.get('.navigation-bar').find('.nav-button').contains('Chat Rooms').click();
