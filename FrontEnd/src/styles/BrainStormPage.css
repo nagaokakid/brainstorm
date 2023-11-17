@@ -90,6 +90,24 @@
     justify-content: center;
     align-items: center;
     cursor: pointer;
+    margin: 5px;
+}
+
+.StartSessionButton{
+    background-color: green;
+    padding: 5px;
+}
+.EndSessionButton{
+    background-color: orange;
+    padding: 5px;
+}
+.EndVoteButton{
+    background-color: orangered;
+    padding: 5px;
+}
+.ExitButton{
+    background-color: red;
+    padding: 5px;
 }
 
 .BS_PageContainer .NoticeClass {

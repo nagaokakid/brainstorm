@@ -27,3 +27,29 @@
     font-size: 20px;
     margin-bottom: 10px;
 }
+
+.CreateBtn{
+    margin: 5px;
+    background-color: green;
+    border: none;
+    padding: 5px;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+}
+
+.CancelBtn{
+    color: white;
+    font-weight: bold;
+    margin: 5px;
+    background-color: orange;
+    border: none;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.Input{
+    margin: 5px;
+    padding: 5px;
+    border-radius: 5px;
+}

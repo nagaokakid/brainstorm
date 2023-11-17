@@ -16,12 +16,13 @@
     border-radius: 1rem;
     background-color: #0088cc;
     pointer-events: auto;
+    overflow-wrap: break-word;
 }
 
 .MessageWrapper {
     padding: 5px;
     margin: 5px;
-    width: 100px;
+    width: 300px;
     min-width: 300px;
     border-radius: 5px;
     background-color: #0088cc;

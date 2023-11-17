@@ -19,3 +19,26 @@
     align-items: center;
     justify-content: space-evenly;
 }
+
+.Leave{
+    font-size: 100px;
+}
+
+.YesBtn{
+    color: white;
+    font-weight: bold;
+    width: 100px;
+    padding: 5px;
+    border: none;
+    border-radius: 5px;
+    background-color: red;
+}
+.NoBtn{
+    font-weight: bold;
+    color: white;
+    width: 100px;
+    padding: 5px;
+    border: none;
+    border-radius: 5px;
+    background-color: orange;
+}

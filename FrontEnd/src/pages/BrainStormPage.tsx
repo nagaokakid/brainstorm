@@ -205,9 +205,10 @@ function BrainStormPage() {
                         <BS_MemberList />
                     </div>
                     <div className='BS_ButtonContainer' style={{ display: UserInfo.isHost(creatorId) ? "flex" : "none" }}>
-                        <button onClick={handleStartSessionClick}>Start Session</button>
-                        <button onClick={handleEndSessionClick}>End Session</button>
-                        <button onClick={handleVotingClick}>End Voting</button>
+                        <button className='StartSessionButton' onClick={handleStartSessionClick}>Start Session</button>
+                        <button className='EndSessionButton' onClick={handleEndSessionClick}>End Round</button>
+                        <button className='EndVoteButton'  onClick={handleVotingClick}>End Voting</button>
+                        <button className='ExitButton' onClick={() => setLeaveContainer("flex")}>Exit</button>
                     </div>
                 </div>
             </div>

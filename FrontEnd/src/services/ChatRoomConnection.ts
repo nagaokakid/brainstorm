@@ -147,9 +147,9 @@ class SignalRChatRoom {
      */
     setReceiveVoteResultsCallback(callBackFunction: (sessionId: string, ideas: Idea[]) => void) {
         this.connection.on("ReceiveVoteResults", (sessionId: string, ideas: Idea[]) => {
-
+            const sort = ideas.sort(x=>x.dislikes).sort(x=>x.likes)
             // receive the voting results
-            callBackFunction(sessionId, ideas);
+            callBackFunction(sessionId, sort);
         });
     }
 

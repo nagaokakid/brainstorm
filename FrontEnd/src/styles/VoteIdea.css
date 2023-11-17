@@ -2,23 +2,44 @@
     width: auto;
     height: auto;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
+    margin: 5px;
 }
 
 .IdeaBox .IdeaThought {
+    padding: 5px;
+    background-color: pink;
     width: 100%;
     height: auto;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    align-items: start;
 }
 
 .IdeaBox .IdeaButton {
+    background-color: pink;
     width: 100%;
     height: auto;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    flex-direction: row;
+    justify-content: start;
+}
+
+.LikeIdea{
+    margin: 5px;
+    background-color: green;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    padding: 5px;
+    width: 100px;
+}
+.DislikeIdea{
+    border: none;
+    border-radius: 5px;
+    margin: 5px;
+    width: 100px;
+    padding: 5px;
+    background-color: red;
+    color: white;
 }
