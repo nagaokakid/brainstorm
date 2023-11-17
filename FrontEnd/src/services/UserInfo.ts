@@ -11,7 +11,7 @@ import {
 class UserInfo {
 
     // The url of the backend
-    static BaseURL = "https://localhost:7175/"
+    static BaseURL = "http://localhost:5135/"
 
     // the object that contains the user info
     static currentUser = {} as user;

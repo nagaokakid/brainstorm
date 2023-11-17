@@ -168,7 +168,7 @@ class ApiService {
      * Set all the call back functions for the SignalR
      * @param {*} Callback A function that will be called when a message is received
      */
-    async buildCallBack(Callback: (type: number, bsid?: string, msgObject?: (chatRoomMessageObject | newDirectMessageObject), userId?: string) => void) {
+    async buildCallBack(Callback: (type: number, bsid?: string, msgObject?: (chatRoomMessageObject | newDirectMessageObject), userId?: string, timer?: string) => void) {
         await SignalRDirect.getInstance().then((value) =>
             value.setReceiveDirectMessageCallback((msgObject: newDirectMessageObject) => {
                 console.log("----> Receive direct message callback");
@@ -176,8 +176,8 @@ class ApiService {
             })
         );
         await SignalRChatRoom.getInstance().then((value) =>
-            value.setReceiveChatRoomMessageCallback((bsid: string | undefined, msgObject: chatRoomMessageObject) => {
-                Callback(1, bsid, msgObject);
+            value.setReceiveChatRoomMessageCallback((bsid: string | undefined, msgObject: chatRoomMessageObject, timer?: string) => {
+                Callback(1, bsid, msgObject, undefined, timer);
             })
         );
         await SignalRChatRoom.getInstance().then((value) =>
