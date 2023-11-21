@@ -16,6 +16,7 @@ public interface IBrainstormService
     Task<List<Idea>> GetAllIdeas(string sessionId);
     Task<BrainstormSession?> GetSession(string sessionId);
     Task Join(string sessionId, FriendlyUserInfo user);
+    Task<List<Idea>> VoteAnotherRound(string sessionId);
     Task RemoveSession(string sessionId);
     Task SendAllIdeasTimer(string sessionId, Action<string, List<Idea>>? callback);
     Task SendVotesTimer(string sessionId, Action<string, List<Idea>>? callback);
@@ -191,6 +192,26 @@ namespace Logic.Services
                     result.Ideas = newDict;
                 }
             }
+        }
+
+        public async Task<List<Idea>> VoteAnotherRound(string sessionId)
+        {
+            if (!string.IsNullOrEmpty(sessionId))
+            {
+                var result = await GetSession(sessionId);
+                if(result != null)
+                {
+                    // set all votes to zero to vote again
+                    foreach (var idea in result.Ideas.Values)
+                    {
+                        idea.Dislikes = 0;
+                        idea.Likes = 0;
+                    }
+
+                    return result.Ideas.Values.ToList();
+                }
+            }
+            return new List<Idea>();
         }
     }
 }

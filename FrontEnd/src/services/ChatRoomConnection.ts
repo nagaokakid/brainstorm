@@ -232,6 +232,11 @@ class SignalRChatRoom {
         await this.connection.send("EndSession", sessionId)
     }
 
+
+    async voteAnotherRound(sessionId: string){
+        await this.connection.send("VoteAnotherRound", sessionId)
+    }
+
     /**
      * Send a request to the backend to along with the ideas
      * @param sessionId The brainstorm session id

@@ -144,6 +144,18 @@ function BrainStormPage() {
       showNotice("Voting has already ended or has not started yet.");
     }
   }
+  /**
+   * To vote another round
+   */
+  function handleAnotherVotingRoundClick() {
+    if (!isVoting) {
+      SignalRChatRoom.getInstance().then((instance) => {
+        instance.voteAnotherRound(sessionId);
+      });
+    } else {
+      showNotice("Voting is already in session.");
+    }
+  }
 
   useEffect(() => {
     if (sessionStorage.getItem("bs_callBack") === null) {
@@ -230,6 +242,9 @@ function BrainStormPage() {
             </button>
             <button className="EndVoteButton" onClick={handleVotingClick}>
               End Voting
+            </button>
+            <button className="EndVoteButton" onClick={handleAnotherVotingRoundClick}>
+              Vote Again
             </button>
             <button
               className="ExitButton"

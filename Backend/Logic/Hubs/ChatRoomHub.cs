@@ -196,5 +196,11 @@ namespace Logic.Hubs
         {
             await brainstormService.AddVotes(sessionId, ideas);
         }
+
+        public async Task VoteAnotherRound(string sessionId)
+        {
+            var result = await brainstormService.VoteAnotherRound(sessionId);
+            Clients.Groups(sessionId).SendAsync("ReceiveAllIdeas", sessionId, result);
+        }
     }
 }

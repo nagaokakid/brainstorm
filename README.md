@@ -35,6 +35,11 @@ On a web browser, go to the app's home page by entering the following URL: <br><
 ### Enjoy!
 <br>
 
+# User Guide
+To view the user guide for this app, click here [here](https://github.com/nagaokakid/brainstorm/wiki/User-Guide).
+
+<br>
+
 # Project Proposal
 To view the project proposal, click [here](https://github.com/nagaokakid/brainstorm/wiki/Project-Proposal).
 
