@@ -4,6 +4,7 @@
     display: flex;
     justify-content: center;
     font-size: 30px !important;
+    color: white;
 }
 
 .nav-pills .nav-link {
@@ -28,4 +29,9 @@
     margin-bottom: 5px;
     display: flex;
     justify-content: center;
+}
+
+.SignInButton{
+    background-color: green;
+    color: aqua;
 }
