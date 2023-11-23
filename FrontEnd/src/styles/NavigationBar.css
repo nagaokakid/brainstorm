@@ -9,12 +9,14 @@
   display: flex;
   flex-direction: column;
   gap: 2px;
-  background-color: #0088cc;
+  background: rgb(2,0,36);
+background: linear-gradient(167deg, rgba(2,0,36,1) 0%, rgba(12,53,106,1) 51%, rgba(1,116,190,1) 100%);
 }
 
 .nav-button
 {
   background-color: #2b96cb;
+  font-size: larger;
   padding-left: 5px;
   width: 100%;
   height: auto;
@@ -27,12 +29,12 @@
 
 .nav-button:hover
 {
-  background-color: #1690cd;
+  background-color: #0174BE;
   color: white;
 }
 
 .nav-button:not(:hover)
 {
-  background-color: #2b96cb;
+  background-color: transparent;
   color: white;
 }

@@ -23,7 +23,7 @@
     padding-left: 5px;
     padding-right: 5px;
     color: white;
-    background-color: #800080;
+    background-color: #0174BE;
 }
 
 .WindowContainer .MsgContainer .ChatHeader h1 {
@@ -38,10 +38,11 @@
     border-radius: 5px;
     padding: 5px;
     width: auto;
-    height: auto;
-    color: white;
+    height: auto; 
+    color: black;
+    font-weight: bold;
     text-decoration: none;
-    background: #510051;
+    background: #FFC436;
 }
 
 .WindowContainer .MsgContainer .ChatHeader a:hover{
@@ -49,9 +50,10 @@
     padding: 5px;
     width: auto;
     height: auto;
-    color: white;
+    color: black;
+    font-weight: bold;
     text-decoration: none;
-    background: #300030;
+    background: #e6ab22;
 }
 .WindowContainer .MsgContainer .MsgSection {
     display: flex;

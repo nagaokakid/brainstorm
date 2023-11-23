@@ -1,25 +1,28 @@
 .IdeaResultBox {
-    width: 100%;
     height: auto;
     display: flex;
     flex-direction: column;
     margin: 5px;
     border-radius: 5px;
+    padding: 5px;
+    color: white;
+    background: rgb(2,0,36);
+    background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(12,53,106,1) 100%, rgba(1,116,190,1) 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    border-radius: 15px;
 }
-
-.IdeaResultBox .IdeaThought {
+.IdeaThought {
     width: 100%;
     height: auto;
     display: flex;
     flex-direction: column;
     justify-content: start;
     align-items: start;
-    background-color: pink;
-    color: black;
     font-size: large;
     padding: 5px;
 }
-
 .IdeaResultBox .IdeaButton {
     width: 100%;
     height: auto;
@@ -27,7 +30,6 @@
     flex-direction: row;
     justify-content: end;
     align-items: end;
-    background-color: pink;
 }
 
 .Like{
