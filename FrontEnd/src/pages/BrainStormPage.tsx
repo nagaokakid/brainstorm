@@ -51,8 +51,8 @@ function BrainStormPage() {
   useEffect(() => {
     if (timer === 0 && !input) {
       clearInterval(interval.current);
-    setTimer(Number(location.timer));
-       
+      setTimer(Number(location.timer));
+
       handleEndSessionClick();
     }
   }, [timer]);
@@ -228,10 +228,6 @@ function BrainStormPage() {
           <BS_OnlineIdeaList content={ideaList} voting={isVoting} />
           <BS_LocalIdeaList content={localIdeaList} />
           <BS_SendPrompt sendFunction={handleSendClick} input={input} />
-        </div>
-        <div className="BS_RightSideContainer">
-          <div className="BS_MemberContainer">
-            <BS_MemberList />
           <div
             className="BS_ButtonContainer"
             style={{ display: UserInfo.isHost(creatorId) ? "flex" : "none" }}
@@ -262,7 +258,6 @@ function BrainStormPage() {
             >
               Exit
             </button>
-          </div>
           </div>
         </div>
       </div>
