@@ -27,8 +27,10 @@ function MsgBox(props: MsgBoxProps) {
     });
   }
 
-  function handleRemoveChatRoom(){
+  function handleRemoveChatRoom() {
     SignalRChatRoom.getInstance().then((value) => {
+      console.log("handle" + props.chatId + props.msgId);
+      
       value.removeChatRoomMessage(props.chatId, props.msgId);
     });
   }
@@ -38,7 +40,15 @@ function MsgBox(props: MsgBoxProps) {
       <div className="MessageWrapper">
         <div className="MessageHeader">
           <div className="MessageUsername">{props.user[1]}</div>
-          <img className="MessageDelete" src="src\assets\delete.png" width={10} height={10} onClick={() => handleRemoveChatRoom}/>
+
+          <img
+            className="MessageImage"
+            src="src\assets\delete.png"
+            onClick={() => {
+              console.log("Delete Message");
+              handleRemoveChatRoom();
+            }}
+          />
         </div>
         <div className="Message">
           {props.isBrainstorm ? (

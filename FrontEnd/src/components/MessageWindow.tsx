@@ -6,6 +6,7 @@ import MessageInput from "./MessageInput";
 import { chatRoomMessageObject } from "../models/TypesDefine";
 import { useDataContext } from "../contexts/DataContext";
 import { useEffect, useState } from "react";
+import { useMyStore } from "../contexts/zustand";
 
 interface MessageWindowProps {
     chatId: string;
@@ -16,9 +17,15 @@ function MessageWindow(props: MessageWindowProps) {
     const context = useDataContext();
     const msg = context[1];
     const [messages, setMessages] = useState([] as (chatRoomMessageObject | { messageId:string, message: string, timestamp: string })[]); // Set the message to the display
-
+   
+    
     useEffect(() => {
-        if ("chatRoomId" in msg && msg.chatRoomId === props.chatId) {
+        if(msg === undefined){
+            setMessages(UserInfo.getMessageHistory(props.chatId, props.chatType));
+            console.log("useEffect MessageWindow");
+            
+        }
+        else if ("chatRoomId" in msg && msg.chatRoomId === props.chatId) {
             setMessages(prev => [...prev, msg]);
         } else if ("toUserInfo" in msg && msg.toUserInfo) {
             const check1 = msg.toUserInfo.userId === UserInfo.getUserId() && msg.fromUserInfo.userId === props.chatId;
@@ -31,6 +38,8 @@ function MessageWindow(props: MessageWindowProps) {
 
     useEffect(() => {
         setMessages(UserInfo.getMessageHistory(props.chatId, props.chatType));
+        console.log("use effect with zustand");
+        
     }, [props.chatId]);
 
     return (

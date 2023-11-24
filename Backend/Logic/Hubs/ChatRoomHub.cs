@@ -70,6 +70,7 @@ namespace Logic.Hubs
             {
                 var msgInfo = new MessageInfo
                 {
+                    MessageId = Guid.NewGuid().ToString(),
                     FromUserInfo = new FriendlyUserInfo { UserId = userId, FirstName = firstName, LastName = lastName },
                     ChatRoomId = chatRoomId,
                     Message = msg,

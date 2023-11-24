@@ -5,7 +5,6 @@
     width: auto;
     height: auto;
     justify-content: start;
-    pointer-events: none;
     z-index: 10;
 }
 
@@ -17,7 +16,7 @@
 
 .MessageWrapper:not(hover){
     .MessageDelete{
-        visibility: hidden;
+        visibility: visible;
     }
 }
 
@@ -83,4 +82,13 @@
 
 .MessageDelete{
     cursor: pointer;
+    width: 10px;
+    height: 10px;
+    background-color: red;
+    z-index: 10;
+}
+.MessageImage{
+    cursor: pointer;
+    width: 10px;
+    height: 10px;
 }
