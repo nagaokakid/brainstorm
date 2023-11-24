@@ -16,6 +16,7 @@ interface MessageWindowProps {
 function MessageWindow(props: MessageWindowProps) {
     const context = useDataContext();
     const msg = context[1];
+    const render = context[4];
     const [messages, setMessages] = useState([] as (chatRoomMessageObject | { messageId:string, message: string, timestamp: string })[]); // Set the message to the display
    
     
@@ -40,7 +41,7 @@ function MessageWindow(props: MessageWindowProps) {
         setMessages(UserInfo.getMessageHistory(props.chatId, props.chatType));
         console.log("use effect with zustand");
         
-    }, [props.chatId]);
+    }, [props.chatId, render]);
 
     return (
         <div className="MsgWindowContainer">

@@ -243,7 +243,7 @@ class ApiService {
           // rerender frontend
           const { SetUpdate } = useMyStore();
           SetUpdate();
-          Callback(2);
+          Callback(7);
         }
       )
     );

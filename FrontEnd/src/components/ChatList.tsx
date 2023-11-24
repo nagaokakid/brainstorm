@@ -21,7 +21,7 @@ interface ChatListProps {
 }
 
 function ChatList(props: ChatListProps) {
-  
+
   const navigate = useNavigate(); // Get the navigate function
   const context = useContext(DataContext); // Get the data context
   const [chatList, setChatList] = useState(
@@ -84,10 +84,15 @@ function ChatList(props: ChatListProps) {
       ) => {
         if (context === undefined) {
           throw new Error("useDataContext must be used within a DataContext");
-        } else if (type === 1 || type === 2 || type === 3 || type === 4) {
-          if (type === 1 || type === 2) {
-            const updateMsg = context[3];
-            updateMsg(msgObject!);
+        } else if (type === 1 || type === 2 || type === 3 || type === 4 || type === 7) {
+          if (type === 1 || type === 2 || type === 7) {
+            if (type === 1 || type === 2) {
+              const updateMsg = context[3];
+              updateMsg(msgObject!);
+            } else if (type === 7) {
+              const updateMsg = context[5];
+              updateMsg(true);
+            }
           } else if (type === 4) {
             setForceRender((prev) => !prev);
           } else if (type === 3) {
@@ -148,8 +153,8 @@ function ChatList(props: ChatListProps) {
                   {"title" in chat
                     ? chat.title
                     : chat.user1.userId === UserInfo.getUserId()
-                    ? chat.user2.firstName
-                    : chat.user1.firstName}
+                      ? chat.user2.firstName
+                      : chat.user1.firstName}
                 </div>
                 <div className="last-message">
                   {"description" in chat
