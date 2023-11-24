@@ -232,7 +232,6 @@ function BrainStormPage() {
         <div className="BS_RightSideContainer">
           <div className="BS_MemberContainer">
             <BS_MemberList />
-          </div>
           <div
             className="BS_ButtonContainer"
             style={{ display: UserInfo.isHost(creatorId) ? "flex" : "none" }}
@@ -242,7 +241,7 @@ function BrainStormPage() {
               onClick={handleStartSessionClick}
               style={displayBtn[0]}
             >
-              Start Session
+              Start
             </button>
             <button
               className="EndSessionButton"
@@ -263,6 +262,7 @@ function BrainStormPage() {
             >
               Exit
             </button>
+          </div>
           </div>
         </div>
       </div>

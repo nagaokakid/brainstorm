@@ -12,20 +12,21 @@
 .MessageContainer p 
 {
     font-weight: 500;
-    color: #fff;
+    color: white;
     border-radius: 1rem;
-    background-color: #0088cc;
+    background-color: #0174BE;
     pointer-events: auto;
     overflow-wrap: break-word;
 }
 
 .MessageWrapper {
     padding: 5px;
+    padding-bottom: 0px;
     margin: 5px;
     width: 300px;
     min-width: 300px;
     border-radius: 5px;
-    background-color: #0088cc;
+    background-color: #0174BE;
 }
 
 .MessageUsername{
@@ -33,15 +34,30 @@
 }
 
 .MessageContainer button {
-    width: auto;
-    height: auto;
+    width: fit-content;
+    height: fit-content;
+    align-self: flex-end;
 }
 
 .MessageJoinBS{
-    margin: 5px;
     padding: 5px;
-    background-color: #016090;
-    color: white;
+    background-color: #FFC436;
+    color: black;
+    font-weight: bold;
     border: none;
     border-radius: 5px;
+}
+
+.MessageJoinBS:hover{
+    padding: 5px;
+    background-color: #e4a616;
+    color: black;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+}
+
+.MessageIsBrainstorm{
+    display: flex;
+    flex-direction: column;
 }

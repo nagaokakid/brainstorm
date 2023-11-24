@@ -19,8 +19,12 @@ const VoteIdea = ({ idea }: props) => {
         <div className='IdeaBox'>
             <div className='IdeaThought'>{idea.thought}</div>
             <div className='IdeaButton'>
-                <button className='LikeIdea' onClick={clickedLike}>Like</button>
-                <button className='DislikeIdea' onClick={clickedDislike}>Dislike</button>
+                <button className='LikeIdea' onClick={clickedLike}>
+                    <img src='src\assets\like.png' height={20}/>
+                </button>
+                <button className='DislikeIdea' onClick={clickedDislike}>
+                    <img src='src\assets\dislike.png' height={20}/>
+                </button>
             </div>
         </div>
     )

@@ -2,12 +2,12 @@
 {
     height: 50px;
     width: 100%;
-    background: #fff;
-    padding: 5px;
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: 10px;
+    margin: 10px;
+    background-color: #0174BE;
+    border-radius: 5px;
 }
 
 .MsgInputContainer input
@@ -16,9 +16,11 @@
     height: 100%;
     border: none;
     outline: none;
-    color: black;
+    color: white;
     font-size: 1.5em;
-    background-color: white;
+    background-color: #0174BE;
+    border-radius: 10px;
+    padding: 5px;
 
     &::placeholder
     {
@@ -36,12 +38,13 @@
 
 .MsgInputContainer .send button
 {
-    background-color: rgb(130, 224, 209);
+    background-color: #FFC436;
     height: inherit;
     border-radius: 5px;
     border: none;
     cursor: pointer;
     outline: none;
+    margin: 0px;
 }
 
 .MsgInputContainer .send img
