@@ -177,9 +177,9 @@ function BrainStormPage() {
   function handleAnotherVotingRoundClick() {
     if (!isVoting) {
       setDisplayBtn([
+        { display: "none" },
+        { display: "none" },
         { display: "flex" },
-        { display: "none" },
-        { display: "none" },
         { display: "flex" },
       ]);
       SignalRChatRoom.getInstance().then((instance) => {
