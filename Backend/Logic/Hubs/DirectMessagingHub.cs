@@ -41,6 +41,7 @@ namespace Logic.Hubs
 
                 var msgInfo = new MessageInfo
                 {
+                    MessageId = Guid.NewGuid().ToString(),
                     FromUserInfo = new FriendlyUserInfo { UserId = fromUserId, FirstName = fromFirstName, LastName = fromLastName },
                     ToUserInfo = new FriendlyUserInfo { UserId = toUserId, FirstName = toFirstName, LastName = toLastName },
                     Message = msg,

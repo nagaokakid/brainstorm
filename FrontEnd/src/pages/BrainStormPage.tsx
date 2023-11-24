@@ -180,7 +180,7 @@ function BrainStormPage() {
         { display: "none" },
         { display: "none" },
         { display: "flex" },
-        { display: "flex" },
+        { display: "none" },
       ]);
       SignalRChatRoom.getInstance().then((instance) => {
         instance.voteAnotherRound(sessionId);

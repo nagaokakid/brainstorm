@@ -111,6 +111,7 @@ namespace Logic.Hubs
                 // send message to chatroom saying a new brainstorming session has started
                 var msg = new MessageInfoJoinSession
                 {
+                    MessageId = Guid.NewGuid().ToString(),
                     ChatRoomId = chatRoomId,
                     Message = $"Join {title}",
                     FromUserInfo = creator,
@@ -206,8 +207,11 @@ namespace Logic.Hubs
 
         public async Task RemoveChatRoomMessage(string chatRoomId, string messageId)
         {
-            chatRoomService.RemoveMessage(chatRoomId, messageId);
-            Clients.Groups(chatRoomId).SendAsync("RemoveChatRoomMessage", chatRoomId, messageId);
+            if(!string.IsNullOrEmpty(chatRoomId) && !string.IsNullOrEmpty(messageId))
+            {
+                chatRoomService.RemoveMessage(chatRoomId, messageId);
+                Clients.Groups(chatRoomId).SendAsync("RemoveChatRoomMessage", chatRoomId, messageId);
+            }
         }
     }
 }
