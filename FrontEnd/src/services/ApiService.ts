@@ -8,7 +8,6 @@ import {
   newDirectMessageObject,
   chatRoomMessageObject,
 } from "../models/TypesDefine";
-import { UseStorrre, useMyStore } from "../contexts/zustand";
 
 class ApiService {
   /**
@@ -239,10 +238,6 @@ class ApiService {
           }
 
           console.log("before");
-
-          // rerender frontend
-          const { SetUpdate } = useMyStore();
-          SetUpdate();
           Callback(7);
         }
       )

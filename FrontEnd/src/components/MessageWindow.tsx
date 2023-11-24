@@ -6,7 +6,6 @@ import MessageInput from "./MessageInput";
 import { chatRoomMessageObject } from "../models/TypesDefine";
 import { useDataContext } from "../contexts/DataContext";
 import { useEffect, useState } from "react";
-import { useMyStore } from "../contexts/zustand";
 
 interface MessageWindowProps {
     chatId: string;
@@ -23,7 +22,6 @@ function MessageWindow(props: MessageWindowProps) {
     useEffect(() => {
         if(msg === undefined){
             setMessages(UserInfo.getMessageHistory(props.chatId, props.chatType));
-            console.log("useEffect MessageWindow");
             
         }
         else if ("chatRoomId" in msg && msg.chatRoomId === props.chatId) {
@@ -39,7 +37,6 @@ function MessageWindow(props: MessageWindowProps) {
 
     useEffect(() => {
         setMessages(UserInfo.getMessageHistory(props.chatId, props.chatType));
-        console.log("use effect with zustand");
         
     }, [props.chatId, render]);
 
