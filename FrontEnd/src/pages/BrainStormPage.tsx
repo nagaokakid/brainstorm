@@ -1,6 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import "../styles/BrainStormPage.css";
-import BS_MemberList from "../components/BS_MemberList";
 import BS_HeaderContent from "../components/BS_HeaderContent";
 import BS_SendPrompt from "../components/InputSendPrompt";
 import BS_OnlineIdeaList from "../components/BS_OnlineIdeaList";
@@ -22,7 +21,12 @@ function BrainStormPage() {
   const [input, setInput] = useState(true);
   const [display, setDisplay] = useState({ display: "none" });
   const [noticeMsg, setNoticeMsg] = useState("" as string);
-  const [displayBtn, setDisplayBtn] = useState([{ display: "flex" }, { display: "none" }, { display: "none" }, { display: "none" }]);
+  const [displayBtn, setDisplayBtn] = useState([
+    { display: "flex" },
+    { display: "none" },
+    { display: "none" },
+    { display: "none" },
+  ]);
   const location = useLocation().state as { bsid: string; timer?: string };
   const [timer, setTimer] = useState(Number(location.timer));
   const bs_Info = UserInfo.getBS_Session(location ? location.bsid : "");
@@ -51,8 +55,8 @@ function BrainStormPage() {
   useEffect(() => {
     if (timer === 0 && !input) {
       clearInterval(interval.current);
-    setTimer(Number(location.timer));
-       
+      setTimer(Number(location.timer));
+
       handleEndSessionClick();
     }
   }, [timer]);
@@ -114,7 +118,12 @@ function BrainStormPage() {
    */
   function handleStartSessionClick() {
     if (input) {
-      setDisplayBtn([{ display: "none" }, { display: "flex" }, { display: "none" }, { display: "none" }]);
+      setDisplayBtn([
+        { display: "none" },
+        { display: "flex" },
+        { display: "none" },
+        { display: "none" },
+      ]);
       UserInfo.clearIdeaList();
       UserInfo.clearIdea();
       startTimer();
@@ -129,7 +138,12 @@ function BrainStormPage() {
    */
   function handleEndSessionClick() {
     if (!input) {
-      setDisplayBtn([{ display: "none" }, { display: "none" }, { display: "flex" }, { display: "none" }]);
+      setDisplayBtn([
+        { display: "none" },
+        { display: "none" },
+        { display: "flex" },
+        { display: "none" },
+      ]);
       clearInterval(interval.current);
       SignalRChatRoom.getInstance().then((instance) => {
         instance.endSession(sessionId);
@@ -144,7 +158,12 @@ function BrainStormPage() {
    */
   function handleVotingClick() {
     if (isVoting) {
-      setDisplayBtn([{ display: "none" }, { display: "none" }, { display: "none" }, { display: "flex" }]);
+      setDisplayBtn([
+        { display: "none" },
+        { display: "none" },
+        { display: "none" },
+        { display: "flex" },
+      ]);
       SignalRChatRoom.getInstance().then((instance) => {
         instance.clientsShouldSendAllVotes(sessionId);
       });
@@ -157,7 +176,12 @@ function BrainStormPage() {
    */
   function handleAnotherVotingRoundClick() {
     if (!isVoting) {
-      setDisplayBtn([{ display: "flex" }, { display: "none" }, { display: "none" }, { display: "flex" }]);
+      setDisplayBtn([
+        { display: "none" },
+        { display: "none" },
+        { display: "flex" },
+        { display: "none" },
+      ]);
       SignalRChatRoom.getInstance().then((instance) => {
         instance.voteAnotherRound(sessionId);
       });
@@ -227,42 +251,47 @@ function BrainStormPage() {
         <div className="BS_ContentContainer">
           <BS_OnlineIdeaList content={ideaList} voting={isVoting} />
           <BS_LocalIdeaList content={localIdeaList} />
-          <BS_SendPrompt sendFunction={handleSendClick} input={input} />
-        </div>
-        <div className="BS_RightSideContainer">
-          <div className="BS_MemberContainer">
-            <BS_MemberList />
-          </div>
-          <div
-            className="BS_ButtonContainer"
-            style={{ display: UserInfo.isHost(creatorId) ? "flex" : "none" }}
-          >
-            <button
-              className="StartSessionButton"
-              onClick={handleStartSessionClick}
-              style={displayBtn[0]}
+          <div className="BS_BottomRow">
+            <BS_SendPrompt sendFunction={handleSendClick} input={input} />
+            <div
+              className="BS_ButtonContainer"
+              style={{ display: UserInfo.isHost(creatorId) ? "flex" : "none" }}
             >
-              Start Session
-            </button>
-            <button
-              className="EndSessionButton"
-              onClick={handleEndSessionClick}
-              style={displayBtn[1]}
-            >
-              End Round
-            </button>
-            <button className="EndVoteButton" onClick={handleVotingClick} style={displayBtn[2]}>
-              End Voting
-            </button>
-            <button className="EndVoteButton" onClick={handleAnotherVotingRoundClick} style={displayBtn[3]}>
-              Vote Again
-            </button>
-            <button
-              className="ExitButton"
-              onClick={() => setLeaveContainer("flex")}
-            >
-              Exit
-            </button>
+              <button
+                className="StartSessionButton"
+                onClick={handleStartSessionClick}
+                style={displayBtn[0]}
+              >
+                Start
+              </button>
+              <button
+                className="EndSessionButton"
+                onClick={handleEndSessionClick}
+                style={displayBtn[1]}
+              >
+                End Round
+              </button>
+              <button
+                className="EndVoteButton"
+                onClick={handleVotingClick}
+                style={displayBtn[2]}
+              >
+                End Voting
+              </button>
+              <button
+                className="EndVoteButton"
+                onClick={handleAnotherVotingRoundClick}
+                style={displayBtn[3]}
+              >
+                Vote Again
+              </button>
+              <button
+                className="ExitButton"
+                onClick={() => setLeaveContainer("flex")}
+              >
+                Exit
+              </button>
+            </div>
           </div>
         </div>
       </div>

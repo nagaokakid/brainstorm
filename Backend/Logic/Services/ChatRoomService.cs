@@ -15,6 +15,7 @@ namespace Logic.Services
         Task<List<ChatRoom>> GetChatRooms(List<string> chatRoomIds);
         Task<ChatRoom?> GetRoomByJoinCode(string chatRoomJoinCode);
         Task<bool> IsJoinCodeValid(string joinCode);
+        Task RemoveMessage(string chatRoomId, string messageId);
     }
 
     public class ChatRoomService : IChatRoomService
@@ -42,10 +43,12 @@ namespace Logic.Services
         {
             await chatRoomCollection.AddMessage(chatRoomId, new ChatRoomMessage
             {
+                ChatRoomMessageId = Guid.NewGuid().ToString(),
+                IsDeleted = false,
                 FromUserId = msg.FromUserInfo.UserId,
                 Message = msg.Message,
                 Timestamp = msg.Timestamp,
-            });
+            }) ;
         }
 
         private static ChatRoom CreateChatRoom(CreateChatRoomRequest request, string userId)
@@ -55,6 +58,7 @@ namespace Logic.Services
                 Id = Guid.NewGuid().ToString(),
                 Description = request.Description,
                 Title = request.Title,
+                IsDeleted = false,
 
                 // random 6-digit join code
                 JoinCode = Random.Shared.Next(100001, 999999).ToString(),
@@ -126,6 +130,11 @@ namespace Logic.Services
         {
             var result = await chatRoomCollection.GetByJoinCode(joinCode);
             return result != null;
+        }
+
+        public async Task RemoveMessage(string chatRoomId, string messageId)
+        {
+            await chatRoomCollection.RemoveMessage(chatRoomId, messageId);
         }
     }
 }

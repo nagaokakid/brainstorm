@@ -33,14 +33,33 @@
     border-radius: 5px;
     color: white;
     padding: 5px;
-    width: 100px;
+    width: fit-content;
+}
+
+.LikeIdea:hover{
+    margin: 5px;
+    background-color: rgb(1, 78, 1);
+    border: none;
+    border-radius: 5px;
+    color: white;
+    padding: 5px;
+    width: fit-content;
 }
 .DislikeIdea{
+    width: fit-content;
     border: none;
     border-radius: 5px;
     margin: 5px;
-    width: 100px;
     padding: 5px;
     background-color: red;
+    color: white;
+}
+.DislikeIdea:hover{
+    width: fit-content;
+    border: none;
+    border-radius: 5px;
+    margin: 5px;
+    padding: 5px;
+    background-color: rgb(184, 6, 6);
     color: white;
 }

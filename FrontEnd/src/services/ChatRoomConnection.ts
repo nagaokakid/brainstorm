@@ -46,7 +46,8 @@ class SignalRChatRoom {
     setReceiveChatRoomMessageCallback(callBackFunction: (bsid: string | undefined, msg: chatRoomMessageObject, timer?: string) => void) {
         this.connection.on("ReceiveChatRoomMessage", (msg: chatRoomMessageObject, timer?: string) => {
             UserInfo.addChatRoomMessage(msg);
-
+            console.log(msg);
+            
             if (msg.brainstorm && msg.brainstorm.creator.userId === UserInfo.getUserId()) {
                 callBackFunction(msg.brainstorm.sessionId, msg, timer);
             } else {
@@ -269,6 +270,19 @@ class SignalRChatRoom {
      */
     async clientsShouldSendAllVotes(sessionId: string) {
         await this.connection.send("SendAllVotes", sessionId)
+    }
+
+    async removeChatRoomMessage(chatroomId: string, messageId: string){
+        await this.connection.send("RemoveChatRoomMessage", chatroomId, messageId)
+    }
+
+    setRemoveChatRoomMessageCallback(callBackFunction: (chatRoomId: string, messageId: string) => void) {
+        this.connection.on("RemoveChatRoomMessage", (chatRoomId: string, messageId: string) => {
+            console.log("callback remove message: " + chatRoomId + " " + messageId);
+            
+            // remove message from chatroom
+            callBackFunction(chatRoomId, messageId);
+        });
     }
 
     /**

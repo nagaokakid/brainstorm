@@ -4,7 +4,7 @@
     flex-direction: row;
     height: 100%;
     width: 100%;
-    background-color: #f5f5f5;
+    background-color: white;
 }
 
 .WindowContainer .MsgContainer {
@@ -43,6 +43,7 @@
     font-weight: bold;
     text-decoration: none;
     background: #FFC436;
+    cursor: pointer;
 }
 
 .WindowContainer .MsgContainer .ChatHeader a:hover{
@@ -54,13 +55,14 @@
     font-weight: bold;
     text-decoration: none;
     background: #e6ab22;
+    cursor: pointer;
 }
 .WindowContainer .MsgContainer .MsgSection {
     display: flex;
     flex-direction: column;
     height: 100%;
     width: 100%;
-    background-color: #f5f5f5;
+    background-color: white;
     overflow-y: auto;
 }
 

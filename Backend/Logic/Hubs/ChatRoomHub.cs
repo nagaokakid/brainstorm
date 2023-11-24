@@ -70,6 +70,7 @@ namespace Logic.Hubs
             {
                 var msgInfo = new MessageInfo
                 {
+                    MessageId = Guid.NewGuid().ToString(),
                     FromUserInfo = new FriendlyUserInfo { UserId = userId, FirstName = firstName, LastName = lastName },
                     ChatRoomId = chatRoomId,
                     Message = msg,
@@ -110,6 +111,7 @@ namespace Logic.Hubs
                 // send message to chatroom saying a new brainstorming session has started
                 var msg = new MessageInfoJoinSession
                 {
+                    MessageId = Guid.NewGuid().ToString(),
                     ChatRoomId = chatRoomId,
                     Message = $"Join {title}",
                     FromUserInfo = creator,
@@ -201,6 +203,15 @@ namespace Logic.Hubs
         {
             var result = await brainstormService.VoteAnotherRound(sessionId);
             Clients.Groups(sessionId).SendAsync("ReceiveAllIdeas", sessionId, result);
+        }
+
+        public async Task RemoveChatRoomMessage(string chatRoomId, string messageId)
+        {
+            if(!string.IsNullOrEmpty(chatRoomId) && !string.IsNullOrEmpty(messageId))
+            {
+                chatRoomService.RemoveMessage(chatRoomId, messageId);
+                Clients.Groups(chatRoomId).SendAsync("RemoveChatRoomMessage", chatRoomId, messageId);
+            }
         }
     }
 }
