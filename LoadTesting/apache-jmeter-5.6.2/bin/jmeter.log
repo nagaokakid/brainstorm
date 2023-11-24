@@ -1,0 +1,41 @@
+2023-11-24 16:07:12,538 INFO o.a.j.u.JMeterUtils: Setting Locale to en_EN
+2023-11-24 16:07:12,569 INFO o.a.j.JMeter: Loading user properties from: user.properties
+2023-11-24 16:07:12,570 INFO o.a.j.JMeter: Loading system properties from: system.properties
+2023-11-24 16:07:12,587 INFO o.a.j.JMeter: Copyright (c) 1998-2023 The Apache Software Foundation
+2023-11-24 16:07:12,587 INFO o.a.j.JMeter: Version 5.6.2
+2023-11-24 16:07:12,587 INFO o.a.j.JMeter: java.version=21.0.1
+2023-11-24 16:07:12,589 INFO o.a.j.JMeter: java.vm.name=Java HotSpot(TM) 64-Bit Server VM
+2023-11-24 16:07:12,589 INFO o.a.j.JMeter: os.name=Windows 10
+2023-11-24 16:07:12,591 INFO o.a.j.JMeter: os.arch=amd64
+2023-11-24 16:07:12,592 INFO o.a.j.JMeter: os.version=10.0
+2023-11-24 16:07:12,592 INFO o.a.j.JMeter: file.encoding=UTF-8
+2023-11-24 16:07:12,592 INFO o.a.j.JMeter: java.awt.headless=null
+2023-11-24 16:07:12,592 INFO o.a.j.JMeter: Max memory     =1073741824
+2023-11-24 16:07:12,592 INFO o.a.j.JMeter: Available Processors =8
+2023-11-24 16:07:12,609 INFO o.a.j.JMeter: Default Locale=English (EN)
+2023-11-24 16:07:12,610 INFO o.a.j.JMeter: JMeter  Locale=English (EN)
+2023-11-24 16:07:12,610 INFO o.a.j.JMeter: JMeterHome=C:\Users\Akira Cooper\source\repos\brainstorm\LoadTesting\apache-jmeter-5.6.2
+2023-11-24 16:07:12,610 INFO o.a.j.JMeter: user.dir  =C:\Users\Akira Cooper\source\repos\brainstorm\LoadTesting\apache-jmeter-5.6.2\bin
+2023-11-24 16:07:12,611 INFO o.a.j.JMeter: PWD       =C:\Users\Akira Cooper\source\repos\brainstorm\LoadTesting\apache-jmeter-5.6.2\bin
+2023-11-24 16:07:12,617 INFO o.a.j.JMeter: IP: 10.0.0.178 Name: Akira-LAPTOP FullName: host.docker.internal
+2023-11-24 16:07:12,639 INFO o.a.j.JMeter: Loaded icon properties from org/apache/jmeter/images/icon.properties
+2023-11-24 16:07:12,938 INFO o.a.j.JMeterGuiLauncher: Setting LAF to: com.github.weisj.darklaf.DarkLaf:com.github.weisj.darklaf.theme.DarculaTheme
+2023-11-24 16:07:28,814 INFO o.a.j.s.FileServer: Default base='C:\Users\Akira Cooper\source\repos\brainstorm\LoadTesting\apache-jmeter-5.6.2\bin'
+2023-11-24 16:07:28,819 INFO o.a.j.g.a.Load: Loading file: C:\Users\Akira Cooper\source\repos\brainstorm\LoadTesting\apache-jmeter-5.6.2\Brainstorm.jmx
+2023-11-24 16:07:28,819 INFO o.a.j.s.FileServer: Set new base='C:\Users\Akira Cooper\source\repos\brainstorm\LoadTesting\apache-jmeter-5.6.2'
+2023-11-24 16:07:29,115 INFO o.a.j.s.SaveService: Testplan (JMX) version: 2.2. Testlog (JTL) version: 2.2
+2023-11-24 16:07:29,156 INFO o.a.j.s.SaveService: Using SaveService properties version 5.0
+2023-11-24 16:07:29,158 INFO o.a.j.s.SaveService: Using SaveService properties file encoding UTF-8
+2023-11-24 16:07:29,161 INFO o.a.j.s.SaveService: Loading file: C:\Users\Akira Cooper\source\repos\brainstorm\LoadTesting\apache-jmeter-5.6.2\Brainstorm.jmx
+2023-11-24 16:07:29,192 INFO o.a.j.p.h.c.CookieManager: Settings: Delete null: true Check: true Allow variable: true Save: false Prefix: COOKIE_
+2023-11-24 16:07:29,201 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/html is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
+2023-11-24 16:07:29,201 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for application/xhtml+xml is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
+2023-11-24 16:07:29,201 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for application/xml is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
+2023-11-24 16:07:29,201 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/xml is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
+2023-11-24 16:07:29,202 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/vnd.wap.wml is org.apache.jmeter.protocol.http.parser.RegexpHTMLParser
+2023-11-24 16:07:29,202 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/css is org.apache.jmeter.protocol.http.parser.CssParser
+2023-11-24 16:07:29,645 INFO o.a.j.s.SampleResult: Note: Sample TimeStamps are START times
+2023-11-24 16:07:29,646 INFO o.a.j.s.SampleResult: sampleresult.default.encoding is set to UTF-8
+2023-11-24 16:07:29,646 INFO o.a.j.s.SampleResult: sampleresult.useNanoTime=true
+2023-11-24 16:07:29,646 INFO o.a.j.s.SampleResult: sampleresult.nanoThreadSleep=5000
+2023-11-24 16:07:30,276 INFO o.a.j.s.FileServer: Set new base='C:\Users\Akira Cooper\source\repos\brainstorm\LoadTesting\apache-jmeter-5.6.2'
