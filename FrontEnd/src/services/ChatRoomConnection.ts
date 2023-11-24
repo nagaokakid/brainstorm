@@ -271,6 +271,19 @@ class SignalRChatRoom {
         await this.connection.send("SendAllVotes", sessionId)
     }
 
+    async removeChatRoomMessage(chatroomId: string, messageId: string){
+        await this.connection.send("RemoveChatRoomMessage", chatroomId, messageId)
+    }
+
+    setRemoveChatRoomMessageCallback(callBackFunction: (chatRoomId: string, messageId: string) => void) {
+        this.connection.on("RemoveChatRoomMessage", (chatRoomId: string, messageId: string) => {
+            console.log("remove message: " + chatRoomId + " " + messageId);
+            
+            // remove message from chatroom
+            callBackFunction(chatRoomId, messageId);
+        });
+    }
+
     /**
      * Remove all the call back functions
      */

@@ -202,5 +202,11 @@ namespace Logic.Hubs
             var result = await brainstormService.VoteAnotherRound(sessionId);
             Clients.Groups(sessionId).SendAsync("ReceiveAllIdeas", sessionId, result);
         }
+
+        public async Task RemoveChatRoomMessage(string chatRoomId, string messageId)
+        {
+            chatRoomService.RemoveMessage(chatRoomId, messageId);
+            Clients.Groups(chatRoomId).SendAsync("RemoveChatRoomMessage", chatRoomId, messageId);
+        }
     }
 }

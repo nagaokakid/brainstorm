@@ -107,6 +107,7 @@ function ChatList(props: ChatListProps) {
     return (
         <div className="ChatListContainer">
             <div className="chat-list">
+                
                 <div className="chats">
                     {chatList.map((chat, index) => (
                         <div className="chat-item" key={index} onClick={() => handleChatOnClick(chat)}>

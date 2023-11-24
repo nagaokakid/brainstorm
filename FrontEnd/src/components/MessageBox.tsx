@@ -25,16 +25,29 @@ function MsgBox(props: MsgBoxProps) {
     });
   }
 
+  function handleRemoveChatRoom(){
+    // remove chatroom message
+  }
+
   return (
     <div className="MessageContainer" style={{ justifyContent: position }}>
       <div className="MessageWrapper">
-        <div className="MessageUsername">{props.user[1]}</div>
+        <div className="MessageHeader">
+          <div className="MessageUsername">{props.user[1]}</div>
+          <img className="MessageDelete" src="src\assets\delete.png" width={10} height={10} onClick={() => handleRemoveChatRoom}/>
+        </div>
         <div className="Message">
           {props.isBrainstorm ? (
             <p>
               <div className="MessageIsBrainstorm">
-                {props.user[1] + " invited you to join the brainstorm session ->"}
-                <button className="MessageJoinBS" onClick={handleJoinBrainstorm}>Click To Join</button>
+                {props.user[1] +
+                  " invited you to join the brainstorm session ->"}
+                <button
+                  className="MessageJoinBS"
+                  onClick={handleJoinBrainstorm}
+                >
+                  Click To Join
+                </button>
               </div>
             </p>
           ) : (

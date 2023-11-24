@@ -11,6 +11,7 @@ namespace Logic.Helpers
         {
             return new FriendlyChatRoomMessage
             {
+                MessageId = chatRoomMessage.ChatRoomMessageId,
                 FromUser = chatRoomMessage.FromUserId.ToFriendlyUserInfo(users),
                 Message = chatRoomMessage.Message,
                 Timestamp = chatRoomMessage.Timestamp,

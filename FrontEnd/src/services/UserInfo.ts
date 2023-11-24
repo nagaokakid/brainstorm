@@ -15,6 +15,7 @@ class UserInfo {
 
     // the object that contains the user info
     static currentUser = {} as user;
+    
 
     // the list of local ideas
     static localIdeas = [] as string[];
