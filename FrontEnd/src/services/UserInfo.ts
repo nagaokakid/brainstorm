@@ -240,6 +240,7 @@ class UserInfo {
             const result = this.getDirectMessagesList().find(current => (newDirectMessage.toUserInfo.userId === current.user1.userId || newDirectMessage.toUserInfo.userId === current.user2.userId));
             if (result) {
                 result.directMessages.push({
+                    messageId: newDirectMessage.messageId,
                     message: newDirectMessage.message,
                     timestamp: newDirectMessage.timestamp
                 });
@@ -249,6 +250,7 @@ class UserInfo {
                     user2: newDirectMessage.toUserInfo.userId === this.getUserId() ? newDirectMessage.fromUserInfo : newDirectMessage.toUserInfo,
                     directMessages: [
                         {
+                            messageId: newDirectMessage.messageId,
                             message: newDirectMessage.message,
                             timestamp: newDirectMessage.timestamp
                         }
@@ -260,6 +262,7 @@ class UserInfo {
             const result = this.getDirectMessagesList().find(current => (newDirectMessage.fromUserInfo.userId === current.user1.userId || newDirectMessage.fromUserInfo.userId === current.user2.userId));
             if (result) {
                 result.directMessages.push({
+                    messageId: newDirectMessage.messageId,
                     message: newDirectMessage.message,
                     timestamp: newDirectMessage.timestamp
                 });
@@ -269,6 +272,7 @@ class UserInfo {
                     user2: this.getUserInfo(),
                     directMessages: [
                         {
+                            messageId: newDirectMessage.messageId,
                             message: newDirectMessage.message,
                             timestamp: newDirectMessage.timestamp
                         }

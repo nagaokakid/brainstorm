@@ -7,6 +7,8 @@ interface MsgBoxProps {
   user: string[];
   isBrainstorm?: boolean;
   bsId?: string;
+  msgId: string;
+  chatId: string;
 }
 
 function MsgBox(props: MsgBoxProps) {
@@ -26,7 +28,9 @@ function MsgBox(props: MsgBoxProps) {
   }
 
   function handleRemoveChatRoom(){
-    // remove chatroom message
+    SignalRChatRoom.getInstance().then((value) => {
+      value.removeChatRoomMessage(props.chatId, props.msgId);
+    });
   }
 
   return (

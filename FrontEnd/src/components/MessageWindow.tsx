@@ -15,7 +15,7 @@ interface MessageWindowProps {
 function MessageWindow(props: MessageWindowProps) {
     const context = useDataContext();
     const msg = context[1];
-    const [messages, setMessages] = useState([] as (chatRoomMessageObject | { message: string, timestamp: string })[]); // Set the message to the display
+    const [messages, setMessages] = useState([] as (chatRoomMessageObject | { messageId:string, message: string, timestamp: string })[]); // Set the message to the display
 
     useEffect(() => {
         if ("chatRoomId" in msg && msg.chatRoomId === props.chatId) {
@@ -38,8 +38,8 @@ function MessageWindow(props: MessageWindowProps) {
             <div className="MsgSection">
                 {messages.map((e, index) => (
                     'brainstorm' in e ?
-                        <MessageBox message={e.message} key={index} user={'fromUserInfo' in e ? [e.fromUserInfo.userId, e.fromUserInfo.firstName] : []} isBrainstorm={true} bsId={e.brainstorm?.sessionId} /> :
-                        <MessageBox message={e.message} key={index} user={'fromUserInfo' in e ? [e.fromUserInfo.userId, e.fromUserInfo.firstName] : []} isBrainstorm={false} />
+                        <MessageBox message={e.message} key={index} user={'fromUserInfo' in e ? [e.fromUserInfo.userId, e.fromUserInfo.firstName] : []} isBrainstorm={true} bsId={e.brainstorm?.sessionId} chatId={props.chatId} msgId={'messageId' in e ? e.messageId:''}/> :
+                        <MessageBox message={e.message} key={index} user={'fromUserInfo' in e ? [e.fromUserInfo.userId, e.fromUserInfo.firstName] : []} isBrainstorm={false} chatId={props.chatId} msgId={'messageId' in e ? e.messageId:''}/>
                 ))}
             </div>
             <div className='InputSection'>
