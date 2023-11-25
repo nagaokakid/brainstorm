@@ -80,7 +80,8 @@ function ChatList(props: ChatListProps) {
         bsid?: string,
         msgObject?: chatRoomMessageObject | newDirectMessageObject,
         userId?: string,
-        timer?: string
+        count?: number,
+        timer?: number
       ) => {
         if (context === undefined) {
           throw new Error("useDataContext must be used within a DataContext");
@@ -101,7 +102,7 @@ function ChatList(props: ChatListProps) {
           }
         } else if (type === 5) {
           if (userId === UserInfo.getUserId()) {
-            navigate("/BrainStorm", { state: { bsid } });
+            navigate("/BrainStorm", { state: { bsid, timer } });
           }
         } else if (type === 6) {
           console.log("The session has ended.");

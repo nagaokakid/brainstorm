@@ -180,7 +180,8 @@ class ApiService {
       bsid?: string,
       msgObject?: chatRoomMessageObject | newDirectMessageObject,
       userId?: string,
-      timer?: string
+      count?: number,
+      timer?: number
     ) => void
   ) {
     await SignalRDirect.getInstance().then((value) =>
@@ -196,9 +197,9 @@ class ApiService {
         (
           bsid: string | undefined,
           msgObject: chatRoomMessageObject,
-          timer?: string
+          timer?: number
         ) => {
-          Callback(1, bsid, msgObject, undefined, timer);
+          Callback(1, bsid, msgObject, undefined, undefined, timer);
         }
       )
     );
@@ -245,10 +246,10 @@ class ApiService {
       )
     );
     await SignalRChatRoom.getInstance().then((value) =>
-      value.setUserJoinedBrainstormSessionCallback((id, userId) => {
+      value.setUserJoinedBrainstormSessionCallback((id, userId, count, timer) => {
         console.log("----> Receive BS join message callback");
 
-        Callback(5, id, undefined, userId);
+        Callback(5, id, undefined, userId, count, timer);
       })
     );
     await SignalRChatRoom.getInstance().then((value) =>

@@ -43,8 +43,8 @@ class SignalRChatRoom {
      * Set a callback function that will be called when a chat room message is received
      * @param {*} callBackFunction A function that will be called when a chat room message is received
      */
-    setReceiveChatRoomMessageCallback(callBackFunction: (bsid: string | undefined, msg: chatRoomMessageObject, timer?: string) => void) {
-        this.connection.on("ReceiveChatRoomMessage", (msg: chatRoomMessageObject, timer?: string) => {
+    setReceiveChatRoomMessageCallback(callBackFunction: (bsid: string | undefined, msg: chatRoomMessageObject, timer?: number) => void) {
+        this.connection.on("ReceiveChatRoomMessage", (msg: chatRoomMessageObject, timer?: number) => {
             UserInfo.addChatRoomMessage(msg);
             console.log(msg);
             
@@ -82,10 +82,10 @@ class SignalRChatRoom {
      * Set a callback function that will be called when a new member joins the brainstorm session
      * @param callBackFunction A function that will be called when a new member joins the brainstorm session
      */
-    setUserJoinedBrainstormSessionCallback(callBackFunction: (sessionId: string, userId: string, count: number) => void) {
-        this.connection.on("UserJoinedBrainstormingSession", (sessionId: string, userId: string, count: number) => {
+    setUserJoinedBrainstormSessionCallback(callBackFunction: (sessionId: string, userId: string, count: number, timer: number) => void) {
+        this.connection.on("UserJoinedBrainstormingSession", (sessionId: string, userId: string, count: number, timer: number) => {
             // new user joined brainstorming session
-            callBackFunction(sessionId, userId, count);
+            callBackFunction(sessionId, userId, count, timer);
         });
     }
 

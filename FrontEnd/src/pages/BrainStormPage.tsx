@@ -35,7 +35,6 @@ function BrainStormPage() {
   const sessionDescription = bs_Info ? bs_Info.description : "";
   const creatorId = bs_Info ? bs_Info.creator.userId : "";
   const interval = useRef() as React.MutableRefObject<NodeJS.Timeout>;
-  let isFirstTime = false;
 
   function startTimer() {
     if (timer > 0) {
@@ -192,19 +191,10 @@ function BrainStormPage() {
   }
 
   useEffect(() => {
-    if (isFirstTime) {
-      startTimer();
-      isFirstTime = false;
-    }
-  }, [timer]);
-
-
-  useEffect(() => {
     if (sessionStorage.getItem("bs_callBack") === null) {
       const callBackFunction = (type: number, ideas?: Idea[], session_Id?: string, timer?: number) => {
         if (type === 1) {
-          setTimer(timer ? timer : 0);
-          isFirstTime = true;
+          startTimer();
           setInput(false);
           showNotice("Session has started");
         } else if (type === 2) {
