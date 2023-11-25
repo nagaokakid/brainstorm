@@ -92,3 +92,7 @@
     width: 10px;
     height: 10px;
 }
+
+.Message{
+    white-space: pre-wrap;
+}
