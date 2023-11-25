@@ -266,6 +266,10 @@ class SignalRChatRoom {
         await this.connection.send("ReceiveVotes", sessionId, votes)
     }
 
+    async removeUserFromBrainstormSession(sessionId: string){
+        await this.connection.send("RemoveUserFromSession", sessionId, UserInfo.getUserId())
+    }
+
     /**
      * Send a request to the backend to ask all clients to send their votes
      * @param sessionId The brainstorm session id

@@ -1,12 +1,10 @@
 ﻿using Database.CollectionContracts;
-using Database.Data;
 using Logic.Data;
 using Logic.DTOs.Messages;
 using Logic.DTOs.User;
 using Logic.Helpers;
 using Logic.Services;
 using Microsoft.AspNetCore.SignalR;
-using System.Numerics;
 using System.Text;
 
 namespace Logic.Hubs
@@ -166,7 +164,15 @@ namespace Logic.Hubs
                 Clients.Group(sessionId).SendAsync("BrainstormSessionStarted", sessionId, seconds);
             }
         }
-
+        public async Task RemoveUserFromSession(string sessionId, string userId)
+        {
+            await brainstormService.RemoveUserFromSession(sessionId, userId);
+            var session = await brainstormService.GetSession(sessionId);
+            if(session != null)
+            {
+                NotifyAllMemberHasJoined(sessionId, " ", session.JoinedMembers.Count, session.TimerSeconds);
+            }
+        }
         public async Task EndSession(string sessionId)
         {
             if (sessionId != null)
