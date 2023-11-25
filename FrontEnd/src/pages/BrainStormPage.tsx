@@ -128,7 +128,7 @@ function BrainStormPage() {
       UserInfo.clearIdea();
       startTimer();
       SignalRChatRoom.getInstance().then((instance) => {
-        instance.startSession(sessionId);
+        instance.startSession(sessionId, timer);
       });
     }
   }

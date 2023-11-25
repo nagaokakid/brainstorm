@@ -221,8 +221,10 @@ class SignalRChatRoom {
      * Send a request to the backend to start a brainstorm session
      * @param sessionId The brainstorm session id
      */
-    async startSession(sessionId: string) {
-        await this.connection.send("StartSession", sessionId)
+    async startSession(sessionId: string, timer: number) {
+        console.log("----> Start brainstorm session", sessionId, timer);
+        
+        await this.connection.send("StartSession", sessionId, timer)
     }
 
     /**
