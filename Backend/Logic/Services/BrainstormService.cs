@@ -178,7 +178,7 @@ namespace Logic.Services
             var result = await GetSession(sessionId);
             if (result != null)
             {
-                var filtered = result.Ideas.Where(x => x.Value.Likes > x.Value.Dislikes)?.Select(x=>x.Value).ToList();
+                var filtered = result.Ideas.Where(x => x.Value?.Likes > x.Value?.Dislikes)?.Select(x=>x.Value).ToList();
                 if(filtered != null)
                 {
                     // create dictionary and replace in session

@@ -67,6 +67,11 @@ namespace Logic.Hubs
                 }
             }
         }
+
+        private async Task SendChatRoomMessage(string chatRoomId, MessageInfo msg)
+        {
+            await Clients.Group(chatRoomId).SendAsync("ReceiveChatRoomMessage", msg);
+        }
         public async Task SendChatRoomMessage(string userId, string chatRoomId, string firstName, string lastName, string msg)
         {
             if (chatRoomId != null && userId != null && firstName != null && msg != null)
@@ -84,7 +89,7 @@ namespace Logic.Hubs
                 chatRoomService.AddMessageToChatRoom(msgInfo.ChatRoomId, msgInfo);
 
                 // send message to everyone in the chatRoom
-                Clients.Group(chatRoomId).SendAsync("ReceiveChatRoomMessage", msgInfo);
+                SendChatRoomMessage(chatRoomId, msgInfo);
             }
         }
 
@@ -196,7 +201,7 @@ namespace Logic.Hubs
             return message.ToString();
         }
 
-        public async Task RemoveSession(string sessionId)
+        public async Task RemoveSession(string sessionId, FriendlyUserInfo userInfo)
         {
             if (sessionId != null)
             {
@@ -204,21 +209,21 @@ namespace Logic.Hubs
                 if (session != null)
                 {
 
-                    var msgIdea = VoteResultsToMessage(session.Ideas.Select(x => x.Value).ToList(), session.Title);
-                    var msg = new ChatRoomMessage
+                    var msgIdea = VoteResultsToMessage(session.Ideas.Select(x => x.Value)?.OrderBy(x=>x.Likes).ToList(), session.Title);
+                    var msgInfo = new MessageInfo
                     {
-                        ChatRoomMessageId = Guid.NewGuid().ToString(),
-                        FromUserId = session.Creator.UserId,
-                        IsDeleted = false,
+                        ChatRoomId = session.ChatRoomId,
+                        MessageId = Guid.NewGuid().ToString(),
+                        FromUserInfo = userInfo,
                         Message = msgIdea,
-                        Timestamp = DateTime.Now
+                        Timestamp = DateTime.Now,
                     };
 
                     // send message with voting results to chat
-                    Clients.Group(sessionId).SendAsync("ReceiveChatRoomMessage", msg); ;
+                    SendChatRoomMessage(session.ChatRoomId, msgInfo);
 
                     // save the message in the DB
-                    chatRoomService.AddMessageToChatRoom(session.ChatRoomId, msg);
+                    chatRoomService.AddMessageToChatRoom(session.ChatRoomId, msgInfo);
 
                     // remove brainstorm session 
                     brainstormService.RemoveSession(sessionId);
