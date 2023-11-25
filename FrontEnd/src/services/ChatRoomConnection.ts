@@ -105,8 +105,8 @@ class SignalRChatRoom {
      * Set a callback function that will be called when the host start the session
      * @param callBackFunction A function that will be called when the host start the session
      */
-    setBrainstormSessionStartedCallback(callBackFunction: (sessionId: string, seconds: Number) => void) {
-        this.connection.on("BrainstormSessionStarted", (sessionId: string, seconds: Number) => {
+    setBrainstormSessionStartedCallback(callBackFunction: (sessionId: string, seconds: number) => void) {
+        this.connection.on("BrainstormSessionStarted", (sessionId: string, seconds: number) => {
 
             // brainstorm session started
             callBackFunction(sessionId, seconds);

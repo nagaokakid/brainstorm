@@ -192,8 +192,9 @@ function BrainStormPage() {
 
   useEffect(() => {
     if (sessionStorage.getItem("bs_callBack") === null) {
-      const callBackFunction = (type: number, ideas?: Idea[]) => {
-        if (type === 1) {
+      const callBackFunction = (type: number, ideas?: Idea[], session_Id?: string, timer?: number) => {
+        if (type === 1 && session_Id === sessionId) {
+          setTimer(timer ? timer : 0);
           setInput(false);
           showNotice("Session has started");
         } else if (type === 2) {

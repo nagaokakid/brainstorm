@@ -219,12 +219,12 @@ class ApiService {
         (chatRoomId: string, messageId: string) => {
           if (chatRoomId && messageId) {
             // remove chat message from chatroom
-            var chatIndex = UserInfo.currentUser.chatRooms.findIndex(
+            const chatIndex = UserInfo.currentUser.chatRooms.findIndex(
               (x) => x.id === chatRoomId
             );
             console.log(chatIndex);
             if (chatIndex !== -1) {
-              var msgIndex = UserInfo.currentUser.chatRooms[
+              const msgIndex = UserInfo.currentUser.chatRooms[
                 chatIndex
               ].messages.findIndex((x) => x.messageId === messageId);
               console.log(msgIndex);
@@ -258,11 +258,11 @@ class ApiService {
     );
   }
 
-  async buildBSCallBack(Callback: (type: number, ideas?: Idea[]) => void) {
+  async buildBSCallBack(Callback: (type: number, ideas?: Idea[], session_Id?: string, timer?: number) => void) {
     await SignalRChatRoom.getInstance().then((value) =>
-      value.setBrainstormSessionStartedCallback(() => {
+      value.setBrainstormSessionStartedCallback((sessionId: string, timer: number) => {
         console.log("----> Receive BS started message callback");
-        Callback(1);
+        Callback(1, undefined, sessionId, timer);
       })
     );
 
