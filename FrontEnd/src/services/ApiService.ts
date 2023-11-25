@@ -305,6 +305,8 @@ class ApiService {
     await SignalRChatRoom.getInstance().then(async (value) => {
       if (UserInfo.isHost(creator)) {
         await value.removeSession(sessionId);
+      } else {
+        await value.removeUserFromBrainstormSession(sessionId);
       }
       value.removeBSCallBack();
     });
