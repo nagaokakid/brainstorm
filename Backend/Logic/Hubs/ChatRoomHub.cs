@@ -120,9 +120,13 @@ namespace Logic.Hubs
                     Brainstorm = session.ToDTO(),
                 };
                 Clients.Group(session.ChatRoomId).SendAsync("ReceiveChatRoomMessage", msg, timer);
+                NotifyAllMemberHasJoined(session.SessionId, creatorId, 1);
             }
         }
-
+        private async Task NotifyAllMemberHasJoined(string sessionId, string userId, int count)
+        {
+            Clients.Group(sessionId).SendAsync("UserJoinedBrainstormingSession", sessionId, userId, count);
+        }
         public async Task JoinBrainstormSession(string sessionId, string userId, string firstName, string lastName)
         {
             if (sessionId != null && userId != null)
@@ -136,7 +140,7 @@ namespace Logic.Hubs
                 {
                     // notify all joined members that a new user has joined
                     await Groups.AddToGroupAsync(Context.ConnectionId, sessionId);
-                    await Clients.Group(session.SessionId).SendAsync("UserJoinedBrainstormingSession", sessionId, userId);
+                    await NotifyAllMemberHasJoined(sessionId, userId, session.JoinedMembers.Count);
                 }
                 else
                 {
