@@ -6,6 +6,7 @@ using Logic.DTOs.User;
 using Logic.Helpers;
 using Logic.Services;
 using Microsoft.AspNetCore.SignalR;
+using System.Numerics;
 using System.Text;
 
 namespace Logic.Hubs
@@ -102,7 +103,7 @@ namespace Logic.Hubs
             if (title != null && description != null && chatRoomId != null && creatorId != null)
             {
                 var creator = new FriendlyUserInfo { UserId = creatorId, FirstName = creatorFirstName, LastName = creatorLastName };
-                var session = new BrainstormSession { Title = title, Description = description, ChatRoomId = chatRoomId, CanJoin = true, Creator = creator, SessionId = Guid.NewGuid().ToString(), Ideas = new Dictionary<string, Idea>(), JoinedMembers = new List<FriendlyUserInfo> { creator }, IdeasAvailable = DateTime.Now.AddDays(1) };
+                var session = new BrainstormSession { Title = title, Description = description, ChatRoomId = chatRoomId, CanJoin = true, Creator = creator, SessionId = Guid.NewGuid().ToString(), Ideas = new Dictionary<string, Idea>(), JoinedMembers = new List<FriendlyUserInfo> { creator }, IdeasAvailable = DateTime.Now.AddDays(1), TimerSeconds =  int.TryParse(timer, out var resultt) ? resultt : 0};
 
                 // add created session to dictionary
                 await brainstormService.Add(session);
@@ -119,13 +120,13 @@ namespace Logic.Hubs
                     Timestamp = DateTime.Now,
                     Brainstorm = session.ToDTO(),
                 };
-                Clients.Group(session.ChatRoomId).SendAsync("ReceiveChatRoomMessage", msg, timer);
-                NotifyAllMemberHasJoined(session.SessionId, creatorId, 1);
+                Clients.Group(session.ChatRoomId).SendAsync("ReceiveChatRoomMessage", msg, session.TimerSeconds);
+                NotifyAllMemberHasJoined(session.SessionId, creatorId, 1, session.TimerSeconds);
             }
         }
-        private async Task NotifyAllMemberHasJoined(string sessionId, string userId, int count)
+        private async Task NotifyAllMemberHasJoined(string sessionId, string userId, int count, int timer)
         {
-            Clients.Group(sessionId).SendAsync("UserJoinedBrainstormingSession", sessionId, userId, count);
+            Clients.Group(sessionId).SendAsync("UserJoinedBrainstormingSession", sessionId, userId, count, timer);
         }
         public async Task JoinBrainstormSession(string sessionId, string userId, string firstName, string lastName)
         {
@@ -140,7 +141,7 @@ namespace Logic.Hubs
                 {
                     // notify all joined members that a new user has joined
                     await Groups.AddToGroupAsync(Context.ConnectionId, sessionId);
-                    await NotifyAllMemberHasJoined(sessionId, userId, session.JoinedMembers.Count);
+                    await NotifyAllMemberHasJoined(sessionId, userId, session.JoinedMembers.Count, session.TimerSeconds);
                 }
                 else
                 {
