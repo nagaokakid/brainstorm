@@ -10,6 +10,7 @@ namespace Logic.Services
     public interface IChatRoomService
     {
         Task AddMessageToChatRoom(string chatRoomId, MessageInfo msg);
+        Task AddMessageToChatRoom(string chatRoomId, ChatRoomMessage msg);
         Task AddNewUserToChatRoom(string userId, string chatRoomId);
         Task<CreateChatRoomResponse> CreateChatRoom(CreateChatRoomRequest request);
         Task<List<ChatRoom>> GetChatRooms(List<string> chatRoomIds);
@@ -49,6 +50,11 @@ namespace Logic.Services
                 Message = msg.Message,
                 Timestamp = msg.Timestamp,
             }) ;
+        }
+
+        public async Task AddMessageToChatRoom(string chatRoomId, ChatRoomMessage msg)
+        {
+            await chatRoomCollection.AddMessage(chatRoomId, msg);
         }
 
         private static ChatRoom CreateChatRoom(CreateChatRoomRequest request, string userId)

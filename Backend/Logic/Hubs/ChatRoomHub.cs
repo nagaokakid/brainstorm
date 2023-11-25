@@ -1,10 +1,12 @@
 ﻿using Database.CollectionContracts;
+using Database.Data;
 using Logic.Data;
 using Logic.DTOs.Messages;
 using Logic.DTOs.User;
 using Logic.Helpers;
 using Logic.Services;
 using Microsoft.AspNetCore.SignalR;
+using System.Text;
 
 namespace Logic.Hubs
 {
@@ -111,7 +113,6 @@ namespace Logic.Hubs
                 // send message to chatroom saying a new brainstorming session has started
                 var msg = new MessageInfoJoinSession
                 {
-                    MessageId = Guid.NewGuid().ToString(),
                     ChatRoomId = chatRoomId,
                     Message = $"Join {title}",
                     FromUserInfo = creator,
@@ -145,14 +146,14 @@ namespace Logic.Hubs
             }
         }
 
-        public async Task StartSession(string sessionId)
+        public async Task StartSession(string sessionId, int seconds)
         {
             if (sessionId != null)
             {
                 await brainstormService.StartSession(sessionId);
 
                 // let all users know that brainstorm session has started
-                Clients.Group(sessionId).SendAsync("BrainstormSessionStarted", sessionId);
+                Clients.Group(sessionId).SendAsync("BrainstormSessionStarted", sessionId, seconds);
             }
         }
 
@@ -178,11 +179,45 @@ namespace Logic.Hubs
             }
         }
 
+        private static string VoteResultsToMessage(List<Idea> ideas, string title)
+        {
+            StringBuilder message = new StringBuilder($"Voting Results from {title}\n");
+
+            foreach (var idea in ideas)
+            {
+                message.Append($"\nLikes {idea.Likes}:\n{idea.Thought}\n");
+            }
+
+            return message.ToString();
+        }
+
         public async Task RemoveSession(string sessionId)
         {
             if (sessionId != null)
             {
-                await brainstormService.RemoveSession(sessionId);
+                var session = await brainstormService.GetSession(sessionId);
+                if (session != null)
+                {
+
+                    var msgIdea = VoteResultsToMessage(session.Ideas.Select(x => x.Value).ToList(), session.Title);
+                    var msg = new ChatRoomMessage
+                    {
+                        ChatRoomMessageId = Guid.NewGuid().ToString(),
+                        FromUserId = session.Creator.UserId,
+                        IsDeleted = false,
+                        Message = msgIdea,
+                        Timestamp = DateTime.Now
+                    };
+
+                    // send message with voting results to chat
+                    Clients.Group(sessionId).SendAsync("ReceiveChatRoomMessage", msg); ;
+
+                    // save the message in the DB
+                    chatRoomService.AddMessageToChatRoom(session.ChatRoomId, msg);
+
+                    // remove brainstorm session 
+                    brainstormService.RemoveSession(sessionId);
+                }
             }
         }
 
@@ -207,7 +242,7 @@ namespace Logic.Hubs
 
         public async Task RemoveChatRoomMessage(string chatRoomId, string messageId)
         {
-            if(!string.IsNullOrEmpty(chatRoomId) && !string.IsNullOrEmpty(messageId))
+            if (!string.IsNullOrEmpty(chatRoomId) && !string.IsNullOrEmpty(messageId))
             {
                 chatRoomService.RemoveMessage(chatRoomId, messageId);
                 Clients.Groups(chatRoomId).SendAsync("RemoveChatRoomMessage", chatRoomId, messageId);

@@ -244,8 +244,8 @@ function BrainStormPage() {
         <BS_HeaderContent
           roomTitle={sessionTitle}
           roomDescription={sessionDescription}
+          timer={timer}
         />
-        <div>Time Left: {timer}</div>
       </div>
       <div className="BS_BodyContainer">
         <div className="BS_ContentContainer">
