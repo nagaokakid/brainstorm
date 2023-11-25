@@ -1,4 +1,3 @@
-import React from 'react'
 import FriendlyUser from '../models/FriendlyUser';
 import "../styles/UserProfile.css";
 
