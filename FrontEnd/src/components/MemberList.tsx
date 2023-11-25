@@ -2,6 +2,7 @@ import "../styles/MemberList.css";
 import UserInfo from "../services/UserInfo";
 import SignalRDirect from "../services/DirectMessageConnection";
 import { userInfoObject } from "../models/TypesDefine";
+import UserProfile from "./UserProfile";
 
 interface MemberListProps {
     memberList: userInfoObject[] | null;
@@ -49,7 +50,7 @@ function MemberList(props: MemberListProps) {
                 <h2>Members</h2>
                 <ul>
                     {onlineMembers.map((member, index) => (
-                        <li key={index} onClick={() => handleMemberClick(member)}>{member.firstName}</li>
+                        <li key={index} onClick={() => handleMemberClick(member)}><UserProfile user={member}/></li>
                     ))}
                 </ul>
             </div>

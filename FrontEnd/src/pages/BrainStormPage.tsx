@@ -298,12 +298,6 @@ function BrainStormPage() {
               >
                 Vote Again
               </button>
-              <button
-                className="ExitButton"
-                onClick={() => setLeaveContainer("flex")}
-              >
-                Exit
-              </button>
             </div>
           </div>
         </div>
