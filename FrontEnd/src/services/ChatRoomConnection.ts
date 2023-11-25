@@ -2,7 +2,6 @@ import * as signalR from "@microsoft/signalr";
 import UserInfo from "./UserInfo";
 import { chatRoomMessageObject, chatRoomObject, userInfoObject } from "../models/TypesDefine";
 import Idea from "../models/Idea";
-import FriendlyUser from "../models/FriendlyUser";
 
 /**
  * This is the URL for the SignalR chatroom Hub

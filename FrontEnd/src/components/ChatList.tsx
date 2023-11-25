@@ -101,6 +101,8 @@ function ChatList(props: ChatListProps) {
             updateData(true);
           }
         } else if (type === 5) {
+          const updateCount = context[7];
+          updateCount(count!);
           if (userId === UserInfo.getUserId()) {
             navigate("/BrainStorm", { state: { bsid, timer } });
           }

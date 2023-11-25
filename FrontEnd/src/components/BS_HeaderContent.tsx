@@ -4,7 +4,8 @@ import "../styles/BS_HeaderContent.css";
 interface BS_HeaderContentProps {
   roomTitle: string;
   roomDescription: string;
-  timer: Number
+  timer: number;
+  memberCount: number;
 }
 
 function BS_HeaderContent(props: BS_HeaderContentProps) {
@@ -28,7 +29,7 @@ function BS_HeaderContent(props: BS_HeaderContentProps) {
 
   return (
     <div className="HeaderContent">
-      <div className="BS_MemberCount">Joined: 0</div>
+      <div className="BS_MemberCount">Joined: {props.memberCount}</div>
       <div className="HeaderContentTitle">
         <div className="BS_Title">{props.roomTitle}</div>
         <div className="BS_Description">{props.roomDescription}</div>

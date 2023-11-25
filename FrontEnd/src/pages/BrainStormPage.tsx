@@ -10,7 +10,8 @@ import UserInfo from "../services/UserInfo";
 import Idea from "../models/Idea";
 import SignalRChatRoom from "../services/ChatRoomConnection";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
+import { DataContext } from "../contexts/DataContext";
 
 function BrainStormPage() {
   const Navigate = useNavigate();
@@ -35,6 +36,8 @@ function BrainStormPage() {
   const sessionDescription = bs_Info ? bs_Info.description : "";
   const creatorId = bs_Info ? bs_Info.creator.userId : "";
   const interval = useRef() as React.MutableRefObject<NodeJS.Timeout>;
+  const [memberCount, setMemberCount] = useState(0); // Set the member count to be displayed
+  const context = useContext(DataContext); // Get the data context
 
   function startTimer() {
     if (timer > 0) {
@@ -191,6 +194,14 @@ function BrainStormPage() {
   }
 
   useEffect(() => {
+    if (context === undefined) {
+      throw new Error("useDataContext must be used within a DataContext");
+    } else {
+      setMemberCount(context[6]);
+    }
+  }, [context]);
+
+  useEffect(() => {
     if (sessionStorage.getItem("bs_callBack") === null) {
       const callBackFunction = (type: number, ideas?: Idea[], session_Id?: string, timer?: number) => {
         if (type === 1) {
@@ -246,6 +257,7 @@ function BrainStormPage() {
           roomTitle={sessionTitle}
           roomDescription={sessionDescription}
           timer={timer}
+          memberCount={memberCount}
         />
       </div>
       <div className="BS_BodyContainer">
