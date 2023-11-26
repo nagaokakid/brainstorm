@@ -17,7 +17,8 @@ background: linear-gradient(167deg, rgba(2,0,36,1) 0%, rgba(12,53,106,1) 51%, rg
 {
   background-color: #2b96cb;
   font-size: larger;
-  padding-left: 5px;
+  padding-left: 20px;
+  padding: 20px;
   width: 100%;
   height: auto;
   min-height: 5%;
@@ -25,6 +26,8 @@ background: linear-gradient(167deg, rgba(2,0,36,1) 0%, rgba(12,53,106,1) 51%, rg
   cursor: pointer;
   display: flex;
   align-items: center;
+  marginTop: '25px', padding: '0px 10px'
+  justify-content: center;
 }
 
 .nav-button:hover
