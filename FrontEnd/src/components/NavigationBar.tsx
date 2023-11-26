@@ -27,11 +27,11 @@ function NavigationBar(props: NavigationBarProps) {
         <div className="navigation-bar">
             <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css" />
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
-            <button className="nav-button" onClick={() => props.selectFunction("ChatRoom List")}><FontAwesomeIcon icon={faUsers} /></button>
-            <button className="nav-button" onClick={() => props.selectFunction("Direct Message List")}><FontAwesomeIcon icon={faEnvelope} /></button>
+            <button className="nav-button" onClick={() => props.selectFunction("ChatRoom List")}><FontAwesomeIcon icon={faUsers} title="Group Chat"/></button>
+            <button className="nav-button" onClick={() => props.selectFunction("Direct Message List")}><FontAwesomeIcon icon={faEnvelope} title="Direct Message" /></button>
             {/* <button className="nav-button" onClick={() => alert("Not available at the moment")}>BrainStorm Session History</button>
             <button className="nav-button" onClick={() => alert("Not available at the moment")}>Settings</button> */}
-            <button className="nav-button" onClick={() => logOut()}><FontAwesomeIcon icon={faSignOutAlt} /></button>
+            <button className="nav-button" onClick={() => logOut()}><FontAwesomeIcon icon={faSignOutAlt} title="Log Out" /></button>
         </div>
     );
 }
