@@ -5,6 +5,7 @@ import ApiService from "../services/ApiService";
 import SignalRChatRoom from "../services/ChatRoomConnection";
 import CreateRoomCustomize from "./CreateRoomCustomize";
 import CreateBrainStormCustomize from "./CreateBrainStormCustomize";
+import DefaultChatRoomWindow from "./DefaultChatRoomWindow";
 import {
   chatRoomMessageObject,
   chatRoomObject,
@@ -21,7 +22,6 @@ interface ChatListProps {
 }
 
 function ChatList(props: ChatListProps) {
-
   const navigate = useNavigate(); // Get the navigate function
   const context = useContext(DataContext); // Get the data context
   const [chatList, setChatList] = useState(
@@ -85,7 +85,13 @@ function ChatList(props: ChatListProps) {
       ) => {
         if (context === undefined) {
           throw new Error("useDataContext must be used within a DataContext");
-        } else if (type === 1 || type === 2 || type === 3 || type === 4 || type === 7) {
+        } else if (
+          type === 1 ||
+          type === 2 ||
+          type === 3 ||
+          type === 4 ||
+          type === 7
+        ) {
           if (type === 1 || type === 2 || type === 7) {
             if (type === 1 || type === 2) {
               const updateMsg = context[3];
@@ -144,6 +150,20 @@ function ChatList(props: ChatListProps) {
   return (
     <div className="ChatListContainer">
       <div className="chat-list">
+        <div className="ChatListHeader">
+          {props.displayTab === "ChatRoom List" && (
+            <div className="ChatRoomHeader">
+              Chat Rooms
+              <button
+                className="CreateChatRoomIcon"
+                onClick={handleCreateChatRoomButton}
+              >
+                Create
+              </button>
+            </div>
+          )}
+          {props.displayTab === "Direct Message List" && "Chats"}
+        </div>
         <div className="chats">
           {chatList.map((chat, index) => (
             <div
@@ -151,13 +171,23 @@ function ChatList(props: ChatListProps) {
               key={index}
               onClick={() => handleChatOnClick(chat)}
             >
+              <div className="UserProfileIcon">
+                {("title" in chat
+                  ? chat.title
+                  : chat.user1.userId === UserInfo.getUserId()
+                  ? chat.user2.firstName
+                  : chat.user1.firstName
+                )
+                  .trim()[0]
+                  .toUpperCase()}
+              </div>
               <div className="chat-details">
                 <div className="chat-title">
                   {"title" in chat
                     ? chat.title
                     : chat.user1.userId === UserInfo.getUserId()
-                      ? chat.user2.firstName
-                      : chat.user1.firstName}
+                    ? chat.user2.firstName
+                    : chat.user1.firstName}
                 </div>
                 <div className="last-message">
                   {"description" in chat
@@ -167,16 +197,6 @@ function ChatList(props: ChatListProps) {
               </div>
             </div>
           ))}
-        </div>
-        <div
-          className="CreateChatRoomButton"
-          style={
-            props.displayTab === "Direct Message List"
-              ? { display: "none" }
-              : { display: "flex" }
-          }
-        >
-          <button onClick={handleCreateChatRoomButton}>Create Chat Room</button>
         </div>
       </div>
       <div className="ChatWindowContainer">
@@ -188,6 +208,11 @@ function ChatList(props: ChatListProps) {
             />
           </Suspense>
         )}
+        {Object.keys(selectedChat).length === 0 && (
+          <div className="DefaultChatRoomLayout">
+            <DefaultChatRoomWindow handleFunction={handleCreateChatRoomButton} displayTab={props.displayTab}/>
+          </div>
+          )}
       </div>
       <CreateRoomCustomize style={showCreateChatRoom} render={setForceRender} />
       <CreateBrainStormCustomize
