@@ -1,0 +1,47 @@
+.DefaultChatRoomLayout {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: Arial, Helvetica, sans-serif;
+    width: 100%;
+    height: 100%;
+}
+
+.DefaultChatRoomLayout .brainstormIcon {
+    font-size: 250px;
+    color: rgba(232, 232, 232, 0.6);
+}
+
+.DefaultChatRoomLayout h2 {    
+    margin-top: 50px;
+    color: white;
+}
+
+.DefaultChatRoomLayout p {
+    font-size: large;
+    color: rgb(183, 181, 181);
+}
+
+.CreateChatRoomButton {
+    margin-top: 30px;
+}
+
+.CreateChatRoomButton button {
+    border: none;
+    height: 40px;
+    min-height: 20px;
+    color: white;
+    border-radius: 5px;
+    background-color: #ffc436;
+    color: black;
+    font-weight: bold;
+    align-items: center;
+    justify-content: center;
+    padding: 0 20px;
+}
+
+.CreateChatRoomButton button:hover {
+    background-color: #e6ab22;
+}

@@ -20,6 +20,11 @@ namespace Logic.Controllers
     /// Handles chat room creation requests.
     /// Returns HTTP status codes and responses.
     /// </summary>
+    /// <summary>
+    /// Controller for chat room creation.
+    /// Handles chat room creation requests.
+    /// Returns HTTP status codes and responses.
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class ChatRoomController : ControllerBase
@@ -30,9 +35,6 @@ namespace Logic.Controllers
         /// Injects ChatRoomService for this controller.
         /// </summary>
         /// <param name="chatRoomService"></param>
-        /// <exception cref="ChatRoomNotFound">Thrown when chat room not found</exception>
-        /// <exception cref="Exception">Thrown when server error occurs</exception>
-        /// <returns>HTTP status codes and responses</returns>
         public ChatRoomController(IChatRoomService chatRoomService)
         {
             this.chatRoomService = chatRoomService;
@@ -42,7 +44,7 @@ namespace Logic.Controllers
         /// Creates a chat room.
         /// </summary>
         /// <param name="request"></param>
-        /// <exception cref="ChatRoomNotFound">Thrown when chat room not found</exception>
+        /// <exception cref="ChatRoomNotFound">Thrown when chat room is not found</exception>
         /// <exception cref="Exception">Thrown when server error occurs</exception>
         /// <returns>HTTP status codes and responses</returns>
         [HttpPost]

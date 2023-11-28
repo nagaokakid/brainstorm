@@ -2,6 +2,7 @@
 using Logic.DTOs.User;
 using Logic.Services;
 using Microsoft.AspNetCore.SignalR;
+using System;
 
 namespace Logic.Hubs
 {
@@ -51,7 +52,7 @@ namespace Logic.Hubs
 
 
                 // make sure user is online
-                var connectionId = onlineUserService.Get(toUserId);
+                var connectionId = onlineUserService.GetConnectionId(toUserId);
                 if (connectionId != null)
                 {
                     await Clients.Client(connectionId).SendAsync("ReceiveDirectMessage", msgInfo);
@@ -59,6 +60,22 @@ namespace Logic.Hubs
 
                 // save direct message
                 directMessageService.AddNewMessage(msgInfo);
+
+            }
+        }
+
+        public async Task RemoveDirectMessage(string fromUserId, string toUserId, string messageId)
+        {
+            if (!string.IsNullOrEmpty(fromUserId) && !string.IsNullOrEmpty(toUserId) && !string.IsNullOrEmpty(messageId))
+            {
+                await directMessageService.RemoveDirectMessage(fromUserId, toUserId, messageId);
+                await Clients.Client(Context.ConnectionId).SendAsync("RemoveDirectMessage", toUserId, messageId);
+
+                var connectionId = onlineUserService.GetConnectionId(toUserId);
+                if(connectionId != null)
+                {
+                    Clients.Clients(connectionId).SendAsync("RemoveDirectMessage", toUserId, messageId);
+                }
 
             }
         }
