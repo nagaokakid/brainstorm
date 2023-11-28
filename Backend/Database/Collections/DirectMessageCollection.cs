@@ -124,10 +124,5 @@ namespace Database.Collections
 
             /*return result1 ?? result2;*/
         }
-
-        public async Task RemoveDirectMessage(string fromUserId, string toUserId, string messageId)
-        {
-            
-        }
     }
 }

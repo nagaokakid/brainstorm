@@ -2,7 +2,6 @@
 using Logic.DTOs.User;
 using Logic.Services;
 using Microsoft.AspNetCore.SignalR;
-using System;
 
 namespace Logic.Hubs
 {
@@ -42,7 +41,6 @@ namespace Logic.Hubs
 
                 var msgInfo = new MessageInfo
                 {
-                    MessageId = Guid.NewGuid().ToString(),
                     FromUserInfo = new FriendlyUserInfo { UserId = fromUserId, FirstName = fromFirstName, LastName = fromLastName },
                     ToUserInfo = new FriendlyUserInfo { UserId = toUserId, FirstName = toFirstName, LastName = toLastName },
                     Message = msg,
@@ -52,7 +50,7 @@ namespace Logic.Hubs
 
 
                 // make sure user is online
-                var connectionId = onlineUserService.GetConnectionId(toUserId);
+                var connectionId = onlineUserService.Get(toUserId);
                 if (connectionId != null)
                 {
                     await Clients.Client(connectionId).SendAsync("ReceiveDirectMessage", msgInfo);
@@ -60,22 +58,6 @@ namespace Logic.Hubs
 
                 // save direct message
                 directMessageService.AddNewMessage(msgInfo);
-
-            }
-        }
-
-        public async Task RemoveDirectMessage(string fromUserId, string toUserId, string messageId)
-        {
-            if (!string.IsNullOrEmpty(fromUserId) && !string.IsNullOrEmpty(toUserId) && !string.IsNullOrEmpty(messageId))
-            {
-                await directMessageService.RemoveDirectMessage(fromUserId, toUserId, messageId);
-                await Clients.Client(Context.ConnectionId).SendAsync("RemoveDirectMessage", toUserId, messageId);
-
-                var connectionId = onlineUserService.GetConnectionId(toUserId);
-                if(connectionId != null)
-                {
-                    Clients.Clients(connectionId).SendAsync("RemoveDirectMessage", toUserId, messageId);
-                }
 
             }
         }

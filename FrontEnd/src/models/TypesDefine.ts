@@ -34,7 +34,6 @@ export type chatRoomObject = {
 }
 
 export type chatRoomMessageObject = {
-    messageId: string,
     fromUserInfo: userInfoObject,
     toUserInfo?: userInfoObject,
     chatRoomId: string,
@@ -46,11 +45,10 @@ export type chatRoomMessageObject = {
 export type directMessageObject = {
     user1: userInfoObject,
     user2: userInfoObject,
-    directMessages: {messageId:string, message: string, timestamp: string }[]
+    directMessages: { message: string, timestamp: string }[]
 }
 
 export type newDirectMessageObject = {
-    messageId: string,
     fromUserInfo: userInfoObject,
     toUserInfo: userInfoObject,
     message: string,

@@ -34,7 +34,6 @@ function MsgInputField(props: MsgInputFieldProps) {
             }
             else if (props.chatType === "ChatRoom List") {
                 const msg = {
-                    messageId: "",
                     fromUserInfo: UserInfo.getUserInfo(),
                     chatRoomId: props.chatId,
                     message: text,
