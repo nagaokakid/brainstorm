@@ -34,9 +34,9 @@ namespace Logic.Services
             return result.ToDTO(await userCollection.GetAll());
         }
 
-        internal Task RemoveDirectMessage(string fromUserId, string toUserId, string messageId)
+        public async Task RemoveDirectMessage(string fromUserId, string toUserId, string messageId)
         {
-            throw new NotImplementedException();
+            await directMessageCollection.RemoveDirectMessage(fromUserId, toUserId, messageId);
         }
     }
 }
