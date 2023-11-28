@@ -2,6 +2,7 @@ import "../styles/HeaderNavBar.css";
 import SignalRChatRoom from "../services/ChatRoomConnection";
 import { useState } from "react";
 import UserInfo from "../services/UserInfo";
+import UserProfile from "./UserProfile";
 
 interface HeaderNavBarProps {
     noticeFunction: (msg: string) => void;
@@ -44,7 +45,9 @@ function HeaderNavBar(props: HeaderNavBarProps) {
                 <button className="notifications-icon" onClick={() => alert("Not available at the moment")}>Notifications</button>
                 <button className="picture-button" onClick={() => alert("Not available at the moment")}>User Picture</button> */}
             </div>
-            <div className="UserProfile">Current User: {UserInfo.getUserName()}</div>
+            <div className="UserProfile">
+                <UserProfile user={UserInfo.getUserInfo()}/>
+            </div>
         </div>
     );
 }

@@ -10,6 +10,7 @@ namespace Logic.Data
         public string Title { get; set; }
         public string Description { get; set; }
         public string ChatRoomId { get; set; }
+        public int TimerSeconds { get; set; }
         public FriendlyUserInfo Creator { get; set; }
         public bool CanJoin { get; set; } = true;
         public List<FriendlyUserInfo> JoinedMembers { get; set; }
