@@ -7,6 +7,7 @@ import UserInfo from "../services/UserInfo";
 import { useEffect, useState } from "react";
 
 function MainPage() {
+    
     const [currentTab, setCurrentTab] = useState("ChatRoom List"); // Set the default chat type to be "CharRoom List"
     const [display, setDisplay] = useState({ display: "none" }); // Set the default display to be none
     const [noticeMsg, setNoticeMsg] = useState("" as string); // Set the default notice message to be empty
