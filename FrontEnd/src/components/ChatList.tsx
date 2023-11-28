@@ -13,8 +13,11 @@ import {
   newDirectMessageObject,
 } from "../models/TypesDefine";
 import { DataContext } from "../contexts/DataContext";
-import { lazy, useState, Suspense, useEffect, useContext } from "react";
+import { lazy, useState, Suspense, useEffect, useContext, SetStateAction } from "react";
 import { useNavigate } from "react-router-dom";
+import { handleHover } from "./handleIconHover";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 
 interface ChatListProps {
   displayTab: string;
@@ -154,11 +157,12 @@ function ChatList(props: ChatListProps) {
           {props.displayTab === "ChatRoom List" && (
             <div className="ChatRoomHeader">
               Chat Rooms
-              <button
-                className="CreateChatRoomIcon"
-                onClick={handleCreateChatRoomButton}
+              <button 
+                className="CreateChatRoomIcon" 
+                onClick={handleCreateChatRoomButton} 
+                onMouseOver={handleHover}
               >
-                Create
+                <FontAwesomeIcon icon={faPenToSquare} title="Create Chat Room" />
               </button>
             </div>
           )}

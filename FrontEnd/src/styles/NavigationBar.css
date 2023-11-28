@@ -33,3 +33,9 @@
   color: white;
   border-radius: 5px;
 }
+
+.nav-button.active {
+  background-color: rgb(29, 25, 75);
+  border-left: 1px solid #FFC436;
+  border-radius: 5px;
+}
