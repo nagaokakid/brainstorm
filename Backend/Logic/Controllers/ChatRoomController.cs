@@ -1,9 +1,10 @@
-﻿/*
-    Team: DarkArmy
-    Last modified: 26.10.2023
-    version: 1.0
-    Overview: This file contains the logic for the chat room creation.
-              It handles the requests and returns the responses.
+/*
+   Team: DarkArmy
+   Author: Roland Fehr
+   Last modified: 26.10.2023
+   version: 1.0
+   Overview: This file contains the logic for the chat room creation.
+             It handles the requests and returns the responses.
 */
 
 using Logic.DTOs.ChatRoom;
@@ -14,6 +15,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Logic.Controllers
 {
+    /// <summary>
+    /// Controller for chat room creation.
+    /// Handles chat room creation requests.
+    /// Returns HTTP status codes and responses.
+    /// </summary>
     /// <summary>
     /// Controller for chat room creation.
     /// Handles chat room creation requests.
