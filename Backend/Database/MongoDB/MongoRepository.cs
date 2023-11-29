@@ -93,10 +93,10 @@ namespace Database.MongoDB
                     filter &= filterBuilder.Eq(field.Key, field.Value);
                 }
 
-/*                for (int i = 0; i < fieldNames.Count; i++)
-                {
-                    filter = filter & filterBuilder.Eq(fieldNames[i], fieldValues[i]);
-                }*/
+                /*                for (int i = 0; i < fieldNames.Count; i++)
+                                {
+                                    filter = filter & filterBuilder.Eq(fieldNames[i], fieldValues[i]);
+                                }*/
 
                 return await collection.Find(filter).FirstOrDefaultAsync();
             }
@@ -127,10 +127,10 @@ namespace Database.MongoDB
                     filter &= filterBuilder.Eq(field.Key, field.Value);
                 }
 
-/*                for (int i = 0; i < fieldNames.Count; i++)
-                {
-                    filter &= filterBuilder.Eq(fieldNames[i], fieldValues[i]);
-                }*/
+                /*                for (int i = 0; i < fieldNames.Count; i++)
+                                {
+                                    filter &= filterBuilder.Eq(fieldNames[i], fieldValues[i]);
+                                }*/
 
                 return await collection.Find(filter).ToListAsync();
             }
