@@ -1,4 +1,15 @@
-﻿using Database.CollectionContracts;
+﻿/*
+* BrainstormService.cs 
+* -------------------------
+* Represents a BrainstormService object from the database.
+* This file contains the data for the BrainstormService.
+* ---------------------------------------------------------
+* Author: Mr.Roland Fehr
+* Last modified: 28.10.2023
+* Version: 1.0
+*/
+
+using Database.CollectionContracts;
 using Database.Data;
 using Logic.Data;
 using Logic.DTOs.User;
@@ -7,6 +18,9 @@ using Microsoft.AspNetCore.SignalR;
 using System.Collections.Concurrent;
 using System.Diagnostics;
 
+/// <summary>
+///    This interface contains the methods for the BrainstormService
+/// </summary>
 public interface IBrainstormService
 {
     Task Add(BrainstormSession session);
@@ -25,17 +39,30 @@ public interface IBrainstormService
 }
 namespace Logic.Services
 {
+    /// <summary>
+    /// This class extends IBrainstormService interface and implements the methods
+    /// </summary>
     public class BrainstormService : IBrainstormService
     {
         ConcurrentDictionary<string, BrainstormSession> sessions = new();
         private readonly IBrainstormResultCollection brainstormResultCollection;
         private readonly IHubContext<ChatRoomHub> chatRoomHubContext;
 
+        /// <summary>
+        ///   Constructor for BrainstormService
+        /// </summary>
+        /// <param name="brainstormResultCollection"></param>
+        /// <param name="chatRoomHubContext"></param>
         public BrainstormService(IBrainstormResultCollection brainstormResultCollection, IHubContext<ChatRoomHub> chatRoomHubContext)
         {
             this.brainstormResultCollection = brainstormResultCollection;
             this.chatRoomHubContext = chatRoomHubContext;
         }
+
+        /// <summary>
+        ///  Adds a new BrainstormSession to the database
+        /// </summary>
+        /// <param name="session"></param>
         public async Task Add(BrainstormSession session)
         {
             Debug.Assert(session != null);
@@ -43,6 +70,11 @@ namespace Logic.Services
             sessions.TryAdd(session.SessionId, session);
         }
 
+        /// <summary>
+        ///   Join a friendly user to a session
+        /// </summary>
+        /// <param name="sessionId"></param>
+        /// <param name="user"></param>
         public async Task Join(string sessionId, FriendlyUserInfo user)
         {
             Debug.Assert(sessionId != null);
@@ -52,6 +84,10 @@ namespace Logic.Services
             if (session != null && session.CanJoin) session.JoinedMembers.Add(user);
         }
 
+        /// <summary>
+        ///  This method is called to start a session for a brainstorm session
+        /// </summary>
+        /// <param name="sessionId"></param>
         public async Task StartSession(string sessionId)
         {
             Debug.Assert(sessionId != null);
@@ -60,6 +96,10 @@ namespace Logic.Services
             if (session != null) session.CanJoin = false;
         }
 
+        /// <summary>
+        ///  This method returns a BrainstormSession object from the database
+        /// </summary>
+        /// <param name="sessionId"> sessionId of the BrainstormSession object</param>
         public async Task<BrainstormSession?> GetSession(string sessionId)
         {
             Debug.Assert(sessionId != null);
@@ -68,6 +108,11 @@ namespace Logic.Services
             return session;
         }
 
+        /// <summary>
+        /// This method adds ideas to a BrainstormSession object
+        /// </summary>
+        /// <param name="sessionId">sessionId of the BrainstormSession object</param>
+        /// <param name="ideas">ideas to add to the BrainstormSession object</param>
         public async Task AddIdeas(string sessionId, List<string> ideas)
         {
             Debug.Assert(ideas != null);
@@ -90,6 +135,10 @@ namespace Logic.Services
             }
         }
 
+        /// <summary>
+        /// This method returns all ideas from a BrainstormSession object
+        /// </summary>
+        /// <param name="sessionId"></param>
         public async Task<List<Idea>> GetAllIdeas(string sessionId)
         {
             Debug.Assert(sessionId != null);
@@ -98,12 +147,20 @@ namespace Logic.Services
             return result != null ? result.Ideas.Values.ToList() : new List<Idea>();
         }
 
+        /// <summary>
+        ///   RemoveSession removes a brainstorm session.
+        /// </summary>
+        /// <param name="sessionId"></param>
         public async Task RemoveSession(string sessionId)
         {
             Debug.Assert(sessionId != null);
             sessions.TryRemove(sessionId, out var session);
         }
 
+        /// <summary>
+        ///  EndSession method ends a brainstorm session.
+        /// </summary>
+        /// <param name="sessionId"></param>
         public async Task EndSession(string sessionId)
         {
             Debug.Assert(sessionId != null);
@@ -166,7 +223,7 @@ namespace Logic.Services
         {
             FilterIdeas(sessionId).Wait();
             var result = GetSession(sessionId).Result;
-            this.chatRoomHubContext.Clients.Group(sessionId).SendAsync("ReceiveVoteResults", sessionId, result.Ideas.Select(x=>x.Value).ToList());
+            this.chatRoomHubContext.Clients.Group(sessionId).SendAsync("ReceiveVoteResults", sessionId, result.Ideas.Select(x => x.Value).ToList());
         }
 
         public async Task AddFinalResult(BrainstormResult brainstormResult)
@@ -179,8 +236,8 @@ namespace Logic.Services
             var result = await GetSession(sessionId);
             if (result != null)
             {
-                var filtered = result.Ideas.Where(x => x.Value?.Likes > x.Value?.Dislikes)?.Select(x=>x.Value).ToList();
-                if(filtered != null)
+                var filtered = result.Ideas.Where(x => x.Value?.Likes > x.Value?.Dislikes)?.Select(x => x.Value).ToList();
+                if (filtered != null)
                 {
                     // create dictionary and replace in session
                     Dictionary<string, Idea> newDict = new();
@@ -200,7 +257,7 @@ namespace Logic.Services
             if (!string.IsNullOrEmpty(sessionId))
             {
                 var result = await GetSession(sessionId);
-                if(result != null)
+                if (result != null)
                 {
                     // set all votes to zero to vote again
                     foreach (var idea in result.Ideas.Values)
@@ -218,9 +275,9 @@ namespace Logic.Services
         public async Task RemoveUserFromSession(string sessionId, string userId)
         {
             var result = await GetSession(sessionId);
-            if (result != null) 
+            if (result != null)
             {
-                int index = result.JoinedMembers.FindIndex(x=>x.UserId == userId);
+                int index = result.JoinedMembers.FindIndex(x => x.UserId == userId);
                 result.JoinedMembers.RemoveAt(index);
             }
         }
