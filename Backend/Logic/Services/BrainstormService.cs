@@ -1,12 +1,12 @@
 ﻿/*
-* BrainstormService.cs 
-* -------------------------
-* Represents a BrainstormService object from the database.
-* This file contains the data for the BrainstormService.
-* ---------------------------------------------------------
-* Author: Mr.Roland Fehr
-* Last modified: 28.10.2023
-* Version: 1.0
+ * BrainstormService.cs 
+ * -------------------------
+ * Represents a BrainstormService object from the database.
+ * This file contains the data for the BrainstormService.
+ * ---------------------------------------------------------
+ * Author: Mr.Roland Fehr & Mr. Akira Cooper
+ * Last modified: 28.10.2023
+ * Version: 1.0
 */
 
 using Database.CollectionContracts;
@@ -171,6 +171,11 @@ namespace Logic.Services
             if (result != null) result.IdeasAvailable = DateTime.Now.AddSeconds(1);
         }
 
+        /// <summary>
+        /// AddVotes method adds votes to a brainstorm session.
+        /// </summary>
+        /// <param name="sessionId"></param>
+        /// <param name="ideas"></param>
         public async Task AddVotes(string sessionId, List<Idea> ideas)
         {
             if (sessionId != null && ideas != null)
@@ -190,6 +195,11 @@ namespace Logic.Services
             }
         }
 
+        /// <summary>
+        ///   SendVotesTimer method sends votes to a brainstorm session.
+        /// </summary>
+        /// <param name="sessionId"></param>
+        /// <param name="callback"></param>
         public async Task SendVotesTimer(string sessionId, Action<string, List<Idea>>? callback)
         {
             if (callback != null)
@@ -202,6 +212,11 @@ namespace Logic.Services
             }
         }
 
+        /// <summary>
+        ///  This method sends all ideas to a brainstorm session with a callback.
+        /// </summary>
+        /// <param name="sessionId"></param>
+        /// <param name="callback"></param>
         public async Task SendAllIdeasTimer(string sessionId, Action<string, List<Idea>>? callback)
         {
             if (callback != null)
@@ -214,11 +229,21 @@ namespace Logic.Services
             }
         }
 
+        /// <summary>
+        ///   This method sends all ideas to a brainstorm session.
+        /// </summary>
+        /// <param name="sessionId"></param>
+        /// <param name="ideas"></param>
         private void SendAllIdeas(string sessionId, List<Idea> ideas)
         {
             this.chatRoomHubContext.Clients.Groups(sessionId).SendAsync("ReceiveAllIdeas", sessionId, ideas);
         }
 
+        /// <summary>
+        ///     This method sends all votes to a brainstorm session.
+        /// </summary>
+        /// <param name="sessionId"></param>
+        /// <param name="votes"></param>
         private void SendAllVotes(string sessionId, List<Idea> votes)
         {
             FilterIdeas(sessionId).Wait();
@@ -226,11 +251,20 @@ namespace Logic.Services
             this.chatRoomHubContext.Clients.Group(sessionId).SendAsync("ReceiveVoteResults", sessionId, result.Ideas.Select(x => x.Value).ToList());
         }
 
+        /// <summary>
+        ///   This method adds a final result in a brainstorm session.
+        /// </summary>
+        /// <param name="brainstormResult"></param>
+        /// <returns></returns>
         public async Task AddFinalResult(BrainstormResult brainstormResult)
         {
             brainstormResultCollection.Add(brainstormResult);
         }
 
+        /// <summary>
+        ///  This method filters ideas in a brainstorm session.
+        /// </summary>
+        /// <param name="sessionId"></param>
         private async Task FilterIdeas(string sessionId)
         {
             var result = await GetSession(sessionId);
@@ -252,6 +286,10 @@ namespace Logic.Services
             }
         }
 
+        /// <summary>
+        /// This method votes another round in a brainstorm session.
+        /// </summary>
+        /// <param name="sessionId"></param>
         public async Task<List<Idea>> VoteAnotherRound(string sessionId)
         {
             if (!string.IsNullOrEmpty(sessionId))
@@ -272,6 +310,11 @@ namespace Logic.Services
             return new List<Idea>();
         }
 
+        /// <summary>
+        /// This method removes a user from a brainstorm session.
+        /// </summary>
+        /// <param name="sessionId"></param>
+        /// <param name="userId"></param>
         public async Task RemoveUserFromSession(string sessionId, string userId)
         {
             var result = await GetSession(sessionId);
