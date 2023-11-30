@@ -1,4 +1,4 @@
-import '../styles/LogRes.css';
+import '../styles/LoginForm.css';
 import 'mdb-react-ui-kit/dist/css/mdb.min.css';
 import {
     MDBContainer,

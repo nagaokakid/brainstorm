@@ -1,5 +1,5 @@
 import "../styles/LoginPage.css"
-import LogRes from "../components/LogRes"
+import LoginForm from "../components/LoginForm"
 import GuestJoin from "../components/GuestJoin"
 
 function LoginPage() {
@@ -13,7 +13,7 @@ function LoginPage() {
                 <div className="ContentContainer">
                     <div className="MemberContainer">
                         <div className="FormContainer">
-                            <LogRes />
+                            <LoginForm />
                         </div>
                     </div>
                     <div className="VerticalLine"></div>

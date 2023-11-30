@@ -1,3 +1,15 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.nav-pills .nav-link.active,
+.nav-pills .show>.nav-link {
+    background-color: #FFC436 !important;
+    color: black !important;
+    font-weight: bold !important;
+}
+
 .SignInTitle,
 .RegisterTitle {
     margin-bottom: 20px;
@@ -5,6 +17,7 @@
     justify-content: center;
     font-size: 30px !important;
     color: white;
+    pointer-events: none;
 }
 
 .nav-pills .nav-link {
@@ -17,6 +30,7 @@
     border-radius: 5px;
 }
 
+/* Login, Register and Guest join button */
 .ripple {
     border-radius: 0px 10px 0px 10px !important;
     font-size: 16px !important;
@@ -28,15 +42,12 @@
     font-weight: bold !important;
 }
 
-.form-outline .form-control~.form-label{
+.form-outline .form-control~.form-label {
     height: 100px;
 }
 
 .form-outline .form-control~.form-label {
     color: #000000 !important;
-    /* background-color: rgba(255, 255, 255, 0.63) !important; */
-    width: auto;
-    border-radius: 5px;
 }
 
 .ErrorMsg {
@@ -46,9 +57,4 @@
     margin-bottom: 5px;
     display: flex;
     justify-content: center;
-}
-
-.SignInButton{
-    background-color: green;
-    color: aqua;
 }
