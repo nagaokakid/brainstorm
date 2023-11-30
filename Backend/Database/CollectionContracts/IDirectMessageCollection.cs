@@ -1,7 +1,23 @@
 ﻿using Database.Data;
 
+/*
+ * IDirectMessageCollection.cs
+ * ---------------------------
+ * This interface defines the methods that will be used by the DirectMessageCollection class.
+ * -----------------------------------------------------------------------------------------------------------
+ * Author: Mr. Roland Fehr
+ * Last Updated: 30/10/2023
+ * Date Created: 30/10/2023
+ * Version 1.0
+*/
+
+
+
 namespace Database.CollectionContracts
 {
+    /// <summary>
+    ///    This interface defines the methods that will be used by the DirectMessageCollection class.
+    /// </summary>
     public interface IDirectMessageCollection
     {
         Task<string?> Add(string userId1, string userId2, DirectMessage message);

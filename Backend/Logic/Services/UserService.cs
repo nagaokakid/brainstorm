@@ -36,6 +36,7 @@ namespace Logic.Services
         ///   This method registers a user
         /// </summary>
         /// <param name="registerUser">The user to register</param>
+        /// <returns>The registered user</returns>
         public async Task<FriendlyUserInfo> CreateUser(RegisterUserRequest registerUser)
         {
             // make sure username does not exist
