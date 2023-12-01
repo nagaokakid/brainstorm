@@ -1,6 +1,7 @@
 import "../styles/MessageBox.css";
 import UserInfo from "../services/UserInfo";
 import SignalRChatRoom from "../services/ChatRoomConnection";
+import SignalRDirect from "../services/DirectMessageConnection";
 
 interface MsgBoxProps {
   message: string;
@@ -8,7 +9,8 @@ interface MsgBoxProps {
   isBrainstorm?: boolean;
   bsId?: string;
   msgId: string;
-  chatId: string;
+  chatId: string; // chatId is the id of the chatroom or the id of the user that the msg going to send to.
+  chatType: string;
 }
 
 function MsgBox(props: MsgBoxProps) {
@@ -27,12 +29,20 @@ function MsgBox(props: MsgBoxProps) {
     });
   }
 
-  function handleRemoveChatRoom() {
-    SignalRChatRoom.getInstance().then((value) => {
-      console.log("handle" + props.chatId + props.msgId);
-      
-      value.removeChatRoomMessage(props.chatId, props.msgId);
-    });
+  function handleRemoveMessage() {
+    if(props.chatType === "ChatRoom List"){
+      SignalRChatRoom.getInstance().then((value) => {
+        console.log("handle" + props.chatId + props.msgId);
+        
+        value.removeChatRoomMessage(props.chatId, props.msgId);
+      });
+    } else {
+      SignalRDirect.getInstance().then((value) => {
+        console.log("handle" + props.chatId + props.msgId);
+        
+        value.removeDirectMessage(props.chatId, props.msgId);
+      });
+    }
   }
 
   return (
@@ -46,7 +56,7 @@ function MsgBox(props: MsgBoxProps) {
             src="src\assets\delete.png"
             onClick={() => {
               console.log("Delete Message");
-              handleRemoveChatRoom();
+              handleRemoveMessage();
             }}
           />
         </div>
