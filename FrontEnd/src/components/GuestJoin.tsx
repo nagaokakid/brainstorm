@@ -1,13 +1,13 @@
-import '../styles/GuestJoin.css';
-import 'mdb-react-ui-kit/dist/css/mdb.min.css';
 import {
     MDBBtn
-} from 'mdb-react-ui-kit'
+} from 'mdb-react-ui-kit';
+import 'mdb-react-ui-kit/dist/css/mdb.min.css';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { chatRoomObject, directMessageObject } from '../models/TypesDefine';
 import ApiService from '../services/ApiService';
 import UserInfo from '../services/UserInfo';
-import { chatRoomObject, directMessageObject } from '../models/TypesDefine';
-import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import '../styles/GuestJoin.css';
 
 function GuestJoin() {
     const navigate = useNavigate()
