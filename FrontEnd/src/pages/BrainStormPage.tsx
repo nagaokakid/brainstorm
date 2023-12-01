@@ -12,6 +12,10 @@ import SignalRChatRoom from "../services/ChatRoomConnection";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useContext, useEffect, useRef, useState } from "react";
 import { DataContext } from "../contexts/DataContext";
+import {  faTrashRestoreAlt } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { handleHover } from "../components/handleIconHover";
+
 
 function BrainStormPage() {
   const Navigate = useNavigate();
@@ -38,6 +42,7 @@ function BrainStormPage() {
   const interval = useRef() as React.MutableRefObject<NodeJS.Timeout>;
   const [memberCount, setMemberCount] = useState(0); // Set the member count to be displayed
   const context = useContext(DataContext); // Get the data context
+  const [deletedIdeaList, updateDeletedIdeaList] = useState([] as string[]);
 
   function startTimer() {
     if (timer > 0) {
@@ -47,13 +52,6 @@ function BrainStormPage() {
     }
   }
 
-  // useEffect(() => {
-  //   if (timer) {
-  //     console.log("number", timer);
-
-  //     setTimer(Number(location.timer));
-  //   }
-  // }, []);
 
   useEffect(() => {
     if (timer === 0 && !input) {
@@ -156,6 +154,19 @@ function BrainStormPage() {
     }
   }
 
+  function handleOpenTrashButton() {
+    if (UserInfo.isHost(creatorId)) {
+      alert("You are the host");
+      deletedIdeaList.map(idea=>console.log(idea));
+      // Navigate("/trash", { state: { bsid: sessionId } });
+    } else {
+      showNotice("Only the host can access the trash");
+    }
+  }
+  function handleDeletedItemList(idea: string) {
+    updateDeletedIdeaList(current=>[...current, idea]);
+  }
+
   /**
    * End the voting
    */
@@ -174,6 +185,7 @@ function BrainStormPage() {
       showNotice("Voting has already ended or has not started yet.");
     }
   }
+  
   /**
    * To vote another round
    */
@@ -259,11 +271,17 @@ function BrainStormPage() {
           timer={timer}
           memberCount={memberCount}
         />
+        <button
+          className="RecycleBinButton"
+          onClick={() => handleOpenTrashButton()}
+        >
+          <FontAwesomeIcon icon={faTrashRestoreAlt} title="Recycle Bin" style={{ background: 'white !important', fontSize: '60px' }}/>
+        </button>
       </div>
       <div className="BS_BodyContainer">
         <div className="BS_ContentContainer">
           <BS_OnlineIdeaList content={ideaList} voting={isVoting} />
-          <BS_LocalIdeaList content={localIdeaList} />
+          <BS_LocalIdeaList content={localIdeaList} handleFunction={handleDeletedItemList}/>
           <div className="BS_BottomRow">
             <BS_SendPrompt sendFunction={handleSendClick} input={input} />
             <div
