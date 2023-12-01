@@ -43,10 +43,11 @@ class SignalRChatRoom {
      * Set a callback function that will be called when a chat room message is received
      * @param {*} callBackFunction A function that will be called when a chat room message is received
      */
-    setReceiveChatRoomMessageCallback(callBackFunction: (bsid: string | undefined, msg: chatRoomMessageObject, timer?: string) => void) {
-        this.connection.on("ReceiveChatRoomMessage", (msg: chatRoomMessageObject, timer?: string) => {
+    setReceiveChatRoomMessageCallback(callBackFunction: (bsid: string | undefined, msg: chatRoomMessageObject, timer?: number) => void) {
+        this.connection.on("ReceiveChatRoomMessage", (msg: chatRoomMessageObject, timer?: number) => {
             UserInfo.addChatRoomMessage(msg);
-
+            console.log(msg);
+            
             if (msg.brainstorm && msg.brainstorm.creator.userId === UserInfo.getUserId()) {
                 callBackFunction(msg.brainstorm.sessionId, msg, timer);
             } else {
@@ -81,10 +82,10 @@ class SignalRChatRoom {
      * Set a callback function that will be called when a new member joins the brainstorm session
      * @param callBackFunction A function that will be called when a new member joins the brainstorm session
      */
-    setUserJoinedBrainstormSessionCallback(callBackFunction: (sessionId: string, userId: string) => void) {
-        this.connection.on("UserJoinedBrainstormingSession", (sessionId: string, userId: string) => {
+    setUserJoinedBrainstormSessionCallback(callBackFunction: (sessionId: string, userId: string, count: number, timer: number) => void) {
+        this.connection.on("UserJoinedBrainstormingSession", (sessionId: string, userId: string, count: number, timer: number) => {
             // new user joined brainstorming session
-            callBackFunction(sessionId, userId);
+            callBackFunction(sessionId, userId, count, timer);
         });
     }
 
@@ -104,11 +105,11 @@ class SignalRChatRoom {
      * Set a callback function that will be called when the host start the session
      * @param callBackFunction A function that will be called when the host start the session
      */
-    setBrainstormSessionStartedCallback(callBackFunction: (sessionId: string) => void) {
-        this.connection.on("BrainstormSessionStarted", (sessionId: string) => {
+    setBrainstormSessionStartedCallback(callBackFunction: (sessionId: string, seconds: number) => void) {
+        this.connection.on("BrainstormSessionStarted", (sessionId: string, seconds: number) => {
 
             // brainstorm session started
-            callBackFunction(sessionId);
+            callBackFunction(sessionId, seconds);
         });
     }
 
@@ -220,8 +221,10 @@ class SignalRChatRoom {
      * Send a request to the backend to start a brainstorm session
      * @param sessionId The brainstorm session id
      */
-    async startSession(sessionId: string) {
-        await this.connection.send("StartSession", sessionId)
+    async startSession(sessionId: string, timer: number) {
+        console.log("----> Start brainstorm session", sessionId, timer);
+        
+        await this.connection.send("StartSession", sessionId, timer)
     }
 
     /**
@@ -251,7 +254,7 @@ class SignalRChatRoom {
      * @param sessionId The brainstorm session id
      */
     async removeSession(sessionId: string) {
-        await this.connection.send("RemoveSession", sessionId)
+        await this.connection.send("RemoveSession", sessionId, UserInfo.getUserInfo())
     }
 
     /**
@@ -263,12 +266,29 @@ class SignalRChatRoom {
         await this.connection.send("ReceiveVotes", sessionId, votes)
     }
 
+    async removeUserFromBrainstormSession(sessionId: string){
+        await this.connection.send("RemoveUserFromSession", sessionId, UserInfo.getUserId())
+    }
+
     /**
      * Send a request to the backend to ask all clients to send their votes
      * @param sessionId The brainstorm session id
      */
     async clientsShouldSendAllVotes(sessionId: string) {
         await this.connection.send("SendAllVotes", sessionId)
+    }
+
+    async removeChatRoomMessage(chatroomId: string, messageId: string){
+        await this.connection.send("RemoveChatRoomMessage", chatroomId, messageId)
+    }
+
+    setRemoveChatRoomMessageCallback(callBackFunction: (chatRoomId: string, messageId: string) => void) {
+        this.connection.on("RemoveChatRoomMessage", (chatRoomId: string, messageId: string) => {
+            console.log("callback remove message: " + chatRoomId + " " + messageId);
+            
+            // remove message from chatroom
+            callBackFunction(chatRoomId, messageId);
+        });
     }
 
     /**

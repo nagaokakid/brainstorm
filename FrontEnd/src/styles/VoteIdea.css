@@ -1,23 +1,24 @@
 .IdeaBox {
-    width: auto;
     height: auto;
     display: flex;
     flex-direction: column;
     margin: 5px;
-}
-
-.IdeaBox .IdeaThought {
     padding: 5px;
-    background-color: pink;
+    color: white;
+    background: rgb(2,0,36);
+    background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(12,53,106,1) 100%, rgba(1,116,190,1) 100%);
+    align-items: start;
+    border-radius: 15px;
+}
+.IdeaThought {
+    padding: 5px;
     width: 100%;
     height: auto;
     display: flex;
     flex-direction: column;
     align-items: start;
 }
-
-.IdeaBox .IdeaButton {
-    background-color: pink;
+.IdeaButton {
     width: 100%;
     height: auto;
     display: flex;
@@ -32,14 +33,33 @@
     border-radius: 5px;
     color: white;
     padding: 5px;
-    width: 100px;
+    width: fit-content;
+}
+
+.LikeIdea:hover{
+    margin: 5px;
+    background-color: rgb(1, 78, 1);
+    border: none;
+    border-radius: 5px;
+    color: white;
+    padding: 5px;
+    width: fit-content;
 }
 .DislikeIdea{
+    width: fit-content;
     border: none;
     border-radius: 5px;
     margin: 5px;
-    width: 100px;
     padding: 5px;
     background-color: red;
+    color: white;
+}
+.DislikeIdea:hover{
+    width: fit-content;
+    border: none;
+    border-radius: 5px;
+    margin: 5px;
+    padding: 5px;
+    background-color: rgb(184, 6, 6);
     color: white;
 }

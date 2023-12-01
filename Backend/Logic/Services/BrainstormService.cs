@@ -21,6 +21,7 @@ public interface IBrainstormService
     Task SendAllIdeasTimer(string sessionId, Action<string, List<Idea>>? callback);
     Task SendVotesTimer(string sessionId, Action<string, List<Idea>>? callback);
     Task StartSession(string sessionId);
+    Task RemoveUserFromSession(string sessionId, string userId);
 }
 namespace Logic.Services
 {
@@ -178,7 +179,7 @@ namespace Logic.Services
             var result = await GetSession(sessionId);
             if (result != null)
             {
-                var filtered = result.Ideas.Where(x => x.Value.Likes > x.Value.Dislikes)?.Select(x=>x.Value).ToList();
+                var filtered = result.Ideas.Where(x => x.Value?.Likes > x.Value?.Dislikes)?.Select(x=>x.Value).ToList();
                 if(filtered != null)
                 {
                     // create dictionary and replace in session
@@ -212,6 +213,16 @@ namespace Logic.Services
                 }
             }
             return new List<Idea>();
+        }
+
+        public async Task RemoveUserFromSession(string sessionId, string userId)
+        {
+            var result = await GetSession(sessionId);
+            if (result != null) 
+            {
+                int index = result.JoinedMembers.FindIndex(x=>x.UserId == userId);
+                result.JoinedMembers.RemoveAt(index);
+            }
         }
     }
 }

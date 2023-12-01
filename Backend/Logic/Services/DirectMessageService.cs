@@ -33,5 +33,10 @@ namespace Logic.Services
             if(result == null) return null;
             return result.ToDTO(await userCollection.GetAll());
         }
+
+        public async Task RemoveDirectMessage(string fromUserId, string toUserId, string messageId)
+        {
+            await directMessageCollection.RemoveDirectMessage(fromUserId, toUserId, messageId);
+        }
     }
 }
