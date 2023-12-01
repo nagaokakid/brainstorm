@@ -1,7 +1,6 @@
 import '../styles/GuestJoin.css';
 import 'mdb-react-ui-kit/dist/css/mdb.min.css';
 import {
-    MDBInput,
     MDBBtn
 } from 'mdb-react-ui-kit'
 import ApiService from '../services/ApiService';
@@ -66,7 +65,7 @@ function GuestJoin() {
 
     return (
         <div className='GuestCodeContainer'>
-            <MDBInput wrapperClass='mb-4' label='Chat Room Code' id='code' type='text' onChange={handleChange} />
+            <input className='ChatRoomCode' id='ChatRoomCode' placeholder='Chat Room Code' type="text" onChange={handleChange} />
             <MDBBtn className="mb-4 w-100" id='join' onClick={() => RequestHandle()}>Join Chat Room</MDBBtn>
             <h5 className='ErrorMsg' style={{ display: errorDisplay }}>{errorMsg}</h5>
         </div>
