@@ -9,6 +9,18 @@ import ApiService from '../services/ApiService';
 import UserInfo from '../services/UserInfo';
 import '../styles/GuestJoin.css';
 
+/*
+ * GuestJoin.tsx
+ * -------------------------
+ * This component is the guest join window of the chat page.
+ * It contains the input field for the user to enter the chat room code.
+ * -----------------------------------------------------------------------
+ * Authors:  Mr. Yee Tsung (Jackson) Kao 
+ * Date Created:  01/12/2023
+ * Last Modified: 01/12/2023
+ * Version: 1.0
+*/
+
 function GuestJoin() {
     const navigate = useNavigate()
     const [input, setInput] = useState({ code: '' }) // This handle the state of the input

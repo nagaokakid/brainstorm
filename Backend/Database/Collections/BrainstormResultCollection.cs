@@ -2,10 +2,25 @@
 using Database.Data;
 using Database.MongoDB;
 
+/*
+ * BrainstormResultCollection.cs
+ * -------------------------------
+ * This class implements the IBrainstormResultCollection interface.
+ * -----------------------------------------------------------------------------------------------------------  
+ * Author: Mr. Akira Cooper
+ * Last Updated: 28/10/2023
+ * Date Created: 28/10/2023
+ * Version 1.0
+*/
+
 namespace Database.Collections
 {
+    /// <summary>
+    ///     This class implements the IBrainstormResultCollection interface.
+    /// </summary>
     public class BrainstormResultCollection : IBrainstormResultCollection
     {
+
         private MongoRepository<BrainstormResult> brainstormResultRepository = new("brainstorm", "BrainstormResult");
         private MongoRepository<User> userRepository = new("brainstorm", "User");
 

@@ -4,6 +4,16 @@ import { useState } from "react";
 import UserInfo from "../services/UserInfo";
 import UserProfile from "./UserProfile";
 
+/*
+ * HeaderNavBar.tsx 
+ * -------------------------
+ * This component is the header navigation bar of the main page.
+ * It contains the user name, join code input field, and the user profile.
+ * -----------------------------------------------------------------------
+ * Authors:  Mr. Yee Tsung (Jackson) Kao & Mr. Roland Fehr
+ * Date:     2021-04-01
+ * Version:  1.0
+*/
 interface HeaderNavBarProps {
     noticeFunction: (msg: string) => void;
 }

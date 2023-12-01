@@ -6,6 +6,18 @@ import TabContent from "../components/ChatList";
 import UserInfo from "../services/UserInfo";
 import { useEffect, useState } from "react";
 
+/*
+  *  MainPage.tsx 
+  * -------------------------
+  *  This component is the main page of the application.
+  *  It contains the header navigation bar, the navigation bar, and the chat list.
+  *  -----------------------------------------------------------------------
+  * Authors:  Mr. Yee Tsung (Jackson) Kao & Ravdeep Singh
+  * Date Created:  01/12/2023
+  * Last Modified: 01/12/2023
+  * Version: 1.0
+  */
+ 
 function MainPage() {
     const [currentTab, setCurrentTab] = useState("ChatRoom List"); // Set the default chat type to be "CharRoom List"
     const [display, setDisplay] = useState({ display: "none" }); // Set the default display to be none

@@ -1,3 +1,13 @@
+/* HandleIconHover.tsx
+ * -------------------------
+ * This component is the handle icon hover.
+ * ------------------------------------------
+ * Author: Ravdeep Singh
+ * Date Created:  01/12/2023
+ * Last Modified: 01/12/2023
+ * Version: 1.0
+*/
+
 export function handleHover(event: React.MouseEvent<HTMLButtonElement>) {
     const hoverText = document.createElement('div');
     hoverText.classList.add('hover-text');

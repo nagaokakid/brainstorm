@@ -3,6 +3,19 @@ import UserInfo from "./UserInfo";
 import { chatRoomMessageObject, chatRoomObject, userInfoObject } from "../models/TypesDefine";
 import Idea from "../models/Idea";
 
+/*
+ * ChatRoomConnection.ts
+ * -----------------------------
+ * This file is the service for the SignalR chatroom Hub.
+ * ----------------------------------------------------------
+ * Author:  Mr. Yee Tsuung (Jackson) Kao, Mr. Roland Fehr and Ravdeep Singh
+ * Date Created:  01/12/2023
+ * Last Modified: 01/12/2023
+ * Version: 0.0.1
+*/
+
+
+
 /**
  * This is the URL for the SignalR chatroom Hub
  */
