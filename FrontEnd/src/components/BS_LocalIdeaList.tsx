@@ -2,6 +2,17 @@ import '../styles/BS_LocalIdeaList.css';
 import UserInfo from '../services/UserInfo';
 import { useEffect, useState } from 'react';
 
+/*
+ *  BS_LocalIdeaList.tsx 
+ * -------------------------
+ *  This component is the local idea list of the brain storm page.
+ *  It contains the list of ideas that the user has created.
+ *  -----------------------------------------------------------------------
+ * Author:  Mr. Yee Tsung (Jackson) Kao
+ * Date Created:  01/12/2023
+ * Last Modified: 01/12/2023
+ * Version: 1.0
+ */
 interface BS_LocalIdeaListProps {
     content: string[],
 }

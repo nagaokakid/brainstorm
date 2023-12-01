@@ -2,6 +2,16 @@ import "../styles/LoginPage.css"
 import LoginForm from "../components/LoginForm"
 import GuestJoin from "../components/GuestJoin"
 
+/*
+ * LoginPage.tsx
+ * -------------------------
+ * This is the login page.
+ * -----------------------------------------------------------------------
+ * Author:  Mr. Yee Tsung (Jackson) Kao
+ * Date Created:  01/12/2023
+ * Last Modified: 01/12/2023
+ * Version: 1.0
+*/
 function LoginPage() {
     // Clear the session and local storage
     sessionStorage.clear();

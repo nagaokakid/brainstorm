@@ -3,6 +3,16 @@ import UserInfo from "../services/UserInfo";
 import SignalRChatRoom from "../services/ChatRoomConnection";
 import SignalRDirect from "../services/DirectMessageConnection";
 
+/*
+  * MessageBox.tsx
+  * -------------------------
+  * This component is the message box of the chat room.
+  * -----------------------------------------------------------------------
+  * Authors:  Mr. Yee Tsung (Jackson) Kao & Mr. Roland Fehr
+  * Date Created:  01/12/2023
+  * Last Modified: 01/12/2023
+  * Version: 1.0
+*/ 
 interface MsgBoxProps {
   message: string;
   user: string[];

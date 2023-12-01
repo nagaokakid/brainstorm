@@ -3,6 +3,18 @@ import SignalRChatRoom from "../services/ChatRoomConnection";
 import { chatRoomObject, directMessageObject } from "../models/TypesDefine";
 import { useEffect, useState } from "react";
 
+/*
+  *  CreateBrainStormCustomize.tsx 
+  * -------------------------
+  *  This component is the create brainstorm customize window of the chat page.
+  *  It contains the input fields for the user to enter the brainstorm session name and description.
+  *  -----------------------------------------------------------------------
+  * Authors:  Mr. Yee Tsung (Jackson) Kao & Mr. Roland Fehr
+  * Date Created:  01/12/2023
+  * Last Modified: 01/12/2023
+  * Version: 1.0
+*/
+
 interface CreateBrainStormCustomizeProps {
   style: { display: string };
   chat: chatRoomObject | directMessageObject | null;

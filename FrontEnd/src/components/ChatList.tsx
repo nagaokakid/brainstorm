@@ -19,6 +19,17 @@ import { handleHover } from "./handleIconHover";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 
+/*
+  *  ChatList.tsx 
+  * -------------------------
+  *  This component is the chat list of the chat page.
+  *  It contains the list of chat rooms and direct messages that the user has created.
+  *  -----------------------------------------------------------------------
+  * Author:  Mr. Yee Tsung (Jackson) Kao
+  * Date Created:  01/12/2023
+  * Last Modified: 01/12/2023
+  * Version: 1.0
+*/
 interface ChatListProps {
   displayTab: string;
   noticeFunction: (msg: string) => void;

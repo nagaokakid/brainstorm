@@ -5,6 +5,16 @@ import SignalRDirect from "../services/DirectMessageConnection";
 import SignalRChatRoom from "../services/ChatRoomConnection";
 import React, { useEffect, useState } from "react";
 
+/*
+    * MessageInput.tsx
+    * -------------------------
+    * This component is the message input field of the chat room.
+    * -----------------------------------------------------------------------
+    * Author:  Mr. Yee Tsung (Jackson) Kao 
+    * Date Created:  01/12/2023
+    * Last Modified: 01/12/2023
+    * Version: 1.0
+*/
 interface MsgInputFieldProps {
     chatType: string;
     chatId: string;

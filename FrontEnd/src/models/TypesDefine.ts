@@ -1,5 +1,16 @@
 import { friendlyUser } from "./FriendlyUser"
 
+/* 
+ * TypesDefine.ts
+ * -----------------------------
+ * This file is the model for the TypesDefine object.
+ * ----------------------------------------------------------
+ * Author:  Mr. Yee Tsuung (Jackson) Kao and Mr. Roland Fehr
+ * Date Created:  01/12/2023
+ * Last Modified: 01/12/2023
+ * Version: 0.0.1
+*/
+
 export type user = {
     userInfo: userInfoObject,
     token: string,

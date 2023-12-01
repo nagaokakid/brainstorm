@@ -13,6 +13,18 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useContext, useEffect, useRef, useState } from "react";
 import { DataContext } from "../contexts/DataContext";
 
+/*
+ * BrainStormPage.tsx
+  * -------------------------
+  *   This component is the brain storm page of the brain storm session.
+  *  It contains the list of ideas that the user has created.
+  * -----------------------------------------------------------------------
+  * Authors:  Mr. Yee Tsung (Jackson) Kao & Mr. Roland Fehr
+  * Date Created:  01/12/2023
+  * Last Modified: 01/12/2023
+  * Version: 1.0
+*/
+
 function BrainStormPage() {
   const Navigate = useNavigate();
   const [isVoting, setIsVoting] = useState(false);
