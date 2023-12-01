@@ -65,5 +65,20 @@ namespace Database.Collections
             // needs to be implemented
             await Task.Run(() => { });
         }
+
+        public async Task EditChatRoom(ChatRoom chatroom)
+        {
+            // edit chatroom
+        }
+
+        public async Task Delete(string id)
+        {
+            // delete chatroom
+        }
+
+        public async Task RemoveUser(string id, string chatId)
+        {
+            // remove user from chatroom member list
+        }
     }
 }
