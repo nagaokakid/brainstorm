@@ -9,6 +9,20 @@ import {
   chatRoomMessageObject,
 } from "../models/TypesDefine";
 
+/*
+ * ApiService.ts
+  * -----------------------------
+  * This file is the model for the ApiService object.
+  * ----------------------------------------------------------
+  * Author:  Mr. Yee Tsuung (Jackson) Kao and Mr. Roland Fehr
+  * Date Created:  01/12/2023
+  * Last Modified: 01/12/2023
+  * Version: 0.0.1
+*/
+
+/// <summary>
+/// This class is the model for the ApiService object.
+/// </summary>
 class ApiService {
   /**
    * Do a Login API call to the backend and connect to all chatrooms and direct messaging
@@ -192,6 +206,15 @@ class ApiService {
         }
       )
     );
+    await SignalRDirect.getInstance().then((value) =>
+      value.setRemoveDirectMessageCallback((toId: string, messageId: string) => {
+        console.log("----> Receive remove direct message callback");
+        if (toId && messageId) {
+          UserInfo.deleteDirectMessage(toId, messageId);
+          Callback(7);
+        }
+      })
+    );
     await SignalRChatRoom.getInstance().then((value) =>
       value.setReceiveChatRoomMessageCallback(
         (
@@ -216,34 +239,34 @@ class ApiService {
       })
     );
     await SignalRChatRoom.getInstance().then((value) =>
-      value.setRemoveChatRoomMessageCallback(
-        (chatRoomId: string, messageId: string) => {
-          if (chatRoomId && messageId) {
-            // remove chat message from chatroom
-            const chatIndex = UserInfo.currentUser.chatRooms.findIndex(
-              (x) => x.id === chatRoomId
-            );
-            console.log(chatIndex);
-            if (chatIndex !== -1) {
-              const msgIndex = UserInfo.currentUser.chatRooms[
-                chatIndex
-              ].messages.findIndex((x) => x.messageId === messageId);
-              console.log(msgIndex);
-              if (msgIndex !== -1) {
-                // remove
-                UserInfo.currentUser.chatRooms[chatIndex].messages.splice(
-                  msgIndex,
-                  1
-                );
-                UserInfo.updateUser(true);
-              }
-            }
+      value.setRemoveChatRoomMessageCallback((chatRoomId: string, messageId: string) => {
+        if (chatRoomId && messageId) {
+          // remove chat message from chatroom
+          // const chatIndex = UserInfo.currentUser.chatRooms.findIndex(
+          //   (x) => x.id === chatRoomId
+          // );
+          // console.log(chatIndex);
+          // if (chatIndex !== -1) {
+          //   const msgIndex = UserInfo.currentUser.chatRooms[
+          //     chatIndex
+          //   ].messages.findIndex((x) => x.messageId === messageId);
+          //   console.log(msgIndex);
+          //   if (msgIndex !== -1) {
+          //     // remove
+          //     UserInfo.currentUser.chatRooms[chatIndex].messages.splice(
+          //       msgIndex,
+          //       1
+          //     );
+          //     UserInfo.updateUser(true);
+          //   }
+          // }
 
-            console.log("before");
-            Callback(7);
-          }
+          UserInfo.deleteChatRoom(chatRoomId, messageId);
+
+          console.log("before");
+          Callback(7);
         }
-      )
+      })
     );
     await SignalRChatRoom.getInstance().then((value) =>
       value.setUserJoinedBrainstormSessionCallback((id, userId, count, timer) => {

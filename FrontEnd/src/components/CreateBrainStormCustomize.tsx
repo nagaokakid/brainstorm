@@ -3,6 +3,18 @@ import SignalRChatRoom from "../services/ChatRoomConnection";
 import { chatRoomObject, directMessageObject } from "../models/TypesDefine";
 import { useEffect, useState } from "react";
 
+/*
+  *  CreateBrainStormCustomize.tsx 
+  * -------------------------
+  *  This component is the create brainstorm customize window of the chat page.
+  *  It contains the input fields for the user to enter the brainstorm session name and description.
+  *  -----------------------------------------------------------------------
+  * Authors:  Mr. Yee Tsung (Jackson) Kao & Mr. Roland Fehr
+  * Date Created:  01/12/2023
+  * Last Modified: 01/12/2023
+  * Version: 1.0
+*/
+
 interface CreateBrainStormCustomizeProps {
   style: { display: string };
   chat: chatRoomObject | directMessageObject | null;
@@ -35,7 +47,7 @@ function CreateBrainStormCustomize(props: CreateBrainStormCustomizeProps) {
 
     button.disabled = true;
     if (name === "" || description === "") {
-      setErrorMsg("Please fill in all the fields");
+      setErrorMsg("Please provide name and description for this session");
       setErrorDisplay({ display: "block" });
       button.disabled = false;
     } else {
@@ -75,7 +87,7 @@ function CreateBrainStormCustomize(props: CreateBrainStormCustomizeProps) {
       onClick={() => setStyle({ display: "none" })}
     >
       <div className="BSinfoWindow" onClick={handleChildClick}>
-        <h1>Create Brain Storm</h1>
+        <h1>Create Brainstorm Session</h1>
         <input className="Input" type="text" id="BSname" placeholder="Name" />
         <input className="Input"  type="text" id="BSdescription" placeholder="Description" />
         <input className="Input"  type="text" id="BStimer" placeholder="Enter Time in Seconds" />

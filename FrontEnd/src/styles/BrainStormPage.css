@@ -1,3 +1,16 @@
+/* BrainStormPage.css
+ * -----------------------------------------------------------------
+ * This file contains the styling for the BrainStormPage component.
+ * -----------------------------------------------------------------
+ * Author: Mr. Tee Tsung (Jackson) Kao & Mr. Roland Fehr
+    * Date Created: 01/12/2023
+    * Updated: 01/12/2023
+    * Version: 0.0.1
+    * 
+ */
+
+
+
 * {
     padding: 0;
     margin: 0;
@@ -10,7 +23,7 @@
     min-width: 1200px;
     display: flex;
     flex-direction: column;
-    /* background: radial-gradient(circle, rgba(0, 0, 0, 1) 0%, rgba(255, 255, 255, 1) 5%, rgba(0, 0, 0, 1) 10%, rgba(255, 255, 255, 1) 15%, rgba(0, 0, 0, 1) 20%, rgba(255, 255, 255, 1) 25%, rgba(0, 0, 0, 1) 30%, rgba(255, 255, 255, 1) 35%, rgba(0, 0, 0, 1) 40%, rgba(255, 251, 251, 1) 45%, rgba(0, 0, 0, 1) 50%); */
+    background: black;
 }
 
 .BS_PageContainer .BS_HeaderContainer {
@@ -22,7 +35,7 @@
 }
 
 .BS_PageContainer .BS_HeaderContainer .LeaveSessionButton {
-    background: url(../assets/logout.png);
+    background: url(../assets/exitIcon.png);
     position: absolute;
     top: 5px;
     left: 5px;
@@ -30,13 +43,7 @@
     height: 64px;
     border: none;
     z-index: 1;
-}
-
-.BS_PageContainer .BS_HeaderContainer .LeaveSessionButton:hover {
-    transition: 0.5s;
-    background-color: rgba(0, 0, 0, 0.418);
-    box-shadow: 0 0 10px 10px rgba(0, 0, 0, 0.418);
-    margin: 5px;
+    color: white;
 }
 
 .BS_PageContainer .BS_BodyContainer {
@@ -145,6 +152,7 @@
     width: 100%;
     display: flex;
     justify-content: center;
+    color: white;
 }
 
 .BS_PageContainer .NoticeClass {
@@ -171,4 +179,11 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+}
+
+.exitIcon_BS{
+    height: 70px;
+}
+.exitIcon_BS:hover{
+    height: 80px;
 }

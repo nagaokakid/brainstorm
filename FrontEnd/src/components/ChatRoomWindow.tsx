@@ -6,11 +6,24 @@ import { useDataContext } from '../contexts/DataContext';
 import { chatRoomObject, directMessageObject, userInfoObject } from '../models/TypesDefine';
 import { useEffect, useState } from 'react';
 
+/*
+ *  ChatRoomWindow.tsx 
+ * -------------------------
+ *  This component is the chat room window of the chat page.
+ *  It contains the message window and the member list of the chat room.
+ *  -----------------------------------------------------------------------
+ * Authors:  Mr. Yee Tsung (Jackson) Kao & Mr. Roland Fehr
+ * Date Created:  01/12/2023
+ * Last Modified: 01/12/2023
+ * Version: 1.0
+ */ 
 interface ChatRoomWindowProps {
     chat: (chatRoomObject | directMessageObject),
     brainstormButton: () => void,
 }
 
+
+// This component is the chat room window of the chat page.
 function ChatRoomWindow(props: ChatRoomWindowProps) {
     const context = useDataContext();
     const update = context[0];

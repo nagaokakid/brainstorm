@@ -44,6 +44,19 @@ class SignalRDirect {
             console.log("----> Error: " + error);
         }
     }
+    
+    setRemoveDirectMessageCallback(callBackFunction: (toId: string, messageId: string) => void) {
+        this.connection.on("RemoveDirectMessage", (toId: string, messageId: string) => {
+            console.log("callback remove message: " + toId + ":" + messageId);
+            
+            // remove message from direct message list
+            callBackFunction(toId, messageId);
+        });
+    }
+
+    async removeDirectMessage(toId: string, messageId: string){
+        await this.connection.send("RemoveDirectMessage", UserInfo.getUserId(), toId, messageId)
+    }
 
     /**
      * Set a callback function that will be called when a direct message is received

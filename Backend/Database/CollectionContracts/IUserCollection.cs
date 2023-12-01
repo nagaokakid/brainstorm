@@ -1,7 +1,21 @@
 ﻿using Database.Data;
 
+/*
+ * IUserCollection.cs
+ * ---------------------------
+ * This interface defines the methods that will be used by the UserCollection class.
+ * -----------------------------------------------------------------------------------------------------------
+ * Author: Mr. Roland Fehr and Mr. Akira Cooper
+ * Last Updated: 30/10/2023
+ * Date Created: 30/10/2023
+ * Version 1.0
+*/
+
 namespace Database.CollectionContracts
 {
+    /// <summary>
+    ///     This interface defines the methods that will be used by the UserCollection class.
+    /// </summary>
     public interface IUserCollection
     {
         Task<User?> Get(string userId);

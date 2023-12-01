@@ -13,12 +13,23 @@ import {
   newDirectMessageObject,
 } from "../models/TypesDefine";
 import { DataContext } from "../contexts/DataContext";
-import { lazy, useState, Suspense, useEffect, useContext, SetStateAction } from "react";
+import { lazy, useState, Suspense, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { handleHover } from "./handleIconHover";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 
+/*
+  *  ChatList.tsx 
+  * -------------------------
+  *  This component is the chat list of the chat page.
+  *  It contains the list of chat rooms and direct messages that the user has created.
+  *  -----------------------------------------------------------------------
+  * Author:  Mr. Yee Tsung (Jackson) Kao
+  * Date Created:  01/12/2023
+  * Last Modified: 01/12/2023
+  * Version: 1.0
+*/
 interface ChatListProps {
   displayTab: string;
   noticeFunction: (msg: string) => void;
@@ -166,7 +177,7 @@ function ChatList(props: ChatListProps) {
               </button>
             </div>
           )}
-          {props.displayTab === "Direct Message List" && "Chats"}
+          {props.displayTab === "Direct Message List" && (<>Direct Messages</>)}
         </div>
         <div className="chats">
           {chatList.map((chat, index) => (
@@ -196,7 +207,7 @@ function ChatList(props: ChatListProps) {
                 <div className="last-message">
                   {"description" in chat
                     ? chat.description
-                    : chat.directMessages.slice(-1)[0].message}
+                    : chat.directMessages.length != 0 ? chat.directMessages.slice(-1)[0].message : ""}
                 </div>
               </div>
             </div>

@@ -9,14 +9,14 @@
 }
 
 .MessageWrapper:hover{
-    .MessageDelete{
+    .MessageImage{
         visibility: visible;
     }
 }
 
 .MessageWrapper:not(hover){
-    .MessageDelete{
-        visibility: visible;
+    .MessageImage{
+        visibility: hidden;
     }
 }
 
@@ -80,13 +80,6 @@
     width: 100%;
 }
 
-.MessageDelete{
-    cursor: pointer;
-    width: 10px;
-    height: 10px;
-    background-color: red;
-    z-index: 10;
-}
 .MessageImage{
     cursor: pointer;
     width: 10px;

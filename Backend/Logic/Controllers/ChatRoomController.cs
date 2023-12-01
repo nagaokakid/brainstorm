@@ -1,9 +1,12 @@
-﻿/*
-    Team: DarkArmy
-    Last modified: 26.10.2023
-    version: 1.0
-    Overview: This file contains the logic for the chat room creation.
-              It handles the requests and returns the responses.
+/*
+ *  ChatRoomController.cs
+ *  ---------------------
+ *  Represents a ChatRoomController object from the database.
+ *  This file contains the logic for the chat room creation.
+ *  ---------------------------------------------------------
+ *  Author: Mr. Roland Fehr
+ *  Last modified: 26.10.2023
+ *  Version: 1.0
 */
 
 using Logic.DTOs.ChatRoom;

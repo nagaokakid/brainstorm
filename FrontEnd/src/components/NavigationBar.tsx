@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import "../styles/NavigationBar.css";
 import SignalRChatRoom from "../services/ChatRoomConnection";
 import SignalRDirect from "../services/DirectMessageConnection";
@@ -6,6 +5,18 @@ import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope, faUsers, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 import { handleHover } from './handleIconHover';
+
+/* 
+ * NavigationBar.tsx
+    * -------------------------
+    * This component is the navigation bar of the chat page.
+    * It contains the navigation buttons for the user to navigate between the chat room list and direct message list.
+    * ----------------------------------------------------------------------------------------------------------------
+    * Authors:  Ravdeep Singh
+    * Date Created:  01/12/2023
+    * Last Modified: 01/12/2023
+    * Version: 1.0
+    */
 
 interface NavigationBarProps {
     selectFunction: (tab: string) => void;

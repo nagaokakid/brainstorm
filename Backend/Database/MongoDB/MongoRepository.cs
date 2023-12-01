@@ -1,9 +1,24 @@
 ﻿using MongoDB.Driver;
 
+/* 
+ * MongoRepository.cs
+ * ------------------------
+ * Represents a MongoRepository object.
+ * This file contains the methods for the MongoRepository.
+ * ---------------------------------------------------------
+ * Author: Mr. Akira Cooper
+ * Last Updated: 1/12/2023
+ * Date Created: 1/12/2023
+ * Version: 1.0
+ */
+
 
 namespace Database.MongoDB
 {
-    // Generic class to represent a collection of data type documents (User, ChatRoom, Message, etc.)
+    /// <summary>
+    ///    A Generic class to represent a collection of data type documents (User, ChatRoom, Message, etc.)
+    /// </summary>
+    /// <typeparam name="TDocument"></typeparam>
     public class MongoRepository<TDocument> where TDocument : class
     {
         private IMongoCollection<TDocument> collection;
@@ -93,10 +108,10 @@ namespace Database.MongoDB
                     filter &= filterBuilder.Eq(field.Key, field.Value);
                 }
 
-/*                for (int i = 0; i < fieldNames.Count; i++)
-                {
-                    filter = filter & filterBuilder.Eq(fieldNames[i], fieldValues[i]);
-                }*/
+                /*                for (int i = 0; i < fieldNames.Count; i++)
+                                {
+                                    filter = filter & filterBuilder.Eq(fieldNames[i], fieldValues[i]);
+                                }*/
 
                 return await collection.Find(filter).FirstOrDefaultAsync();
             }
@@ -127,10 +142,10 @@ namespace Database.MongoDB
                     filter &= filterBuilder.Eq(field.Key, field.Value);
                 }
 
-/*                for (int i = 0; i < fieldNames.Count; i++)
-                {
-                    filter &= filterBuilder.Eq(fieldNames[i], fieldValues[i]);
-                }*/
+                /*                for (int i = 0; i < fieldNames.Count; i++)
+                                {
+                                    filter &= filterBuilder.Eq(fieldNames[i], fieldValues[i]);
+                                }*/
 
                 return await collection.Find(filter).ToListAsync();
             }

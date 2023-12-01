@@ -1,14 +1,25 @@
-import '../styles/GuestJoin.css';
-import 'mdb-react-ui-kit/dist/css/mdb.min.css';
 import {
-    MDBInput,
     MDBBtn
-} from 'mdb-react-ui-kit'
+} from 'mdb-react-ui-kit';
+import 'mdb-react-ui-kit/dist/css/mdb.min.css';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { chatRoomObject, directMessageObject } from '../models/TypesDefine';
 import ApiService from '../services/ApiService';
 import UserInfo from '../services/UserInfo';
-import { chatRoomObject, directMessageObject } from '../models/TypesDefine';
-import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import '../styles/GuestJoin.css';
+
+/*
+ * GuestJoin.tsx
+ * -------------------------
+ * This component is the guest join window of the chat page.
+ * It contains the input field for the user to enter the chat room code.
+ * -----------------------------------------------------------------------
+ * Authors:  Mr. Yee Tsung (Jackson) Kao 
+ * Date Created:  01/12/2023
+ * Last Modified: 01/12/2023
+ * Version: 1.0
+*/
 
 function GuestJoin() {
     const navigate = useNavigate()
@@ -66,7 +77,7 @@ function GuestJoin() {
 
     return (
         <div className='GuestCodeContainer'>
-            <MDBInput wrapperClass='mb-4' label='Chat Room Code' id='code' type='text' onChange={handleChange} />
+            <input className='ChatRoomCode' id='ChatRoomCode' placeholder='Chat Room Code' type="text" onChange={handleChange} />
             <MDBBtn className="mb-4 w-100" id='join' onClick={() => RequestHandle()}>Join Chat Room</MDBBtn>
             <h5 className='ErrorMsg' style={{ display: errorDisplay }}>{errorMsg}</h5>
         </div>

@@ -2,6 +2,18 @@ import '../styles/CreateRoomCustomize.css'
 import ApiService from '../services/ApiService';
 import { useEffect, useState } from 'react';
 
+/*
+    *  CreateRoomCustomize.tsx 
+    * -------------------------
+    *  This component is the create room customize of the chat page.
+    *  It contains the create room form.
+    *  -----------------------------------------------------------------------
+    * Authors:  Mr. Yee Tsung (Jackson) Kao & Mr. Roland Fehr
+    * Date Created:  01/12/2023
+    * Last Modified: 01/12/2023
+    * Version: 1.0
+*/
+
 interface CreateRoomCustomizeProps {
     style: { display: string },
     render: React.Dispatch<React.SetStateAction<boolean>>,
