@@ -1,3 +1,12 @@
+/*
+ * Program.cs
+ * ----------
+ * This file contains the main method for the Logic project.
+ * ---------------------------------------------------------
+ * Author: Mr. Roland Fehr and Mr. Akira Cooper
+ * Last modified: 28.10.2021
+ * Version: 1.0
+*/
 
 using Database.CollectionContracts;
 using Database.Collections;
@@ -13,8 +22,15 @@ using System.Text;
 
 namespace Logic
 {
+    /// <summary>
+    ///   This class contains the main method for the Logic project.
+    /// </summary>
     public class Program
     {
+        /// <summary>
+        ///  This method is the main method for the Logic project.
+        /// </summary>
+        /// <param name="args"></param>
         public static void Main(string[] args)
         {
             var allowAllCors = "allow";
