@@ -1,10 +1,10 @@
-From node:21-alpine3.17 as build
+FROM node:21-alpine3.17 as build
 WORKDIR /FrontEnd
 ENV PATH /FrontEnd/node_modules/.bin:$PATH
 COPY package.json ./
 COPY package-lock.json ./
 RUN npm install
-RUN npm install react-scripts@4.0.3 -g
+RUN npm install --save @fortawesome/react-fontawesome @fortawesome/free-solid-svg-icons
 COPY . ./
 RUN npm run build
 
