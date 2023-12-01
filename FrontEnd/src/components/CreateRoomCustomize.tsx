@@ -48,11 +48,11 @@ function CreateRoomCustomize(props: CreateRoomCustomizeProps) {
         <div className='OptionContainer' style={style} onClick={() => setStyle({ display: "none" })}>
             <div className='WindowSection' onClick={handleChildClick}>
                 <div className='WindowSectionTitle'>
-                    <h3 className='WindowSectionTitleText'>Create Chat Room</h3>
+                    <h3 className='WindowSectionTitleText'>Create a Chat Room</h3>
                 </div>
                 <div className='WindowSectionContent'>
                     <div className='WindowSectionContentText'>
-                        <p className='WindowSectionContentText'>Create a chat room to chat with your friends!</p>
+                        <p className='WindowSectionContentText'>to chat with your friends!</p>
                     </div>
                     <input type="text" id='chatRoomName' placeholder='Chat Room Name' />
                     <input type="text" id='description' placeholder='Description' />

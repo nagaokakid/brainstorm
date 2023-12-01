@@ -73,21 +73,27 @@
 }
 
 .submitButton{
-    color: white;
+    olor: white;
     font-weight: bold;
     padding: 5px;
     background-color: green;
     border: none;
     margin: 5px;
     border-radius: 5px;
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
 }
 
 .cancelButton{
-    margin: 5px;
     color: white;
     font-weight: bold;
     padding: 5px;
     background-color: orange;
     border: none;
+    margin: 5px;
     border-radius: 5px;
+    position: absolute;
+    bottom: 20px;
+    right: 80px;
 }
