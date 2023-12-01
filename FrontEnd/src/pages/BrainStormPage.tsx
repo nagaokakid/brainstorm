@@ -193,6 +193,14 @@ function BrainStormPage() {
     }
   }
 
+  function handleWarningClick() {
+    if (input && !isVoting) {
+      handleLeaveClick();
+    } else {
+      setLeaveContainer("flex");
+    }
+  }
+
   useEffect(() => {
     if (context === undefined) {
       throw new Error("useDataContext must be used within a DataContext");
@@ -252,7 +260,7 @@ function BrainStormPage() {
       <div className="BS_HeaderContainer">
         <button
           className="LeaveSessionButton"
-          onClick={() => setLeaveContainer("flex")}
+          onClick={handleWarningClick}
         ></button>
         <BS_HeaderContent
           roomTitle={sessionTitle}
@@ -304,7 +312,6 @@ function BrainStormPage() {
         </div>
       </div>
       <LeaveBSPrompt
-        content={"Leave the Session?"}
         display={leaveContainer}
         yesFunction={handleLeaveClick}
         displayFunction={callLeaveContainer}

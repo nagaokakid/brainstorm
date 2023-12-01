@@ -30,18 +30,20 @@ function MsgBox(props: MsgBoxProps) {
   }
 
   function handleRemoveMessage() {
-    if(props.chatType === "ChatRoom List"){
-      SignalRChatRoom.getInstance().then((value) => {
-        console.log("handle" + props.chatId + props.msgId);
-        
-        value.removeChatRoomMessage(props.chatId, props.msgId);
-      });
-    } else {
-      SignalRDirect.getInstance().then((value) => {
-        console.log("handle" + props.chatId + props.msgId);
-        
-        value.removeDirectMessage(props.chatId, props.msgId);
-      });
+    if (props.user[0] === UserInfo.getUserId()) {
+      if (props.chatType === "ChatRoom List") {
+        SignalRChatRoom.getInstance().then((value) => {
+          console.log("handle" + props.chatId + props.msgId);
+
+          value.removeChatRoomMessage(props.chatId, props.msgId);
+        });
+      } else {
+        SignalRDirect.getInstance().then((value) => {
+          console.log("handle" + props.chatId + props.msgId);
+
+          value.removeDirectMessage(props.chatId, props.msgId);
+        });
+      }
     }
   }
 
@@ -50,7 +52,6 @@ function MsgBox(props: MsgBoxProps) {
       <div className="MessageWrapper">
         <div className="MessageHeader">
           <div className="MessageUsername">{props.user[1]}</div>
-
           <img
             className="MessageImage"
             src="src\assets\delete.png"
