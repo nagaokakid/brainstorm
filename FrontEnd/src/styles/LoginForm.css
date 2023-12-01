@@ -78,5 +78,6 @@
 }
 
 input {
+    padding-left: 5px;
     border-radius: 5px;
 }
