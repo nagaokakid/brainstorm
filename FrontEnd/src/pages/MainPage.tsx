@@ -6,6 +6,7 @@ import NavigationBar from "../components/NavigationBar";
 import { DisplayTypes, NoticeMessages, TabTypes } from "../models/EnumObjects";
 import UserInfo from "../services/UserInfo";
 import "../styles/MainPage.css";
+import Profile from "../components/profile/Profile";
 
 /*
   *  MainPage.tsx 
@@ -75,6 +76,7 @@ function MainPage() {
             <div className="NoticeClass" style={{ display: display }}>
                 <div><h1>{noticeMsg}</h1></div>
             </div>
+            <Profile display={false}/>
         </div>
     );
 }
