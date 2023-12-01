@@ -1,6 +1,6 @@
 import "../styles/LoginPage.css"
 import LoginForm from "../components/LoginForm"
-import GuestJoin from "../components/GuestJoin"
+import GuestForm from "../components/GuestForm"
 
 function LoginPage() {
     // Clear the session and local storage
@@ -23,7 +23,7 @@ function LoginPage() {
                         <div className="VerticalLine"></div>
                         <div className="GuestContainer">
                             <div className="GuestFormContainer">
-                                <GuestJoin />
+                                <GuestForm />
                             </div>
                         </div>
                     </div>

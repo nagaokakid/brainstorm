@@ -15,7 +15,7 @@ import { loginObject } from '../models/TypesDefine';
 import ApiService from '../services/ApiService';
 import '../styles/LoginForm.css';
 
-function LogRes() {
+function LoginForm() {
     const navigate = useNavigate();
     const [justifyActive, setJustifyActive] = useState(TabTypes.LoginTab); // Store the state of the tabs
     const [input, setInput] = useState({} as loginObject); // This handle the state of the inputs; Username, Password, Re-Password, First Name, Last Name
@@ -167,4 +167,4 @@ function LogRes() {
     )
 }
 
-export default LogRes
+export default LoginForm
