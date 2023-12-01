@@ -4,7 +4,7 @@
     flex-direction: row;
     height: 100%;
     width: 100%;
-    background-color: #f5f5f5;
+    background-color: white;
 }
 
 .WindowContainer .MsgContainer {
@@ -22,29 +22,54 @@
     align-items: center;
     padding-left: 5px;
     padding-right: 5px;
-    color: black;
-    background-color: rgb(167, 165, 165);
+    color: white;
+    background-color: #0c356a;
 }
 
 .WindowContainer .MsgContainer .ChatHeader h1 {
+    margin: 5px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    height: 100%;
 }
 
+.WindowContainer .MsgContainer .ChatHeader a {
+    border-radius: 5px;
+    padding: 5px;
+    width: auto;
+    height: auto; 
+    color: black;
+    font-weight: bold;
+    text-decoration: none;
+    background: #FFC436;
+    cursor: pointer;
+}
+
+.WindowContainer .MsgContainer .ChatHeader a:hover{
+    border-radius: 5px;
+    padding: 5px;
+    width: auto;
+    height: auto;
+    color: black;
+    font-weight: bold;
+    text-decoration: none;
+    background: #e6ab22;
+    cursor: pointer;
+}
 .WindowContainer .MsgContainer .MsgSection {
     display: flex;
     flex-direction: column;
     height: 100%;
     width: 100%;
-    background-color: #f5f5f5;
+    background-color: white;
     overflow-y: auto;
 }
 
 .WindowContainer .MemberListContainer {
     display: flex;
     flex-direction: column;
-    width: 15%;
+    width: 20%;
     min-width: 200px;
-    background-color: #721f1f;
+    border-left: 1px solid white;
 }

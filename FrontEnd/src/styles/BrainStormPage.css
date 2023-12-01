@@ -1,0 +1,161 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+.BS_PageContainer {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    min-width: 1200px;
+    display: flex;
+    flex-direction: column;
+    /* background: radial-gradient(circle, rgba(0, 0, 0, 1) 0%, rgba(255, 255, 255, 1) 5%, rgba(0, 0, 0, 1) 10%, rgba(255, 255, 255, 1) 15%, rgba(0, 0, 0, 1) 20%, rgba(255, 255, 255, 1) 25%, rgba(0, 0, 0, 1) 30%, rgba(255, 255, 255, 1) 35%, rgba(0, 0, 0, 1) 40%, rgba(255, 251, 251, 1) 45%, rgba(0, 0, 0, 1) 50%); */
+}
+
+.BS_PageContainer .BS_HeaderContainer {
+    position: relative;
+    width: 100%;
+    height: 80px;
+    display: flex;
+    flex-direction: row;
+}
+
+.BS_PageContainer .BS_HeaderContainer .LeaveSessionButton {
+    background: url(../assets/logout.png);
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    width: 64px;
+    height: 64px;
+    border: none;
+    z-index: 1;
+}
+
+.BS_PageContainer .BS_HeaderContainer .LeaveSessionButton:hover {
+    transition: 0.5s;
+    background-color: rgba(0, 0, 0, 0.418);
+    box-shadow: 0 0 10px 10px rgba(0, 0, 0, 0.418);
+    margin: 5px;
+}
+
+.BS_PageContainer .BS_BodyContainer {
+    position: relative;
+    width: 100%;
+    height: 90%;
+    display: flex;
+    flex-direction: row;
+}
+
+.BS_PageContainer .BS_BodyContainer .BS_ContentContainer {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.BS_PageContainer .BS_BodyContainer .BS_ButtonContainer {
+    position: relative;
+    width: 300px;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: start;
+    padding-left: 5px;
+}
+.BS_BottomRow{
+    padding: 5px;
+    margin: 5px;
+    display: flex;
+    flex-direction: row;
+}
+
+.BS_PageContainer .BS_BodyContainer  .BS_ButtonContainer  {
+    position: relative;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.StartSessionButton{
+    background-color: green;
+    min-width: 50px;
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    padding: 5px;
+    margin-right: 5px;
+    display: flex;
+    justify-content: center;
+}
+.EndSessionButton{
+    height: 100%;
+    background-color: #FFC436;
+    width: 100%;
+    padding: 5px;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    padding: 5px;
+    margin-right: 5px;
+    display: flex;
+    justify-content: center;
+}
+.EndVoteButton{
+    height: 100%;
+    background-color: #FFC436;
+    border: none;
+    padding: 5px;
+    border-radius: 5px;
+    font-weight: bold;
+    padding: 5px;
+    margin-right: 5px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+.ExitButton{
+    height: 100%;
+    background-color: red;
+    padding: 5px;
+    border-radius: 5px;
+    font-weight: bold;
+    border: none;
+    padding: 5px;
+    margin-right: 5px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.BS_PageContainer .NoticeClass {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    min-height: 750px;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 100;
+}
+
+.BS_PageContainer .NoticeClass div {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px;
+    height: 300px;
+    background-color: white;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}

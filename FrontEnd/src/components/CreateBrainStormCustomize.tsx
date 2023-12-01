@@ -1,39 +1,103 @@
-import { useNavigate } from 'react-router-dom';
-import '../styles/CreateBrainStormCustomize.css';
+import "../styles/CreateBrainStormCustomize.css";
+import SignalRChatRoom from "../services/ChatRoomConnection";
+import { chatRoomObject, directMessageObject } from "../models/TypesDefine";
+import { useEffect, useState } from "react";
 
 interface CreateBrainStormCustomizeProps {
-    style: string;
+  style: { display: string };
+  chat: chatRoomObject | directMessageObject | null;
 }
 
 function CreateBrainStormCustomize(props: CreateBrainStormCustomizeProps) {
+  const [style, setStyle] = useState(props.style); // Set the style of the component
+  const [errorMsg, setErrorMsg] = useState("" as string); // Set the error message
+  const [errorDisplay, setErrorDisplay] = useState({ display: "none" }); // Set the error display
 
-    const Navigate = useNavigate();
+  /**
+   * Prevent the child from being clicked
+   * @param e
+   */
+  function handleChildClick(e: React.MouseEvent<HTMLDivElement>) {
+    e.stopPropagation();
+  }
 
-    function handleCreateClick() {
-        const name = (document.getElementById('name') as HTMLInputElement).value;
-        const description = (document.getElementById('description') as HTMLInputElement).value;
+  /**
+   * Handle the create brainstorm button
+   */
+  async function handleCreateClick() {
+    setErrorDisplay({ display: "none" });
+    const button = document.getElementById("createBs") as HTMLButtonElement;
+    const name = (document.getElementById("BSname") as HTMLInputElement).value;
+    const description = (
+      document.getElementById("BSdescription") as HTMLInputElement
+    ).value;
+    const timer = (document.getElementById('BStimer') as HTMLInputElement).value;
 
-        if (name === "" || description === "") {
-            alert("Please fill in all the fields");
-            return;
-        } else {
-            (document.getElementById('name') as HTMLInputElement).value = "";
-            (document.getElementById('description') as HTMLInputElement).value = "";
+    button.disabled = true;
+    if (name === "" || description === "") {
+      setErrorMsg("Please fill in all the fields");
+      setErrorDisplay({ display: "block" });
+      button.disabled = false;
+    } else {
+      (document.getElementById("BSname") as HTMLInputElement).value = "";
+      (document.getElementById("BSdescription") as HTMLInputElement).value = "";
+      (document.getElementById("BStimer") as HTMLInputElement).value = "";
 
-            // Navigate("/BrainStorm")
-        }
+      await SignalRChatRoom.getInstance().then((value) => {
+        value
+          .createBrainstormSession(
+            name,
+            description,
+            props.chat ? ("id" in props.chat ? props.chat.id : "") : "",
+            timer
+          )
+          .then((value) => {
+            if (value) {
+              setStyle({ display: "none" });
+            } else {
+              setErrorMsg("Failed to create brainstorm");
+              setErrorDisplay({ display: "block" });
+            }
+          });
+      });
+      button.disabled = false;
     }
+  }
 
-    return (
-        <div className='CreateBrainStormCustomizeWindow' style={{ display: props.style }}>
-            <div className='BSinfoWindow'>
-                <h1>Create Brain Storm</h1>
-                <input type="text" id='name' placeholder='Name'/>
-                <input type="text" id="description" placeholder='Description'/>
-                <button onClick={handleCreateClick}>Create</button>
-            </div>
+  useEffect(() => {
+    setStyle(props.style);
+  }, [props.style]);
+
+  return (
+    <div
+      className="CreateBrainStormCustomizeWindow"
+      style={style}
+      onClick={() => setStyle({ display: "none" })}
+    >
+      <div className="BSinfoWindow" onClick={handleChildClick}>
+        <h1>Create Brain Storm</h1>
+        <input className="Input" type="text" id="BSname" placeholder="Name" />
+        <input className="Input"  type="text" id="BSdescription" placeholder="Description" />
+        <input className="Input"  type="text" id="BStimer" placeholder="Enter Time in Seconds" />
+        <div>
+          <button className="CancelBtn" onClick={() => {
+             (document.getElementById("BSname") as HTMLInputElement).value = "";
+             (document.getElementById("BSdescription") as HTMLInputElement).value = "";
+             (document.getElementById("BStimer") as HTMLInputElement).value = "";
+            setStyle({ display: "none" })}
+          }>
+            Cancel
+          </button>
+          <button className="CreateBtn" id="createBs" onClick={handleCreateClick}>
+            Create
+          </button>
         </div>
-    );
+        <h5 className="ErrorMsg" style={errorDisplay}>
+          {errorMsg}
+        </h5>
+      </div>
+    </div>
+  );
 }
 
 export default CreateBrainStormCustomize;

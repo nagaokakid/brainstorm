@@ -1,43 +1,48 @@
-import ApiService from '../services/ApiService';
 import '../styles/CreateRoomCustomize.css'
+import ApiService from '../services/ApiService';
+import { useEffect, useState } from 'react';
 
 interface CreateRoomCustomizeProps {
-    callBackFunction: (e: string) => void;
-    style: string;
+    style: { display: string },
+    render: React.Dispatch<React.SetStateAction<boolean>>,
 }
 
-/**
- * 
- * @param {*} callBackFunction The function to be called when an option is selected
- * @param {*} style The style of the component
- * @returns 
- */
 function CreateRoomCustomize(props: CreateRoomCustomizeProps) {
-    // Set the component to be hidden and pass back the selected option
-    // function handleOptionClick(e: string) {
-    //     props.callBackFunction(e)
-    // }
+    const [style, setStyle] = useState({} as { display: string }); // Set the style of the component
+    const [errorMsg, setErrorMsg] = useState("" as string); // Set the error message
+    const [errorDisplay, setErrorDisplay] = useState({ display: "none" }); // Set the error display
 
-    // Prevent the child from being clicked
+    /**
+     * Prevent the child from being clicked
+     * @param e 
+     */
     function handleChildClick(e: React.MouseEvent<HTMLDivElement>) {
         e.stopPropagation();
     }
 
+    /**
+     * Handle the create room button
+     */
     async function handleCreateRoomButton() {
+        setErrorDisplay({ display: "none" });
         const chatRoomName = (document.getElementById('chatRoomName') as HTMLInputElement).value;
         const description = (document.getElementById('description') as HTMLInputElement).value;
 
         if (chatRoomName) {
-            const apiService = ApiService;
-            await apiService.CreateChatRoom(chatRoomName, description);
-            handleOptionClick("none");
-            (document.getElementById('chatRoomName') as HTMLInputElement).value='';
-            (document.getElementById('description') as HTMLInputElement).value='';
-        }
-        else {
-            alert("Please enter a chat room name")
+            await ApiService.CreateChatRoom(chatRoomName, description);
+            (document.getElementById('chatRoomName') as HTMLInputElement).value = '';
+            (document.getElementById('description') as HTMLInputElement).value = '';
+            setStyle({ display: "none" });
+            props.render(prev => !prev);
+        } else {
+            setErrorMsg("Please enter a chat room name");
+            setErrorDisplay({ display: "block" });
         }
     }
+
+    useEffect(() => {
+        setStyle(props.style);
+    }, [props.style]);
 
     return (
         <div className='OptionContainer' style={{ display: props.style }} onClick={() => handleOptionClick("none")}>
@@ -51,8 +56,17 @@ function CreateRoomCustomize(props: CreateRoomCustomizeProps) {
                     </div>
                     <input type="text" id='chatRoomName' placeholder='Chat Room Name' />
                     <input type="text" id='description' placeholder='Description' />
-                    <button className='submitButton' onClick={() => handleCreateRoomButton()}>Create</button>
+                    <div>
+
+                        <button className='cancelButton' onClick={() => {
+                            (document.getElementById("chatRoomName") as HTMLInputElement).value = "";
+                            (document.getElementById("description") as HTMLInputElement).value = "";
+                            setStyle({ display: "none" })}
+                        }>Cancel</button>
+                        <button className='submitButton' onClick={() => handleCreateRoomButton()}>Create</button>
+                    </div>
                 </div>
+                <h5 className='ErrorMsg' style={errorDisplay}>{errorMsg}</h5>
             </div>
         </div>
     );

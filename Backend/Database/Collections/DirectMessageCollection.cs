@@ -30,7 +30,7 @@ namespace Database.Collections
             }
             else
             {
-                await directMessageHistoryRepository.AddToArrayInDocument(find.Id, "DirectMessage", message); // *add message ID here instead of whole obj
+                await directMessageHistoryRepository.AddToArrayInDocument(find.Id, "DirectMessages", message); // *add message ID here instead of whole obj
                 return null;
             }
             //var result = await Get(userId1, userId2);
@@ -123,6 +123,11 @@ namespace Database.Collections
             var result2 = await directMessageHistoryRepository.GetDocumentByFieldValues(fieldDict2);*/
 
             /*return result1 ?? result2;*/
+        }
+
+        public async Task RemoveDirectMessage(string fromUserId, string toUserId, string messageId)
+        {
+            
         }
     }
 }

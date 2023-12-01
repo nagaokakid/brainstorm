@@ -4,6 +4,7 @@ namespace Logic.DTOs.Messages
 {
     public class MessageInfo
     {
+        public string MessageId { get; set; }
         public FriendlyUserInfo FromUserInfo { get; set; }
         public FriendlyUserInfo? ToUserInfo { get; set; }
         public string? ChatRoomId { get; set; }

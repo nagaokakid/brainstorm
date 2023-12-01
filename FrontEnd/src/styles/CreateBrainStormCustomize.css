@@ -8,6 +8,7 @@
     justify-content: center;
     background-color: rgba(128, 128, 128, 0.555);
     height: 100%;
+    z-index: 50;
 }
 
 .CreateBrainStormCustomizeWindow .BSinfoWindow {
@@ -19,4 +20,36 @@
     width: 50%;
     height: 50%;
     border-radius: 10px;
+}
+
+.CreateBrainStormCustomizeWindow .BSinfoWindow .ErrorMsg {
+    color: red;
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.CreateBtn{
+    margin: 5px;
+    background-color: green;
+    border: none;
+    padding: 5px;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+}
+
+.CancelBtn{
+    color: white;
+    font-weight: bold;
+    margin: 5px;
+    background-color: orange;
+    border: none;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.Input{
+    margin: 5px;
+    padding: 5px;
+    border-radius: 5px;
 }

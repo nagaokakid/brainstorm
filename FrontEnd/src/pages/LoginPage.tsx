@@ -2,11 +2,9 @@ import "../styles/LoginPage.css"
 import LogRes from "../components/LogRes"
 import GuestJoin from "../components/GuestJoin"
 
-/**
- * 
- * @returns The login page of the application
- */
 function LoginPage() {
+    sessionStorage.clear();
+    localStorage.clear();
     return (
         <>
             <div className="PageContainer">

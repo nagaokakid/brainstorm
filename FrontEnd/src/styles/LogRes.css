@@ -1,25 +1,54 @@
-.SignInTitle, .RegisterTitle
-{
+.SignInTitle,
+.RegisterTitle {
     margin-bottom: 20px;
     display: flex;
     justify-content: center;
     font-size: 30px !important;
+    color: white;
 }
 
-.nav-pills .nav-link
-{
-    border-radius: 0px 10px 0px 10px !important; 
+.nav-pills .nav-link {
+    border-radius: 0px 10px 0px 10px !important;
     font-size: 20px !important;
 }
 
-.form-outline
-{
-    background-color: rgba(255, 255, 255, 0.541);
+.form-outline {
+    background-color: white;
     border-radius: 5px;
 }
 
-.ripple
-{
-    border-radius: 0px 10px 0px 10px !important; 
+.ripple {
+    border-radius: 0px 10px 0px 10px !important;
     font-size: 16px !important;
+}
+
+.btn-primary {
+    background-color: #FFC436 !important;
+    color: black !important;
+    font-weight: bold !important;
+}
+
+.form-outline .form-control~.form-label{
+    height: 100px;
+}
+
+.form-outline .form-control~.form-label {
+    color: #000000 !important;
+    /* background-color: rgba(255, 255, 255, 0.63) !important; */
+    width: auto;
+    border-radius: 5px;
+}
+
+.ErrorMsg {
+    color: red;
+    font-size: 14px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    display: flex;
+    justify-content: center;
+}
+
+.SignInButton{
+    background-color: green;
+    color: aqua;
 }

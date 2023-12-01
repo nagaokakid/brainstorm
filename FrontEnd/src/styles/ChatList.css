@@ -1,33 +1,47 @@
 /* chatList.css */
-.ChatListContainer
-{
+.ChatListContainer {
   position: relative;
-  width: 90%;
   height: auto;
   display: flex;
   flex-direction: row;
+  background-color: #0c356a;
+  border-radius: 5px;
 }
 
-.ChatListContainer .chat-list
-{
+.ChatListContainer .chat-list {
   position: relative;
   width: 15%;
+  min-width: 170px;
   display: flex;
   flex-direction: column;
-  background-color: #fff;
   overflow-y: auto;
   overflow-x: hidden;
+  padding: 10px;
+  border-right: 1px solid white;
 }
 
-.ChatListContainer .chat-list h3
-{
+.ChatListContainer .chat-list .ChatListHeader {
+  width: 100%;
+  color: white;
+  position: relative;
+  height: auto;
+  min-height: 50px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 5px;
+  font-weight: bold;
+  font-size: large;
+  border-bottom: 1px solid white;
+}
+
+.ChatListContainer .chat-list h3 {
   margin: 0%;
   padding-top: 5%;
   padding-left: 5%;
 }
 
-.ChatListContainer .chat-list .search-bar
-{
+.ChatListContainer .chat-list .search-bar {
   position: relative;
   display: flex;
   align-items: center;
@@ -46,19 +60,16 @@
   color: #000000;
 }
 
-.ChatListContainer .chat-list .chats
-{
+.ChatListContainer .chat-list .chats {
   position: relative;
   width: 100%;
-  height: auto;
+  height: 100%;
   display: flex;
   flex-direction: column;
-  background-color: #fff;
   overflow-y: auto;
 }
 
-.ChatListContainer .chat-list .chats .chat-item
-{
+.ChatListContainer .chat-list .chats .chat-item {
   position: relative;
   width: 100%;
   height: auto;
@@ -66,65 +77,74 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  padding-left: 5%;
-  padding-right: 5%;
+  padding: 10px;
   cursor: pointer;
+  background-color: #0c356a;
+  color: white;
+  margin-top: 5px;
 }
 
-.ChatListContainer .chat-list .chats .chat-item:hover
-{
-  background-color: #7e7e7e81;
-  transition: 0.5s;
+.ChatListContainer .chat-list .chats .chat-item:hover {
+  background-color: rgb(29, 25, 75);
+  color: white;
+  border-radius: 5%;
 }
 
-.ChatListContainer .chat-list .chats .chat-item:not(:hover)
-{
-  background-color: white;
-  transition: 0.5s;
+.ChatListContainer .chat-list .chats .chat-item.active {
+  background-color: rgb(29, 25, 75);
+  border-left: 1px solid #FFC436;
+  border-radius: 5px;
 }
 
-.ChatListContainer .chat-list .chats .chat-item .chat-details
-{
+.ChatListContainer .chat-list .chats .chat-item .chat-details {
   width: 100%;
+  margin-left: 10px;
 }
 
-.ChatListContainer .chat-list .chats .chat-item .chat-details .chat-title, .last-message
-{
-  white-space: nowrap; 
+.ChatListContainer .chat-list .chats .chat-item .chat-details .chat-title {
+  font-weight: 500;
+  font-size: medium;
+  white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis; 
+  text-overflow: ellipsis;
 }
 
-.ChatListContainer .chat-list .CreateChatRoomButton
-{
-  position: relative;
-  flex: 1 1 auto;
+.ChatListContainer .chat-list .chats .chat-item .chat-details .last-message {
+  font-size: smaller;
+  color: darkgray;
+  font-style: italic;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.ChatListContainer .chat-list .CreateChatRoomButton button
-{
-  border: none;
-  width: 100%;
-  height: 100%;
-  min-height: 100px;
-  background-color: transparent;
-}
-
-.ChatListContainer .chat-list .CreateChatRoomButton button:hover
-{
-  background-color: #7e7e7e81;
-  transition: 1s;
-}
-
-.ChatListContainer .chat-list .CreateChatRoomButton button:not(:hover)
-{
-  background-color: transparent;
-  transition: 1s;
-}
-
-.ChatWindowContainer
-{
+.ChatWindowContainer {
   position: relative;
   width: 85%;
   display: flex;
+}
+
+.ChatRoomHeader {
+  display: flex;
+  flex-direction: row;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: large;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.CreateChatRoomIcon {
+  cursor: pointer;
+  color: white;
+  border: none;
+  background-color: transparent;
+  padding: 2px;
+  font-size: 18px;
+}
+
+.DefaultLayout {
+  justify-items: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
 }

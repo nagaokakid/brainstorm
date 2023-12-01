@@ -2,79 +2,65 @@
 import "../styles/MainPage.css";
 import HeaderNavBar from "../components/HeaderNavBar";
 import NavigationBar from "../components/NavigationBar";
-import ChatList from "../components/ChatList";
-import ApiService from "../services/ApiService";
+import TabContent from "../components/ChatList";
 import UserInfo from "../services/UserInfo";
-import { useEffect, useState, useContext } from "react";
-import { DataContext } from "../contexts/DataContext";
-import SignalRChatRoom from "../services/ChatRoomConnection";
+import { useEffect, useState } from "react";
 
-/**
- * 
- * @returns The main page of the application
- */
 function MainPage() {
-    const context = useContext(DataContext);
+    const [currentTab, setCurrentTab] = useState("ChatRoom List"); // Set the default chat type to be "CharRoom List"
+    const [display, setDisplay] = useState({ display: "none" }); // Set the default display to be none
+    const [noticeMsg, setNoticeMsg] = useState("" as string); // Set the default notice message to be empty
 
     // If the user is not logged in, redirect to the login page
-    if (localStorage.getItem("token") === null || localStorage.getItem("token") !== UserInfo.getToken()) {
-        // window.location.href = "/";
+    if (sessionStorage.getItem("token") === null || sessionStorage.getItem("token") !== UserInfo.getToken()) {
+        //window.location.href = "/";
     }
 
-    // Set the default chat type to be "Direct Message List"
-    const [chatType, setChatType] = useState("ChatRoom List");
+    /**
+     * Show the notice with the given message
+     * @param msg The message to be shown in the notice
+     */
+    function showNotice(msg: string) {
+        setNoticeMsg(msg);
+        setDisplay({ display: "flex" });
 
-    // Handle the callback from the NavigationBar component
-    function handleCallBack(childData: string) {
-        if (UserInfo.loginRegisterResponse.userInfo.isGuest && childData === "Direct Message List") {
-            alert("Guest cannot use Direct Message Features");
+        setTimeout(() => {
+            setDisplay({ display: "none" });
+        }, 2000);
+    }
+
+    /**
+     * Switch the chat type based on the tab selected
+     * @param tab The tab selected 
+     * @returns 
+     */
+    function handleSelectedTab(tab: string) {
+        if (tab === "Direct Message List" && UserInfo.getUserInfo().isGuest) { // If the user is a guest, they cannot use the direct message feature
+            showNotice("Guest cannot use this feature");
             return;
         } else {
-            setChatType(childData);
+            setCurrentTab(tab); // Set the chat type to be the tab selected
         }
     }
 
     useEffect(() => {
-        const hasEffectRunBefore = sessionStorage.getItem('hasEffectRunBefore');
-        if (!hasEffectRunBefore) {
-            console.log("----> Build callback");
-            const render = (type: number) => {
-                console.log("---->callback", type);
-                if (context === undefined) {
-                    throw new Error('useDataContext must be used within a DataContext');
-                }
-                else if (type === 1 || type === 2 || type === 4 || type === 3) {
-                    const updateData = context[1];
-                    updateData(true)
-                }
-            };
-
-            const apiService = ApiService;
-            apiService.buildCallBack(render);
-
-            // Set the flag in local storage to indicate that the effect has run
-            sessionStorage.setItem('hasEffectRunBefore', 'true');
-        }
-
-        if (UserInfo.loginRegisterResponse.userInfo.isGuest && sessionStorage.getItem('isGuest') === null) {
-            SignalRChatRoom.getInstance().then((value) => {
-                value.joinChatRoom(UserInfo.loginRegisterResponse.userInfo.firstRoom, "First");
-                sessionStorage.setItem('isGuest', 'true');
-            }).catch((error) => {
-                console.log(error);
-            });
-        }
-
+        // Get user info from session storage
+        UserInfo.updateUser();
+        UserInfo.updateLocalIdea();
+        UserInfo.updateIdeaList();
     }, []);
 
     return (
         <div className="App">
             <div className="headerNavContainer">
-                <HeaderNavBar />
+                <HeaderNavBar noticeFunction={showNotice} />
             </div>
             <div className="main-page-container">
-                <NavigationBar callBackFunction={handleCallBack} />
-                <ChatList chatType={chatType} />
+                <NavigationBar selectFunction={handleSelectedTab} activeTab={currentTab}/>
+                <TabContent displayTab={currentTab} noticeFunction={showNotice} />
+            </div>
+            <div className="NoticeClass" style={display}>
+                <div><h1>{noticeMsg}</h1></div>
             </div>
         </div>
     );

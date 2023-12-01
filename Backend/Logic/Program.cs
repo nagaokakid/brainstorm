@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using MongoDB.Bson.Serialization.Serializers;
+using MongoDB.Bson.Serialization;
 using System.Text;
 
 namespace Logic
@@ -27,17 +29,21 @@ namespace Logic
                 });
             });
 
+            // allow data models in C# to be serializable for MongoDB BSON documents
+            var objectSerializer = new ObjectSerializer(type => ObjectSerializer.DefaultAllowedTypes(type) || type.FullName.StartsWith("Database.Data"));
+            BsonSerializer.RegisterSerializer(objectSerializer);
+
             // Add services to the container.
             builder.Services.AddScoped<AuthService>();
             builder.Services.AddScoped<UserService>();
-            builder.Services.AddSingleton<OnlineUserService>();
+            builder.Services.AddSingleton<IOnlineUserService, OnlineUserService>();
             builder.Services.AddScoped<DirectMessageService>();
-            builder.Services.AddScoped<ChatRoomService>();
+            builder.Services.AddScoped<IChatRoomService, ChatRoomService>();
             builder.Services.AddSingleton<IUserCollection, UserCollection>();
             builder.Services.AddSingleton<IDirectMessageCollection, DirectMessageCollection>();
             builder.Services.AddSingleton<IChatRoomCollection, ChatRoomCollection>();
             builder.Services.AddSingleton<IBrainstormResultCollection, BrainstormResultCollection>();
-            builder.Services.AddSingleton<BrainstormService>();
+            builder.Services.AddSingleton<IBrainstormService, BrainstormService>();
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

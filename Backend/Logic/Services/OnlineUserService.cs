@@ -5,7 +5,7 @@ namespace Logic.Services
     public interface IOnlineUserService
     {
         Task Add(string userId, string connectionId);
-        string? Get(string userId);
+        string? GetConnectionId(string userId);
         void Remove(string connectionId);
     }
 
@@ -27,15 +27,20 @@ namespace Logic.Services
 
         public void Remove(string connectionId)
         {
-            var result = onlineUsers.Where(x => x.Value == connectionId).FirstOrDefault();
-
-            onlineUsers.Remove(result.Key, out string? removedUser);
+            if(connectionId != null)
+            {
+                var result = onlineUsers.Where(x => x.Value == connectionId)?.FirstOrDefault();
+                if(result != null && result.HasValue)
+                {
+                    onlineUsers.Remove(result.Value.Key, out string? removedUser);
+                }
+            }
         }
 
-        public string? Get(string userId)
+        public string? GetConnectionId(string userId)
         {
-            onlineUsers.TryGetValue(userId, out var user);
-            return user;
+            onlineUsers.TryGetValue(userId, out var connectionId);
+            return connectionId;
         }
     }
 }
