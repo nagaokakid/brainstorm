@@ -4,6 +4,16 @@ import SignalRDirect from "../services/DirectMessageConnection";
 import { userInfoObject } from "../models/TypesDefine";
 import UserProfile from "./UserProfile";
 
+/*
+ * MemberList.tsx
+ * -------------------------
+ * This component is the member list of the chat room.
+ * -----------------------------------------------------------------------
+ * Authors:  Ravdeep Singh
+ * Date Created:  01/12/2023
+ * Last Modified: 01/12/2023
+ * Version: 1.0
+ */
 interface MemberListProps {
     memberList: userInfoObject[] | null;
 }

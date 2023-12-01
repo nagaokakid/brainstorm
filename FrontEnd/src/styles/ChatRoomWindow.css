@@ -1,3 +1,14 @@
+/*
+ * ChatRoomWindow.css
+    * ---------------------
+    * CSS file for the ChatRoomWindow component page.
+    * -----------------------------------------------
+    * Author: Mr. Tee Tsung (Jackson) Kao, Mr. Roland Fehr & Ravdeep Singh
+    * Date Created: 01/12/2023  
+    * Updated: 01/12/2023
+    * Version: 0.0.1
+*/
+
 .WindowContainer {
     position: relative;
     display: flex;

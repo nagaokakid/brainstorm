@@ -1,6 +1,16 @@
 import Idea from "../../models/Idea";
 import VoteResult from "./VoteResult";
 
+/*
+ * VoteResults.tsx 
+ * -------------------------
+ * This component is the idea list of the voting page.
+ * -----------------------------------------------------------------------
+ * Author:  Mr. Roland Fehr
+ * Date Created:  01/12/2023
+ * Last Modified: 01/12/2023
+ * Version: 1.0
+*/ 
 interface prop {
   ideas: Idea[];
 }

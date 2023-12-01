@@ -7,6 +7,17 @@ import { chatRoomMessageObject } from "../models/TypesDefine";
 import { useDataContext } from "../contexts/DataContext";
 import { useEffect, useState } from "react";
 
+/* 
+    *  MessageWindow.tsx 
+    * -------------------------
+    *  This component is the message window of the chat room.
+    *  It contains the messages of the chat room.
+    *  -----------------------------------------------------------------------
+    * Authors:  Mr. Yee Tsung (Jackson) Kao & Mr. Roland Fehr
+    * Date Created:  01/12/2023
+    * Last Modified: 01/12/2023
+    * Version: 1.0
+    */ 
 interface MessageWindowProps {
     chatId: string;
     chatType: string;

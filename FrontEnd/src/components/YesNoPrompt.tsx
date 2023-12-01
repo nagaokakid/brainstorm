@@ -1,5 +1,15 @@
 import '../styles/YesNoPrompt.css';
 
+/*
+ * YesNoPrompt.tsx 
+ * -------------------------
+ * This component is the yes no prompt.
+ * -----------------------------------------------------------------------
+ * Authors:  Mr. Roland Fehr& Mr. Yee Tsung (Jackson) Kao
+ * Date Created:  01/12/2023
+ * Last Modified: 01/12/2023
+ * Version: 1.0
+*/
 interface YesNoPromptProps {
     display: string,
     yesFunction: () => void,

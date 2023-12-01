@@ -1,5 +1,15 @@
 import '../styles/InputSendPrompt.css';
 
+/*
+    * InputSendPrompt.tsx 
+    * -------------------------
+    * This component is the input and send button of the brain storm page.
+    * -----------------------------------------------------------------------
+    * Author:  Mr. Yee Tsung (Jackson) Kao 
+    * Date Created:  01/12/2023
+    * Last Modified: 01/12/2023
+    * Version: 1.0
+*/
 interface InputSendPromptProps {
     sendFunction: (e: string) => void,
     input: boolean,
