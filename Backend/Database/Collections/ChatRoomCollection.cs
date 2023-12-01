@@ -2,8 +2,21 @@
 using Database.Data;
 using Database.MongoDB;
 
+
+/* ChatRoomCollection.cs
+ * ---------------------
+ * This class is used to interact with the ChatRoom collection in the database.
+ * -----------------------------------------------------------------------------------------------------------
+ * Author: Mr. Akira Cooper & Mr. Roland Fehr
+    * Last Updated: 30/10/2023
+    * Date Created: 30/10/2023
+    * Version 1.0
+*/
 namespace Database.Collections
 {
+    /// <summary>
+    ///     This class implements IChatRoomCollection interface. It is used to interact with the ChatRoom collection in the database.
+    /// </summary>
     public class ChatRoomCollection : IChatRoomCollection
     {
         // The chat room collection from MongoDB
@@ -28,7 +41,7 @@ namespace Database.Collections
 
         public async Task AddNewUserToChatRoom(string userId)
         {
-            
+
         }
 
         // Get the chat room document with the given ID
