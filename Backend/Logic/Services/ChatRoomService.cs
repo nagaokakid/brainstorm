@@ -1,4 +1,15 @@
-﻿using Database.CollectionContracts;
+﻿/*
+ * ChatRoomService.cs
+ * -------------------------
+ * Represents the ChatRoomService object from the database.
+ * This file contains the logic for the ChatRoomService.
+ * ---------------------------------------------------------
+ * Author: Mr. Roland Fehr
+ * Last modified: 28.10.2023
+ * Version: 1.0
+*/
+
+using Database.CollectionContracts;
 using Database.Data;
 using Logic.DTOs.ChatRoom;
 using Logic.DTOs.Messages;
@@ -7,6 +18,9 @@ using Logic.Exceptions;
 
 namespace Logic.Services
 {
+    /// <summary>
+    ///   This is an interface for the ChatRoomService
+    /// </summary>
     public interface IChatRoomService
     {
         Task AddMessageToChatRoom(string chatRoomId, MessageInfo msg);
@@ -19,27 +33,49 @@ namespace Logic.Services
         Task RemoveMessage(string chatRoomId, string messageId);
     }
 
+    /// <summary>
+    ///   This class implements the IChatRoomService interface. It contains the logic for the ChatRoomService
+    /// </summary>
     public class ChatRoomService : IChatRoomService
     {
         private readonly IChatRoomCollection chatRoomCollection;
         private readonly IUserCollection userCollection;
 
+        /// <summary>
+        /// Constructor for ChatRoomService
+        /// </summary>
+        /// <param name="chatRoomCollection"></param>
+        /// <param name="userCollection"></param>
         public ChatRoomService(IChatRoomCollection chatRoomCollection, IUserCollection userCollection)
         {
             this.chatRoomCollection = chatRoomCollection;
             this.userCollection = userCollection;
         }
 
+        /// <summary>
+        ///   This method adds a new user to a chat room
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="chatRoomId"></param>
         public async Task AddNewUserToChatRoom(string userId, string chatRoomId)
         {
             await chatRoomCollection.AddNewUserToChatRoom(userId, chatRoomId);
         }
 
+        /// <summary>
+        ///   This method returns a chat room by its join code
+        /// </summary>
+        /// <param name="chatRoomJoinCode"></param>
         public async Task<ChatRoom?> GetRoomByJoinCode(string chatRoomJoinCode)
         {
             return await chatRoomCollection.GetByJoinCode(chatRoomJoinCode);
         }
 
+        /// <summary>
+        ///   This method adds a message to a chat room
+        /// </summary>
+        /// <param name="chatRoomId"></param>
+        /// <param name="msg"></param>
         public async Task AddMessageToChatRoom(string chatRoomId, MessageInfo msg)
         {
             await chatRoomCollection.AddMessage(chatRoomId, new ChatRoomMessage
@@ -49,14 +85,25 @@ namespace Logic.Services
                 FromUserId = msg.FromUserInfo.UserId,
                 Message = msg.Message,
                 Timestamp = msg.Timestamp,
-            }) ;
+            });
         }
 
+        /// <summary>
+        ///   This method also adds a message to a chat room
+        /// </summary>
+        /// <param name="chatRoomId"></param>
+        /// <param name="msg"></param>
         public async Task AddMessageToChatRoom(string chatRoomId, ChatRoomMessage msg)
         {
             await chatRoomCollection.AddMessage(chatRoomId, msg);
         }
 
+        /// <summary>
+        ///   This method creates a chat room
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="userId"></param>
+        /// <returns>The created chat room</returns>
         private static ChatRoom CreateChatRoom(CreateChatRoomRequest request, string userId)
         {
             return new()
@@ -77,6 +124,10 @@ namespace Logic.Services
             };
         }
 
+        /// <summary>
+        ///  This method creates a chat room response
+        /// </summary>
+        /// <param name="request"></param>
         public async Task<CreateChatRoomResponse> CreateChatRoom(CreateChatRoomRequest request)
         {
             // get user
@@ -95,6 +146,12 @@ namespace Logic.Services
             return CreateChatRoomResponse(foundUser, newRoom);
         }
 
+        /// <summary>   
+        /// This method creates a chat room response
+        /// </summary>
+        /// <param name="foundUser"></param>
+        /// <param name="newRoom"></param>
+        /// <returns>The created chat room response</returns>
         private static CreateChatRoomResponse CreateChatRoomResponse(User foundUser, ChatRoom newRoom)
         {
             return new CreateChatRoomResponse
@@ -119,6 +176,11 @@ namespace Logic.Services
             };
         }
 
+        /// <summary>
+        ///   This method gets a list of chat rooms
+        /// </summary>
+        /// <param name="chatRoomIds">The chatroom ids to get</param>
+        /// <returns>The list of chat rooms</returns>
         public async Task<List<ChatRoom>> GetChatRooms(List<string> chatRoomIds)
         {
             List<ChatRoom> result = new();
@@ -132,12 +194,22 @@ namespace Logic.Services
             return result;
         }
 
+        /// <summary>
+        ///   This method checks if a join code is valid
+        /// </summary>
+        /// <param name="joinCode">The join code to check</param>
+        /// <returns>True if the join code is valid, false otherwise</returns>
         public async Task<bool> IsJoinCodeValid(string joinCode)
         {
             var result = await chatRoomCollection.GetByJoinCode(joinCode);
             return result != null;
         }
 
+        /// <summary>
+        ///  This method removes a message from a chat room
+        /// </summary>
+        /// <param name="chatRoomId"></param>
+        /// <param name="messageId"></param>
         public async Task RemoveMessage(string chatRoomId, string messageId)
         {
             await chatRoomCollection.RemoveMessage(chatRoomId, messageId);
