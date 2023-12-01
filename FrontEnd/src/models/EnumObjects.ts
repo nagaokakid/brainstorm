@@ -9,9 +9,16 @@ export enum ErrorMessages {
     InvalidCode = "Invalid code",
 }
 
+export enum NoticeMessages {
+    Empty = "",
+    FeatureRestricted = "This feature is restricted",
+}
+
 export enum TabTypes {
     LoginTab = "tab1",
     RegisterTab = "tab2",
+    ChatRoom = "ChatRoom",
+    DiretMessage = "DiretMessage",
 }
 
 export enum DisplayTypes {
