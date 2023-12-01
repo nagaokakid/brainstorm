@@ -4,6 +4,7 @@ import {
 import 'mdb-react-ui-kit/dist/css/mdb.min.css';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { DisplayTypes, ErrorMessages } from '../models/EnumObjects';
 import { chatRoomObject, directMessageObject } from '../models/TypesDefine';
 import ApiService from '../services/ApiService';
 import UserInfo from '../services/UserInfo';
@@ -12,8 +13,8 @@ import '../styles/GuestJoin.css';
 function GuestJoin() {
     const navigate = useNavigate()
     const [input, setInput] = useState({ code: '' }) // This handle the state of the input
-    const [errorMsg, setErrorMsg] = useState('' as string) // This store the error message
-    const [errorDisplay, setErrorDisplay] = useState('none' as string) // This handle the error message display
+    const [errorMsg, setErrorMsg] = useState(ErrorMessages.Empty) // This store the error message
+    const [errorDisplay, setErrorDisplay] = useState(DisplayTypes.None) // This handle the error message display
 
     /**
      * This will keep track the input and update the state
@@ -29,11 +30,12 @@ function GuestJoin() {
      * This will verify the input and handle the request to the server
      */
     async function RequestHandle() {
-        setErrorDisplay('none')
+        setErrorDisplay(DisplayTypes.None)
         const button = document.getElementById('join') as HTMLButtonElement;
 
         if (input.code) {
-            button.disabled = true;
+            button.disabled = true; // Disable the button to prevent spamming
+            
             ApiService.IsJoinCodeValid(input.code).then((response) => {
                 if (response) {
                     const tempUser = {
@@ -53,13 +55,13 @@ function GuestJoin() {
                     navigate('/main');
                 } else {
                     button.disabled = false;
-                    setErrorMsg('Invalid Code');
-                    setErrorDisplay('block')
+                    setErrorMsg(ErrorMessages.InvalidCode);
+                    setErrorDisplay(DisplayTypes.Block)
                 }
             });
         } else {
-            setErrorMsg('Please enter a code');
-            setErrorDisplay('block');
+            setErrorMsg(ErrorMessages.FormIncomplete);
+            setErrorDisplay(DisplayTypes.Block);
         }
     }
 

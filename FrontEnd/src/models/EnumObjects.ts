@@ -6,6 +6,7 @@ export enum ErrorMessages {
     FailedToRegister = "Failed to register",
     PasswordNotMatch = "Password does not match",
     DuplicatedAccount = "Account already exists",
+    InvalidCode = "Invalid code",
 }
 
 export enum TabTypes {
