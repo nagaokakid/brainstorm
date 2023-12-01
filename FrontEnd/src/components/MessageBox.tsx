@@ -53,7 +53,7 @@ function MsgBox(props: MsgBoxProps) {
 
           <img
             className="MessageImage"
-            src="src\assets\delete.png"
+            src="FrontEnd\src\assets\delete.png"
             onClick={() => {
               console.log("Delete Message");
               handleRemoveMessage();
