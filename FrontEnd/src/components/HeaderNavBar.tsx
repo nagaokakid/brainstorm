@@ -44,8 +44,8 @@ function HeaderNavBar(props: HeaderNavBarProps) {
     }
 
     return (
-        <div className="header-nav-bar">
-            <div className="user-name">BRAINSTORM</div>
+        <div className="HeaderNavBar">
+            <div className="HeaderTitle">BRAINSTORM</div>
             <div className="JoinCodeSection">
                 <input className="JoinCodeInput" type="text" id="JoinCode" placeholder="Chat Room Join Code..." />
                 <button className="JoinCodeButton" onClick={() => joinCode()}>Join</button>

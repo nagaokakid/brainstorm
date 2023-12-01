@@ -18,7 +18,7 @@ import "../styles/MainPage.css";
   * Last Modified: 01/12/2023
   * Version: 1.0
   */
- 
+
 function MainPage() {
     const [currentTab, setCurrentTab] = useState(TabTypes.ChatRoom); // Set the default chat type to be "CharRoom List"
     const [display, setDisplay] = useState(DisplayTypes.None); // Set the default display to be none
@@ -64,11 +64,11 @@ function MainPage() {
     }, []);
 
     return (
-        <div className="App">
-            <div className="headerNavContainer">
+        <div className="MainPage">
+            <div className="HeaderNavContainer">
                 <HeaderNavBar noticeFunction={showNotice} />
             </div>
-            <div className="main-page-container">
+            <div className="MainPageBodyContainer">
                 <NavigationBar selectFunction={handleSelectedTab} activeTab={currentTab} />
                 <TabContent displayTab={currentTab} noticeFunction={showNotice} />
             </div>

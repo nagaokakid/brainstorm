@@ -38,26 +38,24 @@ function NavigationBar(props: NavigationBarProps) {
     }
 
     return (
-        <div className="navigation-bar">
+        <div className="NavBar">
             <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css" />
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
             <button
-                className={`nav-button ${props.activeTab === TabTypes.ChatRoom ? 'active' : ''}`}
+                className={`NavBtn ${props.activeTab === TabTypes.ChatRoom ? 'active' : ''}`}
                 onClick={() => props.selectFunction(TabTypes.ChatRoom)}
                 onMouseOver={handleHover}
             >
                 <FontAwesomeIcon icon={faUsers} title="Group Chat" />
             </button>
             <button
-                className={`nav-button ${props.activeTab === TabTypes.DiretMessage ? 'active' : ''}`}
+                className={`NavBtn ${props.activeTab === TabTypes.DiretMessage ? 'active' : ''}`}
                 onClick={() => props.selectFunction(TabTypes.DiretMessage)}
                 onMouseOver={handleHover}
             >
                 <FontAwesomeIcon icon={faEnvelope} title="Direct Message" />
             </button>
-            {/* <button className="nav-button" onClick={() => alert("Not available at the moment")}>BrainStorm Session History</button>
-            <button className="nav-button" onClick={() => alert("Not available at the moment")}>Settings</button> */}
-            <button className="nav-button" onClick={() => logOut()} onMouseOver={handleHover}><FontAwesomeIcon icon={faSignOutAlt} title="Log Out" /></button>
+            <button className="NavBtn" onClick={() => logOut()} onMouseOver={handleHover}><FontAwesomeIcon icon={faSignOutAlt} title="Log Out" /></button>
         </div>
     );
 }

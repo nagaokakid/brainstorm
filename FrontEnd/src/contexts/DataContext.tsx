@@ -1,6 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
+import { ReactNode, createContext, useContext, useState } from 'react';
 import { chatRoomMessageObject, newDirectMessageObject } from '../models/TypesDefine';
-import { createContext, useState, useContext, ReactNode } from 'react';
 
 /* 
     *  DataContext.tsx 
@@ -54,11 +54,9 @@ export function DataContextProvider({ children }: DataContextProviderProps) {
         }
     };
 
-    
     const updateMsg = (newMsg: (chatRoomMessageObject | newDirectMessageObject)) => {
         setNewMsg(newMsg);
     };
-
 
     const render = (newData: boolean) => {
         if (newData === true) {
@@ -69,7 +67,6 @@ export function DataContextProvider({ children }: DataContextProviderProps) {
     const updateCount = (newData: number) => {
         setCount(newData);
     }
-
 
     return (
         <DataContext.Provider value={[update, newMsg, updateData, updateMsg, updateAgain, render, count, updateCount]}>
