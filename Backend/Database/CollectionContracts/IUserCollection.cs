@@ -5,7 +5,7 @@
  * ---------------------------
  * This interface defines the methods that will be used by the UserCollection class.
  * -----------------------------------------------------------------------------------------------------------
- * Author: Mr. Roland Fehr and Mr. Akira Cooper
+ * Author: Mr. Roland Fehr
  * Last Updated: 30/10/2023
  * Date Created: 30/10/2023
  * Version 1.0
@@ -26,5 +26,8 @@ namespace Database.CollectionContracts
         Task AddDirectMessageHistoryToUser(string userId, string directMessageHistoryId);
         Task AddBrainstormResultToUser(string userId, string brainstormResultId);
         Task<Dictionary<string, User>> GetAll();
+        Task Edit(User existingUser);
+        Task DeleteUser(string id);
+        Task RemoveChatRoomId(string userId, string chatId);
     }
 }
