@@ -8,6 +8,7 @@
 
 .InputSendContainer .InputSection {
     position: relative;
+    border: none;
     padding: 5px;
     width: 90%;
     margin-right: 5px;
@@ -16,7 +17,7 @@
     align-items: center;
     justify-content: center;
     color: white;
-    background-color: #0174BE;
+    background-color: rgba(12,53,106,1);
     border-radius: 5px;
     &::placeholder{
         color: darkgray;
