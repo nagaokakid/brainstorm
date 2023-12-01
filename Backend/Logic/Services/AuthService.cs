@@ -1,4 +1,15 @@
-﻿using Database.CollectionContracts;
+﻿/*
+ * AuthService.cs
+ * --------------
+ * Represents a AuthService object from the database.
+ * This file contains the data for the AuthService.
+ * ---------------------------------------------------------
+ * Author: Mr. Roland Fehr
+ * Last modified: 28.10.2023
+ * Version: 1.0
+*/
+
+using Database.CollectionContracts;
 using Database.Data;
 using Logic.Helpers;
 using Logic.DTOs.ChatRoom;
@@ -12,7 +23,9 @@ using System.Text;
 
 namespace Logic.Services
 {
-    // This class takes care of registering, signing in, and signing out a user
+    /// <summary>
+    ///   This class takes care of registering, signing in, and signing out a user
+    /// </summary>
     public class AuthService
     {
         private readonly IUserCollection userCollection;
@@ -21,6 +34,14 @@ namespace Logic.Services
         private readonly IConfiguration config;
         private readonly UserService userService;
 
+        /// <summary>
+        ///  Constructor for AuthService
+        /// </summary>
+        /// <param name="userCollection"></param>
+        /// <param name="chatRoomCollection"></param>
+        /// <param name="directMessageCollection"></param>
+        /// <param name="config"></param>
+        /// <param name="userService"></param>
         public AuthService(IUserCollection userCollection, IChatRoomCollection chatRoomCollection, IDirectMessageCollection directMessageCollection, IConfiguration config, UserService userService)
         {
             this.userCollection = userCollection;
@@ -32,6 +53,11 @@ namespace Logic.Services
             this.userService = userService;
         }
 
+        /// <summary>
+        ///   This method registers a user
+        /// </summary>
+        /// <param name="registerUser">The user to register</param>
+        /// <returns>The registered user</returns>
         public async Task<RegisterLoginResponse> RegisterUser(RegisterUserRequest registerUser)
         {
             // make sure input is not null or empty
@@ -48,7 +74,11 @@ namespace Logic.Services
             };
         }
 
-        // creates the jwt bearer token
+        /// <summary>
+        ///   This method creates a jwt bearer token
+        /// </summary>
+        /// <param name="newUser"></param>
+        /// <returns> The jwt bearer token</returns>
         private string CreateToken(FriendlyUserInfo newUser)
         {
             // create jwt token
@@ -72,6 +102,11 @@ namespace Logic.Services
             return new JwtSecurityTokenHandler().WriteToken(securityToken);
         }
 
+        /// <summary>   
+        ///   This method logs in a user
+        /// </summary>
+        /// <param name="loginRequest">The user to login</param>
+        /// <returns>The logged in user</returns>
         public async Task<RegisterLoginResponse> LoginUser(LoginUserRequest loginRequest)
         {
             // make sure the request is not null or empty
@@ -102,17 +137,29 @@ namespace Logic.Services
             };
         }
 
+        /// <summary>
+        ///   This method logs out a user
+        /// </summary>
+        /// <param name="userId">The user to logout</param>
+        /// <returns>The logged out user</returns>
         private async Task<List<FriendlyDirectMessageHistory>> GetDirectMessages(string userId, Dictionary<string, User> users)
         {
             var hist = await directMessageCollection.GetAll(userId);
-            if(hist != null) 
+            if (hist != null)
             {
                 return hist.ToDTO(users);
             }
             return new List<FriendlyDirectMessageHistory>();
         }
 
-        public async Task<List<FriendlyChatRoom>> GetFriendlyChatRooms(List<string> chatRoomIds, Dictionary<string , User> users)
+        /// <summary>
+        ///  This method gets a list of friendly chatrooms
+        ///  Friendly means that the user ids can be replaced with the user info
+        ///  </summary>
+        ///  <param name="chatRoomIds">The chatroom ids to get</param>
+        ///  <param name="users">The users to convert</param>
+        ///  <returns>The list of friendly chatrooms</returns>
+        public async Task<List<FriendlyChatRoom>> GetFriendlyChatRooms(List<string> chatRoomIds, Dictionary<string, User> users)
         {
             var result = new List<FriendlyChatRoom>();
 

@@ -1,10 +1,12 @@
 ﻿/*
-    Team: DarkArmy
-    Author:Roland Fehr
-    Last modified: 28.11.2023
-    version: 1.0
-    Overview: This file contains the logic for the user registration and login.
-              It handles the requests and returns the responses.
+ *   UsersController.cs
+ *   ---------------------
+ *   Represents a UsersController object from the database.
+ *   This file contains the logic for the user registration and login.
+ *   ---------------------------------------------------------
+ *   Author: Mr. Roland Fehr
+ *   Last modified: 28.11.2023
+ *   Version: 1.3
 */
 
 using Logic.DTOs.User;
