@@ -15,6 +15,7 @@ using Logic.DTOs.ChatRoom;
 using Logic.DTOs.Messages;
 using Logic.DTOs.User;
 using Logic.Exceptions;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Logic.Services
 {
@@ -27,6 +28,8 @@ namespace Logic.Services
         Task AddMessageToChatRoom(string chatRoomId, ChatRoomMessage msg);
         Task AddNewUserToChatRoom(string userId, string chatRoomId);
         Task<CreateChatRoomResponse> CreateChatRoom(CreateChatRoomRequest request);
+        Task Delete(string id);
+        Task EditChatRoom(EditChatRoomRequest request);
         Task<List<ChatRoom>> GetChatRooms(List<string> chatRoomIds);
         Task<ChatRoom?> GetRoomByJoinCode(string chatRoomJoinCode);
         Task<bool> IsJoinCodeValid(string joinCode);
@@ -213,6 +216,45 @@ namespace Logic.Services
         public async Task RemoveMessage(string chatRoomId, string messageId)
         {
             await chatRoomCollection.RemoveMessage(chatRoomId, messageId);
+        }
+
+        public async Task EditChatRoom(EditChatRoomRequest request)
+        {
+            if (request.Id == null || request.Title == null || request.Description == null) throw new BadRequest();
+
+            // get existing chatroom
+            var chatroom = await chatRoomCollection.GetById(request.Id);
+            
+            // edit chatroom
+            if(chatroom != null)
+            {
+                chatroom.Title = request.Title;
+                chatroom.Description = request.Description;
+                await chatRoomCollection.EditChatRoom(chatroom);
+            }
+            else
+            {
+                throw new BadRequest();
+            }
+        }
+
+        public async Task Delete(string chatId)
+        {
+            if(chatId == null) throw new BadRequest();
+
+            // get existing chatroom
+            var result = await chatRoomCollection.GetById(chatId);
+            if(result != null)
+            {
+                foreach (var userId in result.MemberIds)
+                {
+                    // remove chatrooms from users
+                    await userCollection.RemoveChatRoomId(userId, chatId);
+                }
+            }
+
+            // delete chatroom 
+            await chatRoomCollection.Delete(chatId);
         }
     }
 }
