@@ -80,5 +80,42 @@ namespace Logic.Controllers
                 return StatusCode(500);
             }
         }
+
+        [HttpPut]
+        public async Task<ActionResult> EditChatRoom(EditChatRoomRequest request)
+        {
+            try
+            {
+                await chatRoomService.EditChatRoom(request);
+                return Ok();
+            }
+            catch (BadRequest e)
+            {
+                return BadRequest(e.Message);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500);
+            }
+        }
+
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteChatRoom(string id)
+        {
+            try
+            {
+                await chatRoomService.Delete(id);
+                return Ok();
+            }
+            catch (BadRequest e)
+            {
+                return BadRequest(e.Message);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500);
+            }
+        }
     }
 }

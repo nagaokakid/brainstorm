@@ -13,6 +13,7 @@ using Logic.DTOs.User;
 using Logic.Exceptions;
 using Logic.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -61,7 +62,7 @@ namespace Logic.Controllers
             {
                 return BadRequest(e.Message);
             }
-            catch (BadRequest)
+            catch (Exceptions.BadRequest)
             {
                 return BadRequest();
             }
@@ -90,6 +91,46 @@ namespace Logic.Controllers
             catch (UnauthorizedUser)
             {
                 return Unauthorized();
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
+                return StatusCode(500);
+            }
+        }
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteUser(string id)
+        {
+            try
+            {
+                await authService.DeleteUser(id);
+                return Ok();
+            }
+            catch (UnauthorizedUser)
+            {
+                return Unauthorized();
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
+                return StatusCode(500);
+            }
+        }
+        [HttpPut]
+        public async Task<ActionResult> EditUser(EditUserRequest editUserRequest)
+        {
+            try
+            {
+                await authService.EditUser(editUserRequest);
+                return Ok();
+            }
+            catch (UnauthorizedUser)
+            {
+                return Unauthorized();
+            }
+            catch (ArgumentNullException)
+            {
+                return BadRequest();
             }
             catch (Exception e)
             {
