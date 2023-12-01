@@ -166,7 +166,7 @@ function ChatList(props: ChatListProps) {
               </button>
             </div>
           )}
-          {props.displayTab === "Direct Message List" && "Chats"}
+          {props.displayTab === "Direct Message List" && (<>Direct Messages</>)}
         </div>
         <div className="chats">
           {chatList.map((chat, index) => (
@@ -196,7 +196,7 @@ function ChatList(props: ChatListProps) {
                 <div className="last-message">
                   {"description" in chat
                     ? chat.description
-                    : chat.directMessages.slice(-1)[0].message}
+                    : chat.directMessages.length != 0 ? chat.directMessages.slice(-1)[0].message : ""}
                 </div>
               </div>
             </div>

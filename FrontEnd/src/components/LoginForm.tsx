@@ -146,7 +146,7 @@ function LogRes() {
                     <h3 className='SignInTitle'>Sign In:</h3>
                     <div className='LoginForm'>
                         <input className='Username' id='Username' placeholder='Username' type="text" onChange={handleChanged} />
-                        <input className='Password' id='Password' placeholder='Password' type="Password" onChange={handleChanged} />
+                        <input className='Password' id='Password' placeholder='Password' type="Password" onChange={handleChanged} onKeyDown={handleKey}/>
                     </div>
                     <MDBBtn className="mb-4 w-100" id='login' onClick={() => handleLogin()}>Sign in</MDBBtn>
                 </MDBTabsPane>
