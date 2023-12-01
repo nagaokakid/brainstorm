@@ -105,10 +105,10 @@ Connect to 5s</stringProp>
               <elementProp name="" elementType="HTTPArgument">
                 <boolProp name="HTTPArgument.always_encode">false</boolProp>
                 <stringProp name="Argument.value">{&#xd;
-	&quot;username&quot;: ${USERNAME},&#xd;
-	&quot;password&quot;: ${USERNAME},&#xd;
-	&quot;firstName&quot;: ${USERNAME},&#xd;
-	&quot;lastName&quot;: ${USERNAME}&#xd;
+	&quot;Username&quot;: ${USERNAME},&#xd;
+	&quot;Password&quot;: ${USERNAME},&#xd;
+	&quot;FirstName&quot;: ${USERNAME},&#xd;
+	&quot;LastName&quot;: ${USERNAME}&#xd;
 }</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
               </elementProp>
@@ -117,7 +117,7 @@ Connect to 5s</stringProp>
           <stringProp name="HTTPSampler.port">5135</stringProp>
           <stringProp name="HTTPSampler.path">/api/users/</stringProp>
           <stringProp name="HTTPSampler.method">POST</stringProp>
-          <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
           <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
           <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
           <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
