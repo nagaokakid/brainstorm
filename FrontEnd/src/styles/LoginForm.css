@@ -58,3 +58,25 @@
     display: flex;
     justify-content: center;
 }
+
+.LoginForm {
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-bottom: 20px;
+}
+
+.RegisterForm {
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-bottom: 20px;
+}
+
+input {
+    border-radius: 5px;
+}
