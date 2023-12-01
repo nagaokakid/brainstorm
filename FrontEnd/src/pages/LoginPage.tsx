@@ -11,15 +11,20 @@ function LoginPage() {
         <>
             <div className="PageContainer">
                 <div className="ContentContainer">
-                    <div className="MemberContainer">
-                        <div className="FormContainer">
-                            <LoginForm />
-                        </div>
+                    <div className="TitleContainer">
+                        <h1 className="Title">Welcome to <span className="TitleSpan">Brainstorm</span></h1>
                     </div>
-                    <div className="VerticalLine"></div>
-                    <div className="GuestContainer">
-                        <div className="GuestFormContainer">
-                            <GuestJoin />
+                    <div className="Content">
+                        <div className="MemberContainer">
+                            <div className="FormContainer">
+                                <LoginForm />
+                            </div>
+                        </div>
+                        <div className="VerticalLine"></div>
+                        <div className="GuestContainer">
+                            <div className="GuestFormContainer">
+                                <GuestJoin />
+                            </div>
                         </div>
                     </div>
                 </div>
