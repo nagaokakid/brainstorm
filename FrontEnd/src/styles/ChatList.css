@@ -6,6 +6,7 @@
   flex-direction: row;
   background-color: #0c356a;
   border-radius: 5px;
+  overflow-y: auto;
 }
 
 .ChatListContainer .chat-list {
