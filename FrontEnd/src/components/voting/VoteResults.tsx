@@ -7,7 +7,6 @@ interface prop {
 const VoteResults = (props: prop) => {
   return (
     <div>
-      <div className="VoteResults_Heading">Vote Results</div>
       {props.ideas.map((x) => (
         <VoteResult idea={x} />
       ))}

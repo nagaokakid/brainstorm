@@ -127,7 +127,6 @@ namespace Logic.Services
                     Description = found.Description,
                     Messages = found.Messages.Select(x => new MessageInfo
                     {
-                        MessageId = x.ChatRoomMessageId,
                         ChatRoomId = found.Id,
                         Message = x.Message,
                         Timestamp = x.Timestamp,

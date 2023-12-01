@@ -5,7 +5,7 @@ namespace Logic.Services
     public interface IOnlineUserService
     {
         Task Add(string userId, string connectionId);
-        string? GetConnectionId(string userId);
+        string? Get(string userId);
         void Remove(string connectionId);
     }
 
@@ -37,10 +37,10 @@ namespace Logic.Services
             }
         }
 
-        public string? GetConnectionId(string userId)
+        public string? Get(string userId)
         {
-            onlineUsers.TryGetValue(userId, out var connectionId);
-            return connectionId;
+            onlineUsers.TryGetValue(userId, out var user);
+            return user;
         }
     }
 }

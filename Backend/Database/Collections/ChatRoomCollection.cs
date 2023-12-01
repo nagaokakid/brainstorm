@@ -46,11 +46,5 @@ namespace Database.Collections
 
             return await chatRoomRepository.GetDocumentByFieldDictionary(fieldDict);
         }
-
-        public async Task RemoveMessage(string chatRoomId, string messageId)
-        {
-            // needs to be implemented
-            await Task.Run(() => { });
-        }
     }
 }

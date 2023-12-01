@@ -9,6 +9,5 @@ namespace Database.CollectionContracts
         Task<ChatRoom?> GetByJoinCode(string joinCode);
         Task<ChatRoom?> GetById(string chatRoomId);
         Task AddMessage( string chatRoomId, ChatRoomMessage chatRoomMessage);
-        Task RemoveMessage(string chatRoomId, string messageId);
     }
 }

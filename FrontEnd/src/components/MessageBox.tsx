@@ -63,16 +63,8 @@ function MsgBox(props: MsgBoxProps) {
         <div className="Message">
           {props.isBrainstorm ? (
             <p>
-              <div className="MessageIsBrainstorm">
-                {props.user[1] +
-                  " invited you to join the brainstorm session ->"}
-                <button
-                  className="MessageJoinBS"
-                  onClick={handleJoinBrainstorm}
-                >
-                  Click To Join
-                </button>
-              </div>
+              {props.user[1] + " invited you to join the brainstorm session ->"}
+              <button className="MessageJoinBS" onClick={handleJoinBrainstorm}>Click To Join</button>
             </p>
           ) : (
             <p>{props.message}</p>
