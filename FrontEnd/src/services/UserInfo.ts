@@ -347,6 +347,22 @@ class UserInfo {
         this.updateLocalIdea(true);
     }
 
+    static deleteChatRoom(chatRoomId:string, id: string) {
+        const result = this.getChatRoomsList().find(chatRoom => chatRoom.id === chatRoomId);
+        if (result) {
+            result.messages.splice(result.messages.findIndex(current => current.messageId === id), 1);
+        }
+        this.updateUser(true);
+    }
+
+    static deleteDirectMessage(toId: string, id: string) {
+        const result = this.getDirectMessagesList().find(current => (toId === current.user1.userId || toId === current.user2.userId));
+        if (result) {
+            result.directMessages.splice(result.directMessages.findIndex(current => current.messageId === id), 1);
+        }
+        this.updateUser(true);
+    }
+
     /**
      * Empty the local idea list
      */

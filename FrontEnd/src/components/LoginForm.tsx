@@ -1,19 +1,18 @@
-import '../styles/LogRes.css';
-import 'mdb-react-ui-kit/dist/css/mdb.min.css';
 import {
+    MDBBtn,
     MDBContainer,
     MDBTabs,
+    MDBTabsContent,
     MDBTabsItem,
     MDBTabsLink,
-    MDBTabsContent,
-    MDBTabsPane,
-    MDBBtn,
-    MDBInput
-} from 'mdb-react-ui-kit'
-import ApiService from '../services/ApiService';
-import { loginObject } from '../models/TypesDefine';
+    MDBTabsPane
+} from 'mdb-react-ui-kit';
+import 'mdb-react-ui-kit/dist/css/mdb.min.css';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { loginObject } from '../models/TypesDefine';
+import ApiService from '../services/ApiService';
+import '../styles/LoginForm.css';
 
 function LogRes() {
     const navigate = useNavigate();
@@ -28,7 +27,17 @@ function LogRes() {
             return;
         }
 
-        setInput({} as loginObject); // Reset the input state
+        // Remove all values from the input
+        (document.getElementById('Username') as HTMLInputElement).value = '';
+        (document.getElementById('Username1') as HTMLInputElement).value = '';
+        (document.getElementById('Password') as HTMLInputElement).value = '';
+        (document.getElementById('Password1') as HTMLInputElement).value = '';
+        (document.getElementById('RePassword') as HTMLInputElement).value = '';
+        (document.getElementById('FirstName') as HTMLInputElement).value = '';
+        (document.getElementById('LastName') as HTMLInputElement).value = '';
+        Object.keys(input).forEach((key) => {
+            setInput((prev: typeof input) => { return { ...prev, [key]: '' } });
+        });
         setJustifyActive(value); // if the tab is not active, change the state
         setErrorDisplay('none'); // Hide the error message
     }
@@ -135,17 +144,21 @@ function LogRes() {
             <MDBTabsContent>
                 <MDBTabsPane show={justifyActive === 'tab1'}>
                     <h3 className='SignInTitle'>Sign In:</h3>
-                    <MDBInput wrapperClass='mb-4' label='Username' id='Username' type='text' onChange={handleChanged} />
-                    <MDBInput wrapperClass='mb-4' label='Password' id='Password' type='password' onChange={handleChanged} onKeyDown={handleKey} />
+                    <div className='LoginForm'>
+                        <input className='Username' id='Username' placeholder='Username' type="text" onChange={handleChanged} />
+                        <input className='Password' id='Password' placeholder='Password' type="Password" onChange={handleChanged} />
+                    </div>
                     <MDBBtn className="mb-4 w-100" id='login' onClick={() => handleLogin()}>Sign in</MDBBtn>
                 </MDBTabsPane>
                 <MDBTabsPane show={justifyActive === 'tab2'}>
                     <h3 className='RegisterTitle'>Create Account:</h3>
-                    <MDBInput wrapperClass='mb-4' label='Username' id='Username' type='text' onChange={handleChanged} />
-                    <MDBInput wrapperClass='mb-4' label='First Name' id='FirstName' type='text' onChange={handleChanged} />
-                    <MDBInput wrapperClass='mb-4' label='Last Name' id='LastName' type='text' onChange={handleChanged} />
-                    <MDBInput wrapperClass='mb-4' label='Password' id='Password' type='password' onChange={handleChanged} />
-                    <MDBInput wrapperClass='mb-4' label='Re-Password' id='RePassword' type='password' onChange={handleChanged} onKeyDown={handleKey} />
+                    <div className='RegisterForm'>
+                        <input className='Username1' id='Username1' placeholder='Username' type="text" onChange={handleChanged} />
+                        <input className='FirstName' id='FirstName' placeholder='First Name' type="text" onChange={handleChanged} />
+                        <input className='LastName' id='LastName' placeholder='Last Name' type="text" onChange={handleChanged} />
+                        <input className='Password1' id='Password1' placeholder='Password' type="Password" onChange={handleChanged} />
+                        <input className='RePassword' id='RePassword' placeholder='Re-Password' type="Password" onChange={handleChanged} onKeyDown={handleKey} />
+                    </div>
                     <MDBBtn className="mb-4 w-100" id='register' onClick={() => handleRegister()}>Sign up</MDBBtn>
                 </MDBTabsPane>
                 <h5 className='ErrorMsg' style={{ display: errorDisplay }}>{errorMsg}</h5>

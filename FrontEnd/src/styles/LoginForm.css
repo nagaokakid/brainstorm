@@ -1,0 +1,82 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.nav-pills .nav-link.active,
+.nav-pills .show>.nav-link {
+    background-color: #FFC436 !important;
+    color: black !important;
+    font-weight: bold !important;
+}
+
+.SignInTitle,
+.RegisterTitle {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    font-size: 30px !important;
+    color: white;
+    pointer-events: none;
+}
+
+.nav-pills .nav-link {
+    border-radius: 0px 10px 0px 10px !important;
+    font-size: 20px !important;
+}
+
+.form-outline {
+    background-color: white;
+    border-radius: 5px;
+}
+
+/* Login, Register and Guest join button */
+.ripple {
+    border-radius: 0px 10px 0px 10px !important;
+    font-size: 16px !important;
+}
+
+.btn-primary {
+    background-color: #FFC436 !important;
+    color: black !important;
+    font-weight: bold !important;
+}
+
+.form-outline .form-control~.form-label {
+    height: 100px;
+}
+
+.form-outline .form-control~.form-label {
+    color: #000000 !important;
+}
+
+.ErrorMsg {
+    color: red;
+    font-size: 14px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    display: flex;
+    justify-content: center;
+}
+
+.LoginForm {
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-bottom: 20px;
+}
+
+.RegisterForm {
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-bottom: 20px;
+}
+
+input {
+    border-radius: 5px;
+}
