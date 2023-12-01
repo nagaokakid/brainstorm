@@ -4,13 +4,28 @@ using Database.MongoDB;
 using MongoDB.Bson;
 using System.ComponentModel;
 
+/*
+ * UserCollection.cs
+ * -------------------------------
+ * This class implements the IUserCollection interface.
+ * -----------------------------------------------------------------------------------------------------------
+ * Authors: Mr. Roland Fehr and Mr. Akira Cooper
+    * Last Updated: 1/12/2023
+    * Date Created: 1/12/2023
+    * Version 1.0
+*/
+
 namespace Database.Collections
 {
+    /// <summary>
+    ///    This class implements the IUserCollection interface.
+    ///    It is used to interact with the User collection in the database.
+    /// </summary>
     public class UserCollection : IUserCollection
     {
         // The user collection from MongoDB
         private MongoRepository<User> userRepository = new("brainstorm", "User");
-        
+
         // Add a new user document to the User collection
         public async Task Add(User newUser)
         {
@@ -71,7 +86,7 @@ namespace Database.Collections
         public async Task<Dictionary<string, User>> GetAll()
         {
             var found = await userRepository.GetAllDocuments();
-            if(found != null)
+            if (found != null)
             {
                 var result = new Dictionary<string, User>();
                 foreach (var user in found)

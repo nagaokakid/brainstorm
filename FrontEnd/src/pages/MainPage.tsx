@@ -7,6 +7,18 @@ import { DisplayTypes, NoticeMessages, TabTypes } from "../models/EnumObjects";
 import UserInfo from "../services/UserInfo";
 import "../styles/MainPage.css";
 
+/*
+  *  MainPage.tsx 
+  * -------------------------
+  *  This component is the main page of the application.
+  *  It contains the header navigation bar, the navigation bar, and the chat list.
+  *  -----------------------------------------------------------------------
+  * Authors:  Mr. Yee Tsung (Jackson) Kao & Ravdeep Singh
+  * Date Created:  01/12/2023
+  * Last Modified: 01/12/2023
+  * Version: 1.0
+  */
+ 
 function MainPage() {
     const [currentTab, setCurrentTab] = useState(TabTypes.ChatRoom); // Set the default chat type to be "CharRoom List"
     const [display, setDisplay] = useState(DisplayTypes.None); // Set the default display to be none

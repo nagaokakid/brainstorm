@@ -5,7 +5,7 @@
  * ---------------------------
  * This interface defines the methods that will be used by the DirectMessageCollection class.
  * -----------------------------------------------------------------------------------------------------------
- * Author: Mr. Roland Fehr
+ * Author: Mr. Roland Fehr and Mr. Akira Cooper
  * Last Updated: 30/10/2023
  * Date Created: 30/10/2023
  * Version 1.0

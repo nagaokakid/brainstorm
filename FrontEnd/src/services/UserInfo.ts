@@ -8,6 +8,17 @@ import {
     user,
 } from "../models/TypesDefine";
 
+/*
+ * UserInfo.ts
+    * -----------------------------
+    * This file is the service for the user info.
+    * ----------------------------------------------------------
+    * Author:  Mr. Yee Tsuung (Jackson) Kao and Mr. Roland Fehr
+    * Date Created:  01/12/2023
+    * Last Modified: 01/12/2023
+    * Version: 0.0.1
+*/
+
 class UserInfo {
 
     // The url of the backend
