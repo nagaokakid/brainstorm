@@ -31,8 +31,8 @@ function NavBarTabContent(props: ChatListProps) {
   const ChatRoomWindow = lazy(() => import("./ChatRoomWindow")); // Lazy load the chat room window component
   const [chatList, setChatList] = useState([] as (chatRoomObject | directMessageObject)[]); // Set the type of chat list to be displayed
   const [selectedChat, setSelectedChat] = useState({} as chatRoomObject | directMessageObject); // Track the current selected chat
-  const [showCreateChatRoom, setShowCreateChatRoom] = useState(DisplayTypes.None); // Set the default display of the create chat room option to be hidden
-  const [showCreateBrainstorm, setShowCreateBrainstorm] = useState(DisplayTypes.None); // Set the default display of the create brainstorm option to be hidden
+  const [showCreateChatRoom, setShowCreateChatRoom] = useState({ display: DisplayTypes.None }); // Set the default display of the create chat room option to be hidden
+  const [showCreateBrainstorm, setShowCreateBrainstorm] = useState({ display: DisplayTypes.None }); // Set the default display of the create brainstorm option to be hidden
   const [forceRender, setForceRender] = useState(false); // Force the component to re-render
 
   /**
@@ -50,7 +50,7 @@ function NavBarTabContent(props: ChatListProps) {
     if (UserInfo.getUserInfo().isGuest) {
       props.noticeFunction(NoticeMessages.FeatureRestricted);
     } else {
-      setShowCreateChatRoom(DisplayTypes.Flex);
+      setShowCreateChatRoom((prevState) => { return { ...prevState, display: DisplayTypes.Flex } });
     }
   }
 
@@ -61,7 +61,7 @@ function NavBarTabContent(props: ChatListProps) {
     if (UserInfo.getUserInfo().isGuest) {
       props.noticeFunction(NoticeMessages.FeatureRestricted);
     } else {
-      setShowCreateBrainstorm(DisplayTypes.Flex);
+      setShowCreateBrainstorm((prevState) => { return { ...prevState, display: DisplayTypes.Flex } });
     }
   }
 
@@ -205,8 +205,8 @@ function NavBarTabContent(props: ChatListProps) {
           </div>
         )}
       </div>
-      <CreateRoomCustomize style={{ display: showCreateChatRoom }} render={setForceRender} />
-      <CreateBrainStormCustomize style={{ display: showCreateBrainstorm }} chat={selectedChat} />
+      <CreateRoomCustomize style={showCreateChatRoom} render={setForceRender} />
+      <CreateBrainStormCustomize style={showCreateBrainstorm} chat={selectedChat} />
     </div>
   );
 }
