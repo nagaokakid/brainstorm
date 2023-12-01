@@ -2,6 +2,7 @@ import "../styles/MessageBox.css";
 import UserInfo from "../services/UserInfo";
 import SignalRChatRoom from "../services/ChatRoomConnection";
 import SignalRDirect from "../services/DirectMessageConnection";
+import delereImage from "../assets/delete.png";
 
 interface MsgBoxProps {
   message: string;
@@ -54,7 +55,7 @@ function MsgBox(props: MsgBoxProps) {
           <div className="MessageUsername">{props.user[1]}</div>
           <img
             className="MessageImage"
-            src="src\assets\delete.png"
+            src={delereImage}
             onClick={() => {
               console.log("Delete Message");
               handleRemoveMessage();
