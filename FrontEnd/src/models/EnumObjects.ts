@@ -12,13 +12,14 @@ export enum ErrorMessages {
 export enum NoticeMessages {
     Empty = "",
     FeatureRestricted = "This feature is restricted",
+    SessionEnded = "Session ended",
 }
 
 export enum TabTypes {
     LoginTab = "tab1",
     RegisterTab = "tab2",
-    ChatRoom = "ChatRoom",
-    DiretMessage = "DiretMessage",
+    ChatRoom = "ChatRoom List",
+    DiretMessage = "Direct Message List",
 }
 
 export enum DisplayTypes {
