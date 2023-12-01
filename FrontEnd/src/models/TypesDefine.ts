@@ -57,7 +57,7 @@ export type chatRoomMessageObject = {
 export type directMessageObject = {
     user1: userInfoObject,
     user2: userInfoObject,
-    directMessages: {messageId:string, message: string, timestamp: string }[]
+    directMessages: {fromUserId:string, messageId:string, message: string, timestamp: string }[]
 }
 
 export type newDirectMessageObject = {

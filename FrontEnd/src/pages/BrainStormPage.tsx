@@ -12,6 +12,7 @@ import SignalRChatRoom from "../services/ChatRoomConnection";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useContext, useEffect, useRef, useState } from "react";
 import { DataContext } from "../contexts/DataContext";
+import exitIcon from "../assets/ExitIcon.png"
 
 /*
  * BrainStormPage.tsx
@@ -205,6 +206,14 @@ function BrainStormPage() {
     }
   }
 
+  function handleWarningClick() {
+    if (input && !isVoting) {
+      handleLeaveClick();
+    } else {
+      setLeaveContainer("flex");
+    }
+  }
+
   useEffect(() => {
     if (context === undefined) {
       throw new Error("useDataContext must be used within a DataContext");
@@ -264,8 +273,8 @@ function BrainStormPage() {
       <div className="BS_HeaderContainer">
         <button
           className="LeaveSessionButton"
-          onClick={() => setLeaveContainer("flex")}
-        ></button>
+          onClick={handleWarningClick}
+        ><img className="exitIcon_BS" src={exitIcon}/></button>
         <BS_HeaderContent
           roomTitle={sessionTitle}
           roomDescription={sessionDescription}
@@ -316,7 +325,6 @@ function BrainStormPage() {
         </div>
       </div>
       <LeaveBSPrompt
-        content={"Leave the Session?"}
         display={leaveContainer}
         yesFunction={handleLeaveClick}
         displayFunction={callLeaveContainer}
