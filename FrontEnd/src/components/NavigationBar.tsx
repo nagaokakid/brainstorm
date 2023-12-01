@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import "../styles/NavigationBar.css";
 import SignalRChatRoom from "../services/ChatRoomConnection";
 import SignalRDirect from "../services/DirectMessageConnection";

@@ -41,17 +41,23 @@ export function DataContextProvider({ children }: DataContextProviderProps) {
             setUpdate(update => !update);
         }
     };
+
+    
     const updateMsg = (newMsg: (chatRoomMessageObject | newDirectMessageObject)) => {
         setNewMsg(newMsg);
     };
+
+
     const render = (newData: boolean) => {
         if (newData === true) {
             setUpdateAgain(update => !update);
         }
     }
+
     const updateCount = (newData: number) => {
         setCount(newData);
     }
+
 
     return (
         <DataContext.Provider value={[update, newMsg, updateData, updateMsg, updateAgain, render, count, updateCount]}>
