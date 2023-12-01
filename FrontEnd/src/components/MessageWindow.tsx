@@ -15,16 +15,10 @@ interface MessageWindowProps {
 function MessageWindow(props: MessageWindowProps) {
     const context = useDataContext();
     const msg = context[1];
-    const render = context[4];
-    const [messages, setMessages] = useState([] as (chatRoomMessageObject | { messageId:string, message: string, timestamp: string })[]); // Set the message to the display
-   
-    
+    const [messages, setMessages] = useState([] as (chatRoomMessageObject | { message: string, timestamp: string })[]); // Set the message to the display
+
     useEffect(() => {
-        if(msg === undefined){
-            setMessages(UserInfo.getMessageHistory(props.chatId, props.chatType));
-            
-        }
-        else if ("chatRoomId" in msg && msg.chatRoomId === props.chatId) {
+        if ("chatRoomId" in msg && msg.chatRoomId === props.chatId) {
             setMessages(prev => [...prev, msg]);
         } else if ("toUserInfo" in msg && msg.toUserInfo) {
             const check1 = msg.toUserInfo.userId === UserInfo.getUserId() && msg.fromUserInfo.userId === props.chatId;
@@ -37,8 +31,7 @@ function MessageWindow(props: MessageWindowProps) {
 
     useEffect(() => {
         setMessages(UserInfo.getMessageHistory(props.chatId, props.chatType));
-        
-    }, [props.chatId, render]);
+    }, [props.chatId]);
 
     return (
         <div className="MsgWindowContainer">

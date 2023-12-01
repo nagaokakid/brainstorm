@@ -1,0 +1,10 @@
+.MessageContainer
+{
+    position: relative;
+    display: flex;
+    width: 100%;
+    justify-content: start;
+    height: auto;
+    pointer-events: none;
+    z-index: 1000;
+}

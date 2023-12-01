@@ -23,7 +23,7 @@ namespace Logic.UnitTest.Services
 
             // Act
             await onlineUserService.Add(userId, connectionId);
-            var result = onlineUserService.GetConnectionId(userId);
+            var result = onlineUserService.Get(userId);
 
             // Assert
             Assert.That(result == connectionId);
@@ -41,7 +41,7 @@ namespace Logic.UnitTest.Services
             // Act
             await onlineUserService.Add(userId, connectionId);
             await onlineUserService.Add(userId, connectionId2);
-            var result = onlineUserService.GetConnectionId(userId);
+            var result = onlineUserService.Get(userId);
 
             // Assert
             Assert.That(result == connectionId2);
@@ -57,7 +57,7 @@ namespace Logic.UnitTest.Services
             // Act
             await onlineUserService.Add(userId, connectionId);
             onlineUserService.Remove(connectionId);
-            var result = onlineUserService.GetConnectionId(userId);
+            var result = onlineUserService.Get(userId);
 
             // Assert
             Assert.That(result == null);

@@ -56,7 +56,7 @@ function MainPage() {
                 <HeaderNavBar noticeFunction={showNotice} />
             </div>
             <div className="main-page-container">
-                <NavigationBar selectFunction={handleSelectedTab} activeTab={currentTab}/>
+                <NavigationBar selectFunction={handleSelectedTab} />
                 <TabContent displayTab={currentTab} noticeFunction={showNotice} />
             </div>
             <div className="NoticeClass" style={display}>

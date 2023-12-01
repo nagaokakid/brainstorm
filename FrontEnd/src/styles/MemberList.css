@@ -4,8 +4,7 @@
   position: relative;
   width: 100%;
   height: 100%;
-  background-color: #0c356a;
-  color: white;
+  background-color: #f0f0f0;
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -16,11 +15,8 @@
 .member-list .offline-members h2 {
   position: relative;
   font-size: 22px;
-  font-family: Arial, Helvetica, sans-serif;
   display: flex;
   justify-content: start;
-  border-bottom: 1px solid white;
-  padding: 5px;
 }
 
 .member-list ul {
@@ -33,15 +29,10 @@
   margin-top: 2px;
   cursor: pointer;
   list-style: none;
-  padding: 5px;
-  border-radius: 5px;
+  padding: 0;
 }
 
 .member-list .online-members li:hover {
-  background-color: transparent;
-}
-
-.members {
-  position: relative;
-  margin: 5px;
+  background-color: #e8e8e8;
+  transition: 0.5s;
 }
