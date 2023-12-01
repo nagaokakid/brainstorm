@@ -12,6 +12,7 @@ import SignalRChatRoom from "../services/ChatRoomConnection";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useContext, useEffect, useRef, useState } from "react";
 import { DataContext } from "../contexts/DataContext";
+import exitIcon from "../assets/ExitIcon.png"
 
 function BrainStormPage() {
   const Navigate = useNavigate();
@@ -261,7 +262,7 @@ function BrainStormPage() {
         <button
           className="LeaveSessionButton"
           onClick={handleWarningClick}
-        ></button>
+        ><img className="exitIcon_BS" src={exitIcon}/></button>
         <BS_HeaderContent
           roomTitle={sessionTitle}
           roomDescription={sessionDescription}
