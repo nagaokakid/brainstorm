@@ -1,14 +1,15 @@
-import "../styles/NavigationBar.css";
+import { faEnvelope, faSignOutAlt, faUsers } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useNavigate } from 'react-router-dom';
+import { TabTypes } from '../models/EnumObjects';
 import SignalRChatRoom from "../services/ChatRoomConnection";
 import SignalRDirect from "../services/DirectMessageConnection";
-import { useNavigate } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEnvelope, faUsers, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
+import "../styles/NavigationBar.css";
 import { handleHover } from './handleIconHover';
 
 interface NavigationBarProps {
-    selectFunction: (tab: string) => void;
-    activeTab: string;
+    selectFunction: (tab: TabTypes) => void;
+    activeTab: TabTypes;
 }
 
 function NavigationBar(props: NavigationBarProps) {
@@ -23,24 +24,24 @@ function NavigationBar(props: NavigationBarProps) {
         sessionStorage.clear();
         navigate("/");
     }
-    
+
     return (
         <div className="navigation-bar">
             <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css" />
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
-            <button 
-                className={`nav-button ${props.activeTab === 'ChatRoom List' ? 'active' : ''}`} 
-                onClick={() => props.selectFunction("ChatRoom List")} 
+            <button
+                className={`nav-button ${props.activeTab === TabTypes.ChatRoom ? 'active' : ''}`}
+                onClick={() => props.selectFunction(TabTypes.ChatRoom)}
                 onMouseOver={handleHover}
             >
                 <FontAwesomeIcon icon={faUsers} title="Group Chat" />
             </button>
-            <button 
-                className={`nav-button ${props.activeTab === 'Direct Message List' ? 'active' : ''}`} 
-                onClick={() => props.selectFunction("Direct Message List")} 
+            <button
+                className={`nav-button ${props.activeTab === TabTypes.DiretMessage ? 'active' : ''}`}
+                onClick={() => props.selectFunction(TabTypes.DiretMessage)}
                 onMouseOver={handleHover}
             >
-                <FontAwesomeIcon icon={faEnvelope} title="Direct Message"/>
+                <FontAwesomeIcon icon={faEnvelope} title="Direct Message" />
             </button>
             {/* <button className="nav-button" onClick={() => alert("Not available at the moment")}>BrainStorm Session History</button>
             <button className="nav-button" onClick={() => alert("Not available at the moment")}>Settings</button> */}
