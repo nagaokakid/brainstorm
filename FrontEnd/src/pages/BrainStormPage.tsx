@@ -210,6 +210,7 @@ function BrainStormPage() {
           showNotice("Session has started");
         } else if (type === 2) {
           setInput(true);
+          clearInterval(interval.current);
           showNotice("Session has ended");
           SignalRChatRoom.getInstance().then(async (instance) => {
             await instance.sendAllIdeas(sessionId, UserInfo.getLocalIdeas());
