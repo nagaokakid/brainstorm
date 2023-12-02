@@ -100,10 +100,11 @@
     margin-right: 5px;
     display: flex;
     justify-content: center;
+    align-items: center;
 }
 .EndSessionButton{
     height: 100%;
-    background-color: #FFC436;
+    background-color: #921c1c;
     width: 100%;
     padding: 5px;
     border: none;
@@ -113,6 +114,7 @@
     margin-right: 5px;
     display: flex;
     justify-content: center;
+    align-items: center;
 }
 .EndVoteButton{
     height: 100%;

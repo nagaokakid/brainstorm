@@ -1,5 +1,5 @@
 import '../styles/InputSendPrompt.css';
-
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 /*
     * InputSendPrompt.tsx 
     * -------------------------
@@ -14,6 +14,9 @@ interface InputSendPromptProps {
     sendFunction: (e: string) => void,
     input: boolean,
 }
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 
 function InputSendPrompt(props: InputSendPromptProps) {
 
@@ -42,9 +45,11 @@ function InputSendPrompt(props: InputSendPromptProps) {
     return (
         <div className="InputSendContainer">
             <input className="InputSection" type="text" placeholder="Enter Ideas here..." onKeyDown={handleKeyDown} disabled={props.input}></input>
-            <button className="SendSection" onClick={handleSendClick} disabled={props.input}>Add ideas</button>
+            <button className="SendSection" onClick={handleSendClick} disabled={props.input}> <FontAwesomeIcon icon={faPlus} title="Add Idea" /> </button>
         </div>
     );
 }
+
+
 
 export default InputSendPrompt;

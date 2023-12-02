@@ -17,6 +17,7 @@ import { faTrashRestoreAlt } from '@fortawesome/free-solid-svg-icons';
 import exitIcon from "../assets/ExitIcon.png"
 import RecycleBin from "../components/RecycleBin";
 import { faRecycle } from '@fortawesome/free-solid-svg-icons';
+import { faPlay, faStop   } from '@fortawesome/free-solid-svg-icons';
 
 /*
  * BrainStormPage.tsx
@@ -323,19 +324,15 @@ function handleClickDeleteButton(idea: string){
               className="BS_ButtonContainer"
               style={{ display: UserInfo.isHost(creatorId) ? "flex" : "none" }}
             >
-              <button
-                className="StartSessionButton"
-                onClick={handleStartSessionClick}
-                style={displayBtn[0]}
-              >
-                Start
+              <button className="StartSessionButton" onClick={handleStartSessionClick} style={displayBtn[0]}>
+                <FontAwesomeIcon icon={faPlay} title="Start Session"  />
               </button>
               <button
                 className="EndSessionButton"
                 onClick={handleEndSessionClick}
                 style={displayBtn[1]}
               >
-                End Round
+                <FontAwesomeIcon icon={faStop} />
               </button>
               <button
                 className="EndVoteButton"

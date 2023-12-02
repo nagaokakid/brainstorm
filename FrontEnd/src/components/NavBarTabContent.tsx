@@ -20,6 +20,7 @@ import CreateRoomCustomize from "./CreateRoomCustomize";
 import DefaultChatRoomWindow from "./DefaultChatRoomWindow";
 import { handleHover } from "./handleIconHover";
 import EditChatroom from "./chatroom/EditChatroom";
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 import editChatRoomIcon from "./../assets/editIcon.png";
 
@@ -166,7 +167,7 @@ function NavBarTabContent(props: ChatListProps) {
                 onMouseOver={handleHover}
               >
                 <FontAwesomeIcon
-                  icon={faPenToSquare}
+                  icon={faPlus}
                   title="Create Chat Room"
                 />
               </button>

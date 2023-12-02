@@ -28,9 +28,10 @@
     position: relative;
     padding: 5px;
     height: 100%;
-    width: 100px;
+    width: 50px;
     display: flex;
     flex-direction: row;
+    font-weight: bold;
     align-items: center;
     justify-content: center;
     font-weight: bold;
