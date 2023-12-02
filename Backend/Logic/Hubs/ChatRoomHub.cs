@@ -14,6 +14,7 @@ using Logic.DTOs.Messages;
 using Logic.DTOs.User;
 using Logic.Helpers;
 using Logic.Services;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.SignalR;
 using System.Text;
 
@@ -391,6 +392,11 @@ namespace Logic.Hubs
                 chatRoomService.RemoveMessage(chatRoomId, messageId);
                 Clients.Groups(chatRoomId).SendAsync("RemoveChatRoomMessage", chatRoomId, messageId);
             }
+        }
+
+        public async Task SendEditChatRoom(string chatRoomId, string title, string description)
+        {
+            Clients.Groups(chatRoomId).SendAsync("EditChatRoom", chatRoomId, title, description);
         }
     }
 }

@@ -68,7 +68,7 @@ function MainPage() {
     return (
         <div className="MainPage">
             <div className="HeaderNavContainer">
-                <HeaderNavBar noticeFunction={showNotice} />
+                <HeaderNavBar clickedUserProfile={() => setShowProfile(!showProfile)} noticeFunction={showNotice} />
             </div>
             <div className="MainPageBodyContainer">
                 <NavigationBar selectFunction={handleSelectedTab} activeTab={currentTab} />

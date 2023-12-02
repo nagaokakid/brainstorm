@@ -9,11 +9,14 @@
  *  Version: 1.0
 */
 
+using Database.Data;
 using Logic.DTOs.ChatRoom;
 using Logic.Exceptions;
+using Logic.Hubs;
 using Logic.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 
 namespace Logic.Controllers
 {

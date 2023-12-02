@@ -304,6 +304,15 @@ class SignalRChatRoom {
         });
     }
 
+    setEditChatRoomCallback(callBackFunction: (chatRoomId: string, title: string, description: string) => void) {
+        this.connection.on("EditChatRoom", (chatRoomId: string, title: string, description: string) => {
+            console.log("callback EditChatRoom: " + chatRoomId + " " + title);
+            
+            // remove message from chatroom
+            callBackFunction(chatRoomId, title, description);
+        });
+    }
+
     /**
      * Remove all the call back functions
      */

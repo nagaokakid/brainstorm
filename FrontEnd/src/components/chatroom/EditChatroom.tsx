@@ -1,14 +1,38 @@
 import { useEffect, useState } from "react";
 import "../../styles/chatroom/Chatroom.css";
+import ApiService from "../../services/ApiService";
 
 interface Props {
+  chatRoomId: string;
   title: string;
   description: string;
   clickedExit: () => void;
 }
+
 const EditChatroom = (props: Props) => {
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
+
+  async function handleDeleteChatRoom() {
+    await ApiService.DeleteChatRoom(props.chatRoomId);
+    props.clickedExit();
+    clearInput();
+  }
+
+  function handleCancelChatRoom() {
+    props.clickedExit();
+    clearInput();
+  }
+
+  async function handleSaveEditChatRoom() {
+    await ApiService.EditChatRoom(props.chatRoomId, title, description);
+    props.clickedExit();
+    clearInput();
+  }
+
+  function clearInput() {
+    (document.getElementById("EditChatroomId") as HTMLFormElement).reset();
+  }
 
   useEffect(() => {
     setTitle(props.title);
@@ -18,7 +42,7 @@ const EditChatroom = (props: Props) => {
   return (
     <div className="EditChatRoomWindoww">
       <div>{title}</div>
-      <form className="RegisterForm" id="RegisterForm">
+      <form className="RegisterForm" id="EditChatroomId">
         <input
           className="Username"
           id="Username1"
@@ -39,17 +63,20 @@ const EditChatroom = (props: Props) => {
       <div className="EditChatRoomButtonsContainer">
         <button
           className="DeleteEditChatRoomButton"
-          onClick={props.clickedExit}
+          onClick={handleDeleteChatRoom}
         >
           Delete
         </button>
         <button
           className="CancelEditChatRoomButton"
-          onClick={props.clickedExit}
+          onClick={handleCancelChatRoom}
         >
           Cancel
         </button>
-        <button className="SaveEditChatRoomButton" onClick={props.clickedExit}>
+        <button
+          className="SaveEditChatRoomButton"
+          onClick={handleSaveEditChatRoom}
+        >
           Save
         </button>
       </div>

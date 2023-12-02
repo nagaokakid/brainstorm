@@ -21,7 +21,7 @@ import DefaultChatRoomWindow from "./DefaultChatRoomWindow";
 import { handleHover } from "./handleIconHover";
 import EditChatroom from "./chatroom/EditChatroom";
 
-import editChatRoomIcon from "./../assets/delete.png"
+import editChatRoomIcon from "./../assets/editIcon.png";
 
 interface ChatListProps {
   displayTab: TabTypes;
@@ -35,7 +35,7 @@ function NavBarTabContent(props: ChatListProps) {
   const [chatList, setChatList] = useState(
     [] as (chatRoomObject | directMessageObject)[]
   ); // Set the type of chat list to be displayed
-  const [selectedChat, setSelectedChat] = useState(
+  const [selectedChat, setSelectedChat] = useState<chatRoomObject | directMessageObject>(
     {} as chatRoomObject | directMessageObject
   ); // Track the current selected chat
   const [showCreateChatRoom, setShowCreateChatRoom] = useState({
@@ -172,14 +172,15 @@ function NavBarTabContent(props: ChatListProps) {
               </button>
             </div>
           )}
-          {props.displayTab === TabTypes.DiretMessage && (<div className='DirectMessageHeader'>Direct Messages</div>)}
+          {props.displayTab === TabTypes.DiretMessage && (
+            <div className="DirectMessageHeader">Direct Messages</div>
+          )}
         </div>
         <div className="ListContainer">
           {chatList.map((chat, index) => (
             <div
               className="ListItem"
               key={index}
-              onMouseOver={() => setShowEditChatRoom(true)}
               onClick={() => handleChatOnClick(chat)}
             >
               <div className="ItemIcon">
@@ -208,9 +209,11 @@ function NavBarTabContent(props: ChatListProps) {
                     : ""}
                 </div>
               </div>
-              <div className="EditChatRoomButton">
-                  <img src={editChatRoomIcon}/>
-              </div>
+              <img 
+              onClick={() => setShowEditChatRoom(!showEditChatRoom)}
+                className="EditChatRoomButton"
+                src={editChatRoomIcon}
+              />
             </div>
           ))}
         </div>
@@ -240,8 +243,9 @@ function NavBarTabContent(props: ChatListProps) {
       />
       <div style={{ display: showEditChatRoom ? "flex" : "none" }}>
         <EditChatroom
-          title="hi"
-          description="hi description"
+          chatRoomId={(selectedChat as chatRoomObject).id}
+          title={(selectedChat as chatRoomObject).title}
+          description={(selectedChat as chatRoomObject).description}
           clickedExit={() => setShowEditChatRoom(!showEditChatRoom)}
         />
       </div>

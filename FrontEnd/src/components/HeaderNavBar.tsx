@@ -8,7 +8,6 @@ import SignalRChatRoom from "../services/ChatRoomConnection";
 import UserInfo from "../services/UserInfo";
 import "../styles/HeaderNavBar.css";
 import UserProfile from "./UserProfile";
-import Profile from "./profile/Profile";
 
 /*
  * HeaderNavBar.tsx
@@ -52,14 +51,14 @@ function HeaderNavBar(props: HeaderNavBarProps) {
   }
 
     return (
-        <div className="HeaderNavBar">
+        <div className="HeaderNavBar" >
             <div className="HeaderTitle">BRAINSTORM</div>
             <div className="JoinCodeSection">
                 <input className="JoinCodeInput" type="text" id="JoinCode" placeholder="Chat Room Join Code..." />
                 <button className="JoinCodeButton" onClick={() => joinCode()}>Join</button>
                 <h5 className="ErrorMsg" style={{ display: display }}>{errorMsg}</h5>
             </div>
-            <div className="UserProfile">
+            <div className="UserProfile" onClick={props.clickedUserProfile}>
                 <UserProfile user={UserInfo.getUserInfo()} />
             </div>
         </div>
