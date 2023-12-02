@@ -1,6 +1,7 @@
-import '../styles/CreateRoomCustomize.css'
-import ApiService from '../services/ApiService';
 import { useEffect, useState } from 'react';
+import { DisplayTypes, ErrorMessages } from '../models/EnumObjects';
+import ApiService from '../services/ApiService';
+import '../styles/CreateRoomCustomize.css';
 
 /*
     *  CreateRoomCustomize.tsx 
@@ -15,14 +16,14 @@ import { useEffect, useState } from 'react';
 */
 
 interface CreateRoomCustomizeProps {
-    style: { display: string },
+    style: { display: DisplayTypes },
     render: React.Dispatch<React.SetStateAction<boolean>>,
 }
 
 function CreateRoomCustomize(props: CreateRoomCustomizeProps) {
-    const [style, setStyle] = useState({} as { display: string }); // Set the style of the component
-    const [errorMsg, setErrorMsg] = useState("" as string); // Set the error message
-    const [errorDisplay, setErrorDisplay] = useState({ display: "none" }); // Set the error display
+    const [style, setStyle] = useState({} as { display: DisplayTypes }); // Set the style of the component
+    const [errorMsg, setErrorMsg] = useState(ErrorMessages.Empty); // Set the error message
+    const [errorDisplay, setErrorDisplay] = useState({ display: DisplayTypes.None }); // Set the error display
 
     /**
      * Prevent the child from being clicked
@@ -36,7 +37,7 @@ function CreateRoomCustomize(props: CreateRoomCustomizeProps) {
      * Handle the create room button
      */
     async function handleCreateRoomButton() {
-        setErrorDisplay({ display: "none" });
+        setErrorDisplay({ display: DisplayTypes.None });
         const chatRoomName = (document.getElementById('chatRoomName') as HTMLInputElement).value;
         const description = (document.getElementById('description') as HTMLInputElement).value;
 
@@ -44,11 +45,11 @@ function CreateRoomCustomize(props: CreateRoomCustomizeProps) {
             await ApiService.CreateChatRoom(chatRoomName, description);
             (document.getElementById('chatRoomName') as HTMLInputElement).value = '';
             (document.getElementById('description') as HTMLInputElement).value = '';
-            setStyle({ display: "none" });
+            setStyle({ display: DisplayTypes.None });
             props.render(prev => !prev);
         } else {
-            setErrorMsg("Please enter a chat room name");
-            setErrorDisplay({ display: "block" });
+            setErrorMsg(ErrorMessages.FormIncomplete);
+            setErrorDisplay({ display: DisplayTypes.Block });
         }
     }
 
@@ -57,7 +58,7 @@ function CreateRoomCustomize(props: CreateRoomCustomizeProps) {
     }, [props.style]);
 
     return (
-        <div className='OptionContainer' style={style} onClick={() => setStyle({ display: "none" })}>
+        <div className='OptionContainer' style={style} onClick={() => setStyle({ display: DisplayTypes.None })}>
             <div className='WindowSection' onClick={handleChildClick}>
                 <div className='WindowSectionTitle'>
                     <h3 className='WindowSectionTitleText'>Create a Chat Room</h3>
@@ -70,12 +71,13 @@ function CreateRoomCustomize(props: CreateRoomCustomizeProps) {
                     <input type="text" id='description' placeholder='Description' />
                     <div>
 
-                        <button className='cancelButton' onClick={() => {
+                        <button className='CancelButton' onClick={() => {
                             (document.getElementById("chatRoomName") as HTMLInputElement).value = "";
                             (document.getElementById("description") as HTMLInputElement).value = "";
-                            setStyle({ display: "none" })}
+                            setStyle({ display: DisplayTypes.None })
+                        }
                         }>Cancel</button>
-                        <button className='submitButton' onClick={() => handleCreateRoomButton()}>Create</button>
+                        <button className='SubmitButton' onClick={() => handleCreateRoomButton()}>Create</button>
                     </div>
                 </div>
                 <h5 className='ErrorMsg' style={errorDisplay}>{errorMsg}</h5>

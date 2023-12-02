@@ -4,8 +4,11 @@ using Logic.Controllers;
 using Logic.DTOs.ChatRoom;
 using Logic.DTOs.Messages;
 using Logic.DTOs.User;
+using Logic.Hubs;
 using Logic.Services;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Configuration;
+using Moq;
 
 namespace Logic.IntegrationTest.Services
 {
@@ -22,6 +25,8 @@ namespace Logic.IntegrationTest.Services
         };
 
         ChatRoomService chatRoomService;
+
+        Mock<IHubContext<ChatRoomHub>> chatRoomHubContext;
 
         [OneTimeSetUp]
         public async Task CreateUser()
@@ -42,6 +47,8 @@ namespace Logic.IntegrationTest.Services
             await userController.RegisterUser(newUser);
             var action = await userController.LoginUser(new LoginUserRequest { Username = newUser.Username, Password = newUser.Password });
             this.loginResponse = (RegisterLoginResponse)action.Value;
+
+            chatRoomHubContext = new Mock<IHubContext<ChatRoomHub>>();
         }
 
         [SetUp]
@@ -49,7 +56,7 @@ namespace Logic.IntegrationTest.Services
         {
             var chatRoomColleciton = new ChatRoomCollection();
             var userCollection = new UserCollection();
-            chatRoomService = new ChatRoomService(chatRoomColleciton, userCollection);
+            chatRoomService = new ChatRoomService(chatRoomColleciton, userCollection, chatRoomHubContext.Object);
         }
 
         [Test]

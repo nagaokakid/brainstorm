@@ -1,6 +1,5 @@
 /* navigationBar.css */
-.navigation-bar
-{
+.NavBar {
   position: relative;
   padding-left: 7px;
   padding-right: 7px;
@@ -8,11 +7,10 @@
   display: flex;
   flex-direction: column;
   gap: 2px;
-  background: linear-gradient(167deg, rgba(2,0,36,1) 0%, rgba(12,53,106,1) 51%, rgba(1,116,190,1) 100%);
+  background: linear-gradient(167deg, rgba(2, 0, 36, 1) 0%, rgba(12, 53, 106, 1) 51%, rgba(1, 116, 190, 1) 100%);
 }
 
-.nav-button
-{
+.NavBar .NavBtn {
   font-size: larger;
   padding: 7px;
   width: 100%;
@@ -27,14 +25,13 @@
   color: white;
 }
 
-.nav-button:hover
-{
+.NavBar .NavBtn:hover {
   background-color: rgb(29, 25, 75);
   color: white;
   border-radius: 5px;
 }
 
-.nav-button.active {
+.NavBar .NavBtn.active {
   background-color: rgb(29, 25, 75);
   border-left: 1px solid #FFC436;
   border-radius: 5px;

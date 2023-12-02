@@ -20,6 +20,7 @@ import {
 */
 
 class UserInfo {
+    
 
     // The url of the backend
     static BaseURL = "http://localhost:5135/"
@@ -367,13 +368,23 @@ class UserInfo {
         this.updateLocalIdea(true);
     }
 
-    static deleteChatRoom(chatRoomId:string, id: string) {
+    static deleteChatRoomMessage(chatRoomId:string, messageId: string) {
         const result = this.getChatRoomsList().find(chatRoom => chatRoom.id === chatRoomId);
         if (result) {
-            result.messages.splice(result.messages.findIndex(current => current.messageId === id), 1);
+            result.messages.splice(result.messages.findIndex(current => current.messageId === messageId), 1);
         }
         this.updateUser(true);
     }
+
+    static deleteChatRoom(chatRoomId:string) {
+        const index = this.getChatRoomsList().findIndex(chatRoom => chatRoom.id === chatRoomId);
+        if (index >= 0) {
+            this.getChatRoomsList().splice(index, 1);
+        }
+        this.updateUser(true);
+    }
+
+    
 
     static deleteDirectMessage(toId: string, id: string) {
         const result = this.getDirectMessagesList().find(current => (toId === current.user1.userId || toId === current.user2.userId));

@@ -28,7 +28,7 @@
     margin-bottom: 10px;
 }
 
-.CreateBtn{
+.CreateBrainStormCustomizeWindow .BSinfoWindow .CreateBtn {
     margin: 5px;
     background-color: green;
     border: none;
@@ -38,7 +38,7 @@
     font-weight: bold;
 }
 
-.CancelBtn{
+.CreateBrainStormCustomizeWindow .BSinfoWindow .CancelBtn {
     color: white;
     font-weight: bold;
     margin: 5px;
@@ -48,7 +48,7 @@
     border-radius: 5px;
 }
 
-.Input{
+.CreateBrainStormCustomizeWindow .BSinfoWindow input {
     margin: 5px;
     padding: 5px;
     border-radius: 5px;

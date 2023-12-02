@@ -11,14 +11,14 @@ import {
 
 /*
  * ApiService.ts
-  * -----------------------------
-  * This file is the model for the ApiService object.
-  * ----------------------------------------------------------
-  * Author:  Mr. Yee Tsuung (Jackson) Kao and Mr. Roland Fehr
-  * Date Created:  01/12/2023
-  * Last Modified: 01/12/2023
-  * Version: 0.0.1
-*/
+ * -----------------------------
+ * This file is the model for the ApiService object.
+ * ----------------------------------------------------------
+ * Author:  Mr. Yee Tsuung (Jackson) Kao and Mr. Roland Fehr
+ * Date Created:  01/12/2023
+ * Last Modified: 01/12/2023
+ * Version: 0.0.1
+ */
 
 /// <summary>
 /// This class is the model for the ApiService object.
@@ -93,6 +93,86 @@ class ApiService {
       });
 
     return resp;
+  }
+
+  async DeleteUser() {
+    await fetch(UserInfo.BaseURL + "api/users/" + UserInfo.getUserId(), {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + UserInfo.getToken(),
+      },
+    }).then(async (response) => {
+      if (response.ok) {
+        // update UI
+      } else {
+        // update UI
+      }
+    });
+  }
+
+  async EditChatRoom(
+    chatRoomId: string,
+    newTitle: string,
+    newDescription: string,
+  ) {
+    await fetch(UserInfo.BaseURL + "api/chatroom/", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + UserInfo.getToken(),
+      },
+      body: JSON.stringify({
+        id: chatRoomId,
+        title: newTitle,
+        description: newDescription
+      }),
+    })
+  }
+
+  async DeleteChatRoom(chatRoomId: string) {
+    await fetch(UserInfo.BaseURL + "api/chatroom/" + chatRoomId, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + UserInfo.getToken(),
+      },
+    }).then(async (response) => {
+      if (response.ok) {
+        UserInfo.deleteChatRoom(chatRoomId)
+      } else {
+        // update UI
+      }
+    });
+  }
+
+  async EditUser(
+    newUsername: string,
+    newPassowrd: string,
+    newFirstName: string,
+    newLastName: string
+  ) {
+    await fetch(UserInfo.BaseURL + "api/users/", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + UserInfo.getToken(),
+      },
+      body: JSON.stringify({
+        username: newUsername,
+        password: newPassowrd,
+        userId: UserInfo.getUserId(),
+        firstName: newFirstName,
+        lastName: newLastName,
+      }),
+    }).then(async (response) => {
+      if (response.ok) {
+          // set firstname & last name
+          // rerender
+      } else {
+        // update UI
+      }
+    });
   }
 
   /**
@@ -207,13 +287,15 @@ class ApiService {
       )
     );
     await SignalRDirect.getInstance().then((value) =>
-      value.setRemoveDirectMessageCallback((toId: string, messageId: string) => {
-        console.log("----> Receive remove direct message callback");
-        if (toId && messageId) {
-          UserInfo.deleteDirectMessage(toId, messageId);
-          Callback(7);
+      value.setRemoveDirectMessageCallback(
+        (toId: string, messageId: string) => {
+          console.log("----> Receive remove direct message callback");
+          if (toId && messageId) {
+            UserInfo.deleteDirectMessage(toId, messageId);
+            Callback(7);
+          }
         }
-      })
+      )
     );
     await SignalRChatRoom.getInstance().then((value) =>
       value.setReceiveChatRoomMessageCallback(
@@ -239,41 +321,45 @@ class ApiService {
       })
     );
     await SignalRChatRoom.getInstance().then((value) =>
-      value.setRemoveChatRoomMessageCallback((chatRoomId: string, messageId: string) => {
-        if (chatRoomId && messageId) {
-          // remove chat message from chatroom
-          // const chatIndex = UserInfo.currentUser.chatRooms.findIndex(
-          //   (x) => x.id === chatRoomId
-          // );
-          // console.log(chatIndex);
-          // if (chatIndex !== -1) {
-          //   const msgIndex = UserInfo.currentUser.chatRooms[
-          //     chatIndex
-          //   ].messages.findIndex((x) => x.messageId === messageId);
-          //   console.log(msgIndex);
-          //   if (msgIndex !== -1) {
-          //     // remove
-          //     UserInfo.currentUser.chatRooms[chatIndex].messages.splice(
-          //       msgIndex,
-          //       1
-          //     );
-          //     UserInfo.updateUser(true);
-          //   }
-          // }
+      value.setRemoveChatRoomMessageCallback(
+        (chatRoomId: string, messageId: string) => {
+          if (chatRoomId && messageId) {
+            // remove chat message from chatroom
+            // const chatIndex = UserInfo.currentUser.chatRooms.findIndex(
+            //   (x) => x.id === chatRoomId
+            // );
+            // console.log(chatIndex);
+            // if (chatIndex !== -1) {
+            //   const msgIndex = UserInfo.currentUser.chatRooms[
+            //     chatIndex
+            //   ].messages.findIndex((x) => x.messageId === messageId);
+            //   console.log(msgIndex);
+            //   if (msgIndex !== -1) {
+            //     // remove
+            //     UserInfo.currentUser.chatRooms[chatIndex].messages.splice(
+            //       msgIndex,
+            //       1
+            //     );
+            //     UserInfo.updateUser(true);
+            //   }
+            // }
 
-          UserInfo.deleteChatRoom(chatRoomId, messageId);
+            UserInfo.deleteChatRoomMessage(chatRoomId, messageId);
 
-          console.log("before");
-          Callback(7);
+            console.log("before");
+            Callback(7);
+          }
         }
-      })
+      )
     );
     await SignalRChatRoom.getInstance().then((value) =>
-      value.setUserJoinedBrainstormSessionCallback((id, userId, count, timer) => {
-        console.log("----> Receive BS join message callback");
+      value.setUserJoinedBrainstormSessionCallback(
+        (id, userId, count, timer) => {
+          console.log("----> Receive BS join message callback");
 
-        Callback(5, id, undefined, userId, count, timer);
-      })
+          Callback(5, id, undefined, userId, count, timer);
+        }
+      )
     );
     await SignalRChatRoom.getInstance().then((value) =>
       value.setBrainstormSessionAlreadyStartedErrorCallback(() => {
@@ -282,12 +368,21 @@ class ApiService {
     );
   }
 
-  async buildBSCallBack(Callback: (type: number, ideas?: Idea[], session_Id?: string, timer?: number) => void) {
+  async buildBSCallBack(
+    Callback: (
+      type: number,
+      ideas?: Idea[],
+      session_Id?: string,
+      timer?: number
+    ) => void
+  ) {
     await SignalRChatRoom.getInstance().then((value) =>
-      value.setBrainstormSessionStartedCallback((sessionId: string, timer: number) => {
-        console.log("----> Receive BS started message callback");
-        Callback(1, undefined, sessionId, timer);
-      })
+      value.setBrainstormSessionStartedCallback(
+        (sessionId: string, timer: number) => {
+          console.log("----> Receive BS started message callback");
+          Callback(1, undefined, sessionId, timer);
+        }
+      )
     );
 
     await SignalRChatRoom.getInstance().then((value) =>

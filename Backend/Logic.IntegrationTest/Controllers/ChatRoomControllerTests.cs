@@ -2,9 +2,12 @@
 using Logic.Controllers;
 using Logic.DTOs.ChatRoom;
 using Logic.DTOs.User;
+using Logic.Hubs;
 using Logic.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Configuration;
+using Moq;
 
 namespace Logic.IntegrationTest.Controllers
 {
@@ -25,7 +28,9 @@ namespace Logic.IntegrationTest.Controllers
             var userCollection = new UserCollection();
             var userService = new UserService(userCollection);
             var authService = new AuthService(userCollection, chatRoomColleciton, directMessageCollection, config, userService);
-            var chatRoomService = new ChatRoomService(chatRoomColleciton, userCollection);
+
+            Mock<IHubContext<ChatRoomHub>> chatRoomHubContext = new Mock<IHubContext<ChatRoomHub>>();
+            var chatRoomService = new ChatRoomService(chatRoomColleciton, userCollection, chatRoomHubContext.Object);
             chatRoomController = new ChatRoomController(chatRoomService);
             userController = new UsersController(authService);
         }

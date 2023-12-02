@@ -1,10 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import "../styles/MainPage.css";
+import { useEffect, useState } from "react";
+import TabContent from "../components/NavBarTabContent";
 import HeaderNavBar from "../components/HeaderNavBar";
 import NavigationBar from "../components/NavigationBar";
-import TabContent from "../components/ChatList";
+import { DisplayTypes, NoticeMessages, TabTypes } from "../models/EnumObjects";
 import UserInfo from "../services/UserInfo";
-import { useEffect, useState } from "react";
+import "../styles/MainPage.css";
+import Profile from "../components/profile/Profile";
 
 /*
   *  MainPage.tsx 
@@ -17,27 +19,28 @@ import { useEffect, useState } from "react";
   * Last Modified: 01/12/2023
   * Version: 1.0
   */
- 
+
 function MainPage() {
-    const [currentTab, setCurrentTab] = useState("ChatRoom List"); // Set the default chat type to be "CharRoom List"
-    const [display, setDisplay] = useState({ display: "none" }); // Set the default display to be none
-    const [noticeMsg, setNoticeMsg] = useState("" as string); // Set the default notice message to be empty
+    const [currentTab, setCurrentTab] = useState(TabTypes.ChatRoom); // Set the default chat type to be "CharRoom List"
+    const [display, setDisplay] = useState(DisplayTypes.None); // Set the default display to be none
+    const [noticeMsg, setNoticeMsg] = useState(NoticeMessages.Empty); // Set the default notice message to be empty
+    const [showProfile, setShowProfile] = useState<boolean>(false);
 
     // If the user is not logged in, redirect to the login page
     if (sessionStorage.getItem("token") === null || sessionStorage.getItem("token") !== UserInfo.getToken()) {
-        //window.location.href = "/";
+        window.location.href = "/";
     }
 
     /**
      * Show the notice with the given message
      * @param msg The message to be shown in the notice
      */
-    function showNotice(msg: string) {
+    function showNotice(msg: NoticeMessages) {
         setNoticeMsg(msg);
-        setDisplay({ display: "flex" });
+        setDisplay(DisplayTypes.Flex);
 
         setTimeout(() => {
-            setDisplay({ display: "none" });
+            setDisplay(DisplayTypes.None);
         }, 2000);
     }
 
@@ -46,33 +49,36 @@ function MainPage() {
      * @param tab The tab selected 
      * @returns 
      */
-    function handleSelectedTab(tab: string) {
-        if (tab === "Direct Message List" && UserInfo.getUserInfo().isGuest) { // If the user is a guest, they cannot use the direct message feature
-            showNotice("Guest cannot use this feature");
+    function handleSelectedTab(tab: TabTypes) {
+        if (tab === TabTypes.DiretMessage && UserInfo.getUserInfo().isGuest) { // If the user is a guest, they cannot use the direct message feature
+            showNotice(NoticeMessages.FeatureRestricted);
             return;
         } else {
             setCurrentTab(tab); // Set the chat type to be the tab selected
         }
     }
 
+    // Get user info from session storage
     useEffect(() => {
-        // Get user info from session storage
         UserInfo.updateUser();
         UserInfo.updateLocalIdea();
         UserInfo.updateIdeaList();
     }, []);
 
     return (
-        <div className="App">
-            <div className="headerNavContainer">
-                <HeaderNavBar noticeFunction={showNotice} />
+        <div className="MainPage">
+            <div className="HeaderNavContainer">
+                <HeaderNavBar clickedUserProfile={() => setShowProfile(!showProfile)} noticeFunction={showNotice} />
             </div>
-            <div className="main-page-container">
-                <NavigationBar selectFunction={handleSelectedTab} activeTab={currentTab}/>
+            <div className="MainPageBodyContainer">
+                <NavigationBar selectFunction={handleSelectedTab} activeTab={currentTab} />
                 <TabContent displayTab={currentTab} noticeFunction={showNotice} />
             </div>
-            <div className="NoticeClass" style={display}>
+            <div className="NoticeClass" style={{ display: display }}>
                 <div><h1>{noticeMsg}</h1></div>
+            </div>
+            <div className="ProfileContainer" style={{display: showProfile ? "flex" : "none"}}>
+                <Profile clickedExit={() => setShowProfile(false)}/>
             </div>
         </div>
     );

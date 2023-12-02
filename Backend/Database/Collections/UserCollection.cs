@@ -1,8 +1,6 @@
 ﻿using Database.CollectionContracts;
 using Database.Data;
 using Database.MongoDB;
-using MongoDB.Bson;
-using System.ComponentModel;
 
 /*
  * UserCollection.cs
@@ -96,6 +94,19 @@ namespace Database.Collections
                 return result;
             }
             return new Dictionary<string, User>();
+        }
+
+        public async Task Edit(User existingUser)
+        {
+        }
+
+        public async Task DeleteUser(string id)
+        {
+        }
+
+        public async Task RemoveChatRoomId(string userId, string chatId)
+        {
+            // remove chatroom id from user chatroom member list
         }
     } // class
 } // namespace

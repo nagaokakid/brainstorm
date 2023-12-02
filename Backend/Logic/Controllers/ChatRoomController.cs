@@ -9,11 +9,14 @@
  *  Version: 1.0
 */
 
+using Database.Data;
 using Logic.DTOs.ChatRoom;
 using Logic.Exceptions;
+using Logic.Hubs;
 using Logic.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 
 namespace Logic.Controllers
 {
@@ -74,6 +77,43 @@ namespace Logic.Controllers
             try
             {
                 return await chatRoomService.IsJoinCodeValid(joinCode);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500);
+            }
+        }
+
+        [HttpPut]
+        public async Task<ActionResult> EditChatRoom(EditChatRoomRequest request)
+        {
+            try
+            {
+                await chatRoomService.EditChatRoom(request);
+                return Ok();
+            }
+            catch (BadRequest e)
+            {
+                return BadRequest(e.Message);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500);
+            }
+        }
+
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteChatRoom(string id)
+        {
+            try
+            {
+                await chatRoomService.Delete(id);
+                return Ok();
+            }
+            catch (BadRequest e)
+            {
+                return BadRequest(e.Message);
             }
             catch (Exception)
             {
