@@ -62,3 +62,8 @@ To view the testing plan for the app, click [here](https://github.com/nagaokakid
 
 # End-To-End Testing
 If you would like to run the simulated acceptance tests for this project, clone the repository and ensure you have [Node and npm installed](https://radixweb.com/blog/installing-npm-and-nodejs-on-windows-and-mac). Go to the directory named *FrontEnd* for this project. Now, run the command `npm install` to install the necessary front-end dependencies. Then, run the command `npm run e2e` to run the tests.
+
+<br>
+
+# Load Testing
+Ensure the docker containers are running. Open the project repository on the command line, then navigate to the directory *LoadBalancing/apache-jmeter-5.6.2/bin*. Now, run the command `jmeter -n -t ../../app_load_test.jmx -l [resultsLogName].jtl -e -o [reportOutputName]` (use ./jmeter if you're using Windows Powershell). Replace [resultsLogName] and [reportOutputName] with whatever you like, just ensure the names don't already exist. This command will run the JMeter test and generate both a [resultsLogName] log file and a [reportOutputName] report output folder. Navigate to the report output folder and open the *index.html* file to see the full visual report and analytics for the JMeter test.
