@@ -1,9 +1,10 @@
-import "../styles/MessageInput.css";
-import UserInfo from "../services/UserInfo";
-import emailIcon from "../assets/email.png";
-import SignalRDirect from "../services/DirectMessageConnection";
-import SignalRChatRoom from "../services/ChatRoomConnection";
 import React, { useEffect, useState } from "react";
+import emailIcon from "../assets/email.png";
+import { KeyDown, TabTypes } from "../models/EnumObjects";
+import SignalRChatRoom from "../services/ChatRoomConnection";
+import SignalRDirect from "../services/DirectMessageConnection";
+import UserInfo from "../services/UserInfo";
+import "../styles/MessageInput.css";
 
 /*
     * MessageInput.tsx
@@ -16,7 +17,7 @@ import React, { useEffect, useState } from "react";
     * Version: 1.0
 */
 interface MsgInputFieldProps {
-    chatType: string;
+    chatType: TabTypes;
     chatId: string;
 }
 
@@ -28,11 +29,10 @@ function MsgInputField(props: MsgInputFieldProps) {
      * @returns 
      */
     function handleSend() {
-
         if (!text) {
             return;
         } else {
-            if (props.chatType === "Direct Message List") {
+            if (props.chatType === TabTypes.DiretMessage) {
                 const msg = {
                     user1: UserInfo.getUserInfo(),
                     user2: { userId: props.chatId, firstName: "", lastName: "" },
@@ -42,7 +42,7 @@ function MsgInputField(props: MsgInputFieldProps) {
                     await value.sendMessage(msg);
                 });
             }
-            else if (props.chatType === "ChatRoom List") {
+            else if (props.chatType === TabTypes.ChatRoom) {
                 const msg = {
                     messageId: "",
                     fromUserInfo: UserInfo.getUserInfo(),
@@ -63,7 +63,7 @@ function MsgInputField(props: MsgInputFieldProps) {
      * @param e 
      */
     function handleKey(e: React.KeyboardEvent<HTMLInputElement>) {
-        if (e.code === "Enter" || e.code === "NumpadEnter") {
+        if (e.code === KeyDown.Enter || e.code === KeyDown.NumpadEnter) {
             handleSend();
         }
     }
@@ -82,7 +82,7 @@ function MsgInputField(props: MsgInputFieldProps) {
                 value={text}
                 onKeyDown={handleKey}
             />
-            <div className="send">
+            <div className="Send">
                 <button onClick={handleSend}>
                     <img src={emailIcon} alt="Send" />
                 </button>

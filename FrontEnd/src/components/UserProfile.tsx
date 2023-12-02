@@ -2,14 +2,14 @@ import FriendlyUser from '../models/FriendlyUser';
 import "../styles/UserProfile.css";
 
 interface Props {
-    user: FriendlyUser;
+  user: FriendlyUser;
 }
 
-const UserProfile = ({user}: Props) => {
+function UserProfile(props: Props) {
   return (
     <div className='UserProfileContainer'>
-        <div className='UserProfileIcon'>{user.firstName[0]}{user.lastName[0]}</div>
-        <div className='UserProfileName'>{user.firstName} {user.lastName}</div>
+      <div className='UserProfileIcon'>{props.user.firstName[0]}{props.user.lastName[0]}</div>
+      <div className='UserProfileName'>{props.user.firstName}{props.user.lastName}</div>
     </div>
   )
 }

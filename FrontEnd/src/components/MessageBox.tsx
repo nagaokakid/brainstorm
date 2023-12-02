@@ -1,8 +1,9 @@
-import "../styles/MessageBox.css";
-import UserInfo from "../services/UserInfo";
+import delereImage from "../assets/delete.png";
+import { TabTypes } from "../models/EnumObjects";
 import SignalRChatRoom from "../services/ChatRoomConnection";
 import SignalRDirect from "../services/DirectMessageConnection";
-import delereImage from "../assets/delete.png";
+import UserInfo from "../services/UserInfo";
+import "../styles/MessageBox.css";
 
 /*
   * MessageBox.tsx
@@ -13,7 +14,7 @@ import delereImage from "../assets/delete.png";
   * Date Created:  01/12/2023
   * Last Modified: 01/12/2023
   * Version: 1.0
-*/ 
+*/
 interface MsgBoxProps {
   message: string;
   user: string[];
@@ -21,7 +22,7 @@ interface MsgBoxProps {
   bsId?: string;
   msgId: string;
   chatId: string; // chatId is the id of the chatroom or the id of the user that the msg going to send to.
-  chatType: string;
+  chatType: TabTypes;
 }
 
 function MsgBox(props: MsgBoxProps) {
@@ -42,16 +43,12 @@ function MsgBox(props: MsgBoxProps) {
 
   function handleRemoveMessage() {
     if (props.user[0] === UserInfo.getUserId()) {
-      if (props.chatType === "ChatRoom List") {
+      if (props.chatType === TabTypes.ChatRoom) {
         SignalRChatRoom.getInstance().then((value) => {
-          console.log("handle" + props.chatId + props.msgId);
-
           value.removeChatRoomMessage(props.chatId, props.msgId);
         });
       } else {
         SignalRDirect.getInstance().then((value) => {
-          console.log("handle" + props.chatId + props.msgId);
-
           value.removeDirectMessage(props.chatId, props.msgId);
         });
       }
@@ -67,7 +64,6 @@ function MsgBox(props: MsgBoxProps) {
             className="MessageImage"
             src={delereImage}
             onClick={() => {
-              console.log("Delete Message");
               handleRemoveMessage();
             }}
           />
