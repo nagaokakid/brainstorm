@@ -24,6 +24,7 @@ function MainPage() {
     const [currentTab, setCurrentTab] = useState(TabTypes.ChatRoom); // Set the default chat type to be "CharRoom List"
     const [display, setDisplay] = useState(DisplayTypes.None); // Set the default display to be none
     const [noticeMsg, setNoticeMsg] = useState(NoticeMessages.Empty); // Set the default notice message to be empty
+    const [showProfile, setShowProfile] = useState<boolean>(false);
 
     // If the user is not logged in, redirect to the login page
     if (sessionStorage.getItem("token") === null || sessionStorage.getItem("token") !== UserInfo.getToken()) {
@@ -67,7 +68,7 @@ function MainPage() {
     return (
         <div className="App">
             <div className="headerNavContainer">
-                <HeaderNavBar noticeFunction={showNotice} />
+                <HeaderNavBar noticeFunction={showNotice} clickedUserProfile={() => setShowProfile(!showProfile)}/>
             </div>
             <div className="main-page-container">
                 <NavigationBar selectFunction={handleSelectedTab} activeTab={currentTab} />
@@ -76,7 +77,9 @@ function MainPage() {
             <div className="NoticeClass" style={{ display: display }}>
                 <div><h1>{noticeMsg}</h1></div>
             </div>
-            <Profile display={false}/>
+            <div className="ProfileContainer" style={{display: showProfile ? "flex" : "none"}}>
+                <Profile clickedExit={() => setShowProfile(false)}/>
+            </div>
         </div>
     );
 }

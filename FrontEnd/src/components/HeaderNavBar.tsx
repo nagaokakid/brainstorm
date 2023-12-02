@@ -22,6 +22,7 @@ import Profile from "./profile/Profile";
  */
 interface HeaderNavBarProps {
   noticeFunction: (msg: NoticeMessages) => void;
+  clickedUserProfile: () => void;
 }
 
 function HeaderNavBar(props: HeaderNavBarProps) {
@@ -67,7 +68,7 @@ function HeaderNavBar(props: HeaderNavBarProps) {
           {errorMsg}
         </h5>
       </div>
-      <div className="UserProfile">
+      <div className="UserProfile" onClick={props.clickedUserProfile}>
         <UserProfile user={UserInfo.getUserInfo()} />
       </div>
     </div>

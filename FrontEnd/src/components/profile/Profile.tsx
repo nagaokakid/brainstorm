@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import UserInfo from "../../services/UserInfo";
+import "../../styles/profile/Profile.css"
 
 interface Props {
-  display: boolean;
+  clickedExit: () => void;
 }
 
-const Profile = ({ display }: Props) => {
+const Profile = ({ clickedExit }: Props) => {
   const [first, setFirst] = useState<string>();
   const [last, setLast] = useState<string>();
   console.log("loaded profile");
@@ -17,7 +18,7 @@ const Profile = ({ display }: Props) => {
     console.log("loaded profile");
   }, []);
   return (
-    <div className="ProfileWindoww" style={{display: display ? "flex" : "none"}}>
+    <div className="ProfileWindoww">
       <div>Profile</div>
       <form className="RegisterForm" id="RegisterForm">
         <input
@@ -53,6 +54,11 @@ const Profile = ({ display }: Props) => {
           type="Password"
         />
       </form>
+      <div className="ProfileButtonsContainer">
+        <button className="DeleteProfileButton" onClick={clickedExit}>Delete</button>
+        <button className="CancelProfileButton" onClick={clickedExit}>Cancel</button>
+        <button className="SaveProfileButton" onClick={clickedExit}>Save</button>
+      </div>
     </div>
   );
 };
