@@ -10,6 +10,7 @@ import '../styles/YesNoPrompt.css';
  * Last Modified: 01/12/2023
  * Version: 1.0
 */
+
 interface YesNoPromptProps {
     display: string,
     yesFunction: () => void,

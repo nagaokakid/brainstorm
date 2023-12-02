@@ -174,3 +174,24 @@
 .exitIcon_BS:hover{
     height: 80px;
 }
+
+.BS_PageContainer .BS_HeaderContainer .RecycleBinButton {
+    position: absolute;
+    font-size: 30px;
+    top: 5px;
+    right: 5px;
+    width: 50px;
+    height: 50px;
+    border: none;
+    z-index: 1;
+    background: black;
+    color: white;
+}
+
+/*
+.RecycleBinButton:hover {
+    transition: 0.5s;
+    background-color: rgba(0, 0, 0, 0.418);
+    box-shadow: 0 0 10px 10px rgba(0, 0, 0, 0.418);
+    margin: 5px;
+} */

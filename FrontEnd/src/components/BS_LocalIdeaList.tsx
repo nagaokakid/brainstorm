@@ -2,6 +2,7 @@ import '../styles/BS_LocalIdeaList.css';
 import UserInfo from '../services/UserInfo';
 import { useEffect, useState } from 'react';
 
+
 /*
  *  BS_LocalIdeaList.tsx 
  * -------------------------
@@ -15,6 +16,7 @@ import { useEffect, useState } from 'react';
  */
 interface BS_LocalIdeaListProps {
     content: string[],
+    handleFunction: (idea: string) => void
 }
 
 function BS_LocalIdeaList(props: BS_LocalIdeaListProps) {
@@ -22,7 +24,8 @@ function BS_LocalIdeaList(props: BS_LocalIdeaListProps) {
     const [display, setDisplay] = useState("none");
     const [forceUpdate, setForceUpdate] = useState(false);
 
-    function handleDeleteClick(position: number) {
+    function handleDeleteClick(position: number, idea: string) {
+        props.handleFunction(idea);
         UserInfo.deleteIdea(position);
         props.content.splice(position, 1);
         setForceUpdate(!forceUpdate);
@@ -44,7 +47,7 @@ function BS_LocalIdeaList(props: BS_LocalIdeaListProps) {
                 return (
                     <div className="Idea" key={id}>
                         {idea}
-                        <button className='DeleteButton' onClick={() => handleDeleteClick(id)}>
+                        <button className='DeleteButton' onClick={() => handleDeleteClick(id, idea)}>
                             <img src="src\assets\delete.png" width={20} height={20}/>
                         </button>
                     </div>
