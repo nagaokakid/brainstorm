@@ -8,7 +8,7 @@ import { DisplayTypes, ErrorMessages } from '../models/EnumObjects';
 import { chatRoomObject, directMessageObject } from '../models/TypesDefine';
 import ApiService from '../services/ApiService';
 import UserInfo from '../services/UserInfo';
-import '../styles/GuestJoin.css';
+import '../styles/GuestForm.css';
 
 function GuestForm() {
     const navigate = useNavigate()

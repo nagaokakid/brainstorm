@@ -50,28 +50,19 @@ function HeaderNavBar(props: HeaderNavBarProps) {
     code.value = ""; // Clear the input field
   }
 
-  return (
-    <div className="header-nav-bar">
-      <div className="user-name">BRAINSTORM</div>
-      <div className="JoinCodeSection">
-        <input
-          className="JoinCodeInput"
-          type="text"
-          id="JoinCode"
-          placeholder="Chat Room Join Code..."
-        />
-        <button className="JoinCodeButton" onClick={() => joinCode()}>
-          Join
-        </button>
-        <h5 className="ErrorMsg" style={{ display: display }}>
-          {errorMsg}
-        </h5>
-      </div>
-      <div className="UserProfile">
-        <UserProfile user={UserInfo.getUserInfo()} />
-      </div>
-    </div>
-  );
+    return (
+        <div className="HeaderNavBar">
+            <div className="HeaderTitle">BRAINSTORM</div>
+            <div className="JoinCodeSection">
+                <input className="JoinCodeInput" type="text" id="JoinCode" placeholder="Chat Room Join Code..." />
+                <button className="JoinCodeButton" onClick={() => joinCode()}>Join</button>
+                <h5 className="ErrorMsg" style={{ display: display }}>{errorMsg}</h5>
+            </div>
+            <div className="UserProfile">
+                <UserProfile user={UserInfo.getUserInfo()} />
+            </div>
+        </div>
+    );
 }
 
 export default HeaderNavBar;

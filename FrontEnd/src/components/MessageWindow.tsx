@@ -1,11 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+import { useEffect, useState } from "react";
+import { useDataContext } from "../contexts/DataContext";
+import { TabTypes } from "../models/EnumObjects";
+import { chatRoomMessageObject } from "../models/TypesDefine";
+import UserInfo from "../services/UserInfo";
 import "../styles/MessageWindow.css";
 import MessageBox from "./MessageBox";
-import UserInfo from "../services/UserInfo";
 import MessageInput from "./MessageInput";
-import { chatRoomMessageObject } from "../models/TypesDefine";
-import { useDataContext } from "../contexts/DataContext";
-import { useEffect, useState } from "react";
 
 /* 
     *  MessageWindow.tsx 
@@ -17,25 +18,23 @@ import { useEffect, useState } from "react";
     * Date Created:  01/12/2023
     * Last Modified: 01/12/2023
     * Version: 1.0
-    */ 
+    */
 interface MessageWindowProps {
     chatId: string;
-    chatType: string;
+    chatType: TabTypes;
 }
 
 function MessageWindow(props: MessageWindowProps) {
     const context = useDataContext();
     const msg = context[1];
     const render = context[4];
-    const [messages, setMessages] = useState([] as (chatRoomMessageObject | { messageId:string, message: string, timestamp: string })[]); // Set the message to the display
-   
-    
+    const [messages, setMessages] = useState([] as (chatRoomMessageObject | { messageId: string, message: string, timestamp: string })[]); // Set the message to the display
+
+
     useEffect(() => {
-        if(msg === undefined){
+        if (msg === undefined) {
             setMessages(UserInfo.getMessageHistory(props.chatId, props.chatType));
-            
-        }
-        else if ("chatRoomId" in msg && msg.chatRoomId === props.chatId) {
+        } else if ("chatRoomId" in msg && msg.chatRoomId === props.chatId) {
             setMessages(prev => [...prev, msg]);
         } else if ("toUserInfo" in msg && msg.toUserInfo) {
             const check1 = msg.toUserInfo.userId === UserInfo.getUserId() && msg.fromUserInfo.userId === props.chatId;
@@ -48,7 +47,6 @@ function MessageWindow(props: MessageWindowProps) {
 
     useEffect(() => {
         setMessages(UserInfo.getMessageHistory(props.chatId, props.chatType));
-        
     }, [props.chatId, render]);
 
     return (
@@ -56,8 +54,8 @@ function MessageWindow(props: MessageWindowProps) {
             <div className="MsgSection">
                 {messages.map((e, index) => (
                     'brainstorm' in e ?
-                        <MessageBox message={e.message} key={index} user={'fromUserInfo' in e ? [e.fromUserInfo.userId, e.fromUserInfo.firstName] : []} isBrainstorm={true} bsId={e.brainstorm?.sessionId} chatId={props.chatId} msgId={'messageId' in e ? e.messageId:''} chatType={props.chatType}/> :
-                        <MessageBox message={e.message} key={index} user={'fromUserInfo' in e ? [e.fromUserInfo.userId, e.fromUserInfo.firstName] : []} isBrainstorm={false} chatId={props.chatId} msgId={'messageId' in e ? e.messageId:''} chatType={props.chatType}/>
+                        <MessageBox message={e.message} key={index} user={'fromUserInfo' in e ? [e.fromUserInfo.userId, e.fromUserInfo.firstName] : []} isBrainstorm={true} bsId={e.brainstorm?.sessionId} chatId={props.chatId} msgId={'messageId' in e ? e.messageId : ''} chatType={props.chatType} /> :
+                        <MessageBox message={e.message} key={index} user={'fromUserInfo' in e ? [e.fromUserInfo.userId, e.fromUserInfo.firstName] : []} isBrainstorm={false} chatId={props.chatId} msgId={'messageId' in e ? e.messageId : ''} chatType={props.chatType} />
                 ))}
             </div>
             <div className='InputSection'>

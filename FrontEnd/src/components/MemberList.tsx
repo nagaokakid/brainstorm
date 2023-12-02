@@ -1,7 +1,8 @@
-import "../styles/MemberList.css";
-import UserInfo from "../services/UserInfo";
-import SignalRDirect from "../services/DirectMessageConnection";
+import { NoticeMessages } from "../models/EnumObjects";
 import { userInfoObject } from "../models/TypesDefine";
+import SignalRDirect from "../services/DirectMessageConnection";
+import UserInfo from "../services/UserInfo";
+import "../styles/MemberList.css";
 import UserProfile from "./UserProfile";
 
 /*
@@ -30,7 +31,7 @@ function MemberList(props: MemberListProps) {
     function handleMemberClick(member: userInfoObject) {
 
         if (UserInfo.getUserInfo().isGuest) { // If the user is a guest, do not allow them to send direct message
-            alert("Guest cannot send direct message");
+            alert(NoticeMessages.FeatureRestricted);
             return;
         } else {
             const temp = prompt("Enter your message to " + member.firstName + " " + member.lastName);
@@ -55,12 +56,12 @@ function MemberList(props: MemberListProps) {
     }
 
     return (
-        <div className="member-list">
-            <div className="online-members">
+        <div className="ChatMemberList">
+            <div className="MembersList">
                 <h2>Members</h2>
-                <ul className="members">
+                <ul className="Members">
                     {onlineMembers.map((member, index) => (
-                        <li key={index} onClick={() => handleMemberClick(member)}><UserProfile user={member}/></li>
+                        <li key={index} onClick={() => handleMemberClick(member)}><UserProfile user={member} /></li>
                     ))}
                 </ul>
             </div>

@@ -69,6 +69,7 @@
     background: #e6ab22;
     cursor: pointer;
 }
+
 .WindowContainer .MsgContainer .MsgSection {
     display: flex;
     flex-direction: column;

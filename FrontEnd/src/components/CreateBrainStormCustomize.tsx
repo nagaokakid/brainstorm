@@ -1,7 +1,8 @@
-import "../styles/CreateBrainStormCustomize.css";
-import SignalRChatRoom from "../services/ChatRoomConnection";
-import { chatRoomObject, directMessageObject } from "../models/TypesDefine";
 import { useEffect, useState } from "react";
+import { DisplayTypes, ErrorMessages } from "../models/EnumObjects";
+import { chatRoomObject, directMessageObject } from "../models/TypesDefine";
+import SignalRChatRoom from "../services/ChatRoomConnection";
+import "../styles/CreateBrainStormCustomize.css";
 
 /*
   *  CreateBrainStormCustomize.tsx 
@@ -16,14 +17,14 @@ import { useEffect, useState } from "react";
 */
 
 interface CreateBrainStormCustomizeProps {
-  style: { display: string };
+  style: { display: DisplayTypes };
   chat: chatRoomObject | directMessageObject | null;
 }
 
 function CreateBrainStormCustomize(props: CreateBrainStormCustomizeProps) {
   const [style, setStyle] = useState(props.style); // Set the style of the component
-  const [errorMsg, setErrorMsg] = useState("" as string); // Set the error message
-  const [errorDisplay, setErrorDisplay] = useState({ display: "none" }); // Set the error display
+  const [errorMsg, setErrorMsg] = useState(ErrorMessages.Empty); // Set the error message
+  const [errorDisplay, setErrorDisplay] = useState({ display: DisplayTypes.None }); // Set the error display
 
   /**
    * Prevent the child from being clicked
@@ -37,7 +38,7 @@ function CreateBrainStormCustomize(props: CreateBrainStormCustomizeProps) {
    * Handle the create brainstorm button
    */
   async function handleCreateClick() {
-    setErrorDisplay({ display: "none" });
+    setErrorDisplay({ display: DisplayTypes.None });
     const button = document.getElementById("createBs") as HTMLButtonElement;
     const name = (document.getElementById("BSname") as HTMLInputElement).value;
     const description = (
@@ -47,8 +48,8 @@ function CreateBrainStormCustomize(props: CreateBrainStormCustomizeProps) {
 
     button.disabled = true;
     if (name === "" || description === "") {
-      setErrorMsg("Please provide name and description for this session");
-      setErrorDisplay({ display: "block" });
+      setErrorMsg(ErrorMessages.FormIncomplete);
+      setErrorDisplay({ display: DisplayTypes.Block });
       button.disabled = false;
     } else {
       (document.getElementById("BSname") as HTMLInputElement).value = "";
@@ -65,10 +66,10 @@ function CreateBrainStormCustomize(props: CreateBrainStormCustomizeProps) {
           )
           .then((value) => {
             if (value) {
-              setStyle({ display: "none" });
+              setStyle({ display: DisplayTypes.None });
             } else {
-              setErrorMsg("Failed to create brainstorm");
-              setErrorDisplay({ display: "block" });
+              setErrorMsg(ErrorMessages.FailedToCreateBSsession);
+              setErrorDisplay({ display: DisplayTypes.Block });
             }
           });
       });
@@ -84,19 +85,20 @@ function CreateBrainStormCustomize(props: CreateBrainStormCustomizeProps) {
     <div
       className="CreateBrainStormCustomizeWindow"
       style={style}
-      onClick={() => setStyle({ display: "none" })}
+      onClick={() => setStyle({ display: DisplayTypes.None })}
     >
       <div className="BSinfoWindow" onClick={handleChildClick}>
         <h1>Create Brainstorm Session</h1>
         <input className="Input" type="text" id="BSname" placeholder="Name" />
-        <input className="Input"  type="text" id="BSdescription" placeholder="Description" />
-        <input className="Input"  type="text" id="BStimer" placeholder="Enter Time in Seconds" />
+        <input className="Input" type="text" id="BSdescription" placeholder="Description" />
+        <input className="Input" type="text" id="BStimer" placeholder="Enter Time in Seconds" />
         <div>
           <button className="CancelBtn" onClick={() => {
-             (document.getElementById("BSname") as HTMLInputElement).value = "";
-             (document.getElementById("BSdescription") as HTMLInputElement).value = "";
-             (document.getElementById("BStimer") as HTMLInputElement).value = "";
-            setStyle({ display: "none" })}
+            (document.getElementById("BSname") as HTMLInputElement).value = "";
+            (document.getElementById("BSdescription") as HTMLInputElement).value = "";
+            (document.getElementById("BStimer") as HTMLInputElement).value = "";
+            setStyle({ display: DisplayTypes.None })
+          }
           }>
             Cancel
           </button>

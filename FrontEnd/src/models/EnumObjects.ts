@@ -7,6 +7,7 @@ export enum ErrorMessages {
     PasswordNotMatch = "Password does not match",
     DuplicatedAccount = "Account already exists",
     InvalidCode = "Invalid code",
+    FailedToCreateBSsession = "Failed to create BS session",
 }
 
 export enum NoticeMessages {

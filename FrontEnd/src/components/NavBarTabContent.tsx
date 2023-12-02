@@ -14,7 +14,7 @@ import {
 import ApiService from "../services/ApiService";
 import SignalRChatRoom from "../services/ChatRoomConnection";
 import UserInfo from "../services/UserInfo";
-import "../styles/ChatList.css";
+import "../styles/NavBarTabContent.css";
 import CreateBrainStormCustomize from "./CreateBrainStormCustomize";
 import CreateRoomCustomize from "./CreateRoomCustomize";
 import DefaultChatRoomWindow from "./DefaultChatRoomWindow";
@@ -138,9 +138,9 @@ function NavBarTabContent(props: ChatListProps) {
   }, [props.displayTab, context, forceRender]);
 
   return (
-    <div className="ChatListContainer">
-      <div className="chat-list">
-        <div className="ChatListHeader">
+    <div className="NavBarTabContentContainer">
+      <div className="ContentListContainer">
+        <div className="ListHeader">
           {props.displayTab === TabTypes.ChatRoom && (
             <div className="ChatRoomHeader">
               Chat Rooms
@@ -153,16 +153,16 @@ function NavBarTabContent(props: ChatListProps) {
               </button>
             </div>
           )}
-          {props.displayTab === TabTypes.DiretMessage && (<>Direct Messages</>)}
+          {props.displayTab === TabTypes.DiretMessage && (<div className='DirectMessageHeader'>Direct Messages</div>)}
         </div>
-        <div className="chats">
+        <div className="ListContainer">
           {chatList.map((chat, index) => (
             <div
-              className="chat-item"
+              className="ListItem"
               key={index}
               onClick={() => handleChatOnClick(chat)}
             >
-              <div className="UserProfileIcon">
+              <div className="ItemIcon">
                 {("title" in chat
                   ? chat.title
                   : chat.user1.userId === UserInfo.getUserId()
@@ -172,15 +172,15 @@ function NavBarTabContent(props: ChatListProps) {
                   .trim()[0]
                   .toUpperCase()}
               </div>
-              <div className="chat-details">
-                <div className="chat-title">
+              <div className="ItemDetail">
+                <div className="ItemTitle">
                   {"title" in chat
                     ? chat.title
                     : chat.user1.userId === UserInfo.getUserId()
                       ? chat.user2.firstName
                       : chat.user1.firstName}
                 </div>
-                <div className="last-message">
+                <div className="LastMessage">
                   {"description" in chat
                     ? chat.description
                     : chat.directMessages.length != 0 ? chat.directMessages.slice(-1)[0].message : ""}
