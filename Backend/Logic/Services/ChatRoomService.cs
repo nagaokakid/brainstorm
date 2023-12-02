@@ -15,7 +15,9 @@ using Logic.DTOs.ChatRoom;
 using Logic.DTOs.Messages;
 using Logic.DTOs.User;
 using Logic.Exceptions;
+using Logic.Hubs;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 
 namespace Logic.Services
 {
@@ -43,16 +45,18 @@ namespace Logic.Services
     {
         private readonly IChatRoomCollection chatRoomCollection;
         private readonly IUserCollection userCollection;
+        private readonly IHubContext<ChatRoomHub> chatRoomHub;
 
         /// <summary>
         /// Constructor for ChatRoomService
         /// </summary>
         /// <param name="chatRoomCollection"></param>
         /// <param name="userCollection"></param>
-        public ChatRoomService(IChatRoomCollection chatRoomCollection, IUserCollection userCollection)
+        public ChatRoomService(IChatRoomCollection chatRoomCollection, IUserCollection userCollection, IHubContext<ChatRoomHub> chatRoomContext)
         {
             this.chatRoomCollection = chatRoomCollection;
             this.userCollection = userCollection;
+            this.chatRoomHub = chatRoomContext;
         }
 
         /// <summary>
@@ -221,6 +225,9 @@ namespace Logic.Services
         public async Task EditChatRoom(EditChatRoomRequest request)
         {
             if (request.Id == null || request.Title == null || request.Description == null) throw new BadRequest();
+
+            // send to all clients
+            chatRoomHub.Clients.Groups(request.Id).SendAsync("EditChatRoom", request.Id, request.Title, request.Description);
 
             // get existing chatroom
             var chatroom = await chatRoomCollection.GetById(request.Id);

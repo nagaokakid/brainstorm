@@ -137,7 +137,7 @@ namespace Logic
             app.UseCors(allowAllCors);
             app.UseAuthentication();
             app.UseAuthorization();
-
+            
             app.MapControllers();
             app.MapHub<ChatRoomHub>("/chatroom").AllowAnonymous();
             app.MapHub<DirectMessagingHub>("/direct").AllowAnonymous();

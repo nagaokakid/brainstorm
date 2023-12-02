@@ -123,17 +123,11 @@ class ApiService {
         Authorization: "Bearer " + UserInfo.getToken(),
       },
       body: JSON.stringify({
-        chatRoomId,
+        id: chatRoomId,
         title: newTitle,
         description: newDescription
       }),
-    }).then(async (response) => {
-      if (response.ok) {
-        // update UI
-      } else {
-        // update UI
-      }
-    });
+    })
   }
 
   async DeleteChatRoom(chatRoomId: string) {
@@ -145,7 +139,7 @@ class ApiService {
       },
     }).then(async (response) => {
       if (response.ok) {
-        // update UI
+        UserInfo.deleteChatRoom(chatRoomId)
       } else {
         // update UI
       }
@@ -173,7 +167,8 @@ class ApiService {
       }),
     }).then(async (response) => {
       if (response.ok) {
-        // update UI
+          // set firstname & last name
+          // rerender
       } else {
         // update UI
       }
@@ -349,7 +344,7 @@ class ApiService {
             //   }
             // }
 
-            UserInfo.deleteChatRoom(chatRoomId, messageId);
+            UserInfo.deleteChatRoomMessage(chatRoomId, messageId);
 
             console.log("before");
             Callback(7);

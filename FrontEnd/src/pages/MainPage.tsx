@@ -6,6 +6,7 @@ import NavigationBar from "../components/NavigationBar";
 import { DisplayTypes, NoticeMessages, TabTypes } from "../models/EnumObjects";
 import UserInfo from "../services/UserInfo";
 import "../styles/MainPage.css";
+import Profile from "../components/profile/Profile";
 
 /*
   *  MainPage.tsx 
@@ -23,6 +24,7 @@ function MainPage() {
     const [currentTab, setCurrentTab] = useState(TabTypes.ChatRoom); // Set the default chat type to be "CharRoom List"
     const [display, setDisplay] = useState(DisplayTypes.None); // Set the default display to be none
     const [noticeMsg, setNoticeMsg] = useState(NoticeMessages.Empty); // Set the default notice message to be empty
+    const [showProfile, setShowProfile] = useState<boolean>(false);
 
     // If the user is not logged in, redirect to the login page
     if (sessionStorage.getItem("token") === null || sessionStorage.getItem("token") !== UserInfo.getToken()) {
@@ -66,7 +68,7 @@ function MainPage() {
     return (
         <div className="MainPage">
             <div className="HeaderNavContainer">
-                <HeaderNavBar noticeFunction={showNotice} />
+                <HeaderNavBar clickedUserProfile={() => setShowProfile(!showProfile)} noticeFunction={showNotice} />
             </div>
             <div className="MainPageBodyContainer">
                 <NavigationBar selectFunction={handleSelectedTab} activeTab={currentTab} />
@@ -74,6 +76,9 @@ function MainPage() {
             </div>
             <div className="NoticeClass" style={{ display: display }}>
                 <div><h1>{noticeMsg}</h1></div>
+            </div>
+            <div className="ProfileContainer" style={{display: showProfile ? "flex" : "none"}}>
+                <Profile clickedExit={() => setShowProfile(false)}/>
             </div>
         </div>
     );
