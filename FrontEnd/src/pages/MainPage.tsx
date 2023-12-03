@@ -77,7 +77,7 @@ function MainPage() {
             <div className="NoticeClass" style={{ display: display }}>
                 <div><h1>{noticeMsg}</h1></div>
             </div>
-            <Profile clickedExit={() => setShowProfile((prevState) => { return { ...prevState, display: DisplayTypes.None } })} display={showProfile} />
+            <Profile display={showProfile} />
         </div>
     );
 }
