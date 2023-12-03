@@ -180,6 +180,32 @@ class SignalRChatRoom {
     }
 
     /**
+     * Set a callback function that will be called when a chat room message is removed
+     * @param callBackFunction A function that will be called when a chat room message is removed
+     */
+    setRemoveChatRoomMessageCallback(callBackFunction: (chatRoomId: string, messageId: string) => void) {
+        this.connection.on("RemoveChatRoomMessage", (chatRoomId: string, messageId: string) => {
+            console.log("callback remove message: " + chatRoomId + " " + messageId);
+            
+            // remove message from chatroom
+            callBackFunction(chatRoomId, messageId);
+        });
+    }
+
+    /**
+     * Set a callback function that will be called when a chat room info is edited
+     * @param callBackFunction A function that will be called when a chat room info is edited
+     */
+    setEditChatRoomCallback(callBackFunction: (chatRoomId: string, title: string, description: string) => void) {
+        this.connection.on("EditChatRoom", (chatRoomId: string, title: string, description: string) => {
+            console.log("callback EditChatRoom: " + chatRoomId + " " + title);
+            
+            // remove message from chatroom
+            callBackFunction(chatRoomId, title, description);
+        });
+    }
+
+    /**
      * Send a message to the backend from chat room
      * @param {*} msg A message object that will be sent to the backend
      */
@@ -248,7 +274,10 @@ class SignalRChatRoom {
         await this.connection.send("EndSession", sessionId)
     }
 
-
+    /**
+     * Send a request to the backend to vote another round
+     * @param sessionId The brainstorm session id
+     */
     async voteAnotherRound(sessionId: string){
         await this.connection.send("VoteAnotherRound", sessionId)
     }
@@ -279,6 +308,10 @@ class SignalRChatRoom {
         await this.connection.send("ReceiveVotes", sessionId, votes)
     }
 
+    /**
+     * Send a request to the backend to remove a user from the brainstorm session
+     * @param sessionId The brainstorm session id
+     */
     async removeUserFromBrainstormSession(sessionId: string){
         await this.connection.send("RemoveUserFromSession", sessionId, UserInfo.getUserId())
     }
@@ -291,26 +324,13 @@ class SignalRChatRoom {
         await this.connection.send("SendAllVotes", sessionId)
     }
 
+    /**
+     * Send a request to the backend to remove a chat room message
+     * @param chatroomId the chat room id
+     * @param messageId the message id
+     */
     async removeChatRoomMessage(chatroomId: string, messageId: string){
         await this.connection.send("RemoveChatRoomMessage", chatroomId, messageId)
-    }
-
-    setRemoveChatRoomMessageCallback(callBackFunction: (chatRoomId: string, messageId: string) => void) {
-        this.connection.on("RemoveChatRoomMessage", (chatRoomId: string, messageId: string) => {
-            console.log("callback remove message: " + chatRoomId + " " + messageId);
-            
-            // remove message from chatroom
-            callBackFunction(chatRoomId, messageId);
-        });
-    }
-
-    setEditChatRoomCallback(callBackFunction: (chatRoomId: string, title: string, description: string) => void) {
-        this.connection.on("EditChatRoom", (chatRoomId: string, title: string, description: string) => {
-            console.log("callback EditChatRoom: " + chatRoomId + " " + title);
-            
-            // remove message from chatroom
-            callBackFunction(chatRoomId, title, description);
-        });
     }
 
     /**

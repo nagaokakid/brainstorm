@@ -145,19 +145,19 @@ function LoginForm() {
                 <MDBTabsPane show={justifyActive === TabTypes.LoginTab}>
                     <h3 className='SignInTitle'>Sign In:</h3>
                     <form className='LoginForm' id='LoginForm'>
-                        <input className='Username' id='Username' placeholder='Username' type="text" onChange={handleChanged} />
-                        <input className='Password' id='Password' placeholder='Password' type="Password" onChange={handleChanged} onKeyDown={handleKey} />
+                        <input className='Username' id='Username' placeholder='Username' type="text" autoComplete="off" onChange={handleChanged} />
+                        <input className='Password' id='Password' placeholder='Password' type="Password" autoComplete="off" onChange={handleChanged} onKeyDown={handleKey} />
                     </form>
                     <MDBBtn className="mb-4 w-100" id='login' onClick={() => handleLogin()}>Sign in</MDBBtn>
                 </MDBTabsPane>
                 <MDBTabsPane show={justifyActive === TabTypes.RegisterTab}>
                     <h3 className='RegisterTitle'>Create Account:</h3>
                     <form className='RegisterForm' id='RegisterForm'>
-                        <input className='Username' id='Username1' placeholder='Username' type="text" onChange={handleChanged} />
-                        <input className='FirstName' id='FirstName' placeholder='First Name' type="text" onChange={handleChanged} />
-                        <input className='LastName' id='LastName' placeholder='Last Name' type="text" onChange={handleChanged} />
-                        <input className='Password' id='Password1' placeholder='Password' type="Password" onChange={handleChanged} />
-                        <input className='RePassword' id='RePassword' placeholder='Re-Password' type="Password" onChange={handleChanged} onKeyDown={handleKey} />
+                        <input className='Username' id='Username1' placeholder='Username' type="text" autoComplete="off" onChange={handleChanged} />
+                        <input className='FirstName' id='FirstName' placeholder='First Name' type="text" autoComplete="off" onChange={handleChanged} />
+                        <input className='LastName' id='LastName' placeholder='Last Name' type="text" autoComplete="off" onChange={handleChanged} />
+                        <input className='Password' id='Password1' placeholder='Password' type="Password" autoComplete="off" onChange={handleChanged} />
+                        <input className='RePassword' id='RePassword' placeholder='Re-Password' type="Password" autoComplete="off" onChange={handleChanged} onKeyDown={handleKey} />
                     </form>
                     <MDBBtn className="mb-4 w-100" id='register' onClick={() => handleRegister()}>Sign up</MDBBtn>
                 </MDBTabsPane>
