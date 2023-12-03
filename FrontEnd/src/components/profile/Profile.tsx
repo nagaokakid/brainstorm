@@ -5,10 +5,11 @@ import { loginObject } from "../../models/TypesDefine";
 import ApiService from "../../services/ApiService";
 import UserInfo from "../../services/UserInfo";
 import "../../styles/profile/Profile.css";
+import SignalRChatRoom from "../../services/ChatRoomConnection";
+import SignalRDirect from "../../services/DirectMessageConnection";
 
 interface Props {
   display: { display: DisplayTypes };
-  clickedExit: () => void;
 }
 
 function Profile(props: Props) {
@@ -32,15 +33,25 @@ function Profile(props: Props) {
   function handleCancel() {
     clearInput();
     setShowError(DisplayTypes.None);
-    props.clickedExit();
+    handleExit();
   }
 
   /**
    * Handle the delete button
    */
   async function handleDelete() {
-    await ApiService.DeleteUser();
-    navigate("/");
+    const result = await ApiService.DeleteUser();
+
+    if (result) {
+      UserInfo.clearAccount();
+      await SignalRChatRoom.getInstance().then((value) => value.reset());
+      await SignalRDirect.getInstance().then((value) => value.reset());
+      sessionStorage.clear();
+      navigate("/");
+    } else {
+      setErrorMsg(ErrorMessages.DeleteAccountFailed);
+      setShowError(DisplayTypes.Flex);
+    }
   }
 
   /**
@@ -51,10 +62,22 @@ function Profile(props: Props) {
       setErrorMsg(ErrorMessages.PasswordNotMatch);
       setShowError(DisplayTypes.Flex);
       return;
+    } else if (input.FirstName === "" || input.LastName === "") {
+      setErrorMsg(ErrorMessages.NameEmpty);
+      setShowError(DisplayTypes.Flex);
+      return;
     } else {
-      await ApiService.EditUser(input.Username, input.Password, input.FirstName ?? "", input.LastName ?? "");
-      clearInput();
-      props.clickedExit();
+      const result = await ApiService.EditUser(input.Username, input.Password, input.FirstName ?? "", input.LastName ?? "");
+
+      if (result) {
+        clearInput();
+        handleExit();
+        return;
+      } else {
+        setErrorMsg(ErrorMessages.EditAccountFailed);
+        setShowError(DisplayTypes.Flex)
+        return;
+      }
     }
   }
 
@@ -77,6 +100,10 @@ function Profile(props: Props) {
     Object.keys(input).forEach((key) => {
       setInput((prev: typeof input) => { return { ...prev, [key]: "" } });
     });
+  }
+  
+  function handleExit() {
+    setStyle({ display: DisplayTypes.None });
   }
 
   useEffect(() => {
