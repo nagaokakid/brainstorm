@@ -128,6 +128,7 @@ function Profile(props: Props) {
             placeholder="Username"
             type="text"
             value={input.Username ?? ""}
+            autoComplete="off"
             onChange={handleChanged}
           />
           <input
@@ -136,6 +137,7 @@ function Profile(props: Props) {
             placeholder="First Name"
             type="text"
             value={input.FirstName ?? ""}
+            autoComplete="off"
             onChange={handleChanged}
           />
           <input
@@ -144,6 +146,7 @@ function Profile(props: Props) {
             placeholder="Last Name"
             type="text"
             value={input.LastName ?? ""}
+            autoComplete="off"
             onChange={handleChanged}
           />
           <input
@@ -151,6 +154,7 @@ function Profile(props: Props) {
             id="Password"
             placeholder="Password"
             type="Password"
+            autoComplete="off"
             onChange={handleChanged}
           />
           <input
@@ -158,6 +162,7 @@ function Profile(props: Props) {
             id="RePassword"
             placeholder="Re-Password"
             type="Password"
+            autoComplete="off"
             onChange={handleChanged}
           />
         </form>

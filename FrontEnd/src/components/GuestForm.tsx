@@ -67,7 +67,7 @@ function GuestForm() {
 
     return (
         <div className='GuestCodeContainer'>
-            <input className='ChatRoomCode' id='ChatRoomCode' placeholder='Chat Room Code' type="text" onChange={handleChange} />
+            <input className='ChatRoomCode' id='ChatRoomCode' placeholder='Chat Room Code' autoComplete="off" type="text" onChange={handleChange} />
             <MDBBtn className="mb-4 w-100" id='join' onClick={() => RequestHandle()}>Join Chat Room</MDBBtn>
             <h5 className='ErrorMsg' style={{ display: errorDisplay }}>{errorMsg}</h5>
         </div>
