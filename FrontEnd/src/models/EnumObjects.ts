@@ -8,6 +8,12 @@ export enum ErrorMessages {
     DuplicatedAccount = "Account already exists",
     InvalidCode = "Invalid code",
     FailedToCreateBSsession = "Failed to create BS session",
+    DeleteAccountFailed = "Failed to delete account",
+    DeleteChatRoomFailed = "Failed to delete chat room",
+    EditAccountFailed = "Failed to update account info",
+    EditChatRoomFailed = "Failed to update chat room info",
+    NameEmpty = "Name cannot be empty",
+    TitleEmpty = "Title cannot be empty",
 }
 
 export enum NoticeMessages {
