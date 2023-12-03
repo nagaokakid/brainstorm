@@ -43,6 +43,36 @@ class UserInfo {
         this.currentUser = user;
     }
 
+    // static setUsername() {
+    //     if (sessionStorage.getItem("username") === null) {
+    //         sessionStorage.setItem("username", this.getUserName());
+    //     }
+    // }
+
+    /**
+     * Set the user first name to the user info
+     * @param newFirstName the new first name
+     */
+    static setFirstName(newFirstName: string) {
+        const result = this.getCurrentUser();
+        if (result) {
+            result.userInfo.firstName = newFirstName;
+        }
+        this.updateUser(true);
+    }
+
+    /**
+     * Set the last name to the user info
+     * @param newLastName the new last name
+     */
+    static setLastName(newLastName: string) {
+        const result = this.getCurrentUser();
+        if (result) {
+            result.userInfo.lastName = newLastName;
+        }
+        this.updateUser(true);
+    }
+
     /**
      * Set the ideas list to the session storage
      * @param ideas The ideas list
@@ -384,8 +414,6 @@ class UserInfo {
         this.updateUser(true);
     }
 
-    
-
     static deleteDirectMessage(toId: string, id: string) {
         const result = this.getDirectMessagesList().find(current => (toId === current.user1.userId || toId === current.user2.userId));
         if (result) {
@@ -408,6 +436,14 @@ class UserInfo {
     static clearIdeaList() {
         this.ideasList = [];
         this.updateIdeaList(true);
+    }
+
+    /**
+     * Empty the user info
+     */
+    static clearAccount() {
+        this.currentUser = {} as user;
+        sessionStorage.removeItem("currentUser");
     }
 
     /**
@@ -456,6 +492,21 @@ class UserInfo {
             sessionStorage.setItem("ideaList", JSON.stringify(this.ideasList));
         }
         this.setIdeasList(JSON.parse(sessionStorage.getItem("ideaList") ?? ""));
+    }
+
+    /**
+     * Update the chat room info
+     * @param chatRoomId the chat room id
+     * @param chatRoomTitle the chat room title
+     * @param chatRoomDescription the chat room description
+     */
+    static updateChatRoom(chatRoomId: string, chatRoomTitle: string, chatRoomDescription: string) {
+        const result = this.getChatRoomsList().find(chatRoom => chatRoom.id === chatRoomId);
+        if (result) {
+            result.title = chatRoomTitle;
+            result.description = chatRoomDescription;
+        }
+        this.updateUser(true);
     }
 }
 
