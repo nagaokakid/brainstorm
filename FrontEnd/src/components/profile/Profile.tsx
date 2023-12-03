@@ -124,10 +124,10 @@ function Profile(props: Props) {
         <form className="EditProfileForm" id="EditProfileForm">
           <input
             className="Username"
-            id="Username1"
+            id="Username"
             placeholder="Username"
             type="text"
-            value={input.Username}
+            value={input.Username ?? ""}
             onChange={handleChanged}
           />
           <input
@@ -135,7 +135,7 @@ function Profile(props: Props) {
             id="FirstName"
             placeholder="First Name"
             type="text"
-            value={input.FirstName}
+            value={input.FirstName ?? ""}
             onChange={handleChanged}
           />
           <input
@@ -143,7 +143,7 @@ function Profile(props: Props) {
             id="LastName"
             placeholder="Last Name"
             type="text"
-            value={input.LastName}
+            value={input.LastName ?? ""}
             onChange={handleChanged}
           />
           <input
