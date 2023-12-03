@@ -55,11 +55,7 @@
   width: 100%;
 }
 
-.NavBarTabContentContainer
-  .ContentListContainer
-  .ListHeader
-  .ChatRoomHeader
-  .CreateChatRoomIcon {
+.NavBarTabContentContainer .ContentListContainer .ListHeader .ChatRoomHeader .CreateChatRoomIcon {
   cursor: pointer;
   color: white;
   border: none;
@@ -92,32 +88,23 @@
   margin-top: 5px;
 }
 
-.NavBarTabContentContainer
-  .ContentListContainer
-  .ListContainer
-  .ListItem:hover {
+.NavBarTabContentContainer .ContentListContainer .ListContainer .ListItem:hover {
   background-color: rgb(29, 25, 75);
   color: white;
   border-radius: 5%;
+
   .EditChatRoomButton {
     display: flex;
   }
 }
 
-.NavBarTabContentContainer
-  .ContentListContainer
-  .ListContainer
-  .ListItem.active {
+.NavBarTabContentContainer .ContentListContainer .ListContainer .ListItem.active {
   background-color: rgb(29, 25, 75);
   border-left: 1px solid #ffc436;
   border-radius: 5px;
 }
 
-.NavBarTabContentContainer
-  .ContentListContainer
-  .ListContainer
-  .ListItem
-  .ItemIcon {
+.NavBarTabContentContainer .ContentListContainer .ListContainer .ListItem .ItemIcon {
   position: relative;
   padding: 5px;
   width: 30px;
@@ -130,21 +117,12 @@
   border-radius: 5px;
 }
 
-.NavBarTabContentContainer
-  .ContentListContainer
-  .ListContainer
-  .ListItem
-  .ItemDetail {
+.NavBarTabContentContainer .ContentListContainer .ListContainer .ListItem .ItemDetail {
   width: 100%;
   margin-left: 10px;
 }
 
-.NavBarTabContentContainer
-  .ContentListContainer
-  .ListContainer
-  .ListItem
-  .ItemDetail
-  .ItemTitle {
+.NavBarTabContentContainer .ContentListContainer .ListContainer .ListItem .ItemDetail .ItemTitle {
   font-weight: 500;
   font-size: medium;
   white-space: nowrap;
@@ -152,12 +130,7 @@
   text-overflow: ellipsis;
 }
 
-.NavBarTabContentContainer
-  .ContentListContainer
-  .ListContainer
-  .ListItem
-  .ItemDetail
-  .LastMessage {
+.NavBarTabContentContainer .ContentListContainer .ListContainer .ListItem .ItemDetail .LastMessage {
   font-size: smaller;
   color: darkgray;
   font-style: italic;
@@ -172,9 +145,9 @@
   display: flex;
 }
 
-.EditChatRoomButton {
+.NavBarTabContentContainer .ContentListContainer .ListContainer .ListItem .EditChatRoomButton {
   display: none;
   width: 20px;
   height: 20px;
-  z-index: 20;
+  z-index: 10;
 }
