@@ -35,6 +35,7 @@ namespace Logic.Services
         Task<List<ChatRoom>> GetChatRooms(List<string> chatRoomIds);
         Task<ChatRoom?> GetRoomByJoinCode(string chatRoomJoinCode);
         Task<bool> IsJoinCodeValid(string joinCode);
+        Task LeaveChatRoom(LeaveChatRoomRequest request);
         Task RemoveMessage(string chatRoomId, string messageId);
     }
 
@@ -262,6 +263,34 @@ namespace Logic.Services
 
             // delete chatroom 
             await chatRoomCollection.Delete(chatId);
+        }
+
+        public async Task LeaveChatRoom(LeaveChatRoomRequest request)
+        {
+            if (string.IsNullOrEmpty(request.ChatRoomId) || string.IsNullOrEmpty(request.UserId)) throw new BadRequest();
+
+            // get chatroom
+            var chatroom = await chatRoomCollection.GetById(request.ChatRoomId);
+            if(chatroom != null)
+            {
+                // if last member leaving, then delete chatroom
+                var result = chatroom.MemberIds.FindIndex(x => x.Equals(request.UserId));
+                
+                // there is a match and it's the last user leaving
+                if(chatroom.MemberIds.Count == 0 && result == 0)
+                {
+                    // delete chatroom
+                    await chatRoomCollection.Delete(request.ChatRoomId);
+                }
+                else if(result >= 0)
+                {
+                    // leave chatroom
+                    await chatRoomCollection.RemoveUser(request.UserId, request.ChatRoomId);
+
+                    // remove from user object
+                    await userCollection.RemoveChatRoomId(request.UserId, request.ChatRoomId);
+                }
+            }
         }
     }
 }

@@ -158,7 +158,7 @@ function NavBarTabContent(props: ChatListProps) {
         });
       }
     }
-  }, [context]);
+  }, []);
 
   useEffect(() => {
     if (props.displayTab === TabTypes.DiretMessage) {
@@ -209,8 +209,8 @@ function NavBarTabContent(props: ChatListProps) {
                   {"title" in chat
                     ? chat.title
                     : chat.user1.userId === UserInfo.getUserId()
-                      ? chat.user2.firstName
-                      : chat.user1.firstName}
+                      ? chat.user2.firstName + " " + chat.user2.lastName
+                      : chat.user1.firstName + " " + chat.user1.lastName}
                 </div>
                 <div className="LastMessage">
                   {"description" in chat
@@ -220,7 +220,9 @@ function NavBarTabContent(props: ChatListProps) {
                       : ""}
                 </div>
               </div>
-              <img className="EditChatRoomButton" onClick={handleEditChatRoomButton} src={editChatRoomIcon} />
+              <div style={props.displayTab == TabTypes.DiretMessage ? { display: DisplayTypes.None } : { display: DisplayTypes.Flex }}>
+                <img className="EditChatRoomButton" onClick={handleEditChatRoomButton} src={editChatRoomIcon} />
+              </div>
             </div>
           ))}
         </div>
@@ -245,7 +247,7 @@ function NavBarTabContent(props: ChatListProps) {
       </div>
       <CreateRoomCustomize style={showCreateChatRoom} render={setForceRender} />
       <CreateBrainStormCustomize style={showCreateBrainstorm} chat={selectedChat} />
-      <EditChatroom chatRoom={selectedChat as chatRoomObject} display={showEditChatRoom} render={setForceRender}/>
+      <EditChatroom chatRoom={selectedChat as chatRoomObject} display={showEditChatRoom} render={setForceRender} />
     </div>
   );
 }
