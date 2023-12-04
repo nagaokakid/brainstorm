@@ -9,15 +9,19 @@ import { useEffect, useState } from 'react';
  *  This component is the local idea list of the brain storm page.
  *  It contains the list of ideas that the user has created.
  *  -----------------------------------------------------------------------
- * Author:  Mr. Yee Tsung (Jackson) Kao
+ * Author:  Mr. Yee Tsung (Jackson) Kao and Ravdeep Singh
  * Date Created:  01/12/2023
- * Last Modified: 01/12/2023
+ * Last Modified: 04/12/2023
  * Version: 1.0
  */
 interface BS_LocalIdeaListProps {
     content: string[],
-    handleFunction: (idea: string) => void
+    handleDeleteFunction: (idea: string, checked: boolean) => void
 }
+
+
+
+
 
 function BS_LocalIdeaList(props: BS_LocalIdeaListProps) {
 
@@ -25,7 +29,7 @@ function BS_LocalIdeaList(props: BS_LocalIdeaListProps) {
     const [forceUpdate, setForceUpdate] = useState(false);
 
     function handleDeleteClick(position: number, idea: string) {
-        props.handleFunction(idea);
+        props.handleDeleteFunction(idea, false);
         UserInfo.deleteIdea(position);
         props.content.splice(position, 1);
         setForceUpdate(!forceUpdate);

@@ -13,11 +13,9 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useContext, useEffect, useRef, useState } from "react";
 import { DataContext } from "../contexts/DataContext";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrashRestoreAlt } from '@fortawesome/free-solid-svg-icons';
+import { faRecycle, faPlay, faStop } from '@fortawesome/free-solid-svg-icons';
 import exitIcon from "../assets/ExitIcon.png"
 import RecycleBin from "../components/RecycleBin";
-import { faRecycle } from '@fortawesome/free-solid-svg-icons';
-import { faPlay, faStop   } from '@fortawesome/free-solid-svg-icons';
 
 /*
  * BrainStormPage.tsx
@@ -30,6 +28,11 @@ import { faPlay, faStop   } from '@fortawesome/free-solid-svg-icons';
   * Last Modified: 01/12/2023
   * Version: 1.0
 */
+
+export interface DeletedItemProps {
+  idea: string,
+  isChecked: boolean
+}
 
 function BrainStormPage() {
   const Navigate = useNavigate();
@@ -56,11 +59,10 @@ function BrainStormPage() {
   const interval = useRef() as React.MutableRefObject<NodeJS.Timeout>;
   const [memberCount, setMemberCount] = useState(0); // Set the member count to be displayed
   const context = useContext(DataContext); // Get the data context
-  const [deletedIdeaList, updateDeletedIdeaList] = useState([""]);
-  const [showDeletedItems, setShowDeletedItems] = useState({
-    display: "none",
-  }); // Set the default display of the create brainstorm option to be hidden
- 
+  const [deletedIdeaList, updateDeletedIdeaList] = useState<DeletedItemProps[]>([]);
+  const [showDeletedItems, setShowDeletedItems] = useState({display: "none",});
+ const [showRecycleBin, setShowRecycleBin] = useState({display: "none"});
+
 
   function startTimer() {
     if (timer > 0) {
@@ -180,19 +182,13 @@ function BrainStormPage() {
   }
 
   function handleOpenTrashButton() {
-    if(UserInfo.isHost(creatorId)) {
-      setShowDeletedItems((prev) => {
-        return { ...prev, display: "flex" };
-      });
-    }
-    else{
-      alert('not allowed');
-    }
+    setShowDeletedItems({ display: "flex" });
   }
   
-function handleClickDeleteButton(idea: string){
-  updateDeletedIdeaList(current=> [...current, idea]);
-}
+  function handleClickDeleteButton(idea: string, isChecked: boolean){
+    updateDeletedIdeaList(current=> [...current, {idea, isChecked}]);
+  }
+
   /**
    * End the voting
    */
@@ -252,11 +248,14 @@ function handleClickDeleteButton(idea: string){
         if (type === 1) {
           startTimer();
           setInput(false);
+          setShowRecycleBin({display: "flex"});
           showNotice("Session has started");
         } else if (type === 2) {
           setInput(true);
           clearInterval(interval.current);
           showNotice("Session has ended");
+          setShowRecycleBin({display: "none"});
+          setShowDeletedItems({ display: "none" });
           SignalRChatRoom.getInstance().then(async (instance) => {
             await instance.sendAllIdeas(sessionId, UserInfo.getLocalIdeas());
             UserInfo.clearIdea();
@@ -296,7 +295,10 @@ function handleClickDeleteButton(idea: string){
     <div className="BS_PageContainer">
       <RecycleBin
       style={showDeletedItems}
-      content={deletedIdeaList}
+      deletedIdeaList={deletedIdeaList}
+      localIdeaList={localIdeaList}
+      restoreContentFunction={setLocalIdeaList}
+      updateDeleteIdeaListFunction={updateDeletedIdeaList}
       />
       <div className="BS_HeaderContainer">
         <button
@@ -310,14 +312,14 @@ function handleClickDeleteButton(idea: string){
           memberCount={memberCount}
         />
         <button
-          className="RecycleBinButton">
+          className="RecycleBinButton" style={showRecycleBin}>
             <FontAwesomeIcon icon={faRecycle} title="Recyce Bin" onClick={handleOpenTrashButton}/>
         </button>
       </div>
       <div className="BS_BodyContainer">
         <div className="BS_ContentContainer">
           <BS_OnlineIdeaList content={ideaList} voting={isVoting} />
-          <BS_LocalIdeaList content={localIdeaList} handleFunction={handleClickDeleteButton} />
+          <BS_LocalIdeaList content={localIdeaList} handleDeleteFunction={handleClickDeleteButton} />
           <div className="BS_BottomRow">
             <BS_SendPrompt sendFunction={handleSendClick} input={input} />
             <div
