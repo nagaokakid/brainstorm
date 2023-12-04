@@ -158,7 +158,7 @@ function NavBarTabContent(props: ChatListProps) {
         });
       }
     }
-  }, [context]);
+  }, []);
 
   useEffect(() => {
     if (props.displayTab === TabTypes.DiretMessage) {
