@@ -117,16 +117,19 @@ class ApiService {
     return result;
   }
 
-  async DeleteChatRoom(chatRoomId: string) {
+  async LeaveChatRoom(chatRoomId: string) {
     const result = await fetch(UserInfo.BaseURL + "api/chatroom/" + chatRoomId, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + UserInfo.getToken(),
       },
+      body: JSON.stringify({
+        userId: UserInfo.getUserId(),
+      }),
     }).then(async (response) => {
       if (response.ok) {
-        UserInfo.deleteChatRoom(chatRoomId)
+        UserInfo.leaveChatRoom(chatRoomId)
         return true;
       } else {
         return false;

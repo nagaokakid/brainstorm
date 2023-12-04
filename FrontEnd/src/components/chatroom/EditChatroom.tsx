@@ -24,8 +24,8 @@ function EditChatroom(props: Props) {
     e.stopPropagation();
   }
 
-  async function handleDeleteChatRoom() {
-    const result = await ApiService.DeleteChatRoom(props.chatRoom.id);
+  async function handleLeaveChatRoom() {
+    const result = await ApiService.LeaveChatRoom(props.chatRoom.id);
     if (result) {
       clearInput();
       handleExit();
@@ -125,10 +125,10 @@ function EditChatroom(props: Props) {
         </div>
         <div className="EditChatRoomButtonsContainer">
           <button
-            className="DeleteEditChatRoomButton"
-            onClick={handleDeleteChatRoom}
+            className="LeaveChatRoomButton"
+            onClick={handleLeaveChatRoom}
           >
-            Delete
+            Leave
           </button>
           <button
             className="CancelEditChatRoomButton"

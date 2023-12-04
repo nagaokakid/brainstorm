@@ -406,7 +406,7 @@ class UserInfo {
         this.updateUser(true);
     }
 
-    static deleteChatRoom(chatRoomId:string) {
+    static leaveChatRoom(chatRoomId:string) {
         const index = this.getChatRoomsList().findIndex(chatRoom => chatRoom.id === chatRoomId);
         if (index >= 0) {
             this.getChatRoomsList().splice(index, 1);
