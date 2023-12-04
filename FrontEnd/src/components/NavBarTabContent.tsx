@@ -209,8 +209,8 @@ function NavBarTabContent(props: ChatListProps) {
                   {"title" in chat
                     ? chat.title
                     : chat.user1.userId === UserInfo.getUserId()
-                      ? chat.user2.firstName
-                      : chat.user1.firstName}
+                      ? chat.user2.firstName + " " + chat.user2.lastName
+                      : chat.user1.firstName + " " + chat.user1.lastName}
                 </div>
                 <div className="LastMessage">
                   {"description" in chat
