@@ -28,6 +28,10 @@ type DataContextType = [
     number,
     (newData: number) => void,
     boolean,
+    (newData: boolean) => void,
+    boolean,
+    (newData: boolean) => void,
+    boolean,
     (newData: boolean) => void
 ];
 
@@ -50,6 +54,8 @@ export function DataContextProvider({ children }: DataContextProviderProps) {
     const [newMsg, setNewMsg] = useState({} as (chatRoomMessageObject | newDirectMessageObject));
     const [updateAgain, setUpdateAgain] = useState(true);
     const [updateHeader, setUpdateHeader] = useState(true);
+    const [updateWindow, setUpdateWindow] = useState(true);
+    const [updateName, setUpdateName] = useState(true);
     const [count, setCount] = useState(0);
     const updateData = (newData: boolean) => {
         if (newData === true) {
@@ -77,8 +83,20 @@ export function DataContextProvider({ children }: DataContextProviderProps) {
         }
     }
 
+    const updateWindowFunction = (newData: boolean) => {
+        if (newData === true) {
+            setUpdateWindow(update => !update);
+        }
+    }
+
+    const updateNameFunction = (newData: boolean) => {
+        if (newData === true) {
+            setUpdateName(update => !update);
+        }
+    }
+
     return (
-        <DataContext.Provider value={[update, newMsg, updateData, updateMsg, updateAgain, render, count, updateCount, updateHeader, updateHeaderFunction]}>
+        <DataContext.Provider value={[update, newMsg, updateData, updateMsg, updateAgain, render, count, updateCount, updateHeader, updateHeaderFunction, updateWindow, updateWindowFunction, updateName, updateNameFunction]}>
             {children}
         </DataContext.Provider>
     );

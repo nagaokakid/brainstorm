@@ -353,7 +353,7 @@ class ApiService {
       });
       value.setEditChatRoomCallback(() => {
         Callback(8);
-      })
+      });
     });
   }
 

@@ -7,6 +7,7 @@ import UserInfo from "../../services/UserInfo";
 import "../../styles/profile/Profile.css";
 import SignalRChatRoom from "../../services/ChatRoomConnection";
 import SignalRDirect from "../../services/DirectMessageConnection";
+import { useDataContext } from "../../contexts/DataContext";
 
 interface Props {
   display: { display: DisplayTypes };
@@ -14,6 +15,8 @@ interface Props {
 
 function Profile(props: Props) {
   const navigate = useNavigate();
+  const context = useDataContext();
+  const updateNameFunction = context[13];
   const [style, setStyle] = useState(props.display);
   const [showError, setShowError] = useState(DisplayTypes.None);
   const [errorMsg, setErrorMsg] = useState(ErrorMessages.Empty);
@@ -78,6 +81,7 @@ function Profile(props: Props) {
       );
 
       if (result) {
+        updateNameFunction(true);
         clearInput();
         handleExit();
         return;

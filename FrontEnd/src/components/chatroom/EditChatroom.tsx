@@ -3,6 +3,7 @@ import { DisplayTypes, ErrorMessages } from "../../models/EnumObjects";
 import { chatRoomObject } from "../../models/TypesDefine";
 import ApiService from "../../services/ApiService";
 import "../../styles/chatroom/Chatroom.css";
+import { useDataContext } from "../../contexts/DataContext";
 
 interface Props {
   chatRoom: chatRoomObject;
@@ -11,6 +12,8 @@ interface Props {
 }
 
 function EditChatroom(props: Props) {
+  const context = useDataContext();
+  const updateWindowFunction = context[11];
   const [style, setStyle] = useState(props.display);
   const [chatRoom, setChatRoom] = useState({ ChatRoomTitle: props.chatRoom.title, ChatRoomDescription: props.chatRoom.description });
   const [showError, setShowError] = useState(DisplayTypes.None);
@@ -28,7 +31,9 @@ function EditChatroom(props: Props) {
     const result = await ApiService.LeaveChatRoom(props.chatRoom.id);
     if (result) {
       clearInput();
-      handleExit();
+      setStyle({ display: DisplayTypes.None });
+      props.render(prev => !prev);
+      updateWindowFunction(true);
     } else {
       setShowError(DisplayTypes.Block);
       setErrorMessage(ErrorMessages.DeleteChatRoomFailed);

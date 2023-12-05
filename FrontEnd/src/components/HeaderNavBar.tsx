@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   DisplayTypes,
   ErrorMessages,
@@ -8,6 +8,7 @@ import SignalRChatRoom from "../services/ChatRoomConnection";
 import UserInfo from "../services/UserInfo";
 import "../styles/HeaderNavBar.css";
 import UserProfile from "./UserProfile";
+import { useDataContext } from "../contexts/DataContext";
 
 /*
  * HeaderNavBar.tsx
@@ -25,6 +26,9 @@ interface HeaderNavBarProps {
 }
 
 function HeaderNavBar(props: HeaderNavBarProps) {
+  const context = useDataContext();
+  const updateName = context[12];
+  const [userInfo, setUserInfo] = useState(UserInfo.getUserInfo());
   const [errorMsg, setErrorMsg] = useState(ErrorMessages.Empty);
   const [display, setDisplay] = useState(DisplayTypes.None);
 
@@ -50,19 +54,23 @@ function HeaderNavBar(props: HeaderNavBarProps) {
     code.value = ""; // Clear the input field
   }
 
-    return (
-        <div className="HeaderNavBar" >
-            <div className="HeaderTitle">BRAINSTORM</div>
-            <div className="JoinCodeSection">
-                <input className="JoinCodeInput" type="text" id="JoinCode" placeholder="Chat Room Join Code..." />
-                <button className="JoinCodeButton" onClick={() => joinCode()}>Join</button>
-                <h5 className="ErrorMsg" style={{ display: display }}>{errorMsg}</h5>
-            </div>
-            <div className="UserProfile" onClick={props.clickedUserProfile}>
-                <UserProfile user={UserInfo.getUserInfo()} />
-            </div>
-        </div>
-    );
+  useEffect(() => {
+    setUserInfo(UserInfo.getUserInfo());
+  }, [updateName]);
+
+  return (
+    <div className="HeaderNavBar" >
+      <div className="HeaderTitle">BRAINSTORM</div>
+      <div className="JoinCodeSection">
+        <input className="JoinCodeInput" type="text" id="JoinCode" placeholder="Chat Room Join Code..." />
+        <button className="JoinCodeButton" onClick={() => joinCode()}>Join</button>
+        <h5 className="ErrorMsg" style={{ display: display }}>{errorMsg}</h5>
+      </div>
+      <div className="UserProfile" onClick={props.clickedUserProfile}>
+        <UserProfile user={userInfo} />
+      </div>
+    </div>
+  );
 }
 
 export default HeaderNavBar;
