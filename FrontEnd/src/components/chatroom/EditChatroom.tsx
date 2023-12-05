@@ -101,7 +101,7 @@ function EditChatroom(props: Props) {
   return (
     <div className="EditChatRoomContainer" style={style} onClick={() => setStyle({ display: DisplayTypes.None })}>
       <div className="EditChatRoomWindow" onClick={handleChildClick}>
-        <div>{chatRoom.ChatRoomTitle}</div>
+        <div className="EditChatRoomTitle">{chatRoom.ChatRoomTitle}</div>
         <form className="EditChatRoomForm" id="EditChatroomId">
           <input
             className="ChatRoomTitle"

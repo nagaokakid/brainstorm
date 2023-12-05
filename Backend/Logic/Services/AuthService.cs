@@ -11,7 +11,7 @@
 
 using Database.CollectionContracts;
 using Database.Data;
-using Logic.Helpers;
+using Logic.Converters;
 using Logic.DTOs.ChatRoom;
 using Logic.DTOs.Messages;
 using Logic.DTOs.User;

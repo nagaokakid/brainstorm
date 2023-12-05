@@ -28,20 +28,16 @@ namespace Database.Collections
             await chatRoomRepository.CreateDocument(chatRoom);
         }
 
+        // Add a new user id to the member list for a chat room
         public async Task AddNewUserToChatRoom(string userId, string chatRoomId)
         {
             await chatRoomRepository.AddToArrayInDocument(chatRoomId, "MemberIds", userId);
         }
 
-        // Add a new message object to the document's array
+        // Add a new message object to the chat room's array
         public async Task AddMessage(string chatRoomId, ChatRoomMessage chatRoomMessage)
         {
             await chatRoomRepository.AddToArrayInDocument(chatRoomId, "Messages", chatRoomMessage);
-        }
-
-        public async Task AddNewUserToChatRoom(string userId)
-        {
-
         }
 
         // Get the chat room document with the given ID
@@ -50,6 +46,7 @@ namespace Database.Collections
             return await chatRoomRepository.GetDocumentById(chatRoomId);
         }
 
+        // Get the chat room that matches the given join code (6 digit number)
         public async Task<ChatRoom?> GetByJoinCode(string joinCode)
         {
             Dictionary<string, string> fieldDict = new(1)
@@ -60,25 +57,29 @@ namespace Database.Collections
             return await chatRoomRepository.GetDocumentByFieldDictionary(fieldDict);
         }
 
+        // Remove a message from a chat room
         public async Task RemoveMessage(string chatRoomId, string messageId)
         {
-            // needs to be implemented
-            await Task.Run(() => { });
+            await chatRoomRepository.RemoveDocumentFromNestedCollection(chatRoomId, "Messages", messageId);
         }
 
+        // Edit an existing chat room (replace the document with a new one)
         public async Task EditChatRoom(ChatRoom chatroom)
         {
-            // edit chatroom
+            var chatId = chatroom.Id;
+            await chatRoomRepository.ReplaceDocument(chatId, chatroom);
         }
 
+        // Delete a chat room
         public async Task Delete(string id)
         {
-            // delete chatroom
+            await chatRoomRepository.DeleteDocument(id);
         }
 
-        public async Task RemoveUser(string id, string chatId)
+        // Remove a user ID from a chat room's member ID list
+        public async Task RemoveUser(string userId, string chatId)
         {
-            // remove user from chatroom member list
+            await chatRoomRepository.RemoveFromArrayInDocument(chatId, "MemberIds", userId);
         }
     }
 }

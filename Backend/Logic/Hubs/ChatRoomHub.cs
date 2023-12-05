@@ -12,7 +12,7 @@ using Database.CollectionContracts;
 using Logic.Data;
 using Logic.DTOs.Messages;
 using Logic.DTOs.User;
-using Logic.Helpers;
+using Logic.Converters;
 using Logic.Services;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.SignalR;
