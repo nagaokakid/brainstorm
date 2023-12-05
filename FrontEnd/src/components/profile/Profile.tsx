@@ -21,7 +21,7 @@ function Profile(props: Props) {
 
   /**
    * Prevent the child from being clicked
-   * @param e 
+   * @param e
    */
   function handleChildClick(e: React.MouseEvent<HTMLDivElement>) {
     e.stopPropagation();
@@ -58,7 +58,10 @@ function Profile(props: Props) {
    * Handle the save button
    */
   async function handleSaveProfile() {
-    if ((input.Password || input.RePassword) && input.Password !== input.RePassword) {
+    if (
+      (input.Password || input.RePassword) &&
+      input.Password !== input.RePassword
+    ) {
       setErrorMsg(ErrorMessages.PasswordNotMatch);
       setShowError(DisplayTypes.Flex);
       return;
@@ -67,7 +70,12 @@ function Profile(props: Props) {
       setShowError(DisplayTypes.Flex);
       return;
     } else {
-      const result = await ApiService.EditUser(input.Username, input.Password, input.FirstName ?? "", input.LastName ?? "");
+      const result = await ApiService.EditUser(
+        input.Username,
+        input.Password,
+        input.FirstName ?? "",
+        input.LastName ?? ""
+      );
 
       if (result) {
         clearInput();
@@ -75,20 +83,22 @@ function Profile(props: Props) {
         return;
       } else {
         setErrorMsg(ErrorMessages.EditAccountFailed);
-        setShowError(DisplayTypes.Flex)
+        setShowError(DisplayTypes.Flex);
         return;
       }
     }
   }
 
   /**
-     * This will keep track of the inputs and update the state
-     * @param value
-     */
+   * This will keep track of the inputs and update the state
+   * @param value
+   */
   function handleChanged(value: React.ChangeEvent<HTMLInputElement>) {
     const id = value.target.className;
     const info = value.target.value;
-    setInput((prev: typeof input) => { return { ...prev, [id]: info } });
+    setInput((prev: typeof input) => {
+      return { ...prev, [id]: info };
+    });
     setShowError(DisplayTypes.None);
   }
 
@@ -98,10 +108,12 @@ function Profile(props: Props) {
   function clearInput() {
     (document.getElementById("EditProfileForm") as HTMLFormElement).reset;
     Object.keys(input).forEach((key) => {
-      setInput((prev: typeof input) => { return { ...prev, [key]: "" } });
+      setInput((prev: typeof input) => {
+        return { ...prev, [key]: "" };
+      });
     });
   }
-  
+
   function handleExit() {
     setStyle({ display: DisplayTypes.None });
   }
@@ -118,9 +130,18 @@ function Profile(props: Props) {
   }, [props.display]);
 
   return (
-    <div className="ProfileContainer" style={style} onClick={() => setStyle({ display: DisplayTypes.None })}>
+    <div
+      className="ProfileContainer"
+      style={style}
+      onClick={() => setStyle({ display: DisplayTypes.None })}
+    >
       <div className="ProfileWindow" onClick={handleChildClick}>
-        <div className="ProfileTitle">Profile</div>
+        <div className="ProfileContainerTitle">
+          <div className="ProfileTitle">Profile</div>
+          <button className="DeleteProfileButton" onClick={handleDelete}>
+            Delete Account
+          </button>
+        </div>
         <form className="EditProfileForm" id="EditProfileForm">
           <input
             className="Username"
@@ -155,6 +176,7 @@ function Profile(props: Props) {
             placeholder="Password"
             type="Password"
             autoComplete="off"
+            value={input.Password ?? ""}
             onChange={handleChanged}
           />
           <input
@@ -163,6 +185,7 @@ function Profile(props: Props) {
             placeholder="Re-Password"
             type="Password"
             autoComplete="off"
+            value={input.RePassword ?? ""}
             onChange={handleChanged}
           />
         </form>
@@ -170,9 +193,12 @@ function Profile(props: Props) {
           <div>{errorMsg}</div>
         </div>
         <div className="ProfileButtonsContainer">
-          <button className="DeleteProfileButton" onClick={handleDelete}>Delete</button>
-          <button className="CancelProfileButton" onClick={handleCancel}>Cancel</button>
-          <button className="SaveProfileButton" onClick={handleSaveProfile}>Save</button>
+          <button className="CancelProfileButton" onClick={handleCancel}>
+            Cancel
+          </button>
+          <button className="SaveProfileButton" onClick={handleSaveProfile}>
+            Save
+          </button>
         </div>
       </div>
     </div>

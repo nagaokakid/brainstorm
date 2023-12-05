@@ -196,12 +196,12 @@ class SignalRChatRoom {
      * Set a callback function that will be called when a chat room info is edited
      * @param callBackFunction A function that will be called when a chat room info is edited
      */
-    setEditChatRoomCallback(callBackFunction: (chatRoomId: string, title: string, description: string) => void) {
+    setEditChatRoomCallback(callBackFunction: () => void) {
         this.connection.on("EditChatRoom", (chatRoomId: string, title: string, description: string) => {
             console.log("callback EditChatRoom: " + chatRoomId + " " + title);
-            
+            UserInfo.updateChatRoom(chatRoomId, title, description);
             // remove message from chatroom
-            callBackFunction(chatRoomId, title, description);
+            callBackFunction();
         });
     }
 

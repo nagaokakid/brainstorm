@@ -28,7 +28,7 @@ function MainPage() {
 
     // If the user is not logged in, redirect to the login page
     if (sessionStorage.getItem("token") === null || sessionStorage.getItem("token") !== UserInfo.getToken()) {
-        window.location.href = "/";
+        // window.location.href = "/";
     }
 
     /**

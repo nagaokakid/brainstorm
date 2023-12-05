@@ -135,6 +135,15 @@ class UserInfo {
     }
 
     /**
+     * Get the chat room info from the chat room list
+     * @param chatRoomId The chat room id
+     * @returns 
+     */
+    static getChatRoomInfo(chatRoomId: string) {
+        return this.getChatRoomsList().find(chatRoom => chatRoom.id === chatRoomId);
+    }
+
+    /**
      * Get the chat room member list
      * @param chatRoomId The chat room id
      * @returns The member list
