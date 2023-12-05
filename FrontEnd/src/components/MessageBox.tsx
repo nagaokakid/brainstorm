@@ -4,6 +4,7 @@ import SignalRChatRoom from "../services/ChatRoomConnection";
 import SignalRDirect from "../services/DirectMessageConnection";
 import UserInfo from "../services/UserInfo";
 import "../styles/MessageBox.css";
+import joinBS from "../assets/JoinBS.png"
 
 /*
   * MessageBox.tsx
@@ -73,12 +74,12 @@ function MsgBox(props: MsgBoxProps) {
             <p>
               <div className="MessageIsBrainstorm">
                 {props.user[1] +
-                  " invited you to join the brainstorm session ->"}
+                  " invited you to join the brainstorm session"}
                 <button
                   className="MessageJoinBS"
                   onClick={handleJoinBrainstorm}
                 >
-                  Click To Join
+                  Join
                 </button>
               </div>
             </p>

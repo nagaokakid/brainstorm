@@ -1,5 +1,7 @@
 import { useEffect } from "react";
 import "../styles/BS_HeaderContent.css";
+import userIcon from "../assets/group-chat.png";
+import hourGlassIcon from "../assets/whiteHourGlass.png";
 
 interface BS_HeaderContentProps {
   roomTitle: string;
@@ -29,12 +31,21 @@ function BS_HeaderContent(props: BS_HeaderContentProps) {
 
   return (
     <div className="HeaderContent">
-      <div className="BS_MemberCount">Joined: {props.memberCount}</div>
+      <div className="BS_MemberCount">
+        <img
+          className="JoinedIcon_BS"
+          src={userIcon}
+          style={{ fontWeight: "bold" }}
+        />
+        <div>{props.memberCount}</div>
+      </div>
       <div className="HeaderContentTitle">
         <div className="BS_Title">{props.roomTitle}</div>
         <div className="BS_Description">{props.roomDescription}</div>
       </div>
-      <div className="BS_Timer">Time Left: {props.timer.toString()}</div>
+      <div className="BS_Timer">
+        <img src={hourGlassIcon} width={30}/> {props.timer.toString()} sec
+      </div>
     </div>
   );
 }

@@ -5,16 +5,16 @@
     display: none;
     justify-content: center;
     align-items: center;
-    background-color: rgba(128, 128, 128, 0.404);
+    background-color: rgba(99, 99, 99, 0.404);
     z-index: 100;
 }
 
 .EditChatRoomContainer .EditChatRoomWindow {
     position: relative;
-    padding: 10px;
+    padding: 50px;
     width: 400px;
     height: auto;
-    background-color: black;
+    background-color: #0c356a;
     color: white;
     border-radius: 5px;
 }
@@ -43,7 +43,7 @@
     margin: 5px;
 }
 
-.EditChatRoomContainer .EditChatRoomWindow .EditChatRoomButtonsContainer .DeleteEditChatRoomButton {
+.EditChatRoomContainer .EditChatRoomWindow .EditChatRoomButtonsContainer .LeaveChatRoomButton {
     background-color: red;
     padding: 5px;
     justify-content: start;
@@ -66,4 +66,9 @@
     border: none;
     padding: 5px;
     background-color: green;
+}
+
+.EditChatRoomTitle{
+    font-size: 30px;
+    padding-left: 2px;
 }

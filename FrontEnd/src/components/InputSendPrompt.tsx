@@ -1,4 +1,6 @@
 import '../styles/InputSendPrompt.css';
+import addIdeaIcon from "../assets/addIdeasIcon.png"
+import { width } from '@fortawesome/free-solid-svg-icons/fa0';
 
 /*
     * InputSendPrompt.tsx 
@@ -42,7 +44,7 @@ function InputSendPrompt(props: InputSendPromptProps) {
     return (
         <div className="InputSendContainer">
             <input className="InputSection" type="text" placeholder="Enter Ideas here..." onKeyDown={handleKeyDown} disabled={props.input}></input>
-            <button className="SendSection" onClick={handleSendClick} disabled={props.input}>Add ideas</button>
+            <button className="SendSection" onClick={handleSendClick} disabled={props.input}><img className='AddIdeaIcon_CSS' src={addIdeaIcon} width={60}/></button>
         </div>
     );
 }
