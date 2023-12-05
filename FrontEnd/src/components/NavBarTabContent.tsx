@@ -112,7 +112,8 @@ function NavBarTabContent(props: ChatListProps) {
           type === 2 ||
           type === 3 ||
           type === 4 ||
-          type === 7
+          type === 7 ||
+          type === 8
         ) {
           if (type === 1 || type === 2 || type === 7) {
             if (type === 1 || type === 2) {
@@ -122,7 +123,11 @@ function NavBarTabContent(props: ChatListProps) {
               const updateMsg = context[5];
               updateMsg(true);
             }
-          } else if (type === 4) {
+          } else if (type === 4 || type === 8) {
+            if (type === 8) {
+              const updateHeader = context[9];
+              updateHeader(true);
+            }
             setForceRender((prev) => !prev);
           } else if (type === 3) {
             const updateData = context[2];
