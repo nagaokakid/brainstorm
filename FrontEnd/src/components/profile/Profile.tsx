@@ -155,6 +155,7 @@ function Profile(props: Props) {
             placeholder="Password"
             type="Password"
             autoComplete="off"
+            value={input.Password ?? ""}
             onChange={handleChanged}
           />
           <input
@@ -163,6 +164,7 @@ function Profile(props: Props) {
             placeholder="Re-Password"
             type="Password"
             autoComplete="off"
+            value={input.RePassword ?? ""}
             onChange={handleChanged}
           />
         </form>
