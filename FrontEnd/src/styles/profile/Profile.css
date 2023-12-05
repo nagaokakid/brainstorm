@@ -53,10 +53,10 @@
     pointer-events: none;
 }
 
-.ProfileContainer .ProfileWindow .ProfileButtonsContainer .DeleteProfileButton {
+.ProfileContainer .ProfileWindow .DeleteProfileButton {
     background-color: red;
     padding: 5px;
-    justify-content: start;
+    justify-content: end;
     border-radius: 5px;
     border: none;
     width: 100px;
@@ -81,4 +81,9 @@
 .ProfileTitle{
     font-size: 30px;
     padding-left: 10px;
+}
+
+.ProfileContainerTitle{
+    display: flex;
+    flex-direction: row;
 }

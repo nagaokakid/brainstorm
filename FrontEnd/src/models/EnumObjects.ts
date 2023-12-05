@@ -4,7 +4,7 @@ export enum ErrorMessages {
     AccountNotFound = "Account not found",
     FailedToLogin = "Failed to login",
     FailedToRegister = "Failed to register",
-    PasswordNotMatch = "Password does not match",
+    PasswordNotMatch = "Passwords do not match",
     DuplicatedAccount = "Account already exists",
     InvalidCode = "Invalid code",
     FailedToCreateBSsession = "Failed to create BS session",

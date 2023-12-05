@@ -220,10 +220,10 @@ namespace Logic.Services
             // try to edit user if found
             if(existingUser != null)
             {
-                existingUser.FirstName = editUserRequest.FirstName;
-                existingUser.LastName = editUserRequest.LastName;
-                existingUser.Username = editUserRequest.Username;
-                existingUser.Password = editUserRequest.Password;
+                existingUser.FirstName = editUserRequest.FirstName == "" ? existingUser.FirstName : editUserRequest.FirstName;
+                existingUser.LastName = editUserRequest.LastName == "" ? existingUser.LastName : editUserRequest.LastName;
+                existingUser.Username = editUserRequest.Username == "" ? existingUser.Username : editUserRequest.Username;
+                existingUser.Password = editUserRequest.Password == "" ? existingUser.Password : editUserRequest.Password;
 
                 // save modified user
                 await userCollection.Edit(existingUser);
