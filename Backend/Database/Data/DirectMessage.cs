@@ -18,6 +18,8 @@ namespace Database.Data
     /// </summary>
     public class DirectMessage
     {
+        [BsonId]
+        [BsonElement("_id")]
         public string DirectMessageId { get; set; }
         public bool IsDeleted { get; set; }
         public string FromUserId { get; set; }
