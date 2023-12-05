@@ -9,6 +9,8 @@
  * Version: 1.0
 */
 
+using Logic.DTOs.User;
+
 namespace Logic.DTOs.Messages
 {
     /// <summary>
@@ -16,6 +18,7 @@ namespace Logic.DTOs.Messages
     /// </summary>
     public class DirectMessageInfo
     {
+        public string FromUserId{ get; set; }
         public string MessageId { get; set; }
         public string Message { get; set; }
         public DateTime Timestamp { get; set; }

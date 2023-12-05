@@ -4,7 +4,6 @@ import SignalRChatRoom from "../services/ChatRoomConnection";
 import SignalRDirect from "../services/DirectMessageConnection";
 import UserInfo from "../services/UserInfo";
 import "../styles/MessageBox.css";
-import joinBS from "../assets/JoinBS.png"
 
 /*
   * MessageBox.tsx

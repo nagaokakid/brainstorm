@@ -17,7 +17,6 @@ import CreateBrainStormCustomize from "./CreateBrainStormCustomize";
 import CreateRoomCustomize from "./CreateRoomCustomize";
 import DefaultChatRoomWindow from "./DefaultChatRoomWindow";
 import EditChatroom from "./chatroom/EditChatroom";
-import { handleHover } from "./handleIconHover";
 import AddIcon from "../assets/AddButton.png";
 
 import editChatRoomIcon from "./../assets/editIcon.png";
@@ -184,7 +183,6 @@ function NavBarTabContent(props: ChatListProps) {
               <button
                 className="CreateChatRoomIcon"
                 onClick={handleCreateChatRoomButton}
-                onMouseOver={handleHover}
               >
                 <img src={AddIcon} width={20} />
               </button>

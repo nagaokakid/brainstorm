@@ -12,12 +12,12 @@
 using Database.Data;
 using Logic.DTOs.Messages;
 
-namespace Logic.Helpers
+namespace Logic.Converters
 {
     /// <summary>
     ///   This static class contains the data for the MessageHelper
     /// </summary>
-    public static class MessageHelper
+    public static class MessageConverter
     {
         /// <summary>
         ///  This static method converts a MessageInfo object to a DirectMessage object
@@ -44,6 +44,7 @@ namespace Logic.Helpers
         {
             return new DirectMessageInfo
             {
+                FromUserId = msg.FromUserId,
                 MessageId = msg.DirectMessageId,
                 Message = msg.Message,
                 Timestamp = msg.Timestamp,

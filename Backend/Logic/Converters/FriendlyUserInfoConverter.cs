@@ -11,12 +11,12 @@
 using Database.Data;
 using Logic.DTOs.User;
 
-namespace Logic.Helpers
+namespace Logic.Converters
 {
     /// <summary>
     ///     This static class contains the FriendlyUserInfoHelper
     /// </summary>
-    public static class FriendlyUserInfoHelper
+    public static class FriendlyUserInfoConverter
     {
         /// <summary>
         ///    This static method converts a User object to a FriendlyUserInfo object
