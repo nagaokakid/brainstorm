@@ -71,7 +71,11 @@ namespace Logic.Services
         /// <param name="messageId"></param>
         public async Task RemoveDirectMessage(string fromUserId, string toUserId, string messageId)
         {
-            await directMessageCollection.RemoveDirectMessage(fromUserId, toUserId, messageId);
+            var result = await directMessageCollection.Get(fromUserId, toUserId);
+            if(result != null)
+            {
+                await directMessageCollection.RemoveDirectMessage(result.Id, messageId);
+            }
         }
     }
 }
