@@ -60,7 +60,7 @@ namespace Database.Collections
         // Remove a message from a chat room
         public async Task RemoveMessage(string chatRoomId, string messageId)
         {
-            await chatRoomRepository.RemoveDocumentFromNestedCollection(chatRoomId, "Messages", messageId);
+            await chatRoomRepository.RemoveDocumentFromNestedCollection(chatRoomId, "ChatRoomMessage", "Messages", messageId);
         }
 
         // Edit an existing chat room (replace the document with a new one)
