@@ -350,13 +350,11 @@ class ApiService {
       });
       value.setBrainstormSessionAlreadyStartedErrorCallback(() => {
         Callback(6);
-      })
-    );
-    await SignalRChatRoom.getInstance().then((value) =>
+      });
       value.setEditChatRoomCallback(() => {
         Callback(8);
       })
-    );
+    });
   }
 
   async buildBSCallBack(
