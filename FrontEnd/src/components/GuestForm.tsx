@@ -12,7 +12,7 @@ import '../styles/GuestForm.css';
 
 function GuestForm() {
     const navigate = useNavigate()
-    const [input, setInput] = useState({ code: '' }) // This handle the state of the input
+    const [input, setInput] = useState({ ChatRoomCode: '' }) // This handle the state of the input
     const [errorMsg, setErrorMsg] = useState(ErrorMessages.Empty) // This store the error message
     const [errorDisplay, setErrorDisplay] = useState(DisplayTypes.None) // This handle the error message display
 
@@ -33,10 +33,10 @@ function GuestForm() {
         setErrorDisplay(DisplayTypes.None)
         const button = document.getElementById('join') as HTMLButtonElement;
 
-        if (input.code) {
+        if (input.ChatRoomCode) {
             button.disabled = true; // Disable the button to prevent spamming
             
-            ApiService.IsJoinCodeValid(input.code).then((response) => {
+            ApiService.IsJoinCodeValid(input.ChatRoomCode).then((response) => {
                 if (response) {
                     const tempUser = {
                         userInfo: {
@@ -44,7 +44,7 @@ function GuestForm() {
                             firstName: "Guest",
                             lastName: "",
                             isGuest: true,
-                            firstRoom: input.code,
+                            firstRoom: input.ChatRoomCode,
                         },
                         token: "",
                         chatRooms: [] as chatRoomObject[],
