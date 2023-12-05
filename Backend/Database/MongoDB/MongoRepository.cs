@@ -1,4 +1,5 @@
-﻿using MongoDB.Driver;
+﻿using MongoDB.Bson;
+using MongoDB.Driver;
 
 /* 
  * MongoRepository.cs
@@ -297,6 +298,34 @@ namespace Database.MongoDB
             catch (Exception ex)
             {
                 Console.WriteLine("System Exception! Failed to remove element from document array on MongoDB: " + ex.Message);
+                Console.WriteLine(ex.StackTrace);
+                throw;
+            }
+        }
+
+        // Remove a document from a nested collection (i.e.: delete a message from a chatroom's list of message objects)
+        public async Task RemoveDocumentFromNestedCollection(string id, string nestedCollectionName, string nestedDocumentId)
+        {
+            try
+            {
+                var filter = Builders<TDocument>.Filter.Eq("_id", id);
+                var update = Builders<TDocument>.Update.PullFilter(nestedCollectionName, Builders<BsonDocument>.Filter.Eq("_id", nestedDocumentId));
+                var result = await collection.UpdateOneAsync(filter, update);
+
+                if (result.ModifiedCount == 0)
+                {
+                    Console.WriteLine("No document was removed from nested collection.");
+                }
+            }
+            catch (MongoException ex)
+            {
+                Console.WriteLine("Mongo Exception! Failed to remove document from nested collection in MongoDB: " + ex.Message);
+                Console.WriteLine(ex.StackTrace);
+                throw;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("System Exception! Failed to remove document from nested collection in MongoDB: " + ex.Message);
                 Console.WriteLine(ex.StackTrace);
                 throw;
             }

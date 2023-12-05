@@ -19,6 +19,8 @@ namespace Database.Data
     /// </summary>
     public class ChatRoomMessage
     {
+        [BsonId]
+        [BsonElement("_id")]
         public string ChatRoomMessageId { get; set; }
         public bool IsDeleted { get; set; }
         public string FromUserId { get; set; }
