@@ -319,13 +319,13 @@ namespace Database.MongoDB
             }
             catch (MongoException ex)
             {
-                Console.WriteLine("Mongo Exception! Failed to remove element from a nested document in MongoDB: " + ex.Message);
+                Console.WriteLine("Mongo Exception! Failed to remove document from nested collection in MongoDB: " + ex.Message);
                 Console.WriteLine(ex.StackTrace);
                 throw;
             }
             catch (Exception ex)
             {
-                Console.WriteLine("System Exception! Failed to remove element from a nested document in MongoDB: " + ex.Message);
+                Console.WriteLine("System Exception! Failed to remove document from nested collection in MongoDB: " + ex.Message);
                 Console.WriteLine(ex.StackTrace);
                 throw;
             }
