@@ -10,7 +10,7 @@
 
 using Database.CollectionContracts;
 using Logic.DTOs.Messages;
-using Logic.Helpers;
+using Logic.Converters;
 
 namespace Logic.Services
 {

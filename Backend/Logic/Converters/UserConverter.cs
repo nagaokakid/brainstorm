@@ -11,12 +11,12 @@
 using Database.Data;
 using Logic.DTOs.User;
 
-namespace Logic.Helpers
+namespace Logic.Converters
 {
     /// <summary>
     ///   This static class contains methods to create a User object from a RegisterUserRequest object and to create a FriendlyUserInfo object from a User object.
     /// </summary>
-    public static class UserHelper
+    public static class UserConverter
     {
         /// <summary>
         ///   This static method creates a User object from a RegisterUserRequest object.

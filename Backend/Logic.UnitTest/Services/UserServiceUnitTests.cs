@@ -2,7 +2,7 @@
 using Database.Data;
 using Logic.DTOs.User;
 using Logic.Exceptions;
-using Logic.Helpers;
+using Logic.Converters;
 using Logic.Services;
 using Moq;
 
