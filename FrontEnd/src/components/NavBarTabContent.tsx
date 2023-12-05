@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Suspense, lazy, useContext, useEffect, useState } from "react";
+import { Suspense, lazy, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { DataContext } from "../contexts/DataContext";
+import { useDataContext } from "../contexts/DataContext";
 import { DisplayTypes, NoticeMessages, TabTypes } from "../models/EnumObjects";
 import {
   chatRoomMessageObject,
@@ -28,7 +28,8 @@ interface ChatListProps {
 
 function NavBarTabContent(props: ChatListProps) {
   const navigate = useNavigate(); // Get the navigate function
-  const context = useContext(DataContext); // Get the data context
+  const context = useDataContext(); // Get the data context
+  const windowUpdate = context[10]; // Get the update window function
   const ChatRoomWindow = lazy(() => import("./ChatRoomWindow")); // Lazy load the chat room window component
   const [chatList, setChatList] = useState(
     [] as (chatRoomObject | directMessageObject)[]
@@ -173,6 +174,10 @@ function NavBarTabContent(props: ChatListProps) {
     }
   }, [props.displayTab, forceRender]);
 
+  useEffect(() => {
+    setSelectedChat({} as chatRoomObject | directMessageObject);
+  }, [props.displayTab, windowUpdate]);
+
   return (
     <div className="NavBarTabContentContainer">
       <div className="ContentListContainer">
@@ -203,8 +208,8 @@ function NavBarTabContent(props: ChatListProps) {
                 {("title" in chat
                   ? chat.title
                   : chat.user1.userId === UserInfo.getUserId()
-                  ? chat.user2.firstName
-                  : chat.user1.firstName
+                    ? chat.user2.firstName
+                    : chat.user1.firstName
                 )
                   .trim()[0]
                   .toUpperCase()}
@@ -214,15 +219,15 @@ function NavBarTabContent(props: ChatListProps) {
                   {"title" in chat
                     ? chat.title
                     : chat.user1.userId === UserInfo.getUserId()
-                    ? chat.user2.firstName + " " + chat.user2.lastName
-                    : chat.user1.firstName + " " + chat.user1.lastName}
+                      ? chat.user2.firstName + " " + chat.user2.lastName
+                      : chat.user1.firstName + " " + chat.user1.lastName}
                 </div>
                 <div className="LastMessage">
                   {"description" in chat
                     ? chat.description
                     : chat.directMessages.length != 0
-                    ? chat.directMessages.slice(-1)[0].message
-                    : ""}
+                      ? chat.directMessages.slice(-1)[0].message
+                      : ""}
                 </div>
               </div>
               <div

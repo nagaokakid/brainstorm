@@ -301,26 +301,27 @@ class ApiService {
       timer?: number
     ) => void
   ) {
-    await SignalRDirect.getInstance().then((value) =>
-      value.setReceiveDirectMessageCallback(
-        (msgObject: newDirectMessageObject) => {
-          console.log("----> Receive direct message callback");
-          Callback(2, undefined, msgObject);
+    /**
+     * Set all the call back functions for the SignalR
+     */
+    await SignalRDirect.getInstance().then((value) => {
+      value.setReceiveDirectMessageCallback((msgObject: newDirectMessageObject) => {
+        console.log("----> Receive direct message callback");
+        Callback(2, undefined, msgObject);
+      });
+      value.setRemoveDirectMessageCallback((toId: string, messageId: string) => {
+        console.log("----> Receive remove direct message callback");
+        if (toId && messageId) {
+          UserInfo.deleteDirectMessage(toId, messageId);
+          Callback(7);
         }
-      )
-    );
-    await SignalRDirect.getInstance().then((value) =>
-      value.setRemoveDirectMessageCallback(
-        (toId: string, messageId: string) => {
-          console.log("----> Receive remove direct message callback");
-          if (toId && messageId) {
-            UserInfo.deleteDirectMessage(toId, messageId);
-            Callback(7);
-          }
-        }
-      )
-    );
-    await SignalRChatRoom.getInstance().then((value) =>
+      });
+    });
+
+    /**
+     * Set all the call back functions for the SignalR
+     */
+    await SignalRChatRoom.getInstance().then((value) => {
       value.setReceiveChatRoomMessageCallback(
         (
           bsid: string | undefined,
@@ -329,47 +330,31 @@ class ApiService {
         ) => {
           Callback(1, bsid, msgObject, undefined, undefined, timer);
         }
-      )
-    );
-    await SignalRChatRoom.getInstance().then((value) =>
+      );
       value.setReceiveChatRoomInfoCallback(() => {
         console.log("----> Receive chatroom info message callback");
         Callback(4);
-      })
-    );
-    await SignalRChatRoom.getInstance().then((value) =>
+      });
       value.setReceiveNewMemberCallback(() => {
         Callback(3);
-      })
-    );
-    await SignalRChatRoom.getInstance().then((value) =>
-      value.setRemoveChatRoomMessageCallback(
-        (chatRoomId: string, messageId: string) => {
-          if (chatRoomId && messageId) {
-            UserInfo.deleteChatRoomMessage(chatRoomId, messageId);
-            Callback(7);
-          }
+      });
+      value.setRemoveChatRoomMessageCallback((chatRoomId: string, messageId: string) => {
+        if (chatRoomId && messageId) {
+          UserInfo.deleteChatRoomMessage(chatRoomId, messageId);
+          Callback(7);
         }
-      )
-    );
-    await SignalRChatRoom.getInstance().then((value) =>
-      value.setUserJoinedBrainstormSessionCallback(
-        (id, userId, count, timer) => {
-          console.log("----> Receive BS join message callback");
-          Callback(5, id, undefined, userId, count, timer);
-        }
-      )
-    );
-    await SignalRChatRoom.getInstance().then((value) =>
+      });
+      value.setUserJoinedBrainstormSessionCallback((id, userId, count, timer) => {
+        console.log("----> Receive BS join message callback");
+        Callback(5, id, undefined, userId, count, timer);
+      });
       value.setBrainstormSessionAlreadyStartedErrorCallback(() => {
         Callback(6);
-      })
-    );
-    await SignalRChatRoom.getInstance().then((value) =>
+      });
       value.setEditChatRoomCallback(() => {
         Callback(8);
-      })
-    );
+      });
+    });
   }
 
   async buildBSCallBack(
@@ -380,47 +365,28 @@ class ApiService {
       timer?: number
     ) => void
   ) {
-    await SignalRChatRoom.getInstance().then((value) =>
-      value.setBrainstormSessionStartedCallback(
-        (sessionId: string, timer: number) => {
-          console.log("----> Receive BS started message callback");
-          Callback(1, undefined, sessionId, timer);
-        }
-      )
-    );
-
-    await SignalRChatRoom.getInstance().then((value) =>
+    await SignalRChatRoom.getInstance().then((value) => {
+      value.setBrainstormSessionStartedCallback((sessionId: string, timer: number) => {
+        console.log("----> Receive BS started message callback");
+        Callback(1, undefined, sessionId, timer);
+      });
       value.setBrainstormSessionEndedCallback(() => {
         console.log("----> Receive BS ended message callback");
         Callback(2);
-      })
-    );
-
-    await SignalRChatRoom.getInstance().then((value) =>
+      });
       value.setReceiveAllIdeasCallback((id: string, ideas: Idea[]) => {
         console.log("----> Receive BS idea receive message callback");
-        console.log(ideas);
-        console.log(id);
-
         Callback(3, ideas);
-      })
-    );
-
-    await SignalRChatRoom.getInstance().then((value) =>
+      });
       value.setReceiveVoteResultsCallback((id: string, ideas: Idea[]) => {
         console.log("----> Receive BS vote results message callback");
-        console.log(ideas);
-        console.log(id);
         Callback(4, ideas);
-      })
-    );
-
-    await SignalRChatRoom.getInstance().then((value) =>
+      });
       value.setSendVotesCallback(() => {
         console.log("----> Receive BS send vote message callback");
         Callback(5);
-      })
-    );
+      });
+    });
   }
 
   async leaveBSSession(creator: string, sessionId: string) {
