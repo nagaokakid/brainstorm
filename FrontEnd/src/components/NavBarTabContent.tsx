@@ -53,6 +53,7 @@ function NavBarTabContent(props: ChatListProps) {
    * @param chat The chat room or direct message selected
    */
   function handleChatOnClick(chat: chatRoomObject | directMessageObject) {
+    sessionStorage.setItem("currentChatRoom", "title" in chat ? chat.id : "-1");
     setSelectedChat(chat);
   }
 
@@ -138,6 +139,7 @@ function NavBarTabContent(props: ChatListProps) {
           updateCount(count!);
           if (userId === UserInfo.getUserId()) {
             navigate("/BrainStorm", { state: { bsid, timer } });
+            
           }
         } else if (type === 6) {
           props.noticeFunction(NoticeMessages.SessionEnded);
@@ -175,7 +177,16 @@ function NavBarTabContent(props: ChatListProps) {
   }, [props.displayTab, forceRender]);
 
   useEffect(() => {
-    setSelectedChat({} as chatRoomObject | directMessageObject);
+    const chatRoomId = sessionStorage.getItem("currentChatRoom");
+    if (chatRoomId != null && chatRoomId !== "-1") {
+      const chatRoom = UserInfo.getChatRoomInfo(chatRoomId);
+      if (chatRoom != null) {
+        setSelectedChat(chatRoom);
+        sessionStorage.removeItem("currentChatRoom");
+      }
+    } else {
+      setSelectedChat({} as chatRoomObject | directMessageObject);
+    }
   }, [props.displayTab, windowUpdate]);
 
   return (
