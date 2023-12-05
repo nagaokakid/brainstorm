@@ -70,7 +70,9 @@
     color: black;
     font-weight: bold;
     border: none;
-    border-radius: 5px;
+    width: 100px;
+    border-radius: 20px;
+    margin-top: 10px;
 }
 
 .MessageContainer .MessageWrapper .Message p .MessageIsBrainstorm .MessageJoinBS:hover {
@@ -80,10 +82,15 @@
     font-weight: bold;
     border: none;
     border-radius: 5px;
+    border-radius: 20px;
 }
 
 .MessageContainer .MessageWrapper .Message p .MessageIsBrainstorm button {
     width: fit-content;
     height: fit-content;
     align-self: flex-end;
+}
+
+.JoinBSIcon{
+    width: 50px;
 }

@@ -1,6 +1,4 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Suspense, lazy, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { DataContext } from "../contexts/DataContext";
@@ -20,6 +18,7 @@ import CreateRoomCustomize from "./CreateRoomCustomize";
 import DefaultChatRoomWindow from "./DefaultChatRoomWindow";
 import EditChatroom from "./chatroom/EditChatroom";
 import { handleHover } from "./handleIconHover";
+import AddIcon from "../assets/AddButton.png";
 
 import editChatRoomIcon from "./../assets/editIcon.png";
 
@@ -35,16 +34,18 @@ function NavBarTabContent(props: ChatListProps) {
   const [chatList, setChatList] = useState(
     [] as (chatRoomObject | directMessageObject)[]
   ); // Set the type of chat list to be displayed
-  const [selectedChat, setSelectedChat] = useState<chatRoomObject | directMessageObject>(
-    {} as chatRoomObject | directMessageObject
-  ); // Track the current selected chat
+  const [selectedChat, setSelectedChat] = useState<
+    chatRoomObject | directMessageObject
+  >({} as chatRoomObject | directMessageObject); // Track the current selected chat
   const [showCreateChatRoom, setShowCreateChatRoom] = useState({
     display: DisplayTypes.None,
   }); // Set the default display of the create chat room option to be hidden
   const [showCreateBrainstorm, setShowCreateBrainstorm] = useState({
     display: DisplayTypes.None,
   }); // Set the default display of the create brainstorm option to be hidden
-  const [showEditChatRoom, setShowEditChatRoom] = useState({ display: DisplayTypes.None });
+  const [showEditChatRoom, setShowEditChatRoom] = useState({
+    display: DisplayTypes.None,
+  });
   const [forceRender, setForceRender] = useState(false); // Force the component to re-render
 
   /**
@@ -180,10 +181,7 @@ function NavBarTabContent(props: ChatListProps) {
                 onClick={handleCreateChatRoomButton}
                 onMouseOver={handleHover}
               >
-                <FontAwesomeIcon
-                  icon={faPenToSquare}
-                  title="Create Chat Room"
-                />
+                <img src={AddIcon} width={20} />
               </button>
             </div>
           )}
@@ -193,13 +191,17 @@ function NavBarTabContent(props: ChatListProps) {
         </div>
         <div className="ListContainer">
           {chatList.map((chat, index) => (
-            <div className="ListItem" key={index} onClick={() => handleChatOnClick(chat)}>
+            <div
+              className="ListItem"
+              key={index}
+              onClick={() => handleChatOnClick(chat)}
+            >
               <div className="ItemIcon">
                 {("title" in chat
                   ? chat.title
                   : chat.user1.userId === UserInfo.getUserId()
-                    ? chat.user2.firstName
-                    : chat.user1.firstName
+                  ? chat.user2.firstName
+                  : chat.user1.firstName
                 )
                   .trim()[0]
                   .toUpperCase()}
@@ -209,19 +211,29 @@ function NavBarTabContent(props: ChatListProps) {
                   {"title" in chat
                     ? chat.title
                     : chat.user1.userId === UserInfo.getUserId()
-                      ? chat.user2.firstName + " " + chat.user2.lastName
-                      : chat.user1.firstName + " " + chat.user1.lastName}
+                    ? chat.user2.firstName + " " + chat.user2.lastName
+                    : chat.user1.firstName + " " + chat.user1.lastName}
                 </div>
                 <div className="LastMessage">
                   {"description" in chat
                     ? chat.description
                     : chat.directMessages.length != 0
-                      ? chat.directMessages.slice(-1)[0].message
-                      : ""}
+                    ? chat.directMessages.slice(-1)[0].message
+                    : ""}
                 </div>
               </div>
-              <div style={props.displayTab == TabTypes.DiretMessage ? { display: DisplayTypes.None } : { display: DisplayTypes.Flex }}>
-                <img className="EditChatRoomButton" onClick={handleEditChatRoomButton} src={editChatRoomIcon} />
+              <div
+                style={
+                  props.displayTab == TabTypes.DiretMessage
+                    ? { display: DisplayTypes.None }
+                    : { display: DisplayTypes.Flex }
+                }
+              >
+                <img
+                  className="EditChatRoomButton"
+                  onClick={handleEditChatRoomButton}
+                  src={editChatRoomIcon}
+                />
               </div>
             </div>
           ))}
@@ -246,8 +258,15 @@ function NavBarTabContent(props: ChatListProps) {
         )}
       </div>
       <CreateRoomCustomize style={showCreateChatRoom} render={setForceRender} />
-      <CreateBrainStormCustomize style={showCreateBrainstorm} chat={selectedChat} />
-      <EditChatroom chatRoom={selectedChat as chatRoomObject} display={showEditChatRoom} render={setForceRender} />
+      <CreateBrainStormCustomize
+        style={showCreateBrainstorm}
+        chat={selectedChat}
+      />
+      <EditChatroom
+        chatRoom={selectedChat as chatRoomObject}
+        display={showEditChatRoom}
+        render={setForceRender}
+      />
     </div>
   );
 }

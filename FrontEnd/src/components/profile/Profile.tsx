@@ -120,7 +120,7 @@ function Profile(props: Props) {
   return (
     <div className="ProfileContainer" style={style} onClick={() => setStyle({ display: DisplayTypes.None })}>
       <div className="ProfileWindow" onClick={handleChildClick}>
-        <div>Profile</div>
+        <div className="ProfileTitle">Profile</div>
         <form className="EditProfileForm" id="EditProfileForm">
           <input
             className="Username"
