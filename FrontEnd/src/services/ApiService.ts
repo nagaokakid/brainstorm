@@ -158,7 +158,6 @@ class ApiService {
       }),
     }).then(async (response) => {
       if (response.ok) {
-        UserInfo.updateChatRoom(chatRoomId, newTitle, newDescription)
         return true;
       } else {
         return false;
@@ -351,8 +350,13 @@ class ApiService {
       });
       value.setBrainstormSessionAlreadyStartedErrorCallback(() => {
         Callback(6);
-      });
-    });
+      })
+    );
+    await SignalRChatRoom.getInstance().then((value) =>
+      value.setEditChatRoomCallback(() => {
+        Callback(8);
+      })
+    );
   }
 
   async buildBSCallBack(

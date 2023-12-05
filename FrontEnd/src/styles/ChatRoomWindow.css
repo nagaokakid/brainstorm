@@ -39,6 +39,9 @@
 }
 
 .WindowContainer .MsgContainer .ChatHeader h1 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     margin: 5px;
     white-space: nowrap;
     overflow: hidden;

@@ -90,7 +90,7 @@ function EditChatroom(props: Props) {
    */
   function handleExit() {
     setStyle({ display: DisplayTypes.None });
-    props.render(prev => !prev);
+    // props.render(prev => !prev);
   }
 
   useEffect(() => {
@@ -108,7 +108,8 @@ function EditChatroom(props: Props) {
             id="ChatRoomTitle"
             placeholder="ChatRoom Title"
             type="text"
-            value={chatRoom.ChatRoomTitle}
+            value={chatRoom.ChatRoomTitle ?? ""}
+            autoComplete="off"
             onChange={handleChanged}
           />
           <input
@@ -116,7 +117,8 @@ function EditChatroom(props: Props) {
             id="ChatRoomDescription"
             placeholder="Description"
             type="text"
-            value={chatRoom.ChatRoomDescription}
+            autoComplete="off"
+            value={chatRoom.ChatRoomDescription ?? ""}
             onChange={handleChanged}
           />
         </form>
