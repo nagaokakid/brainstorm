@@ -5,7 +5,8 @@ import {
     MDBTabsContent,
     MDBTabsItem,
     MDBTabsLink,
-    MDBTabsPane
+    MDBTabsPane,
+    MDBInput
 } from 'mdb-react-ui-kit';
 import 'mdb-react-ui-kit/dist/css/mdb.min.css';
 import { useState } from 'react';
@@ -15,6 +16,13 @@ import { loginObject } from '../models/TypesDefine';
 import ApiService from '../services/ApiService';
 import '../styles/LoginForm.css';
 
+/**
+ * LoginForm.tsx
+ * -------------------------
+ * This is the login form component.
+ * -----------------------------------------------------------------------
+ * Author:  Mr. Yee Tsung (Jackson) Kao
+*/
 function LoginForm() {
     const navigate = useNavigate();
     const [justifyActive, setJustifyActive] = useState(TabTypes.LoginTab); // Store the state of the tabs
@@ -27,18 +35,19 @@ function LoginForm() {
      * @param value The tab that is clicked
      */
     function handleJustifyClick(value: TabTypes) {
-        if (value === justifyActive) { // if the tab is already active, do nothing
+        if (value === justifyActive) { // If the tab is already active, do nothing
             return;
         }
 
-        // Remove all values from the input
+        // Clear the input form
         (document.getElementById('LoginForm') as HTMLFormElement).reset();
         (document.getElementById('RegisterForm') as HTMLFormElement).reset();
 
+        // Clear the input state
         Object.keys(input).forEach((key) => {
             setInput((prev: typeof input) => { return { ...prev, [key]: '' } });
         });
-        setJustifyActive(value); // if the tab is not active, change the state
+        setJustifyActive(value); // Switch the tab
         setErrorDisplay(DisplayTypes.None); // Hide the error message
     }
 
@@ -47,7 +56,7 @@ function LoginForm() {
      * @param value
      */
     function handleChanged(value: React.ChangeEvent<HTMLInputElement>) {
-        const id = value.target.className;
+        const id = value.target.id;
         const info = value.target.value;
         setInput((prev: typeof input) => { return { ...prev, [id]: info } });
     }
@@ -71,13 +80,13 @@ function LoginForm() {
      */
     function handleLogin() {
         setErrorDisplay(DisplayTypes.None); // Hide the error message
-        const button = (document.getElementById('login') as HTMLButtonElement); // Get the button element
 
         if (!input.Username || !input.Password) { // Check if the input is empty
             setErrorMsg(ErrorMessages.FormIncomplete); // Apply the correct error message
             setErrorDisplay(DisplayTypes.Block); // Display the error message
         } else {
-            button.disabled = true; // Disable the button
+            const button = (document.getElementById('login') as HTMLButtonElement); // Get the button element
+            button.disabled = true; // Disable the button to prevent multiple request
 
             ApiService.Login(input).then((resp) => {
                 button.disabled = false; // Enable the button
@@ -100,8 +109,7 @@ function LoginForm() {
      */
     function handleRegister() {
         setErrorDisplay(DisplayTypes.None); // Hide the error message
-        const button = (document.getElementById('register') as HTMLButtonElement); // Get the button element
-
+        
         if (!input.Username || !input.Password || !input.RePassword || !input.FirstName || !input.LastName) { // Check if the input is empty
             setErrorMsg(ErrorMessages.FormIncomplete); // Apply the correct error message
             setErrorDisplay(DisplayTypes.Block); // Display the error message
@@ -109,7 +117,8 @@ function LoginForm() {
             setErrorMsg(ErrorMessages.PasswordNotMatch); // Apply the correct error message
             setErrorDisplay(DisplayTypes.Block); // Display the error message
         } else {
-            button.disabled = true; // Disable the button
+            const button = (document.getElementById('register') as HTMLButtonElement); // Get the button element
+            button.disabled = true; // Disable the button to prevent multiple request
 
             ApiService.Register(input).then((resp) => {
                 button.disabled = false; // Enable the button
@@ -145,21 +154,21 @@ function LoginForm() {
                 <MDBTabsPane show={justifyActive === TabTypes.LoginTab}>
                     <h3 className='SignInTitle'>Sign In:</h3>
                     <form className='LoginForm' id='LoginForm'>
-                        <input className='Username' id='Username' placeholder='Username' type="text" autoComplete="off" onChange={handleChanged} />
-                        <input className='Password' id='Password' placeholder='Password' type="Password" autoComplete="off" onChange={handleChanged} onKeyDown={handleKey} />
+                        <MDBInput wrapperClass='mb-4' label='Username' id='Username' type='text' onChange={handleChanged} />
+                        <MDBInput wrapperClass='mb-4' label='Password' id='Password' type='password' onChange={handleChanged} onKeyDown={handleKey} />
                     </form>
-                    <MDBBtn className="mb-4 w-100" id='login' onClick={() => handleLogin()}>Sign in</MDBBtn>
+                    <MDBBtn className="mb-4 w-100" id='login' onClick={handleLogin}>Sign in</MDBBtn>
                 </MDBTabsPane>
                 <MDBTabsPane show={justifyActive === TabTypes.RegisterTab}>
                     <h3 className='RegisterTitle'>Create Account:</h3>
                     <form className='RegisterForm' id='RegisterForm'>
-                        <input className='Username' id='Username1' placeholder='Username' type="text" autoComplete="off" onChange={handleChanged} />
-                        <input className='FirstName' id='FirstName' placeholder='First Name' type="text" autoComplete="off" onChange={handleChanged} />
-                        <input className='LastName' id='LastName' placeholder='Last Name' type="text" autoComplete="off" onChange={handleChanged} />
-                        <input className='Password' id='Password1' placeholder='Password' type="Password" autoComplete="off" onChange={handleChanged} />
-                        <input className='RePassword' id='RePassword' placeholder='Re-Password' type="Password" autoComplete="off" onChange={handleChanged} onKeyDown={handleKey} />
+                        <MDBInput wrapperClass='mb-4' label='Username' id='Username' type='text' onChange={handleChanged} />
+                        <MDBInput wrapperClass='mb-4' label='FirstName' id='FirstName' type='text' onChange={handleChanged} />
+                        <MDBInput wrapperClass='mb-4' label='LastName' id='LastName' type='text' onChange={handleChanged} />
+                        <MDBInput wrapperClass='mb-4' label='Password' id='Password' type='Password' onChange={handleChanged} />
+                        <MDBInput wrapperClass='mb-4' label='RePassword' id='RePassword' type='Password' onChange={handleChanged} onKeyDown={handleKey} />
                     </form>
-                    <MDBBtn className="mb-4 w-100" id='register' onClick={() => handleRegister()}>Sign up</MDBBtn>
+                    <MDBBtn className="mb-4 w-100" id='register' onClick={handleRegister}>Sign up</MDBBtn>
                 </MDBTabsPane>
                 <h5 className='ErrorMsg' style={{ display: errorDisplay }}>{errorMsg}</h5>
             </MDBTabsContent>

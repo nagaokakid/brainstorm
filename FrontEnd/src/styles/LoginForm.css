@@ -47,7 +47,12 @@
 }
 
 .form-outline .form-control~.form-label {
-    color: #000000 !important;
+    color: white !important;
+}
+
+.form-outline .form-control {
+    background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(12, 53, 106, 1) 100%, rgba(1, 116, 190, 1) 100%);
+    color: white;
 }
 
 .ErrorMsg {
