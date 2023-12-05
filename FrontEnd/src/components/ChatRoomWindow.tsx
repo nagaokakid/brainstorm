@@ -13,10 +13,11 @@ interface ChatRoomWindowProps {
 
 function ChatRoomWindow(props: ChatRoomWindowProps) {
     const context = useDataContext();
-    const update = context[0];
-    const type = 'id' in props.chat ? "ChatRoom List" : "Direct Message List";
+    const updateMemberList = context[0];
+    const updateHeader = context[8];
+    const [chatHeader, setChatHeader] = useState('title' in props.chat ? props.chat.title : (props.chat.user1.userId === UserInfo.getUserId() ? props.chat.user2.firstName : props.chat.user1.firstName));
+    const type = 'id' in props.chat ? TabTypes.ChatRoom : TabTypes.DiretMessage;
     const chatId = 'id' in props.chat ? props.chat.id : (props.chat.user1.userId === UserInfo.getUserId() ? props.chat.user2.userId : props.chat.user1.userId);
-    const chatHeader = 'title' in props.chat ? props.chat.title : (props.chat.user1.userId === UserInfo.getUserId() ? props.chat.user2.firstName : props.chat.user1.firstName);
     const joinCode = 'joinCode' in props.chat ? props.chat.joinCode : null;
     const [memberList, setMemberList] = useState([] as userInfoObject[]);
 
@@ -24,7 +25,12 @@ function ChatRoomWindow(props: ChatRoomWindowProps) {
         if ('members' in props.chat) {
             setMemberList(UserInfo.getMemberList(props.chat.id));
         }
-    }, [props.chat, update]);
+        setChatHeader('title' in props.chat ? (UserInfo.getChatRoomInfo(chatId)?.title ?? "") : (props.chat.user1.userId === UserInfo.getUserId() ? props.chat.user2.firstName : props.chat.user1.firstName));
+    }, [props.chat, updateMemberList]);
+
+    useEffect(() => {
+        setChatHeader('title' in props.chat ? (UserInfo.getChatRoomInfo(chatId)?.title ?? "") : (props.chat.user1.userId === UserInfo.getUserId() ? props.chat.user2.firstName : props.chat.user1.firstName));
+    }, [updateHeader]);
 
     return (
         <div className='WindowContainer'>

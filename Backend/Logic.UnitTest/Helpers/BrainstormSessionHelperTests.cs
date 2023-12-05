@@ -1,5 +1,5 @@
 ﻿using Logic.Data;
-using Logic.Helpers;
+using Logic.Converters;
 
 namespace Logic.UnitTest.Helpers
 {
@@ -34,7 +34,7 @@ namespace Logic.UnitTest.Helpers
         public void ToDTO_InputNull_DebugError()
         {
             // Assert
-            Assert.That(() => BrainstormSessionHelper.ToDTO(null), Throws.ArgumentNullException);
+            Assert.That(() => BrainstormSessionConverter.ToDTO(null), Throws.ArgumentNullException);
         }
     }
 }

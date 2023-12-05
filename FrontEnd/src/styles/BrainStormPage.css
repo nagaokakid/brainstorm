@@ -100,7 +100,9 @@
     margin-right: 5px;
     display: flex;
     justify-content: center;
+    vertical-align:middle;
     align-items: center;
+    color: white;
 }
 .EndSessionButton{
     height: 100%;
@@ -110,7 +112,6 @@
     border: none;
     border-radius: 5px;
     font-weight: bold;
-    padding: 5px;
     margin-right: 5px;
     display: flex;
     justify-content: center;
@@ -123,11 +124,11 @@
     padding: 5px;
     border-radius: 5px;
     font-weight: bold;
-    padding: 5px;
     margin-right: 5px;
     width: 100%;
     display: flex;
     justify-content: center;
+    align-items: center;
 }
 .ExitButton{
     height: 100%;
@@ -136,12 +137,13 @@
     border-radius: 5px;
     font-weight: bold;
     border: none;
-    padding: 5px;
     margin-right: 5px;
     width: 100%;
     display: flex;
     justify-content: center;
+    vertical-align:middle;
     color: white;
+    align-items: center;
 }
 
 .BS_PageContainer .NoticeClass {

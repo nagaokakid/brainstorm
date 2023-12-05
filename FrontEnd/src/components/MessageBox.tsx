@@ -73,12 +73,12 @@ function MsgBox(props: MsgBoxProps) {
             <p>
               <div className="MessageIsBrainstorm">
                 {props.user[1] +
-                  " invited you to join the brainstorm session ->"}
+                  " invited you to join the brainstorm session"}
                 <button
                   className="MessageJoinBS"
                   onClick={handleJoinBrainstorm}
                 >
-                  Click To Join
+                  Join
                 </button>
               </div>
             </p>

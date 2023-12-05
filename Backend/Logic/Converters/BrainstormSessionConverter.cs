@@ -12,12 +12,12 @@ using Logic.Data;
 using Logic.DTOs.ChatRoom;
 using System.Diagnostics;
 
-namespace Logic.Helpers
+namespace Logic.Converters
 {
     /// <summary>
     ///    This static class contains helper methods for the BrainstormSession
     /// </summary>
-    public static class BrainstormSessionHelper
+    public static class BrainstormSessionConverter
     {
         /// <summary>
         ///    This static method converts a BrainstormSession to a BrainstormDTO

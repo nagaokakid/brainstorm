@@ -12,12 +12,12 @@ using Database.Data;
 using Logic.DTOs.ChatRoom;
 using System.Runtime.CompilerServices;
 
-namespace Logic.Helpers
+namespace Logic.Converters
 {
     /// <summary>
     ///  This static  class contains the FriendlyChatRoomHelper
     ///  </summary>
-    public static class FriendlyChatRoomHelper
+    public static class FriendlyChatRoomConverter
     {
         /// <summary>
         /// This static method converts a ChatRoom object to a FriendlyChatRoom object

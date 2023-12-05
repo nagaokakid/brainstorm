@@ -15,8 +15,6 @@ import { DataContext } from "../contexts/DataContext";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRecycle, faPlay, faStop } from '@fortawesome/free-solid-svg-icons';
 import exitIcon from "../assets/ExitIcon.png"
-import RecycleBin from "../components/RecycleBin";
-
 /*
  * BrainStormPage.tsx
   * -------------------------

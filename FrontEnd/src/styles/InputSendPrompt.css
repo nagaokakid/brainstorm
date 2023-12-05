@@ -33,10 +33,30 @@
     flex-direction: row;
     font-weight: bold;
     align-items: center;
-    justify-content: center;
+    justify-content: start;
     font-weight: bold;
     color: black;
-    background-color: #FFC436;
+    background-color: transparent;
     border: none;
     border-radius: 5px;
+}
+
+.InputSendContainer .SendSection:hover{
+    position: relative;
+    padding: 5px;
+    height: 100%;
+    width: 100px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: start;
+    font-weight: bold;
+    color: black;
+    background-color: transparent;
+    border: none;
+    border-radius: 5px;
+}
+
+.AddIdeaIcon_CSS:hover{
+    width: 65px;
 }

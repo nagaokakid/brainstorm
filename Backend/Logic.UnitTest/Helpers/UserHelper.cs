@@ -1,6 +1,6 @@
 ﻿using Database.Data;
 using Logic.DTOs.User;
-using Logic.Helpers;
+using Logic.Converters;
 
 namespace Logic.UnitTest.Helpers
 {

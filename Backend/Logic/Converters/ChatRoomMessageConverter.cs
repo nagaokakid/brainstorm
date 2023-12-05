@@ -13,12 +13,12 @@ using Logic.DTOs.ChatRoom;
 using Logic.DTOs.Messages;
 using Logic.DTOs.User;
 
-namespace Logic.Helpers
+namespace Logic.Converters
 {
     /// <summary>
     ///  This static class contains the ChatroomMessageHelper
     ///  </summary>
-    public static class ChatRoomMessageHelper
+    public static class ChatRoomMessageConverter
     {
         /// <summary>
         ///  This static method converts a ChatRoomMessage to a FriendlyChatRoomMessage

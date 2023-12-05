@@ -1,17 +1,39 @@
-.EditChatRoomWindoww{
-    padding: 10px;
-    z-index: 10;
-    position:absolute;
+.EditChatRoomContainer {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(99, 99, 99, 0.404);
+    z-index: 100;
+}
+
+.EditChatRoomContainer .EditChatRoomWindow {
+    position: relative;
+    padding: 50px;
     width: 400px;
     height: auto;
-    left: 20%;
-    top: 10%;
-    background-color: black;
+    background-color: #0c356a;
     color: white;
     border-radius: 5px;
 }
 
-.EditChatRoomButtonsContainer{
+.EditChatRoomContainer .EditChatRoomWindow .EditChatRoomForm {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.EditChatRoomContainer .EditChatRoomWindow .ErrorMessage {
+    color: red;
+    font-size: 12px;
+    margin: 0;
+}
+
+.EditChatRoomContainer .EditChatRoomWindow .EditChatRoomButtonsContainer {
     width: 100%;
     display: flex;
     flex-direction: row;
@@ -21,7 +43,7 @@
     margin: 5px;
 }
 
-.DeleteEditChatRoomButton{
+.EditChatRoomContainer .EditChatRoomWindow .EditChatRoomButtonsContainer .LeaveChatRoomButton {
     background-color: red;
     padding: 5px;
     justify-content: start;
@@ -30,7 +52,7 @@
     width: 100px;
 }
 
-.CancelEditChatRoomButton{
+.EditChatRoomContainer .EditChatRoomWindow .EditChatRoomButtonsContainer .CancelEditChatRoomButton {
     padding: 5px;
     background-color: orange;
     border-radius: 5px;
@@ -38,10 +60,15 @@
     width: 100px;
 }
 
-.SaveEditChatRoomButton{
+.EditChatRoomContainer .EditChatRoomWindow .EditChatRoomButtonsContainer .SaveEditChatRoomButton {
     width: 100px;
     border-radius: 5px;
     border: none;
     padding: 5px;
     background-color: green;
+}
+
+.EditChatRoomTitle{
+    font-size: 30px;
+    padding-left: 2px;
 }

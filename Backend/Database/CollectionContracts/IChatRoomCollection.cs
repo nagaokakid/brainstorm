@@ -26,6 +26,6 @@ namespace Database.CollectionContracts
         Task RemoveMessage(string chatRoomId, string messageId);
         Task EditChatRoom(ChatRoom chatroom);
         Task Delete(string id);
-        Task RemoveUser(string id, string chatId);
+        Task RemoveUser(string userId, string chatId);
     }
 }

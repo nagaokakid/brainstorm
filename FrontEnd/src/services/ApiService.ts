@@ -1,13 +1,13 @@
-import UserInfo from "./UserInfo";
-import SignalRChatRoom from "./ChatRoomConnection";
-import SignalRDirect from "./DirectMessageConnection";
 import Idea from "../models/Idea";
 import {
-  loginObject,
-  chatRoomObject,
-  newDirectMessageObject,
   chatRoomMessageObject,
+  chatRoomObject,
+  loginObject,
+  newDirectMessageObject,
 } from "../models/TypesDefine";
+import SignalRChatRoom from "./ChatRoomConnection";
+import SignalRDirect from "./DirectMessageConnection";
+import UserInfo from "./UserInfo";
 
 /*
  * ApiService.ts
@@ -95,8 +95,12 @@ class ApiService {
     return resp;
   }
 
+  /**
+   * Do a delete account API call to the backend
+   * @returns boolean that indicates if the account is deleted
+   */
   async DeleteUser() {
-    await fetch(UserInfo.BaseURL + "api/users/" + UserInfo.getUserId(), {
+    const result = await fetch(UserInfo.BaseURL + "api/users/" + UserInfo.getUserId(), {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -104,11 +108,36 @@ class ApiService {
       },
     }).then(async (response) => {
       if (response.ok) {
-        // update UI
+        return true;
       } else {
-        // update UI
+        return false;
       }
     });
+
+    return result;
+  }
+
+  async LeaveChatRoom(chatRoomId: string) {
+    const result = await fetch(UserInfo.BaseURL + "api/chatroom", {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + UserInfo.getToken(),
+      },
+      body: JSON.stringify({
+        userId: UserInfo.getUserId(),
+        chatRoomId: chatRoomId
+      }),
+    }).then(async (response) => {
+      if (response.ok) {
+        UserInfo.leaveChatRoom(chatRoomId)
+        return true;
+      } else {
+        return false;
+      }
+    });
+
+    return result;
   }
 
   async EditChatRoom(
@@ -116,7 +145,7 @@ class ApiService {
     newTitle: string,
     newDescription: string,
   ) {
-    await fetch(UserInfo.BaseURL + "api/chatroom/", {
+    const result = await fetch(UserInfo.BaseURL + "api/chatroom/", {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -127,23 +156,15 @@ class ApiService {
         title: newTitle,
         description: newDescription
       }),
-    })
-  }
-
-  async DeleteChatRoom(chatRoomId: string) {
-    await fetch(UserInfo.BaseURL + "api/chatroom/" + chatRoomId, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + UserInfo.getToken(),
-      },
     }).then(async (response) => {
       if (response.ok) {
-        UserInfo.deleteChatRoom(chatRoomId)
+        return true;
       } else {
-        // update UI
+        return false;
       }
     });
+
+    return result;
   }
 
   async EditUser(
@@ -152,7 +173,7 @@ class ApiService {
     newFirstName: string,
     newLastName: string
   ) {
-    await fetch(UserInfo.BaseURL + "api/users/", {
+    const result = await fetch(UserInfo.BaseURL + "api/users/", {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -167,12 +188,14 @@ class ApiService {
       }),
     }).then(async (response) => {
       if (response.ok) {
-          // set firstname & last name
-          // rerender
+        UserInfo.setFirstName(newFirstName);
+        UserInfo.setLastName(newLastName);
+        return true;
       } else {
-        // update UI
+        return false;
       }
     });
+    return result;
   }
 
   /**
@@ -311,7 +334,6 @@ class ApiService {
     await SignalRChatRoom.getInstance().then((value) =>
       value.setReceiveChatRoomInfoCallback(() => {
         console.log("----> Receive chatroom info message callback");
-
         Callback(4);
       })
     );
@@ -324,29 +346,7 @@ class ApiService {
       value.setRemoveChatRoomMessageCallback(
         (chatRoomId: string, messageId: string) => {
           if (chatRoomId && messageId) {
-            // remove chat message from chatroom
-            // const chatIndex = UserInfo.currentUser.chatRooms.findIndex(
-            //   (x) => x.id === chatRoomId
-            // );
-            // console.log(chatIndex);
-            // if (chatIndex !== -1) {
-            //   const msgIndex = UserInfo.currentUser.chatRooms[
-            //     chatIndex
-            //   ].messages.findIndex((x) => x.messageId === messageId);
-            //   console.log(msgIndex);
-            //   if (msgIndex !== -1) {
-            //     // remove
-            //     UserInfo.currentUser.chatRooms[chatIndex].messages.splice(
-            //       msgIndex,
-            //       1
-            //     );
-            //     UserInfo.updateUser(true);
-            //   }
-            // }
-
             UserInfo.deleteChatRoomMessage(chatRoomId, messageId);
-
-            console.log("before");
             Callback(7);
           }
         }
@@ -356,7 +356,6 @@ class ApiService {
       value.setUserJoinedBrainstormSessionCallback(
         (id, userId, count, timer) => {
           console.log("----> Receive BS join message callback");
-
           Callback(5, id, undefined, userId, count, timer);
         }
       )
@@ -364,6 +363,11 @@ class ApiService {
     await SignalRChatRoom.getInstance().then((value) =>
       value.setBrainstormSessionAlreadyStartedErrorCallback(() => {
         Callback(6);
+      })
+    );
+    await SignalRChatRoom.getInstance().then((value) =>
+      value.setEditChatRoomCallback(() => {
+        Callback(8);
       })
     );
   }

@@ -81,6 +81,7 @@ namespace Database.Collections
 
         }
 
+        // Get all users registered in the app
         public async Task<Dictionary<string, User>> GetAll()
         {
             var found = await userRepository.GetAllDocuments();
@@ -96,17 +97,23 @@ namespace Database.Collections
             return new Dictionary<string, User>();
         }
 
+        // Edit an existing user with new information
         public async Task Edit(User existingUser)
         {
+            var userId = existingUser.Id;
+            await userRepository.ReplaceDocument(userId, existingUser);
         }
 
+        // Delete a user
         public async Task DeleteUser(string id)
         {
+            await userRepository.DeleteDocument(id);
         }
 
+        // Remove a chatroom id from a user's chatroom id list
         public async Task RemoveChatRoomId(string userId, string chatId)
         {
-            // remove chatroom id from user chatroom member list
+            await userRepository.RemoveFromArrayInDocument(userId, "ChatroomIds", chatId);
         }
     } // class
 } // namespace

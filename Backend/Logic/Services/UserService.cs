@@ -12,7 +12,7 @@
 using Database.CollectionContracts;
 using Logic.DTOs.User;
 using Logic.Exceptions;
-using Logic.Helpers;
+using Logic.Converters;
 
 namespace Logic.Services
 {
