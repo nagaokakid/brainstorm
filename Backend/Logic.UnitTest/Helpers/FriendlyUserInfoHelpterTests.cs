@@ -1,5 +1,5 @@
 ﻿using Database.Data;
-using Logic.Helpers;
+using Logic.Converters;
 
 namespace Logic.UnitTest.Helpers
 {
@@ -26,7 +26,7 @@ namespace Logic.UnitTest.Helpers
         public void ToFriendlyUserInfo_InputNull_ReturnValid()
         {
             // Act
-            var result = FriendlyUserInfoHelper.ToFriendlyUserInfo("123", null);
+            var result = FriendlyUserInfoConverter.ToFriendlyUserInfo("123", null);
 
             // Assert
             Assert.That(result.UserId, Is.EqualTo("123"));
@@ -37,7 +37,7 @@ namespace Logic.UnitTest.Helpers
         public void ToFriendlyUserInfo_InputValid_ReturnValid()
         {
             // Act
-            var result = FriendlyUserInfoHelper.ToFriendlyUserInfo("123", users);
+            var result = FriendlyUserInfoConverter.ToFriendlyUserInfo("123", users);
 
             // Assert
             Assert.That(result.UserId, Is.EqualTo("123"));
@@ -52,14 +52,14 @@ namespace Logic.UnitTest.Helpers
             string par = null;
 
             // Assert
-            Assert.That(() => FriendlyUserInfoHelper.ToFriendlyUserInfo(par, users), Throws.TypeOf<ArgumentNullException>());
+            Assert.That(() => FriendlyUserInfoConverter.ToFriendlyUserInfo(par, users), Throws.TypeOf<ArgumentNullException>());
         }
 
         [Test]
         public void ToFriendlyUserInfo_InputNullUsers_ReturnValid()
         {
             // Act
-            var result = FriendlyUserInfoHelper.ToFriendlyUserInfo(new List<string> { "1", "2" }, null);
+            var result = FriendlyUserInfoConverter.ToFriendlyUserInfo(new List<string> { "1", "2" }, null);
 
             // Assert
             Assert.That(result.Count, Is.EqualTo(2));
@@ -70,7 +70,7 @@ namespace Logic.UnitTest.Helpers
         public void ToFriendlyUserInfo_InputValidUsers_ReturnValid()
         {
             // Act
-            var result = FriendlyUserInfoHelper.ToFriendlyUserInfo(new List<string> { "123", "1234" }, users);
+            var result = FriendlyUserInfoConverter.ToFriendlyUserInfo(new List<string> { "123", "1234" }, users);
 
             // Assert
             Assert.That(result.Count, Is.EqualTo(2));

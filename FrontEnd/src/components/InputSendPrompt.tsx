@@ -1,6 +1,5 @@
 import '../styles/InputSendPrompt.css';
 import addIdeaIcon from "../assets/addIdeasIcon.png"
-import { width } from '@fortawesome/free-solid-svg-icons/fa0';
 
 /*
     * InputSendPrompt.tsx 

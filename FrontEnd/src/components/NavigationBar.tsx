@@ -5,7 +5,6 @@ import { TabTypes } from '../models/EnumObjects';
 import SignalRChatRoom from "../services/ChatRoomConnection";
 import SignalRDirect from "../services/DirectMessageConnection";
 import "../styles/NavigationBar.css";
-import { handleHover } from './handleIconHover';
 
 /* 
  * NavigationBar.tsx
@@ -44,18 +43,18 @@ function NavigationBar(props: NavigationBarProps) {
             <button
                 className={`NavBtn ${props.activeTab === TabTypes.ChatRoom ? 'active' : ''}`}
                 onClick={() => props.selectFunction(TabTypes.ChatRoom)}
-                onMouseOver={handleHover}
+                
             >
                 <FontAwesomeIcon icon={faUsers} title="Group Chat" />
             </button>
             <button
                 className={`NavBtn ${props.activeTab === TabTypes.DiretMessage ? 'active' : ''}`}
                 onClick={() => props.selectFunction(TabTypes.DiretMessage)}
-                onMouseOver={handleHover}
+                
             >
                 <FontAwesomeIcon icon={faEnvelope} title="Direct Message" />
             </button>
-            <button className="NavBtn" onClick={() => logOut()} onMouseOver={handleHover}><FontAwesomeIcon icon={faSignOutAlt} title="Log Out" /></button>
+            <button className="NavBtn" onClick={() => logOut()}><FontAwesomeIcon icon={faSignOutAlt} title="Log Out" /></button>
         </div>
     );
 }
