@@ -18,8 +18,9 @@ export enum ErrorMessages {
 
 export enum NoticeMessages {
     Empty = "",
-    FeatureRestricted = "This feature is restricted",
+    FeatureRestricted = "This feature is restricted to guest users",
     SessionEnded = "Session ended",
+    AlreadyInChatRoom = "You are already in this chat room",
 }
 
 export enum TabTypes {
