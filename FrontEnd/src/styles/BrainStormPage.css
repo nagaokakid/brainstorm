@@ -179,3 +179,17 @@ background: linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(0,28,85,1) 50%, rgba(0,
 .exitIcon_BS:hover{
     height: 80px;
 }
+
+.BS_PageContainer .BS_HeaderContainer .RecycleBinButton {
+    padding-top: 20px;
+    position: absolute;
+    font-size: 30px;
+    top: 5px;
+    right: 5px;
+    width: 50px;
+    height: 50px;
+    border: none;
+    z-index: 1;
+    background: black;
+    color: white;
+}
