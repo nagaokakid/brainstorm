@@ -342,6 +342,8 @@ class SignalRChatRoom {
         this.connection.off("ReceiveChatRoomInfo");
         this.connection.off("UserJoinedBrainstormingSession");
         this.connection.off("SessionStartedNotAllowedToJoin");
+        this.connection.off("RemoveChatRoomMessage");
+        this.connection.off("EditChatRoom");
     }
 
     /**

@@ -105,6 +105,7 @@ class SignalRDirect {
      */
     removeCallBack() {
         this.connection.off("ReceiveDirectMessage");
+        this.connection.off("RemoveDirectMessage");
     }
 
     /**
