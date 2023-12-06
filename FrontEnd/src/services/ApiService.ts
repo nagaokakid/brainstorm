@@ -295,7 +295,7 @@ class ApiService {
     Callback: (
       type: number,
       bsid?: string,
-      msgObject?: chatRoomMessageObject | newDirectMessageObject,
+      msgObject?: chatRoomMessageObject | { fromUserId: string; messageId: string; message: string; timestamp: string },
       userId?: string,
       count?: number,
       timer?: number
@@ -306,11 +306,14 @@ class ApiService {
      */
     await SignalRDirect.getInstance().then((value) => {
       value.setReceiveDirectMessageCallback((msgObject: newDirectMessageObject) => {
-        console.log("----> Receive direct message callback");
-        Callback(2, undefined, msgObject);
+        Callback(2, undefined, {
+          fromUserId: msgObject.fromUserInfo.userId,
+          messageId: msgObject.messageId,
+          message: msgObject.message,
+          timestamp: msgObject.timestamp
+        });
       });
       value.setRemoveDirectMessageCallback((toId: string, messageId: string) => {
-        console.log("----> Receive remove direct message callback");
         if (toId && messageId) {
           UserInfo.deleteDirectMessage(toId, messageId);
           Callback(7);
@@ -332,7 +335,6 @@ class ApiService {
         }
       );
       value.setReceiveChatRoomInfoCallback(() => {
-        console.log("----> Receive chatroom info message callback");
         Callback(4);
       });
       value.setReceiveNewMemberCallback(() => {
@@ -345,7 +347,6 @@ class ApiService {
         }
       });
       value.setUserJoinedBrainstormSessionCallback((id, userId, count, timer) => {
-        console.log("----> Receive BS join message callback");
         Callback(5, id, undefined, userId, count, timer);
       });
       value.setBrainstormSessionAlreadyStartedErrorCallback(() => {
@@ -389,10 +390,14 @@ class ApiService {
     });
   }
 
-  async leaveBSSession(creator: string, sessionId: string) {
+  async leaveBSSession(creator: string, sessionId: string, started?: boolean) {
     await SignalRChatRoom.getInstance().then(async (value) => {
-      if (UserInfo.isHost(creator)) {
-        await value.removeSession(sessionId);
+      if (started) {
+        if (UserInfo.isHost(creator)) {
+          await value.removeSession(sessionId);
+        } else {
+          await value.removeUserFromBrainstormSession(sessionId);
+        }
       } else {
         await value.removeUserFromBrainstormSession(sessionId);
       }

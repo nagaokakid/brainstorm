@@ -11,18 +11,18 @@
 
 .NavBarTabContentContainer {
   position: relative;
+  width: 100%;
   height: auto;
   display: flex;
   flex-direction: row;
   background-color: #0c356a;
   border-radius: 5px 0px 0px 0px;
-  overflow-y: auto;
 }
 
 .NavBarTabContentContainer .ContentListContainer {
   position: relative;
   width: 15%;
-  min-width: 170px;
+  min-width: 200px;
   display: flex;
   flex-direction: column;
   overflow-y: auto;

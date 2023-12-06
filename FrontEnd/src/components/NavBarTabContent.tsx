@@ -7,7 +7,6 @@ import {
   chatRoomMessageObject,
   chatRoomObject,
   directMessageObject,
-  newDirectMessageObject,
 } from "../models/TypesDefine";
 import ApiService from "../services/ApiService";
 import SignalRChatRoom from "../services/ChatRoomConnection";
@@ -53,6 +52,7 @@ function NavBarTabContent(props: ChatListProps) {
    * @param chat The chat room or direct message selected
    */
   function handleChatOnClick(chat: chatRoomObject | directMessageObject) {
+    sessionStorage.setItem("currentChatRoom", "title" in chat ? chat.id : "-1");
     setSelectedChat(chat);
   }
 
@@ -100,7 +100,7 @@ function NavBarTabContent(props: ChatListProps) {
       const render = (
         type: number,
         bsid?: string,
-        msgObject?: chatRoomMessageObject | newDirectMessageObject,
+        msgObject?: chatRoomMessageObject | { fromUserId: string, messageId: string, message: string, timestamp: string },
         userId?: string,
         count?: number,
         timer?: number
@@ -138,6 +138,7 @@ function NavBarTabContent(props: ChatListProps) {
           updateCount(count!);
           if (userId === UserInfo.getUserId()) {
             navigate("/BrainStorm", { state: { bsid, timer } });
+            sessionStorage.setItem("brainstorm", "true");
           }
         } else if (type === 6) {
           props.noticeFunction(NoticeMessages.SessionEnded);
@@ -145,6 +146,7 @@ function NavBarTabContent(props: ChatListProps) {
 
         if (type === 1 && bsid) {
           navigate("/BrainStorm", { state: { bsid, timer } });
+          sessionStorage.setItem("brainstorm", "true");
         }
       };
 
@@ -175,7 +177,17 @@ function NavBarTabContent(props: ChatListProps) {
   }, [props.displayTab, forceRender]);
 
   useEffect(() => {
-    setSelectedChat({} as chatRoomObject | directMessageObject);
+    const brainstorm = sessionStorage.getItem("brainstorm");
+    const chatRoomId = sessionStorage.getItem("currentChatRoom");
+    if (brainstorm && chatRoomId != null && chatRoomId !== "-1") {
+      const chatRoom = UserInfo.getChatRoomInfo(chatRoomId);
+      if (chatRoom != null) {
+        setSelectedChat(chatRoom);
+        sessionStorage.removeItem("brainstorm");
+      }
+    } else {
+      setSelectedChat({} as chatRoomObject | directMessageObject);
+    }
   }, [props.displayTab, windowUpdate]);
 
   return (

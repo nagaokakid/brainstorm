@@ -144,6 +144,15 @@ class UserInfo {
     }
 
     /**
+     * Get the chat room info from the chat room list
+     * @param code The join code
+     * @returns 
+     */
+    static getChatRoomByCode(code: string) {
+        return this.getChatRoomsList().find(chatRoom => chatRoom.joinCode === code);
+    }
+
+    /**
      * Get the chat room member list
      * @param chatRoomId The chat room id
      * @returns The member list
@@ -285,8 +294,6 @@ class UserInfo {
      * @returns 
      */
     static addNewDirectMessage(newDirectMessage: newDirectMessageObject) {
-        console.log(newDirectMessage);
-
         if (newDirectMessage.fromUserInfo.userId === this.getUserId()) { // If the message is sent by the current user, return
             const result = this.getDirectMessagesList().find(current => (newDirectMessage.toUserInfo.userId === current.user1.userId || newDirectMessage.toUserInfo.userId === current.user2.userId));
             if (result) {

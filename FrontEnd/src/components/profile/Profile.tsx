@@ -1,13 +1,15 @@
+import { MDBInput } from "mdb-react-ui-kit";
+import 'mdb-react-ui-kit/dist/css/mdb.min.css';
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDataContext } from "../../contexts/DataContext";
 import { DisplayTypes, ErrorMessages } from "../../models/EnumObjects";
 import { loginObject } from "../../models/TypesDefine";
 import ApiService from "../../services/ApiService";
-import UserInfo from "../../services/UserInfo";
-import "../../styles/profile/Profile.css";
 import SignalRChatRoom from "../../services/ChatRoomConnection";
 import SignalRDirect from "../../services/DirectMessageConnection";
-import { useDataContext } from "../../contexts/DataContext";
+import UserInfo from "../../services/UserInfo";
+import "../../styles/profile/Profile.css";
 
 interface Props {
   display: { display: DisplayTypes };
@@ -98,7 +100,7 @@ function Profile(props: Props) {
    * @param value
    */
   function handleChanged(value: React.ChangeEvent<HTMLInputElement>) {
-    const id = value.target.className;
+    const id = value.target.id;
     const info = value.target.value;
     setInput((prev: typeof input) => {
       return { ...prev, [id]: info };
@@ -147,51 +149,11 @@ function Profile(props: Props) {
           </button>
         </div>
         <form className="EditProfileForm" id="EditProfileForm">
-          <input
-            className="Username"
-            id="Username"
-            placeholder="Username"
-            type="text"
-            value={input.Username ?? ""}
-            autoComplete="off"
-            onChange={handleChanged}
-          />
-          <input
-            className="FirstName"
-            id="FirstName"
-            placeholder="First Name"
-            type="text"
-            value={input.FirstName ?? ""}
-            autoComplete="off"
-            onChange={handleChanged}
-          />
-          <input
-            className="LastName"
-            id="LastName"
-            placeholder="Last Name"
-            type="text"
-            value={input.LastName ?? ""}
-            autoComplete="off"
-            onChange={handleChanged}
-          />
-          <input
-            className="Password"
-            id="Password"
-            placeholder="Password"
-            type="Password"
-            autoComplete="off"
-            value={input.Password ?? ""}
-            onChange={handleChanged}
-          />
-          <input
-            className="RePassword"
-            id="RePassword"
-            placeholder="Re-Password"
-            type="Password"
-            autoComplete="off"
-            value={input.RePassword ?? ""}
-            onChange={handleChanged}
-          />
+          <MDBInput wrapperClass='mb-4' label='Username' id='Username' type='text' autoComplete='off' value={input.Username ?? ""} onChange={handleChanged} />
+          <MDBInput wrapperClass='mb-4' label='FirstName' id='FirstName' type='text' autoComplete='off' value={input.FirstName ?? ""} onChange={handleChanged} />
+          <MDBInput wrapperClass='mb-4' label='LastName' id='LastName' type='text' autoComplete='off' value={input.LastName ?? ""} onChange={handleChanged} />
+          <MDBInput wrapperClass='mb-4' label='Password' id='Password' type='Password' autoComplete='off' value={input.Password ?? ""} onChange={handleChanged} />
+          <MDBInput wrapperClass='mb-4' label='RePassword' id='RePassword' type='Password' autoComplete='off' value={input.RePassword ?? ""} onChange={handleChanged} />
         </form>
         <div className="ErrorMessage" style={{ display: showError }}>
           <div>{errorMsg}</div>

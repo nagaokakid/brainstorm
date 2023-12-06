@@ -15,7 +15,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: white;
+    background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(12, 53, 106, 1) 100%, rgba(1, 116, 190, 1) 100%);
     width: 600px;
     height: 300px;
     box-shadow: 0px 0px 25px 5px gray;
@@ -30,7 +30,7 @@
     height: 50px;
     font-size: 30px;
     font-weight: bold;
-    color: black;
+    color: white;
 }
 
 .OptionContainer .WindowSection .WindowSectionContent {
@@ -52,7 +52,7 @@
     height: 50px;
     font-size: 20px;
     font-weight: bold;
-    color: black;
+    color: white;
 }
 
 .OptionContainer .WindowSection .ErrorMsg {

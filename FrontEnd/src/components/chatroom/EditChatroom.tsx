@@ -1,9 +1,11 @@
+import { MDBInput } from "mdb-react-ui-kit";
+import 'mdb-react-ui-kit/dist/css/mdb.min.css';
 import { useEffect, useState } from "react";
+import { useDataContext } from "../../contexts/DataContext";
 import { DisplayTypes, ErrorMessages } from "../../models/EnumObjects";
 import { chatRoomObject } from "../../models/TypesDefine";
 import ApiService from "../../services/ApiService";
 import "../../styles/chatroom/Chatroom.css";
-import { useDataContext } from "../../contexts/DataContext";
 
 interface Props {
   chatRoom: chatRoomObject;
@@ -74,7 +76,7 @@ function EditChatroom(props: Props) {
      * @param value
      */
   function handleChanged(value: React.ChangeEvent<HTMLInputElement>) {
-    const id = value.target.className;
+    const id = value.target.id;
     const info = value.target.value;
     setChatRoom((prev: typeof chatRoom) => { return { ...prev, [id]: info } });
     setShowError(DisplayTypes.None);
@@ -108,24 +110,8 @@ function EditChatroom(props: Props) {
       <div className="EditChatRoomWindow" onClick={handleChildClick}>
         <div className="EditChatRoomTitle">{chatRoom.ChatRoomTitle}</div>
         <form className="EditChatRoomForm" id="EditChatroomId">
-          <input
-            className="ChatRoomTitle"
-            id="ChatRoomTitle"
-            placeholder="ChatRoom Title"
-            type="text"
-            value={chatRoom.ChatRoomTitle ?? ""}
-            autoComplete="off"
-            onChange={handleChanged}
-          />
-          <input
-            className="ChatRoomDescription"
-            id="ChatRoomDescription"
-            placeholder="Description"
-            type="text"
-            autoComplete="off"
-            value={chatRoom.ChatRoomDescription ?? ""}
-            onChange={handleChanged}
-          />
+          <MDBInput wrapperClass="mb-4" label="ChatRoom Title" id="ChatRoomTitle" type="text" autoComplete="off" value={chatRoom.ChatRoomTitle ?? ""} onChange={handleChanged} />
+          <MDBInput wrapperClass="mb-4" label="Description" id="ChatRoomDescription" type="text" autoComplete="off" value={chatRoom.ChatRoomDescription ?? ""} onChange={handleChanged} />
         </form>
         <div className="ErrorMessage" style={{ display: showError }}>
           <div>{errorMessage}</div>

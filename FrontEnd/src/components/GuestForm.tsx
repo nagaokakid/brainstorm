@@ -1,5 +1,6 @@
 import {
-    MDBBtn
+    MDBBtn,
+    MDBInput
 } from 'mdb-react-ui-kit';
 import 'mdb-react-ui-kit/dist/css/mdb.min.css';
 import { useState } from 'react';
@@ -10,6 +11,13 @@ import ApiService from '../services/ApiService';
 import UserInfo from '../services/UserInfo';
 import '../styles/GuestForm.css';
 
+/**
+ * GuestForm.tsx
+ * -------------------------
+ * This is the Guest form component.
+ * -----------------------------------------------------------------------
+ * Author:  Mr. Yee Tsung (Jackson) Kao
+*/
 function GuestForm() {
     const navigate = useNavigate()
     const [input, setInput] = useState({ ChatRoomCode: '' }) // This handle the state of the input
@@ -27,17 +35,29 @@ function GuestForm() {
     }
 
     /**
+     * This will handle the enter key press
+     * @param value
+     */
+    function handleKey(value: React.KeyboardEvent<HTMLInputElement>) {
+        if (value.key === 'Enter' || value.key === 'NumpadEnter') {
+            handleGuestJoin();
+        }
+    }
+
+    /**
      * This will verify the input and handle the request to the server
      */
-    async function RequestHandle() {
+    async function handleGuestJoin() {
         setErrorDisplay(DisplayTypes.None)
-        const button = document.getElementById('join') as HTMLButtonElement;
-
+        
         if (input.ChatRoomCode) {
+            const button = document.getElementById('join') as HTMLButtonElement;
             button.disabled = true; // Disable the button to prevent spamming
-            
+
+            // Check if the code is valid
             ApiService.IsJoinCodeValid(input.ChatRoomCode).then((response) => {
                 if (response) {
+                    // Create a temp user to store the information
                     const tempUser = {
                         userInfo: {
                             userId: "0",
@@ -67,8 +87,8 @@ function GuestForm() {
 
     return (
         <div className='GuestCodeContainer'>
-            <input className='ChatRoomCode' id='ChatRoomCode' placeholder='Chat Room Code' autoComplete="off" type="text" onChange={handleChange} />
-            <MDBBtn className="mb-4 w-100" id='join' onClick={() => RequestHandle()}>Join Chat Room</MDBBtn>
+            <MDBInput wrapperClass='mb-4' label='ChatRoomCode' id='ChatRoomCode' type='text' autoComplete='off' onChange={handleChange} onKeyDown={handleKey} />
+            <MDBBtn className="mb-4 w-100" id='join' onClick={handleGuestJoin}>Join Chat Room</MDBBtn>
             <h5 className='ErrorMsg' style={{ display: errorDisplay }}>{errorMsg}</h5>
         </div>
     );

@@ -1,6 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
 import { ReactNode, createContext, useContext, useState } from 'react';
-import { chatRoomMessageObject, newDirectMessageObject } from '../models/TypesDefine';
+import { chatRoomMessageObject } from '../models/TypesDefine';
 
 /* 
     *  DataContext.tsx 
@@ -20,9 +20,9 @@ type DataContextProviderProps = {
 
 type DataContextType = [
     boolean,
-    (chatRoomMessageObject | newDirectMessageObject),
+    (chatRoomMessageObject | { fromUserId: string, messageId: string, message: string, timestamp: string }),
     (newData: boolean) => void,
-    (newMsg: (chatRoomMessageObject | newDirectMessageObject)) => void,
+    (newMsg: (chatRoomMessageObject | { fromUserId: string, messageId: string, message: string, timestamp: string })) => void,
     boolean,
     (newData: boolean) => void,
     number,
@@ -51,7 +51,7 @@ export function useDataContext() {
 export function DataContextProvider({ children }: DataContextProviderProps) {
 
     const [update, setUpdate] = useState(true);
-    const [newMsg, setNewMsg] = useState({} as (chatRoomMessageObject | newDirectMessageObject));
+    const [newMsg, setNewMsg] = useState({} as (chatRoomMessageObject | { fromUserId: string, messageId: string, message: string, timestamp: string }));
     const [updateAgain, setUpdateAgain] = useState(true);
     const [updateHeader, setUpdateHeader] = useState(true);
     const [updateWindow, setUpdateWindow] = useState(true);
@@ -63,7 +63,7 @@ export function DataContextProvider({ children }: DataContextProviderProps) {
         }
     };
 
-    const updateMsg = (newMsg: (chatRoomMessageObject | newDirectMessageObject)) => {
+    const updateMsg = (newMsg: (chatRoomMessageObject | { fromUserId: string, messageId: string, message: string, timestamp: string })) => {
         setNewMsg(newMsg);
     };
 
