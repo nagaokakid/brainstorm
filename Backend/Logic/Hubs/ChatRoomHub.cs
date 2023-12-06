@@ -9,13 +9,13 @@
 */
 
 using Database.CollectionContracts;
+using Logic.Converters;
 using Logic.Data;
 using Logic.DTOs.Messages;
 using Logic.DTOs.User;
-using Logic.Converters;
 using Logic.Services;
-using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.SignalR;
+using System.Diagnostics;
 using System.Text;
 
 namespace Logic.Hubs
@@ -55,6 +55,7 @@ namespace Logic.Hubs
         {
             if (joinCode != null && userId != null && firstName != null)
             {
+                Debug.WriteLine($"{firstName} has joined chat room {joinCode}");
                 // get room for chatRoomCode
                 var foundChatRoom = await chatRoomService.GetRoomByJoinCode(joinCode);
 
@@ -239,14 +240,18 @@ namespace Logic.Hubs
         /// </summary>
         /// <param name="sessionId"></param>
         /// <param name="seconds"></param>
-        public async Task StartSession(string sessionId, int seconds)
+        public async Task StartSession(string sessionId, int seconds, string chatRoomId)
         {
-            if (sessionId != null)
+            if (sessionId != null && chatRoomId != null)
             {
+                Debug.WriteLine($"StartSession {sessionId}. Seconds = {seconds}. ChatRoomId = {chatRoomId}");
                 await brainstormService.StartSession(sessionId);
 
                 // let all users know that brainstorm session has started
                 Clients.Group(sessionId).SendAsync("BrainstormSessionStarted", sessionId, seconds);
+
+                // remove join message from chatroom
+                Clients.Group(chatRoomId).SendAsync("RemoveJoinBSMessage", chatRoomId, sessionId);
             }
         }
 

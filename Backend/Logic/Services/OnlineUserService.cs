@@ -10,6 +10,7 @@
 */
 
 using System.Collections.Concurrent;
+using System.Diagnostics;
 
 namespace Logic.Services
 {
@@ -59,9 +60,11 @@ namespace Logic.Services
         {
             if (connectionId != null)
             {
+                Debug.WriteLine($"Leaving Direct Messaging Hub {connectionId}");
                 var result = onlineUsers.Where(x => x.Value == connectionId)?.FirstOrDefault();
                 if (result != null && result.HasValue)
                 {
+                    Debug.WriteLine($"Leaving Direct Messaging Hub {result.Value.Value}");
                     onlineUsers.Remove(result.Value.Key, out string? removedUser);
                 }
             }
