@@ -294,8 +294,6 @@ class UserInfo {
      * @returns 
      */
     static addNewDirectMessage(newDirectMessage: newDirectMessageObject) {
-        console.log(newDirectMessage);
-
         if (newDirectMessage.fromUserInfo.userId === this.getUserId()) { // If the message is sent by the current user, return
             const result = this.getDirectMessagesList().find(current => (newDirectMessage.toUserInfo.userId === current.user1.userId || newDirectMessage.toUserInfo.userId === current.user2.userId));
             if (result) {

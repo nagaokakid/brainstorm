@@ -7,7 +7,6 @@ import {
   chatRoomMessageObject,
   chatRoomObject,
   directMessageObject,
-  newDirectMessageObject,
 } from "../models/TypesDefine";
 import ApiService from "../services/ApiService";
 import SignalRChatRoom from "../services/ChatRoomConnection";
@@ -101,7 +100,7 @@ function NavBarTabContent(props: ChatListProps) {
       const render = (
         type: number,
         bsid?: string,
-        msgObject?: chatRoomMessageObject | newDirectMessageObject,
+        msgObject?: chatRoomMessageObject | { fromUserId: string, messageId: string, message: string, timestamp: string },
         userId?: string,
         count?: number,
         timer?: number

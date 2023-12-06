@@ -295,7 +295,7 @@ class ApiService {
     Callback: (
       type: number,
       bsid?: string,
-      msgObject?: chatRoomMessageObject | newDirectMessageObject,
+      msgObject?: chatRoomMessageObject | { fromUserId: string; messageId: string; message: string; timestamp: string },
       userId?: string,
       count?: number,
       timer?: number
@@ -307,7 +307,12 @@ class ApiService {
     await SignalRDirect.getInstance().then((value) => {
       value.setReceiveDirectMessageCallback((msgObject: newDirectMessageObject) => {
         console.log("----> Receive direct message callback");
-        Callback(2, undefined, msgObject);
+        Callback(2, undefined, {
+          fromUserId: msgObject.fromUserInfo.userId,
+          messageId: msgObject.messageId,
+          message: msgObject.message,
+          timestamp: msgObject.timestamp
+        });
       });
       value.setRemoveDirectMessageCallback((toId: string, messageId: string) => {
         console.log("----> Receive remove direct message callback");
