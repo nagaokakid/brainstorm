@@ -1,27 +1,32 @@
 /* MainPage.css */
+* {
+    margin: 0;
+    padding: 0;
+}
+
 .MainPage {
     position: absolute;
     width: 100%;
-    min-width: 1200px;
     height: 100%;
-    min-height: 800px;
     display: flex;
     flex-direction: column;
+    overflow: auto !important;
 }
 
 .MainPage .HeaderNavContainer {
     position: relative;
     width: 100%;
+    min-width: 1200px;
     height: auto
 }
 
 .MainPage .MainPageBodyContainer {
     position: relative;
     width: 100%;
+    min-width: 1200px;
     height: 100%;
-    min-height: 750px;
-    display: grid;
-    grid-template-columns: 3.5% auto;
+    display: flex;
+    flex-direction: row;
     background-color: rgba(2, 0, 36, 1);
 }
 
