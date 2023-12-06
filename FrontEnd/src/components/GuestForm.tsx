@@ -87,7 +87,7 @@ function GuestForm() {
 
     return (
         <div className='GuestCodeContainer'>
-            <MDBInput wrapperClass='mb-4' label='ChatRoomCode' id='ChatRoomCode' type='text' autoComplete='off' onChange={handleChange} onKeyDown={handleKey} />
+            <MDBInput wrapperClass='mb-4' label='Chat room Code' id='ChatRoomCode' type='text' autoComplete='off' onChange={handleChange} onKeyDown={handleKey} />
             <MDBBtn className="mb-4 w-100" id='join' onClick={handleGuestJoin}>Join Chat Room</MDBBtn>
             <h5 className='ErrorMsg' style={{ display: errorDisplay }}>{errorMsg}</h5>
         </div>
