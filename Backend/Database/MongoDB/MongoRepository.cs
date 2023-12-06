@@ -1,5 +1,6 @@
-﻿using MongoDB.Bson;
-using MongoDB.Driver;
+﻿using MongoDB.Driver;
+using MongoDB.Bson;
+using Database.Data;
 
 /* 
  * MongoRepository.cs
@@ -304,12 +305,24 @@ namespace Database.MongoDB
         }
 
         // Remove a document from a nested collection (i.e.: delete a message from a chatroom's list of message objects)
-        public async Task RemoveDocumentFromNestedCollection(string id, string nestedCollectionName, string nestedDocumentId)
+        public async Task RemoveDocumentFromNestedCollection(string id, string dataType, string nestedCollectionName, string nestedDocumentId)
         {
             try
             {
                 var filter = Builders<TDocument>.Filter.Eq("_id", id);
-                var update = Builders<TDocument>.Update.PullFilter(nestedCollectionName, Builders<BsonDocument>.Filter.Eq("_id", nestedDocumentId));
+                UpdateDefinition<TDocument> update = null;
+
+                if (dataType == "ChatRoomMessage")
+                {
+                    var nestedFilter = Builders<ChatRoomMessage>.Filter.Eq("_id", nestedDocumentId);
+                    update = Builders<TDocument>.Update.PullFilter(nestedCollectionName, nestedFilter);
+                }
+                else if (dataType == "DirectMessage")
+                {
+                    var nestedFilter = Builders<DirectMessage>.Filter.Eq("_id", nestedDocumentId);
+                    update = Builders<TDocument>.Update.PullFilter(nestedCollectionName, nestedFilter);
+                }
+
                 var result = await collection.UpdateOneAsync(filter, update);
 
                 if (result.ModifiedCount == 0)

@@ -179,6 +179,7 @@ namespace Logic.Hubs
                 // send message to chatroom saying a new brainstorming session has started
                 var msg = new MessageInfoJoinSession
                 {
+                    MessageId = Guid.NewGuid().ToString(),
                     ChatRoomId = chatRoomId,
                     Message = $"Join {title}",
                     FromUserInfo = creator,

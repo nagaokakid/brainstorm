@@ -23,7 +23,8 @@
     min-width: 1200px;
     display: flex;
     flex-direction: column;
-    background: black;
+    background: rgb(0,0,0);
+background: linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(0,28,85,1) 50%, rgba(0,0,0,1) 100%);
 }
 
 .BS_PageContainer .BS_HeaderContainer {

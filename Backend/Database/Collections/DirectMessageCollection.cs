@@ -128,6 +128,7 @@ namespace Database.Collections
         // Remove a single direct message from a direct message history between two users
         public async Task RemoveDirectMessage(string directMessageHistoryId, string messageId)
         {
+            await directMessageHistoryRepository.RemoveDocumentFromNestedCollection(directMessageHistoryId, "DirectMessage", "DirectMessages", messageId);
         }
     }
 }
