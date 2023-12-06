@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from 'react';
 import { useDataContext } from '../contexts/DataContext';
 import { DisplayTypes, TabTypes } from '../models/EnumObjects';
