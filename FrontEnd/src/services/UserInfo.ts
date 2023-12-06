@@ -281,7 +281,7 @@ class UserInfo {
     static addNewChatRoom(chatRoom: chatRoomObject) {
         const list = this.getChatRoomsList();
         if (list.find(current => current.id === chatRoom.id)) {
-            alert("Chat room already exists.");
+            return;
         } else {
             list.push(chatRoom);
         }

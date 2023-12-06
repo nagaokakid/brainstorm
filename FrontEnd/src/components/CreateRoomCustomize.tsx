@@ -43,10 +43,12 @@ function CreateRoomCustomize(props: CreateRoomCustomizeProps) {
             button.disabled = true; // Disable the button to prevent multiple clicks
             await ApiService.CreateChatRoom(chatRoomInfo.chatRoomName, chatRoomInfo.description);
             handleCancelButton();
+            props.render(prev => !prev);
         } else {
             setErrorMsg(ErrorMessages.FormIncomplete);
             setErrorDisplay({ display: DisplayTypes.Block });
         }
+        button.disabled = false; // Disable the button to prevent multiple clicks
     }
 
     /**
@@ -56,7 +58,6 @@ function CreateRoomCustomize(props: CreateRoomCustomizeProps) {
         setChatRoomInfo({ chatRoomName: '', description: '' });
         (document.getElementById('CreateChatRoomForm') as HTMLFormElement).reset();
         setStyle({ display: DisplayTypes.None });
-        props.render(prev => !prev);
     }
 
     /**

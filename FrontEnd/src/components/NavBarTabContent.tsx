@@ -169,12 +169,8 @@ function NavBarTabContent(props: ChatListProps) {
   }, []);
 
   useEffect(() => {
-    if (props.displayTab === TabTypes.DiretMessage) {
-      setChatList(UserInfo.getDirectMessagesList());
-    } else if (props.displayTab === TabTypes.ChatRoom) {
-      setChatList(UserInfo.getChatRoomsList());
-    }
-  }, [props.displayTab, forceRender]);
+    setSelectedChat({} as chatRoomObject | directMessageObject);
+  }, [props.displayTab, windowUpdate]);
 
   useEffect(() => {
     const brainstorm = sessionStorage.getItem("brainstorm");
@@ -183,12 +179,19 @@ function NavBarTabContent(props: ChatListProps) {
       const chatRoom = UserInfo.getChatRoomInfo(chatRoomId);
       if (chatRoom != null) {
         setSelectedChat(chatRoom);
+        console.log("here1");
         sessionStorage.removeItem("brainstorm");
       }
-    } else {
-      setSelectedChat({} as chatRoomObject | directMessageObject);
     }
-  }, [props.displayTab, windowUpdate]);
+  }, []);
+
+  useEffect(() => {
+    if (props.displayTab === TabTypes.DiretMessage) {
+      setChatList(UserInfo.getDirectMessagesList());
+    } else if (props.displayTab === TabTypes.ChatRoom) {
+      setChatList(UserInfo.getChatRoomsList());
+    }
+  }, [props.displayTab, forceRender]);
 
   return (
     <div className="NavBarTabContentContainer">
@@ -211,10 +214,11 @@ function NavBarTabContent(props: ChatListProps) {
         </div>
         <div className="ListContainer">
           {chatList.map((chat, index) => (
-            <div
+            <li
               className="ListItem"
               key={index}
               onClick={() => handleChatOnClick(chat)}
+              style={{ backgroundColor: JSON.stringify(selectedChat) === JSON.stringify(chat) ? "#FFC436" : "", color: JSON.stringify(selectedChat) === JSON.stringify(chat) ? "black" : "", borderRadius: JSON.stringify(selectedChat) === JSON.stringify(chat) ? "5px" : "" }}
             >
               <div className="ItemIcon">
                 {("title" in chat
@@ -255,7 +259,7 @@ function NavBarTabContent(props: ChatListProps) {
                   src={editChatRoomIcon}
                 />
               </div>
-            </div>
+            </li>
           ))}
         </div>
       </div>
