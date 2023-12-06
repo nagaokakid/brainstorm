@@ -100,7 +100,7 @@ function Profile(props: Props) {
    * @param value
    */
   function handleChanged(value: React.ChangeEvent<HTMLInputElement>) {
-    const id = value.target.className;
+    const id = value.target.id;
     const info = value.target.value;
     setInput((prev: typeof input) => {
       return { ...prev, [id]: info };
