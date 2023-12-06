@@ -69,11 +69,15 @@ function BrainStormPage() {
   // }, []);
 
   useEffect(() => {
-    if (timer === 0 && !input) {
+    if (timer === 0) {
       clearInterval(interval.current);
       setTimer(Number(location.timer));
 
-      handleEndSessionClick();
+      if (!input) {
+        handleEndSessionClick();
+      } else if (isVoting) {
+        handleVotingClick();
+      }
     }
   }, [timer]);
 
@@ -145,7 +149,7 @@ function BrainStormPage() {
       UserInfo.clearIdea();
 
       SignalRChatRoom.getInstance().then((instance) => {
-        instance.startSession(sessionId, timer);
+        instance.startSession(sessionId, timer, sessionStorage.getItem("currentChatRoom") as string);
       });
     }
   }
@@ -242,6 +246,8 @@ function BrainStormPage() {
         } else if (type === 3) {
           sessionStorage.setItem("ideaList", JSON.stringify(ideas));
           UserInfo.updateIdeaList();
+          setTimer(Number(location.timer));
+          startTimer();
           setIdeaList(UserInfo.getIdeasList());
           setIsVoting(true);
           showNotice("Voting has started");

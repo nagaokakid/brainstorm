@@ -103,7 +103,7 @@ function NavBarTabContent(props: ChatListProps) {
         msgObject?: chatRoomMessageObject | { fromUserId: string, messageId: string, message: string, timestamp: string },
         userId?: string,
         count?: number,
-        timer?: number
+        timer?: number,
       ) => {
         if (context === undefined) {
           throw new Error("useDataContext must be used within a DataContext");

@@ -1,10 +1,19 @@
+import { MDBInput } from "mdb-react-ui-kit";
+import 'mdb-react-ui-kit/dist/css/mdb.min.css';
 import { useEffect, useState } from "react";
 import { DisplayTypes, ErrorMessages } from "../models/EnumObjects";
 import { chatRoomObject, directMessageObject } from "../models/TypesDefine";
 import SignalRChatRoom from "../services/ChatRoomConnection";
 import "../styles/CreateBrainStormCustomize.css";
 
-/*
+
+
+interface CreateBrainStormCustomizeProps {
+  style: { display: DisplayTypes };
+  chat: chatRoomObject | directMessageObject | null;
+}
+
+/**
   *  CreateBrainStormCustomize.tsx 
   * -------------------------
   *  This component is the create brainstorm customize window of the chat page.
@@ -15,16 +24,11 @@ import "../styles/CreateBrainStormCustomize.css";
   * Last Modified: 01/12/2023
   * Version: 1.0
 */
-
-interface CreateBrainStormCustomizeProps {
-  style: { display: DisplayTypes };
-  chat: chatRoomObject | directMessageObject | null;
-}
-
 function CreateBrainStormCustomize(props: CreateBrainStormCustomizeProps) {
   const [style, setStyle] = useState(props.style); // Set the style of the component
   const [errorMsg, setErrorMsg] = useState(ErrorMessages.Empty); // Set the error message
   const [errorDisplay, setErrorDisplay] = useState({ display: DisplayTypes.None }); // Set the error display
+  const [BSInfo, setBSInfo] = useState({ BSname: "", BSdescription: "", BStimer: "" }); // Set the brainstorm session info
 
   /**
    * Prevent the child from being clicked
@@ -40,33 +44,24 @@ function CreateBrainStormCustomize(props: CreateBrainStormCustomizeProps) {
   async function handleCreateClick() {
     setErrorDisplay({ display: DisplayTypes.None });
     const button = document.getElementById("createBs") as HTMLButtonElement;
-    const name = (document.getElementById("BSname") as HTMLInputElement).value;
-    const description = (
-      document.getElementById("BSdescription") as HTMLInputElement
-    ).value;
-    const timer = (document.getElementById('BStimer') as HTMLInputElement).value;
 
     button.disabled = true;
-    if (name === "" || description === "") {
+    if (BSInfo.BSname === "" || BSInfo.BSdescription === "") {
       setErrorMsg(ErrorMessages.FormIncomplete);
       setErrorDisplay({ display: DisplayTypes.Block });
       button.disabled = false;
     } else {
-      (document.getElementById("BSname") as HTMLInputElement).value = "";
-      (document.getElementById("BSdescription") as HTMLInputElement).value = "";
-      (document.getElementById("BStimer") as HTMLInputElement).value = "";
-
       await SignalRChatRoom.getInstance().then((value) => {
         value
           .createBrainstormSession(
-            name,
-            description,
+            BSInfo.BSname,
+            BSInfo.BSdescription,
             props.chat ? ("id" in props.chat ? props.chat.id : "") : "",
-            timer
+            BSInfo.BStimer
           )
           .then((value) => {
             if (value) {
-              setStyle({ display: DisplayTypes.None });
+              handleCancelButton();
             } else {
               setErrorMsg(ErrorMessages.FailedToCreateBSsession);
               setErrorDisplay({ display: DisplayTypes.Block });
@@ -76,6 +71,23 @@ function CreateBrainStormCustomize(props: CreateBrainStormCustomizeProps) {
       button.disabled = false;
     }
   }
+
+  /**
+     * Handle the changed event
+     * @param e 
+     */
+  function handleChanged(e: React.ChangeEvent<HTMLInputElement>) {
+    const { id, value } = e.target;
+    setBSInfo(prev => ({ ...prev, [id]: value }));
+  }
+
+  function handleCancelButton() {
+    Object.keys(BSInfo).forEach((key) => {
+      setBSInfo(prev => ({ ...prev, [key]: "" }));
+    });
+    setStyle({ display: DisplayTypes.None });
+  }
+
 
   useEffect(() => {
     setStyle(props.style);
@@ -89,17 +101,13 @@ function CreateBrainStormCustomize(props: CreateBrainStormCustomizeProps) {
     >
       <div className="BSinfoWindow" onClick={handleChildClick}>
         <h1>Create Brainstorm Session</h1>
-        <input className="Input" type="text" id="BSname" placeholder="Name" />
-        <input className="Input" type="text" id="BSdescription" placeholder="Description" />
-        <input className="Input" type="text" id="BStimer" placeholder="Enter Time in Seconds" />
+        <form className="CreateBSForm">
+          <MDBInput wrapperClass='mb-4' label='Brainstorm session name' id='BSname' type='text' autoComplete='off' value={BSInfo.BSname} onChange={handleChanged} />
+          <MDBInput wrapperClass='mb-4' label='Brainstorm session description' id='BSdescription' type='text' autoComplete='off' value={BSInfo.BSdescription} onChange={handleChanged} />
+          <MDBInput wrapperClass='mb-4' label='Enter Time in Seconds' id='BStimer' type='number' autoComplete='off' value={BSInfo.BStimer} onChange={handleChanged} />
+        </form>
         <div>
-          <button className="CancelBtn" onClick={() => {
-            (document.getElementById("BSname") as HTMLInputElement).value = "";
-            (document.getElementById("BSdescription") as HTMLInputElement).value = "";
-            (document.getElementById("BStimer") as HTMLInputElement).value = "";
-            setStyle({ display: DisplayTypes.None })
-          }
-          }>
+          <button className="CancelBtn" onClick={handleCancelButton}>
             Cancel
           </button>
           <button className="CreateBtn" id="createBs" onClick={handleCreateClick}>

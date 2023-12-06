@@ -422,6 +422,14 @@ class UserInfo {
         this.updateUser(true);
     }
 
+    static deleteChatRoomMessageBySessionId(chatRoomId:string , sessionId: string) {
+        const result = this.getChatRoomsList().find(chatRoom => chatRoom.id === chatRoomId);
+        if (result) {
+            result.messages.splice(result.messages.findIndex(current => current.brainstorm?.sessionId === sessionId), 1);
+        }
+        this.updateUser(true);
+    }
+
     static leaveChatRoom(chatRoomId:string) {
         const index = this.getChatRoomsList().findIndex(chatRoom => chatRoom.id === chatRoomId);
         if (index >= 0) {

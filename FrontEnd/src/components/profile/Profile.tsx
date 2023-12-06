@@ -150,8 +150,8 @@ function Profile(props: Props) {
         </div>
         <form className="EditProfileForm" id="EditProfileForm">
           <MDBInput wrapperClass='mb-4' label='Username' id='Username' type='text' autoComplete='off' value={input.Username ?? ""} onChange={handleChanged} />
-          <MDBInput wrapperClass='mb-4' label='FirstName' id='FirstName' type='text' autoComplete='off' value={input.FirstName ?? ""} onChange={handleChanged} />
-          <MDBInput wrapperClass='mb-4' label='LastName' id='LastName' type='text' autoComplete='off' value={input.LastName ?? ""} onChange={handleChanged} />
+          <MDBInput wrapperClass='mb-4' label='First name' id='FirstName' type='text' autoComplete='off' value={input.FirstName ?? ""} onChange={handleChanged} />
+          <MDBInput wrapperClass='mb-4' label='Last name' id='LastName' type='text' autoComplete='off' value={input.LastName ?? ""} onChange={handleChanged} />
           <MDBInput wrapperClass='mb-4' label='Password' id='Password' type='Password' autoComplete='off' value={input.Password ?? ""} onChange={handleChanged} />
           <MDBInput wrapperClass='mb-4' label='RePassword' id='RePassword' type='Password' autoComplete='off' value={input.RePassword ?? ""} onChange={handleChanged} />
         </form>

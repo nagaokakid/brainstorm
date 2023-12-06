@@ -163,8 +163,8 @@ function LoginForm() {
                     <h3 className='RegisterTitle'>Create Account:</h3>
                     <form className='RegisterForm' id='RegisterForm'>
                         <MDBInput wrapperClass='mb-4' label='Username' id='Username' type='text' autoComplete='off' onChange={handleChanged} />
-                        <MDBInput wrapperClass='mb-4' label='FirstName' id='FirstName' type='text' autoComplete='off' onChange={handleChanged} />
-                        <MDBInput wrapperClass='mb-4' label='LastName' id='LastName' type='text' autoComplete='off' onChange={handleChanged} />
+                        <MDBInput wrapperClass='mb-4' label='First name' id='FirstName' type='text' autoComplete='off' onChange={handleChanged} />
+                        <MDBInput wrapperClass='mb-4' label='Last name' id='LastName' type='text' autoComplete='off' onChange={handleChanged} />
                         <MDBInput wrapperClass='mb-4' label='Password' id='Password' type='Password' onChange={handleChanged} />
                         <MDBInput wrapperClass='mb-4' label='RePassword' id='RePassword' type='Password' onChange={handleChanged} onKeyDown={handleKey} />
                     </form>
