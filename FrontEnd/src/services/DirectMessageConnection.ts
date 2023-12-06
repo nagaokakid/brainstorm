@@ -25,7 +25,7 @@ class SignalRDirect {
     /**
      * This will reset the connection to the direct message
      */
-    async reset(){
+    async reset() {
         this.removeCallBack();
         await this.connection.stop();
         SignalRDirect.instance = null;
@@ -39,22 +39,23 @@ class SignalRDirect {
         try {
             await this.connection.start();
             await this.join();
+            sessionStorage.setItem("directConnectionId", this.connection.connectionId ?? "");
             console.log("----> Joined direct Message");
         } catch (error) {
             console.log("----> Error: " + error);
         }
     }
-    
+
     setRemoveDirectMessageCallback(callBackFunction: (toId: string, messageId: string) => void) {
         this.connection.on("RemoveDirectMessage", (toId: string, messageId: string) => {
             console.log("callback remove message: " + toId + ":" + messageId);
-            
+
             // remove message from direct message list
             callBackFunction(toId, messageId);
         });
     }
 
-    async removeDirectMessage(toId: string, messageId: string){
+    async removeDirectMessage(toId: string, messageId: string) {
         await this.connection.send("RemoveDirectMessage", UserInfo.getUserId(), toId, messageId)
     }
 
@@ -119,6 +120,10 @@ class SignalRDirect {
         }
 
         return SignalRDirect.instance;
+    }
+
+    static getConnectionId() {
+        return this.instance?.connection.connectionId;
     }
 }
 
