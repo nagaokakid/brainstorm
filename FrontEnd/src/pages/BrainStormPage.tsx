@@ -32,6 +32,7 @@ function BrainStormPage() {
   const [localIdeaList, setLocalIdeaList] = useState([] as string[]);
   const [leaveContainer, setLeaveContainer] = useState("none");
   const [input, setInput] = useState(true);
+  const [hasStarted, setHasStarted] = useState(false);
   const [display, setDisplay] = useState({ display: "none" });
   const [noticeMsg, setNoticeMsg] = useState("" as string);
   const [displayBtn, setDisplayBtn] = useState([
@@ -110,7 +111,7 @@ function BrainStormPage() {
    * Leave the session
    */
   async function handleLeaveClick() {
-    await ApiService.leaveBSSession(creatorId, sessionId);
+    await ApiService.leaveBSSession(creatorId, sessionId, hasStarted);
     sessionStorage.removeItem("bs_callBack");
     sessionStorage.removeItem("localIdea");
     sessionStorage.removeItem("ideaList");
@@ -132,6 +133,7 @@ function BrainStormPage() {
    * Start the session
    */
   function handleStartSessionClick() {
+    setHasStarted(true);
     if (input) {
       setDisplayBtn([
         { display: "none" },
@@ -141,7 +143,7 @@ function BrainStormPage() {
       ]);
       UserInfo.clearIdeaList();
       UserInfo.clearIdea();
-      
+
       SignalRChatRoom.getInstance().then((instance) => {
         instance.startSession(sessionId, timer);
       });
@@ -273,7 +275,7 @@ function BrainStormPage() {
         <button
           className="LeaveSessionButton"
           onClick={handleWarningClick}
-        ><img className="exitIcon_BS" src={exitIcon}/></button>
+        ><img className="exitIcon_BS" src={exitIcon} /></button>
         <BS_HeaderContent
           roomTitle={sessionTitle}
           roomDescription={sessionDescription}
