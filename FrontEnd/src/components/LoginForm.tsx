@@ -154,7 +154,7 @@ function LoginForm() {
                 <MDBTabsPane show={justifyActive === TabTypes.LoginTab}>
                     <h3 className='SignInTitle'>Sign In:</h3>
                     <form className='LoginForm' id='LoginForm'>
-                        <MDBInput wrapperClass='mb-4' label='Username' id='Username' type='text' onChange={handleChanged} />
+                        <MDBInput wrapperClass='mb-4' label='Username' id='Username' type='text' autoComplete='off' onChange={handleChanged} />
                         <MDBInput wrapperClass='mb-4' label='Password' id='Password' type='password' onChange={handleChanged} onKeyDown={handleKey} />
                     </form>
                     <MDBBtn className="mb-4 w-100" id='login' onClick={handleLogin}>Sign in</MDBBtn>
@@ -162,9 +162,9 @@ function LoginForm() {
                 <MDBTabsPane show={justifyActive === TabTypes.RegisterTab}>
                     <h3 className='RegisterTitle'>Create Account:</h3>
                     <form className='RegisterForm' id='RegisterForm'>
-                        <MDBInput wrapperClass='mb-4' label='Username' id='Username' type='text' onChange={handleChanged} />
-                        <MDBInput wrapperClass='mb-4' label='FirstName' id='FirstName' type='text' onChange={handleChanged} />
-                        <MDBInput wrapperClass='mb-4' label='LastName' id='LastName' type='text' onChange={handleChanged} />
+                        <MDBInput wrapperClass='mb-4' label='Username' id='Username' type='text' autoComplete='off' onChange={handleChanged} />
+                        <MDBInput wrapperClass='mb-4' label='FirstName' id='FirstName' type='text' autoComplete='off' onChange={handleChanged} />
+                        <MDBInput wrapperClass='mb-4' label='LastName' id='LastName' type='text' autoComplete='off' onChange={handleChanged} />
                         <MDBInput wrapperClass='mb-4' label='Password' id='Password' type='Password' onChange={handleChanged} />
                         <MDBInput wrapperClass='mb-4' label='RePassword' id='RePassword' type='Password' onChange={handleChanged} onKeyDown={handleKey} />
                     </form>
