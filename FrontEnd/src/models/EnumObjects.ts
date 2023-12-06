@@ -1,7 +1,7 @@
 export enum ErrorMessages {
     Empty = "",
     FormIncomplete = "Please fill in all the fields",
-    AccountNotFound = "Account not found",
+    AccountNotFound = "Incorrect username or password",
     FailedToLogin = "Failed to login",
     FailedToRegister = "Failed to register",
     PasswordNotMatch = "Passwords do not match",

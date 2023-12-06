@@ -30,6 +30,12 @@ function MessageWindow(props: MessageWindowProps) {
     const render = context[4];
     const [messages, setMessages] = useState([] as (chatRoomMessageObject | { fromUserId: string, messageId: string, message: string, timestamp: string })[]); // Set the message to the display
 
+    function scrollToBottom() {
+        const chatWindow = document.getElementById("MsgSection");
+        if (chatWindow) {
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+        }
+    }
 
     useEffect(() => {
         if (msg === undefined) {
@@ -47,7 +53,7 @@ function MessageWindow(props: MessageWindowProps) {
 
     return (
         <div className="MsgWindowContainer">
-            <div className="MsgSection">
+            <div className="MsgSection" id="MsgSection">
                 {messages.map((e, index) => (
                     'brainstorm' in e ?
                         <MessageBox message={e.message} key={index} user={'fromUserInfo' in e ? [e.fromUserInfo.userId, e.fromUserInfo.firstName] : []} isBrainstorm={true} bsId={e.brainstorm?.sessionId} chatId={props.chatId} msgId={'messageId' in e ? e.messageId : ''} chatType={props.chatType} /> :

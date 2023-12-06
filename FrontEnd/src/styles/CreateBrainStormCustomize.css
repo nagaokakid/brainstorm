@@ -16,10 +16,15 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background-color: white;
+    background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(12, 53, 106, 1) 100%, rgba(1, 116, 190, 1) 100%);
     width: 50%;
     height: 50%;
     border-radius: 10px;
+}
+
+.CreateBrainStormCustomizeWindow .BSinfoWindow h1 {
+    color: white;
+    font-size: 50px;
 }
 
 .CreateBrainStormCustomizeWindow .BSinfoWindow .ErrorMsg {
@@ -44,12 +49,6 @@
     margin: 5px;
     background-color: orange;
     border: none;
-    padding: 5px;
-    border-radius: 5px;
-}
-
-.CreateBrainStormCustomizeWindow .BSinfoWindow input {
-    margin: 5px;
     padding: 5px;
     border-radius: 5px;
 }

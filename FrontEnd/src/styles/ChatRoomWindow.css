@@ -36,24 +36,24 @@
     padding-right: 5px;
     color: white;
     background-color: #0c356a;
+    width: 100%;
 }
 
 .WindowContainer .MsgContainer .ChatHeader h1 {
-    display: flex;
-    justify-content: center;
-    align-items: center;
     margin: 5px;
+    width: 200px;
+    height: 100%;
+    font-weight: 500;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    height: 100%;
 }
 
 .WindowContainer .MsgContainer .ChatHeader a {
     border-radius: 5px;
     padding: 5px;
     width: auto;
-    height: auto; 
+    height: auto;
     color: black;
     font-weight: bold;
     text-decoration: none;
@@ -61,7 +61,7 @@
     cursor: pointer;
 }
 
-.WindowContainer .MsgContainer .ChatHeader a:hover{
+.WindowContainer .MsgContainer .ChatHeader a:hover {
     border-radius: 5px;
     padding: 5px;
     width: auto;

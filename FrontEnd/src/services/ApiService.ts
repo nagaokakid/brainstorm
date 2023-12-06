@@ -298,7 +298,7 @@ class ApiService {
       msgObject?: chatRoomMessageObject | { fromUserId: string; messageId: string; message: string; timestamp: string },
       userId?: string,
       count?: number,
-      timer?: number
+      timer?: number,
     ) => void
   ) {
     /**
@@ -354,6 +354,12 @@ class ApiService {
       });
       value.setEditChatRoomCallback(() => {
         Callback(8);
+      });
+      value.setRemoveJoinBSMessage((chatRoomId: string, sessionId: string) => {
+        if (chatRoomId && sessionId) {
+          UserInfo.deleteChatRoomMessageBySessionId(chatRoomId, sessionId);
+          Callback(7);
+        }
       });
     });
   }

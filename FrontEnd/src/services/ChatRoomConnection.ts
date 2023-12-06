@@ -205,6 +205,14 @@ class SignalRChatRoom {
         });
     }
 
+    setRemoveJoinBSMessage(callBackFunction: (chatRoomId: string, sessionId: string) => void) {
+        this.connection.on("RemoveJoinBSMessage", (chatRoomId: string, sessionId: string) => {
+            console.log("callback RemoveJoinBSMessage: " + sessionId);
+            // remove message from chatroom
+            callBackFunction(chatRoomId, sessionId);
+        });
+    }
+
     /**
      * Send a message to the backend from chat room
      * @param {*} msg A message object that will be sent to the backend
@@ -260,10 +268,10 @@ class SignalRChatRoom {
      * Send a request to the backend to start a brainstorm session
      * @param sessionId The brainstorm session id
      */
-    async startSession(sessionId: string, timer: number) {
+    async startSession(sessionId: string, timer: number, chatRoomId: string) {
         console.log("----> Start brainstorm session", sessionId, timer);
         
-        await this.connection.send("StartSession", sessionId, timer)
+        await this.connection.send("StartSession", sessionId, timer, chatRoomId);
     }
 
     /**
@@ -344,6 +352,7 @@ class SignalRChatRoom {
         this.connection.off("SessionStartedNotAllowedToJoin");
         this.connection.off("RemoveChatRoomMessage");
         this.connection.off("EditChatRoom");
+        this.connection.off("RemoveJoinBSMessage");
     }
 
     /**
