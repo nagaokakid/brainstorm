@@ -17,14 +17,14 @@
     position: relative;
     width: 100%;
     min-width: 1200px;
-    height: auto
+    height: 5%;
 }
 
 .MainPage .MainPageBodyContainer {
     position: relative;
     width: 100%;
     min-width: 1200px;
-    height: 100%;
+    height: 95%;
     display: flex;
     flex-direction: row;
     background-color: rgba(2, 0, 36, 1);
