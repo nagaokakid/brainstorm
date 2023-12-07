@@ -1,6 +1,7 @@
 import '../styles/BS_LocalIdeaList.css';
 import UserInfo from '../services/UserInfo';
 import { useEffect, useState } from 'react';
+import deleteIcon from '../assets/delete.png'
 
 /*
  *  BS_LocalIdeaList.tsx 
@@ -45,7 +46,7 @@ function BS_LocalIdeaList(props: BS_LocalIdeaListProps) {
                     <div className="Idea" key={id}>
                         {idea}
                         <button className='DeleteButton' onClick={() => handleDeleteClick(id)}>
-                            <img src="src\assets\delete.png" width={20} height={20}/>
+                            <img src={deleteIcon} width={20} height={20}/>
                         </button>
                     </div>
                 );
