@@ -78,7 +78,8 @@
     flex-direction: column;
     height: 100%;
     width: 100%;
-    background-color: white;
+    background: rgb(219,219,219);
+    background: linear-gradient(0deg, rgba(219,219,219,1) 0%, rgba(200,200,200,1) 50%, rgba(219,219,219,1) 100%);
     overflow-y: auto;
 }
 
