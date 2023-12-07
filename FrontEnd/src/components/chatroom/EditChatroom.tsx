@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { MDBInput } from "mdb-react-ui-kit";
 import 'mdb-react-ui-kit/dist/css/mdb.min.css';
 import { useEffect, useState } from "react";
