@@ -46,6 +46,9 @@ function BS_HeaderContent(props: BS_HeaderContentProps) {
       <div className="BS_Timer">
         <img src={hourGlassIcon} width={30}/> {props.timer.toString()} sec
       </div>
+      <div className="Note">
+        <p>You Are The Host</p>
+      </div>
     </div>
   );
 }

@@ -32,7 +32,6 @@
     align-items: center;
 }
 
-
 .BS_Title{
     font-size: larger;
     display: flex;
@@ -75,4 +74,18 @@
 .JoinedIcon_BS{
     width: 50px;
     height: 50px;
+}
+
+.HeaderContent .Note{
+    position: absolute;
+    right: 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: auto;
+}
+
+.HeaderContent .Note p{
+    color: white;
+    font-size: 50px;
 }
