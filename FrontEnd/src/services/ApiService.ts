@@ -382,11 +382,11 @@ class ApiService {
         Callback(2);
       });
       value.setReceiveAllIdeasCallback((id: string, ideas: Idea[]) => {
-        console.log("----> Receive BS idea receive message callback");
+        console.log("----> Receive BS idea receive message callback", id);
         Callback(3, ideas);
       });
       value.setReceiveVoteResultsCallback((id: string, ideas: Idea[]) => {
-        console.log("----> Receive BS vote results message callback");
+        console.log("----> Receive BS vote results message callback", id);
         Callback(4, ideas);
       });
       value.setSendVotesCallback(() => {

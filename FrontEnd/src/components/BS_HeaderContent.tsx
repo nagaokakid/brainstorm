@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import "../styles/BS_HeaderContent.css";
 import userIcon from "../assets/group-chat.png";
 import hourGlassIcon from "../assets/whiteHourGlass.png";
-import UserInfo from "../services/UserInfo";
 
 interface BS_HeaderContentProps {
   roomTitle: string;
