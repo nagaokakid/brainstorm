@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Suspense, lazy, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import AddIcon from "../assets/AddButton.png";
 import { useDataContext } from "../contexts/DataContext";
 import { DisplayTypes, NoticeMessages, TabTypes } from "../models/EnumObjects";
 import {
@@ -10,15 +11,14 @@ import {
 } from "../models/TypesDefine";
 import ApiService from "../services/ApiService";
 import SignalRChatRoom from "../services/ChatRoomConnection";
+import SignalRDirect from "../services/DirectMessageConnection";
 import UserInfo from "../services/UserInfo";
 import "../styles/NavBarTabContent.css";
+import editChatRoomIcon from "./../assets/editIcon.png";
 import CreateBrainStormCustomize from "./CreateBrainStormCustomize";
 import CreateRoomCustomize from "./CreateRoomCustomize";
 import DefaultChatRoomWindow from "./DefaultChatRoomWindow";
 import EditChatroom from "./chatroom/EditChatroom";
-import AddIcon from "../assets/AddButton.png";
-
-import editChatRoomIcon from "./../assets/editIcon.png";
 
 interface ChatListProps {
   displayTab: TabTypes;
@@ -94,6 +94,24 @@ function NavBarTabContent(props: ChatListProps) {
       });
     }
   }
+
+  useEffect(() => {
+    const chatRoomConnectionId = sessionStorage.getItem("chatRoomConnectionId");
+    const directConnectionId = sessionStorage.getItem("directConnectionId");
+
+    if (chatRoomConnectionId || directConnectionId) {
+
+      if (SignalRDirect.getConnectionId() === directConnectionId && SignalRChatRoom.getConnectionId() === chatRoomConnectionId) {
+        return;
+      } else {
+        sessionStorage.removeItem("callBack");
+        const reconnect = async () => {
+          await ApiService.connectChatRooms();
+        };
+        reconnect();
+      }
+    }
+  }, []);
 
   useEffect(() => {
     if (sessionStorage.getItem("callBack") === null) {
