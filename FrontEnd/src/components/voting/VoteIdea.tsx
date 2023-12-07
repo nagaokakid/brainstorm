@@ -1,6 +1,8 @@
 import '../../styles/VoteIdea.css'
 import Idea from '../../models/Idea'
 import UserInfo from '../../services/UserInfo'
+import likeIcon from '../../assets/like.png'
+import dislikeIcon from '../../assets/dislike.png'
 
 /*
  * VoteIdea.tsx 
@@ -31,10 +33,10 @@ const VoteIdea = ({ idea }: props) => {
             <div className='IdeaThought'>{idea.thought}</div>
             <div className='IdeaButton'>
                 <button className='LikeIdea' onClick={clickedLike}>
-                    <img src='src\assets\like.png' height={20}/>
+                    <img src={likeIcon} height={20}/>
                 </button>
                 <button className='DislikeIdea' onClick={clickedDislike}>
-                    <img src='src\assets\dislike.png' height={20}/>
+                    <img src={dislikeIcon} height={20}/>
                 </button>
             </div>
         </div>
