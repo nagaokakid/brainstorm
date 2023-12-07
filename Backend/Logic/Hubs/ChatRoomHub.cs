@@ -395,7 +395,8 @@ namespace Logic.Hubs
         {
             if (!string.IsNullOrEmpty(chatRoomId) && !string.IsNullOrEmpty(messageId))
             {
-                chatRoomService.RemoveMessage(chatRoomId, messageId);
+                Debug.WriteLine($"Remove ChatRoomMessage {chatRoomId} {messageId}");
+                await chatRoomService.RemoveMessage(chatRoomId, messageId);
                 Clients.Groups(chatRoomId).SendAsync("RemoveChatRoomMessage", chatRoomId, messageId);
             }
         }

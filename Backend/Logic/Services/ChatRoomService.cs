@@ -18,6 +18,7 @@ using Logic.Exceptions;
 using Logic.Hubs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
+using System.Diagnostics;
 
 namespace Logic.Services
 {
@@ -86,9 +87,10 @@ namespace Logic.Services
         /// <param name="msg"></param>
         public async Task AddMessageToChatRoom(string chatRoomId, MessageInfo msg)
         {
+            Debug.WriteLine($"Save ChatRoom Message {chatRoomId} {msg.Message}");
             await chatRoomCollection.AddMessage(chatRoomId, new ChatRoomMessage
             {
-                ChatRoomMessageId = Guid.NewGuid().ToString(),
+                ChatRoomMessageId = msg.MessageId,
                 IsDeleted = false,
                 FromUserId = msg.FromUserInfo.UserId,
                 Message = msg.Message,
