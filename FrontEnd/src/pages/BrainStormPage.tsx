@@ -13,6 +13,9 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useContext, useEffect, useRef, useState } from "react";
 import { DataContext } from "../contexts/DataContext";
 import exitIcon from "../assets/ExitIcon.png"
+import RecycleBin from "../components/RecycleBin";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faRecycle } from "@fortawesome/free-solid-svg-icons";
 /*
  * BrainStormPage.tsx
   * -------------------------
@@ -24,6 +27,11 @@ import exitIcon from "../assets/ExitIcon.png"
   * Last Modified: 01/12/2023
   * Version: 1.0
 */
+
+export interface DeletedItemProps {
+  idea: string,
+  isChecked: boolean
+}
 
 function BrainStormPage() {
   const Navigate = useNavigate();
@@ -51,6 +59,9 @@ function BrainStormPage() {
   const interval = useRef() as React.MutableRefObject<NodeJS.Timeout>;
   const [memberCount, setMemberCount] = useState(0); // Set the member count to be displayed
   const context = useContext(DataContext); // Get the data context
+  const [deletedIdeaList, updateDeletedIdeaList] = useState<DeletedItemProps[]>([]);
+  const [showDeletedItems, setShowDeletedItems] = useState({display: "none",});
+  const [showRecycleBin, setShowRecycleBin] = useState({display: "none"});
 
   function startTimer() {
     if (timer > 0) {
@@ -58,6 +69,14 @@ function BrainStormPage() {
         setTimer((prevTimer) => prevTimer - 1);
       }, 1000);
     }
+  }
+
+  function handleOpenTrashButton() {
+    setShowDeletedItems({ display: "flex" });
+  }
+  
+  function handleClickDeleteButton(idea: string, isChecked: boolean){
+    updateDeletedIdeaList(current=> [...current, {idea, isChecked}]);
   }
 
   // useEffect(() => {
@@ -233,11 +252,14 @@ function BrainStormPage() {
         if (type === 1) {
           startTimer();
           setInput(false);
+          setShowRecycleBin({display: "flex"});
           showNotice("Session has started");
         } else if (type === 2) {
           setInput(true);
           clearInterval(interval.current);
           showNotice("Session has ended");
+          setShowRecycleBin({display: "none"});
+          setShowDeletedItems({ display: "none" });
           SignalRChatRoom.getInstance().then(async (instance) => {
             await instance.sendAllIdeas(sessionId, UserInfo.getLocalIdeas());
             UserInfo.clearIdea();
@@ -288,11 +310,15 @@ function BrainStormPage() {
           timer={timer}
           memberCount={memberCount}
         />
+        <button
+          className="RecycleBinButton" style={showRecycleBin}>
+            <FontAwesomeIcon icon={faRecycle} title="Recyce Bin" onClick={handleOpenTrashButton}/>
+        </button>
       </div>
       <div className="BS_BodyContainer">
         <div className="BS_ContentContainer">
           <BS_OnlineIdeaList content={ideaList} voting={isVoting} />
-          <BS_LocalIdeaList content={localIdeaList} />
+          <BS_LocalIdeaList content={localIdeaList} handleDeleteFunction={handleClickDeleteButton} />
           <div className="BS_BottomRow">
             <BS_SendPrompt sendFunction={handleSendClick} input={input} />
             <div
@@ -335,6 +361,13 @@ function BrainStormPage() {
         display={leaveContainer}
         yesFunction={handleLeaveClick}
         displayFunction={callLeaveContainer}
+      />
+      <RecycleBin
+        style={showDeletedItems}
+        deletedIdeaList={deletedIdeaList}
+        localIdeaList={localIdeaList}
+        restoreContentFunction={setLocalIdeaList}
+        updateDeleteIdeaListFunction={updateDeletedIdeaList}
       />
       <div className="NoticeClass" style={display}>
         <div>
