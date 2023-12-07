@@ -174,7 +174,6 @@ function BrainStormPage() {
         { display: "none" },
         { display: "flex" },
       ]);
-      clearInterval(interval.current);
       SignalRChatRoom.getInstance().then((instance) => {
         instance.clientsShouldSendAllVotes(sessionId);
       });
@@ -247,6 +246,7 @@ function BrainStormPage() {
           setIdeaList(UserInfo.getIdeasList());
           showNotice("Here are the voting results");
         } else if (type === 5) {
+          clearInterval(interval.current);
           SignalRChatRoom.getInstance().then(async (instance) => {
             await instance.sendVotes(sessionId, UserInfo.getIdeasList());
             UserInfo.clearIdeaList();

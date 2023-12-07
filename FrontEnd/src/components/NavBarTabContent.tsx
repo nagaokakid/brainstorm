@@ -168,7 +168,7 @@ function NavBarTabContent(props: ChatListProps) {
           sessionStorage.setItem("brainstorm", "true");
         }
       };
-
+      
       ApiService.buildCallBack(render); // Build the callback function
       sessionStorage.setItem("callBack", "true"); // Set the flag in session storage to indicate that the effect has run
 
@@ -198,7 +198,6 @@ function NavBarTabContent(props: ChatListProps) {
       const chatRoom = UserInfo.getChatRoomInfo(chatRoomId);
       if (chatRoom != null) {
         setSelectedChat(chatRoom);
-        console.log("here1");
         sessionStorage.removeItem("brainstorm");
       }
     }

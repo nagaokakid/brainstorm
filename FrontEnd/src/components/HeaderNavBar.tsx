@@ -59,9 +59,9 @@ function HeaderNavBar(props: HeaderNavBarProps) {
       button.disabled = false;
       return;
     } else {
-      await SignalRChatRoom.getInstance().then((value) =>
+      await SignalRChatRoom.getInstance().then((value) => {
         value.joinChatRoom(joinChatCode, "First")
-      );
+      });
       button.disabled = false;
     }
     setJoinChatCode("");
