@@ -102,8 +102,8 @@ function CreateBrainStormCustomize(props: CreateBrainStormCustomizeProps) {
       <div className="BSinfoWindow" onClick={handleChildClick}>
         <h1>Create Brainstorm Session</h1>
         <form className="CreateBSForm">
-          <MDBInput wrapperClass='mb-4' label='Brainstorm session name' id='BSname' type='text' autoComplete='off' value={BSInfo.BSname} onChange={handleChanged} />
-          <MDBInput wrapperClass='mb-4' label='Brainstorm session description' id='BSdescription' type='text' autoComplete='off' value={BSInfo.BSdescription} onChange={handleChanged} />
+          <MDBInput wrapperClass='mb-4' label='Title' id='BSname' type='text' autoComplete='off' value={BSInfo.BSname} onChange={handleChanged} />
+          <MDBInput wrapperClass='mb-4' label='Description' id='BSdescription' type='text' autoComplete='off' value={BSInfo.BSdescription} onChange={handleChanged} />
           <MDBInput wrapperClass='mb-4' label='Enter Time in Seconds' id='BStimer' type='number' autoComplete='off' value={BSInfo.BStimer} onChange={handleChanged} />
         </form>
         <div>

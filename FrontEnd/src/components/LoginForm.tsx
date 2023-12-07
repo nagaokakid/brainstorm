@@ -166,7 +166,7 @@ function LoginForm() {
                         <MDBInput wrapperClass='mb-4' label='First name' id='FirstName' type='text' autoComplete='off' onChange={handleChanged} />
                         <MDBInput wrapperClass='mb-4' label='Last name' id='LastName' type='text' autoComplete='off' onChange={handleChanged} />
                         <MDBInput wrapperClass='mb-4' label='Password' id='Password' type='Password' onChange={handleChanged} />
-                        <MDBInput wrapperClass='mb-4' label='RePassword' id='RePassword' type='Password' onChange={handleChanged} onKeyDown={handleKey} />
+                        <MDBInput wrapperClass='mb-4' label='Repeat Password' id='RePassword' type='Password' onChange={handleChanged} onKeyDown={handleKey} />
                     </form>
                     <MDBBtn className="mb-4 w-100" id='register' onClick={handleRegister}>Sign up</MDBBtn>
                 </MDBTabsPane>
