@@ -110,7 +110,7 @@ function EditChatroom(props: Props) {
       <div className="EditChatRoomWindow" onClick={handleChildClick}>
         <div className="EditChatRoomTitle">{chatRoom.ChatRoomTitle}</div>
         <form className="EditChatRoomForm" id="EditChatroomId">
-          <MDBInput wrapperClass="mb-4" label="ChatRoom Title" id="ChatRoomTitle" type="text" autoComplete="off" value={chatRoom.ChatRoomTitle ?? ""} onChange={handleChanged} />
+          <MDBInput wrapperClass="mb-4" label="Title" id="ChatRoomTitle" type="text" autoComplete="off" value={chatRoom.ChatRoomTitle ?? ""} onChange={handleChanged} />
           <MDBInput wrapperClass="mb-4" label="Description" id="ChatRoomDescription" type="text" autoComplete="off" value={chatRoom.ChatRoomDescription ?? ""} onChange={handleChanged} />
         </form>
         <div className="ErrorMessage" style={{ display: showError }}>
