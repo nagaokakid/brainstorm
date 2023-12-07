@@ -12,7 +12,7 @@ import SignalRChatRoom from "../services/ChatRoomConnection";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useContext, useEffect, useRef, useState } from "react";
 import { DataContext } from "../contexts/DataContext";
-import exitIcon from "../assets/ExitIcon.png"
+import exitIcon from "../assets/exitIcon.png"
 
 /**
 * BrainStormPage.tsx
