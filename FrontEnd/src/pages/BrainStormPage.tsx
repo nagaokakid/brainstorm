@@ -12,7 +12,16 @@ import SignalRChatRoom from "../services/ChatRoomConnection";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useContext, useEffect, useRef, useState } from "react";
 import { DataContext } from "../contexts/DataContext";
+import exitIcon from "../assets/ExitIcon.png"
 
+/**
+* BrainStormPage.tsx
+* -------------------------
+*   This component is the brain storm page of the brain storm session.
+*  It contains the list of ideas that the user has created.
+* -----------------------------------------------------------------------
+* Authors:  Mr. Yee Tsung (Jackson) Kao & Mr. Roland Fehr
+*/
 function BrainStormPage() {
   const Navigate = useNavigate();
   const [isVoting, setIsVoting] = useState(false);
@@ -20,6 +29,7 @@ function BrainStormPage() {
   const [localIdeaList, setLocalIdeaList] = useState([] as string[]);
   const [leaveContainer, setLeaveContainer] = useState("none");
   const [input, setInput] = useState(true);
+  const [hasStarted, setHasStarted] = useState(false);
   const [display, setDisplay] = useState({ display: "none" });
   const [noticeMsg, setNoticeMsg] = useState("" as string);
   const [displayBtn, setDisplayBtn] = useState([
@@ -47,20 +57,16 @@ function BrainStormPage() {
     }
   }
 
-  // useEffect(() => {
-  //   if (timer) {
-  //     console.log("number", timer);
-
-  //     setTimer(Number(location.timer));
-  //   }
-  // }, []);
-
   useEffect(() => {
-    if (timer === 0 && !input) {
+    if (timer === 0) {
       clearInterval(interval.current);
       setTimer(Number(location.timer));
 
-      handleEndSessionClick();
+      if (!input) {
+        handleEndSessionClick();
+      } else if (isVoting) {
+        handleVotingClick();
+      }
     }
   }, [timer]);
 
@@ -98,7 +104,7 @@ function BrainStormPage() {
    * Leave the session
    */
   async function handleLeaveClick() {
-    await ApiService.leaveBSSession(creatorId, sessionId);
+    await ApiService.leaveBSSession(creatorId, sessionId, hasStarted);
     sessionStorage.removeItem("bs_callBack");
     sessionStorage.removeItem("localIdea");
     sessionStorage.removeItem("ideaList");
@@ -120,6 +126,7 @@ function BrainStormPage() {
    * Start the session
    */
   function handleStartSessionClick() {
+    setHasStarted(true);
     if (input) {
       setDisplayBtn([
         { display: "none" },
@@ -129,9 +136,9 @@ function BrainStormPage() {
       ]);
       UserInfo.clearIdeaList();
       UserInfo.clearIdea();
-      
+
       SignalRChatRoom.getInstance().then((instance) => {
-        instance.startSession(sessionId, timer);
+        instance.startSession(sessionId, timer, sessionStorage.getItem("currentChatRoom") as string);
       });
     }
   }
@@ -193,6 +200,14 @@ function BrainStormPage() {
     }
   }
 
+  function handleWarningClick() {
+    if (input && !isVoting) {
+      handleLeaveClick();
+    } else {
+      setLeaveContainer("flex");
+    }
+  }
+
   useEffect(() => {
     if (context === undefined) {
       throw new Error("useDataContext must be used within a DataContext");
@@ -220,6 +235,8 @@ function BrainStormPage() {
         } else if (type === 3) {
           sessionStorage.setItem("ideaList", JSON.stringify(ideas));
           UserInfo.updateIdeaList();
+          setTimer(Number(location.timer));
+          startTimer();
           setIdeaList(UserInfo.getIdeasList());
           setIsVoting(true);
           showNotice("Voting has started");
@@ -229,6 +246,7 @@ function BrainStormPage() {
           setIdeaList(UserInfo.getIdeasList());
           showNotice("Here are the voting results");
         } else if (type === 5) {
+          clearInterval(interval.current);
           SignalRChatRoom.getInstance().then(async (instance) => {
             await instance.sendVotes(sessionId, UserInfo.getIdeasList());
             UserInfo.clearIdeaList();
@@ -252,13 +270,14 @@ function BrainStormPage() {
       <div className="BS_HeaderContainer">
         <button
           className="LeaveSessionButton"
-          onClick={() => setLeaveContainer("flex")}
-        ></button>
+          onClick={handleWarningClick}
+        ><img className="exitIcon_BS" src={exitIcon} /></button>
         <BS_HeaderContent
           roomTitle={sessionTitle}
           roomDescription={sessionDescription}
           timer={timer}
           memberCount={memberCount}
+          creatorId={creatorId}
         />
       </div>
       <div className="BS_BodyContainer">
@@ -304,7 +323,6 @@ function BrainStormPage() {
         </div>
       </div>
       <LeaveBSPrompt
-        content={"Leave the Session?"}
         display={leaveContainer}
         yesFunction={handleLeaveClick}
         displayFunction={callLeaveContainer}

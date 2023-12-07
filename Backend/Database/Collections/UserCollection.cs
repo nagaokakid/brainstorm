@@ -1,16 +1,29 @@
 ﻿using Database.CollectionContracts;
 using Database.Data;
 using Database.MongoDB;
-using MongoDB.Bson;
-using System.ComponentModel;
+
+/*
+ * UserCollection.cs
+ * -------------------------------
+ * This class implements the IUserCollection interface.
+ * -----------------------------------------------------------------------------------------------------------
+ * Authors: Mr. Roland Fehr and Mr. Akira Cooper
+    * Last Updated: 1/12/2023
+    * Date Created: 1/12/2023
+    * Version 1.0
+*/
 
 namespace Database.Collections
 {
+    /// <summary>
+    ///    This class implements the IUserCollection interface.
+    ///    It is used to interact with the User collection in the database.
+    /// </summary>
     public class UserCollection : IUserCollection
     {
         // The user collection from MongoDB
         private MongoRepository<User> userRepository = new("brainstorm", "User");
-        
+
         // Add a new user document to the User collection
         public async Task Add(User newUser)
         {
@@ -68,10 +81,11 @@ namespace Database.Collections
 
         }
 
+        // Get all users registered in the app
         public async Task<Dictionary<string, User>> GetAll()
         {
             var found = await userRepository.GetAllDocuments();
-            if(found != null)
+            if (found != null)
             {
                 var result = new Dictionary<string, User>();
                 foreach (var user in found)
@@ -81,6 +95,25 @@ namespace Database.Collections
                 return result;
             }
             return new Dictionary<string, User>();
+        }
+
+        // Edit an existing user with new information
+        public async Task Edit(User existingUser)
+        {
+            var userId = existingUser.Id;
+            await userRepository.ReplaceDocument(userId, existingUser);
+        }
+
+        // Delete a user
+        public async Task DeleteUser(string id)
+        {
+            await userRepository.DeleteDocument(id);
+        }
+
+        // Remove a chatroom id from a user's chatroom id list
+        public async Task RemoveChatRoomId(string userId, string chatId)
+        {
+            await userRepository.RemoveFromArrayInDocument(userId, "ChatroomIds", chatId);
         }
     } // class
 } // namespace

@@ -11,7 +11,7 @@
 
 using Database.CollectionContracts;
 using Database.Data;
-using Logic.Helpers;
+using Logic.Converters;
 using Logic.DTOs.ChatRoom;
 using Logic.DTOs.Messages;
 using Logic.DTOs.User;
@@ -186,6 +186,53 @@ namespace Logic.Services
             }
 
             return result;
+        }
+
+        public async Task DeleteUser(string id)
+        {
+            if(id == null) throw new ArgumentNullException(nameof(id));
+
+            // get user first
+            var result = await userCollection.Get(id);
+            if(result != null)
+            {
+                // remove user from all chats first
+                foreach (var chatId in result.ChatroomIds)
+                {
+                    await chatRoomCollection.RemoveUser(id, chatId);
+                }
+
+            }
+            
+            // delete user
+            await userCollection.DeleteUser(id);
+
+        }
+
+        public async Task EditUser(EditUserRequest editUserRequest)
+        {
+            // validate edit request
+            if (editUserRequest == null || editUserRequest.UserId == null || editUserRequest.FirstName == null || editUserRequest.Username == null || editUserRequest.Password == null) throw new ArgumentNullException();
+
+            // get existing user from DB
+            var existingUser = await userCollection.Get(editUserRequest.UserId);
+            
+            // try to edit user if found
+            if(existingUser != null)
+            {
+                existingUser.FirstName = editUserRequest.FirstName == "" ? existingUser.FirstName : editUserRequest.FirstName;
+                existingUser.LastName = editUserRequest.LastName == "" ? existingUser.LastName : editUserRequest.LastName;
+                existingUser.Username = editUserRequest.Username == "" ? existingUser.Username : editUserRequest.Username;
+                existingUser.Password = editUserRequest.Password == "" ? existingUser.Password : editUserRequest.Password;
+
+                // save modified user
+                await userCollection.Edit(existingUser);
+            }
+            else
+            {
+                throw new BadRequest();
+            }
+
         }
     }
 }

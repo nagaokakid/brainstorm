@@ -8,7 +8,19 @@ import {
     user,
 } from "../models/TypesDefine";
 
+/*
+ * UserInfo.ts
+    * -----------------------------
+    * This file is the service for the user info.
+    * ----------------------------------------------------------
+    * Author:  Mr. Yee Tsuung (Jackson) Kao and Mr. Roland Fehr
+    * Date Created:  01/12/2023
+    * Last Modified: 01/12/2023
+    * Version: 0.0.1
+*/
+
 class UserInfo {
+    
 
     // The url of the backend
     static BaseURL = "http://localhost:5135/"
@@ -29,6 +41,36 @@ class UserInfo {
      */
     static setCurrentUser(user: user) {
         this.currentUser = user;
+    }
+
+    // static setUsername() {
+    //     if (sessionStorage.getItem("username") === null) {
+    //         sessionStorage.setItem("username", this.getUserName());
+    //     }
+    // }
+
+    /**
+     * Set the user first name to the user info
+     * @param newFirstName the new first name
+     */
+    static setFirstName(newFirstName: string) {
+        const result = this.getCurrentUser();
+        if (result) {
+            result.userInfo.firstName = newFirstName;
+        }
+        this.updateUser(true);
+    }
+
+    /**
+     * Set the last name to the user info
+     * @param newLastName the new last name
+     */
+    static setLastName(newLastName: string) {
+        const result = this.getCurrentUser();
+        if (result) {
+            result.userInfo.lastName = newLastName;
+        }
+        this.updateUser(true);
     }
 
     /**
@@ -90,6 +132,24 @@ class UserInfo {
             this.updateUser(true);
         }
         return this.getCurrentUser().chatRooms;
+    }
+
+    /**
+     * Get the chat room info from the chat room list
+     * @param chatRoomId The chat room id
+     * @returns 
+     */
+    static getChatRoomInfo(chatRoomId: string) {
+        return this.getChatRoomsList().find(chatRoom => chatRoom.id === chatRoomId);
+    }
+
+    /**
+     * Get the chat room info from the chat room list
+     * @param code The join code
+     * @returns 
+     */
+    static getChatRoomByCode(code: string) {
+        return this.getChatRoomsList().find(chatRoom => chatRoom.joinCode === code);
     }
 
     /**
@@ -221,7 +281,7 @@ class UserInfo {
     static addNewChatRoom(chatRoom: chatRoomObject) {
         const list = this.getChatRoomsList();
         if (list.find(current => current.id === chatRoom.id)) {
-            alert("Chat room already exists.");
+            return;
         } else {
             list.push(chatRoom);
         }
@@ -234,12 +294,11 @@ class UserInfo {
      * @returns 
      */
     static addNewDirectMessage(newDirectMessage: newDirectMessageObject) {
-        console.log(newDirectMessage);
-
         if (newDirectMessage.fromUserInfo.userId === this.getUserId()) { // If the message is sent by the current user, return
             const result = this.getDirectMessagesList().find(current => (newDirectMessage.toUserInfo.userId === current.user1.userId || newDirectMessage.toUserInfo.userId === current.user2.userId));
             if (result) {
                 result.directMessages.push({
+                    fromUserId: newDirectMessage.fromUserInfo.userId,
                     messageId: newDirectMessage.messageId,
                     message: newDirectMessage.message,
                     timestamp: newDirectMessage.timestamp
@@ -250,6 +309,7 @@ class UserInfo {
                     user2: newDirectMessage.toUserInfo.userId === this.getUserId() ? newDirectMessage.fromUserInfo : newDirectMessage.toUserInfo,
                     directMessages: [
                         {
+                            fromUserId: newDirectMessage.fromUserInfo.userId,
                             messageId: newDirectMessage.messageId,
                             message: newDirectMessage.message,
                             timestamp: newDirectMessage.timestamp
@@ -262,6 +322,7 @@ class UserInfo {
             const result = this.getDirectMessagesList().find(current => (newDirectMessage.fromUserInfo.userId === current.user1.userId || newDirectMessage.fromUserInfo.userId === current.user2.userId));
             if (result) {
                 result.directMessages.push({
+                    fromUserId: newDirectMessage.fromUserInfo.userId,
                     messageId: newDirectMessage.messageId,
                     message: newDirectMessage.message,
                     timestamp: newDirectMessage.timestamp
@@ -272,6 +333,7 @@ class UserInfo {
                     user2: this.getUserInfo(),
                     directMessages: [
                         {
+                            fromUserId: newDirectMessage.fromUserInfo.userId,
                             messageId: newDirectMessage.messageId,
                             message: newDirectMessage.message,
                             timestamp: newDirectMessage.timestamp
@@ -352,10 +414,26 @@ class UserInfo {
         this.updateLocalIdea(true);
     }
 
-    static deleteChatRoom(chatRoomId:string, id: string) {
+    static deleteChatRoomMessage(chatRoomId:string, messageId: string) {
         const result = this.getChatRoomsList().find(chatRoom => chatRoom.id === chatRoomId);
         if (result) {
-            result.messages.splice(result.messages.findIndex(current => current.messageId === id), 1);
+            result.messages.splice(result.messages.findIndex(current => current.messageId === messageId), 1);
+        }
+        this.updateUser(true);
+    }
+
+    static deleteChatRoomMessageBySessionId(chatRoomId:string , sessionId: string) {
+        const result = this.getChatRoomsList().find(chatRoom => chatRoom.id === chatRoomId);
+        if (result) {
+            result.messages.splice(result.messages.findIndex(current => current.brainstorm?.sessionId === sessionId), 1);
+        }
+        this.updateUser(true);
+    }
+
+    static leaveChatRoom(chatRoomId:string) {
+        const index = this.getChatRoomsList().findIndex(chatRoom => chatRoom.id === chatRoomId);
+        if (index >= 0) {
+            this.getChatRoomsList().splice(index, 1);
         }
         this.updateUser(true);
     }
@@ -382,6 +460,14 @@ class UserInfo {
     static clearIdeaList() {
         this.ideasList = [];
         this.updateIdeaList(true);
+    }
+
+    /**
+     * Empty the user info
+     */
+    static clearAccount() {
+        this.currentUser = {} as user;
+        sessionStorage.removeItem("currentUser");
     }
 
     /**
@@ -430,6 +516,21 @@ class UserInfo {
             sessionStorage.setItem("ideaList", JSON.stringify(this.ideasList));
         }
         this.setIdeasList(JSON.parse(sessionStorage.getItem("ideaList") ?? ""));
+    }
+
+    /**
+     * Update the chat room info
+     * @param chatRoomId the chat room id
+     * @param chatRoomTitle the chat room title
+     * @param chatRoomDescription the chat room description
+     */
+    static updateChatRoom(chatRoomId: string, chatRoomTitle: string, chatRoomDescription: string) {
+        const result = this.getChatRoomsList().find(chatRoom => chatRoom.id === chatRoomId);
+        if (result) {
+            result.title = chatRoomTitle;
+            result.description = chatRoomDescription;
+        }
+        this.updateUser(true);
     }
 }
 

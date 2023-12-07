@@ -1,3 +1,14 @@
+/*
+ *  BS_HeaderContent.css
+ * ---------------------
+ * CSS file for the HeaderContent component page.
+ * -----------------------------------------------
+ * Author: Mr. Tee Tsung (Jackson) Kao & Mr. Roland Fehr
+    * Date Created: 01/12/2023
+    * Updated: 01/12/2023
+    * Version: 0.0.1
+*/
+
 .HeaderContent {
     position: relative;
     width: 100%;
@@ -21,7 +32,6 @@
     align-items: center;
 }
 
-
 .BS_Title{
     font-size: larger;
     display: flex;
@@ -38,6 +48,7 @@
 .BS_Timer{
     display: flex;
     justify-content: center;
+    align-items: center;
     padding: 20px;
     margin-left: 10px;
     border-radius: 0 0 25px 25px;
@@ -48,7 +59,9 @@
 }
 .BS_MemberCount{
     display: flex;
+    flex-direction: row;
     justify-content: center;
+    align-items: center;
     padding: 20px;
     margin-right: 10px;
     border-radius: 0 0 25px 25px;
@@ -56,4 +69,23 @@
     background: linear-gradient(167deg, rgba(2,0,36,1) 0%, rgba(12,53,106,1) 51%, rgba(1,116,190,1) 100%);
     color: white;
     width: 150px;
+}
+
+.JoinedIcon_BS{
+    width: 50px;
+    height: 50px;
+}
+
+.HeaderContent .Note{
+    position: absolute;
+    right: 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: auto;
+}
+
+.HeaderContent .Note p{
+    color: white;
+    font-size: 50px;
 }

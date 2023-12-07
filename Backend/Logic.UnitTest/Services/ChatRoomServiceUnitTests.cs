@@ -2,7 +2,9 @@
 using Database.Data;
 using Logic.DTOs.ChatRoom;
 using Logic.Exceptions;
+using Logic.Hubs;
 using Logic.Services;
+using Microsoft.AspNetCore.SignalR;
 using Moq;
 
 namespace Logic.UnitTest.Services
@@ -12,12 +14,14 @@ namespace Logic.UnitTest.Services
     {
         Mock<IChatRoomCollection> chatRoomCollectionService;
         Mock<IUserCollection> userCollection;
+        Mock<IHubContext<ChatRoomHub>> chatRoomHubContext;
 
         [SetUp]
         public void Setup()
         {
             chatRoomCollectionService = new Mock<IChatRoomCollection>();
             userCollection = new Mock<IUserCollection>();
+            chatRoomHubContext = new Mock<IHubContext<ChatRoomHub>>();
         }
 
         [Test]
@@ -32,7 +36,7 @@ namespace Logic.UnitTest.Services
             };
 
             userCollection.Setup(x => x.Get(request.UserId)).Returns(async () => null);
-            var chatRoomService = new ChatRoomService(chatRoomCollectionService.Object, userCollection.Object);
+            var chatRoomService = new ChatRoomService(chatRoomCollectionService.Object, userCollection.Object, chatRoomHubContext.Object);
 
             Assert.That(() => chatRoomService.CreateChatRoom(request), Throws.TypeOf<UserNotFound>());
         }
@@ -42,7 +46,7 @@ namespace Logic.UnitTest.Services
         {
             // Arrange
             chatRoomCollectionService.Setup(x => x.GetById("id")).Returns(async () => null);
-            var chatRoomService = new ChatRoomService(chatRoomCollectionService.Object, userCollection.Object);
+            var chatRoomService = new ChatRoomService(chatRoomCollectionService.Object, userCollection.Object, chatRoomHubContext.Object);
 
             Assert.That(() => chatRoomService.GetChatRooms(new List<string>() { "id" }), Throws.TypeOf<ChatRoomNotFound>());
         }
@@ -57,7 +61,7 @@ namespace Logic.UnitTest.Services
                 Description = "desc",
             };
             chatRoomCollectionService.Setup(x => x.GetById("id")).Returns(async () => chat);
-            var chatRoomService = new ChatRoomService(chatRoomCollectionService.Object, userCollection.Object);
+            var chatRoomService = new ChatRoomService(chatRoomCollectionService.Object, userCollection.Object, chatRoomHubContext.Object);
 
             // Act
             var result = await chatRoomService.GetChatRooms(new List<string>() { "id" });
@@ -78,7 +82,7 @@ namespace Logic.UnitTest.Services
                 JoinCode = "123",
             };
             chatRoomCollectionService.Setup(x => x.GetByJoinCode("123")).Returns(async () => chat);
-            var chatRoomService = new ChatRoomService(chatRoomCollectionService.Object, userCollection.Object);
+            var chatRoomService = new ChatRoomService(chatRoomCollectionService.Object, userCollection.Object, chatRoomHubContext.Object);
 
             // Act
             var result = await chatRoomService.GetRoomByJoinCode("123");
@@ -92,7 +96,7 @@ namespace Logic.UnitTest.Services
         {
             // Arrange
             chatRoomCollectionService.Setup(x => x.GetByJoinCode("123")).ReturnsAsync(() => null);
-            var service = new ChatRoomService(chatRoomCollectionService.Object, userCollection.Object);
+            var service = new ChatRoomService(chatRoomCollectionService.Object, userCollection.Object, chatRoomHubContext.Object);
             // Act
             var result = await service.IsJoinCodeValid("123");
 
@@ -106,7 +110,7 @@ namespace Logic.UnitTest.Services
         {
             // Arrange
             chatRoomCollectionService.Setup(x => x.GetByJoinCode("123")).ReturnsAsync(() => new ChatRoom { Title="hi"});
-            var service = new ChatRoomService(chatRoomCollectionService.Object, userCollection.Object);
+            var service = new ChatRoomService(chatRoomCollectionService.Object, userCollection.Object, chatRoomHubContext.Object);
             // Act
             var result = await service.IsJoinCodeValid("123");
 

@@ -1,7 +1,14 @@
 import "../styles/LoginPage.css"
 import LoginForm from "../components/LoginForm"
-import GuestJoin from "../components/GuestJoin"
+import GuestForm from "../components/GuestForm"
 
+/**
+ * LoginPage.tsx
+ * -------------------------
+ * This is the login page.
+ * -----------------------------------------------------------------------
+ * Author:  Mr. Yee Tsung (Jackson) Kao
+*/
 function LoginPage() {
     // Clear the session and local storage
     sessionStorage.clear();
@@ -12,7 +19,7 @@ function LoginPage() {
             <div className="PageContainer">
                 <div className="ContentContainer">
                     <div className="TitleContainer">
-                        <h1 className="Title">Welcome to <span className="TitleSpan">Brainstorm</span></h1>
+                        <h1 className="Title">Welcome to Brainstorm</h1>
                     </div>
                     <div className="Content">
                         <div className="MemberContainer">
@@ -23,7 +30,7 @@ function LoginPage() {
                         <div className="VerticalLine"></div>
                         <div className="GuestContainer">
                             <div className="GuestFormContainer">
-                                <GuestJoin />
+                                <GuestForm />
                             </div>
                         </div>
                     </div>

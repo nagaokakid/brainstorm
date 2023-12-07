@@ -1,7 +1,7 @@
 ﻿using Database.Data;
 using Logic.DTOs.Messages;
 using Logic.DTOs.User;
-using Logic.Helpers;
+using Logic.Converters;
 
 namespace Logic.UnitTest.Helpers
 {

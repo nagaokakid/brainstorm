@@ -12,7 +12,7 @@ function DefaultChatRoomWindow(props: DefaultChatRoomProps) {
     <div className="DefaultChatRoomLayout">
         <FontAwesomeIcon icon={faBolt} title="brainstorm icon" className="brainstormIcon"/>
         <h2>Welcome to Brainstorm</h2>
-        <p>Discuss and Vote ideas with your team</p>
+        <p>Discuss and vote on ideas with other people</p>
         <div className="CreateChatRoomButton" style={props.displayTab === "Direct Message List" ? { display: "none" } : { display: "flex" }}>
           <button onClick={props.handleFunction}>Create Chat Room</button>
         </div>

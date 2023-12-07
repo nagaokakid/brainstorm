@@ -1,9 +1,26 @@
 ﻿using MongoDB.Driver;
+using MongoDB.Bson;
+using Database.Data;
+
+/* 
+ * MongoRepository.cs
+ * ------------------------
+ * Represents a MongoRepository object.
+ * This file contains the methods for the MongoRepository.
+ * ---------------------------------------------------------
+ * Author: Mr. Akira Cooper
+ * Last Updated: 1/12/2023
+ * Date Created: 1/12/2023
+ * Version: 1.0
+ */
 
 
 namespace Database.MongoDB
 {
-    // Generic class to represent a collection of data type documents (User, ChatRoom, Message, etc.)
+    /// <summary>
+    ///    A Generic class to represent a collection of data type documents (User, ChatRoom, Message, etc.)
+    /// </summary>
+    /// <typeparam name="TDocument"></typeparam>
     public class MongoRepository<TDocument> where TDocument : class
     {
         private IMongoCollection<TDocument> collection;
@@ -282,6 +299,46 @@ namespace Database.MongoDB
             catch (Exception ex)
             {
                 Console.WriteLine("System Exception! Failed to remove element from document array on MongoDB: " + ex.Message);
+                Console.WriteLine(ex.StackTrace);
+                throw;
+            }
+        }
+
+        // Remove a document from a nested collection (i.e.: delete a message from a chatroom's list of message objects)
+        public async Task RemoveDocumentFromNestedCollection(string id, string dataType, string nestedCollectionName, string nestedDocumentId)
+        {
+            try
+            {
+                var filter = Builders<TDocument>.Filter.Eq("_id", id);
+                UpdateDefinition<TDocument> update = null;
+
+                if (dataType == "ChatRoomMessage")
+                {
+                    var nestedFilter = Builders<ChatRoomMessage>.Filter.Eq("_id", nestedDocumentId);
+                    update = Builders<TDocument>.Update.PullFilter(nestedCollectionName, nestedFilter);
+                }
+                else if (dataType == "DirectMessage")
+                {
+                    var nestedFilter = Builders<DirectMessage>.Filter.Eq("_id", nestedDocumentId);
+                    update = Builders<TDocument>.Update.PullFilter(nestedCollectionName, nestedFilter);
+                }
+
+                var result = await collection.UpdateOneAsync(filter, update);
+
+                if (result.ModifiedCount == 0)
+                {
+                    Console.WriteLine("No document was removed from nested collection.");
+                }
+            }
+            catch (MongoException ex)
+            {
+                Console.WriteLine("Mongo Exception! Failed to remove document from nested collection in MongoDB: " + ex.Message);
+                Console.WriteLine(ex.StackTrace);
+                throw;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("System Exception! Failed to remove document from nested collection in MongoDB: " + ex.Message);
                 Console.WriteLine(ex.StackTrace);
                 throw;
             }

@@ -1,14 +1,26 @@
-import "../styles/NavigationBar.css";
+import { faEnvelope, faSignOutAlt, faUsers } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useNavigate } from 'react-router-dom';
+import { TabTypes } from '../models/EnumObjects';
 import SignalRChatRoom from "../services/ChatRoomConnection";
 import SignalRDirect from "../services/DirectMessageConnection";
-import { useNavigate } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEnvelope, faUsers, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
-import { handleHover } from './handleIconHover';
+import "../styles/NavigationBar.css";
+
+/* 
+ * NavigationBar.tsx
+    * -------------------------
+    * This component is the navigation bar of the chat page.
+    * It contains the navigation buttons for the user to navigate between the chat room list and direct message list.
+    * ----------------------------------------------------------------------------------------------------------------
+    * Authors:  Ravdeep Singh
+    * Date Created:  01/12/2023
+    * Last Modified: 01/12/2023
+    * Version: 1.0
+    */
 
 interface NavigationBarProps {
-    selectFunction: (tab: string) => void;
-    activeTab: string;
+    selectFunction: (tab: TabTypes) => void;
+    activeTab: TabTypes;
 }
 
 function NavigationBar(props: NavigationBarProps) {
@@ -23,28 +35,26 @@ function NavigationBar(props: NavigationBarProps) {
         sessionStorage.clear();
         navigate("/");
     }
-    
+
     return (
-        <div className="navigation-bar">
+        <div className="NavBar">
             <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css" />
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
-            <button 
-                className={`nav-button ${props.activeTab === 'ChatRoom List' ? 'active' : ''}`} 
-                onClick={() => props.selectFunction("ChatRoom List")} 
-                onMouseOver={handleHover}
+            <button
+                className={`NavBtn ${props.activeTab === TabTypes.ChatRoom ? 'active' : ''}`}
+                onClick={() => props.selectFunction(TabTypes.ChatRoom)}
+                
             >
                 <FontAwesomeIcon icon={faUsers} title="Group Chat" />
             </button>
-            <button 
-                className={`nav-button ${props.activeTab === 'Direct Message List' ? 'active' : ''}`} 
-                onClick={() => props.selectFunction("Direct Message List")} 
-                onMouseOver={handleHover}
+            <button
+                className={`NavBtn ${props.activeTab === TabTypes.DiretMessage ? 'active' : ''}`}
+                onClick={() => props.selectFunction(TabTypes.DiretMessage)}
+                
             >
-                <FontAwesomeIcon icon={faEnvelope} title="Direct Message"/>
+                <FontAwesomeIcon icon={faEnvelope} title="Direct Message" />
             </button>
-            {/* <button className="nav-button" onClick={() => alert("Not available at the moment")}>BrainStorm Session History</button>
-            <button className="nav-button" onClick={() => alert("Not available at the moment")}>Settings</button> */}
-            <button className="nav-button" onClick={() => logOut()} onMouseOver={handleHover}><FontAwesomeIcon icon={faSignOutAlt} title="Log Out" /></button>
+            <button className="NavBtn" onClick={() => logOut()}><FontAwesomeIcon icon={faSignOutAlt} title="Log Out" /></button>
         </div>
     );
 }

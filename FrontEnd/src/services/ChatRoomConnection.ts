@@ -3,6 +3,19 @@ import UserInfo from "./UserInfo";
 import { chatRoomMessageObject, chatRoomObject, userInfoObject } from "../models/TypesDefine";
 import Idea from "../models/Idea";
 
+/*
+ * ChatRoomConnection.ts
+ * -----------------------------
+ * This file is the service for the SignalR chatroom Hub.
+ * ----------------------------------------------------------
+ * Author:  Mr. Yee Tsuung (Jackson) Kao, Mr. Roland Fehr and Ravdeep Singh
+ * Date Created:  01/12/2023
+ * Last Modified: 01/12/2023
+ * Version: 0.0.1
+*/
+
+
+
 /**
  * This is the URL for the SignalR chatroom Hub
  */
@@ -37,6 +50,7 @@ class SignalRChatRoom {
      */
     async makeConnection() {
         await this.connection.start();
+        sessionStorage.setItem("chatRoomConnectionId", this.connection.connectionId ?? "");
     }
 
     /**
@@ -47,7 +61,7 @@ class SignalRChatRoom {
         this.connection.on("ReceiveChatRoomMessage", (msg: chatRoomMessageObject, timer?: number) => {
             UserInfo.addChatRoomMessage(msg);
             console.log(msg);
-            
+
             if (msg.brainstorm && msg.brainstorm.creator.userId === UserInfo.getUserId()) {
                 callBackFunction(msg.brainstorm.sessionId, msg, timer);
             } else {
@@ -57,7 +71,7 @@ class SignalRChatRoom {
     }
 
     /**
-     * Set a callback function that will be called when a chat room info is received
+     * Set a callback function that will be called when a chat room info is received from joinning a chat room
      * @param {*} callBackFunction A function that will be called when a chat room info is received
      */
     setReceiveChatRoomInfoCallback(callBackFunction: () => void) {
@@ -133,10 +147,10 @@ class SignalRChatRoom {
         this.connection.on("ReceiveAllIdeas", (sessionId: string, ideas: Idea[]) => {
             // remove null elements from array
             const ideasNew: Idea[] = [];
-            ideas.forEach(x=>{
-                if(x) ideasNew.push(x)
+            ideas.forEach(x => {
+                if (x) ideasNew.push(x)
             })
-        
+
             // receive all ideas from brainstorm session
             callBackFunction(sessionId, ideasNew);
         });
@@ -148,7 +162,7 @@ class SignalRChatRoom {
      */
     setReceiveVoteResultsCallback(callBackFunction: (sessionId: string, ideas: Idea[]) => void) {
         this.connection.on("ReceiveVoteResults", (sessionId: string, ideas: Idea[]) => {
-            const sort = ideas.sort(x=>x.dislikes).sort(x=>x.likes)
+            const sort = ideas.sort(x => x.dislikes).sort(x => x.likes)
             // receive the voting results
             callBackFunction(sessionId, sort);
         });
@@ -167,6 +181,40 @@ class SignalRChatRoom {
     }
 
     /**
+     * Set a callback function that will be called when a chat room message is removed
+     * @param callBackFunction A function that will be called when a chat room message is removed
+     */
+    setRemoveChatRoomMessageCallback(callBackFunction: (chatRoomId: string, messageId: string) => void) {
+        this.connection.on("RemoveChatRoomMessage", (chatRoomId: string, messageId: string) => {
+            console.log("callback remove message: " + chatRoomId + " " + messageId);
+
+            // remove message from chatroom
+            callBackFunction(chatRoomId, messageId);
+        });
+    }
+
+    /**
+     * Set a callback function that will be called when a chat room info is edited
+     * @param callBackFunction A function that will be called when a chat room info is edited
+     */
+    setEditChatRoomCallback(callBackFunction: () => void) {
+        this.connection.on("EditChatRoom", (chatRoomId: string, title: string, description: string) => {
+            console.log("callback EditChatRoom: " + chatRoomId + " " + title);
+            UserInfo.updateChatRoom(chatRoomId, title, description);
+            // remove message from chatroom
+            callBackFunction();
+        });
+    }
+
+    setRemoveJoinBSMessage(callBackFunction: (chatRoomId: string, sessionId: string) => void) {
+        this.connection.on("RemoveJoinBSMessage", (chatRoomId: string, sessionId: string) => {
+            console.log("callback RemoveJoinBSMessage: " + sessionId);
+            // remove message from chatroom
+            callBackFunction(chatRoomId, sessionId);
+        });
+    }
+
+    /**
      * Send a message to the backend from chat room
      * @param {*} msg A message object that will be sent to the backend
      */
@@ -181,6 +229,8 @@ class SignalRChatRoom {
      * @param {*} type The type of the chat room
      */
     async joinChatRoom(joinCode: string, type: string) {
+        console.log("----> Join chatroom");
+        
         await this.connection.send("JoinChatRoom", joinCode, type, UserInfo.getUserId(), UserInfo.getFirstName(), UserInfo.getLastName())
             .catch(() => {
                 console.log("----> Join chatroom failed");
@@ -211,7 +261,7 @@ class SignalRChatRoom {
      */
     async joinBrainstormSession(sessionId: string) {
         console.log("----> Join brainstorm session");
-        
+
         await this.connection.send("JoinBrainstormSession", sessionId, UserInfo.getUserId(), UserInfo.getFirstName(), UserInfo.getLastName()).catch(() => {
             console.log("----> Join brainstorm session failed");
         });
@@ -221,10 +271,10 @@ class SignalRChatRoom {
      * Send a request to the backend to start a brainstorm session
      * @param sessionId The brainstorm session id
      */
-    async startSession(sessionId: string, timer: number) {
+    async startSession(sessionId: string, timer: number, chatRoomId: string) {
         console.log("----> Start brainstorm session", sessionId, timer);
-        
-        await this.connection.send("StartSession", sessionId, timer)
+
+        await this.connection.send("StartSession", sessionId, timer, chatRoomId);
     }
 
     /**
@@ -235,8 +285,11 @@ class SignalRChatRoom {
         await this.connection.send("EndSession", sessionId)
     }
 
-
-    async voteAnotherRound(sessionId: string){
+    /**
+     * Send a request to the backend to vote another round
+     * @param sessionId The brainstorm session id
+     */
+    async voteAnotherRound(sessionId: string) {
         await this.connection.send("VoteAnotherRound", sessionId)
     }
 
@@ -266,7 +319,11 @@ class SignalRChatRoom {
         await this.connection.send("ReceiveVotes", sessionId, votes)
     }
 
-    async removeUserFromBrainstormSession(sessionId: string){
+    /**
+     * Send a request to the backend to remove a user from the brainstorm session
+     * @param sessionId The brainstorm session id
+     */
+    async removeUserFromBrainstormSession(sessionId: string) {
         await this.connection.send("RemoveUserFromSession", sessionId, UserInfo.getUserId())
     }
 
@@ -278,17 +335,13 @@ class SignalRChatRoom {
         await this.connection.send("SendAllVotes", sessionId)
     }
 
-    async removeChatRoomMessage(chatroomId: string, messageId: string){
+    /**
+     * Send a request to the backend to remove a chat room message
+     * @param chatroomId the chat room id
+     * @param messageId the message id
+     */
+    async removeChatRoomMessage(chatroomId: string, messageId: string) {
         await this.connection.send("RemoveChatRoomMessage", chatroomId, messageId)
-    }
-
-    setRemoveChatRoomMessageCallback(callBackFunction: (chatRoomId: string, messageId: string) => void) {
-        this.connection.on("RemoveChatRoomMessage", (chatRoomId: string, messageId: string) => {
-            console.log("callback remove message: " + chatRoomId + " " + messageId);
-            
-            // remove message from chatroom
-            callBackFunction(chatRoomId, messageId);
-        });
     }
 
     /**
@@ -300,6 +353,9 @@ class SignalRChatRoom {
         this.connection.off("ReceiveChatRoomInfo");
         this.connection.off("UserJoinedBrainstormingSession");
         this.connection.off("SessionStartedNotAllowedToJoin");
+        this.connection.off("RemoveChatRoomMessage");
+        this.connection.off("EditChatRoom");
+        this.connection.off("RemoveJoinBSMessage");
     }
 
     /**
@@ -324,6 +380,10 @@ class SignalRChatRoom {
         }
 
         return SignalRChatRoom.instance;
+    }
+
+    static getConnectionId() {
+        return this.instance?.connection.connectionId;
     }
 }
 

@@ -1,11 +1,15 @@
 import { useEffect } from "react";
 import "../styles/BS_HeaderContent.css";
+import userIcon from "../assets/group-chat.png";
+import hourGlassIcon from "../assets/whiteHourGlass.png";
+import UserInfo from "../services/UserInfo";
 
 interface BS_HeaderContentProps {
   roomTitle: string;
   roomDescription: string;
   timer: number;
   memberCount: number;
+  creatorId: string;
 }
 
 function BS_HeaderContent(props: BS_HeaderContentProps) {
@@ -29,12 +33,24 @@ function BS_HeaderContent(props: BS_HeaderContentProps) {
 
   return (
     <div className="HeaderContent">
-      <div className="BS_MemberCount">Joined: {props.memberCount}</div>
+      <div className="BS_MemberCount">
+        <img
+          className="JoinedIcon_BS"
+          src={userIcon}
+          style={{ fontWeight: "bold" }}
+        />
+        <div>{props.memberCount}</div>
+      </div>
       <div className="HeaderContentTitle">
         <div className="BS_Title">{props.roomTitle}</div>
         <div className="BS_Description">{props.roomDescription}</div>
       </div>
-      <div className="BS_Timer">Time Left: {props.timer.toString()}</div>
+      <div className="BS_Timer">
+        <img src={hourGlassIcon} width={30} /> {props.timer.toString()} sec
+      </div>
+      {/* <div className="Note" style={{ display: UserInfo.isHost(props.creatorId) ? "flex" : "none" }}>
+        <p>You Are The Host</p>
+      </div> */}
     </div>
   );
 }

@@ -1,5 +1,4 @@
-.OptionContainer
-{
+.OptionContainer {
     position: absolute;
     background-color: rgba(92, 92, 92, 0.603);
     width: 100%;
@@ -10,21 +9,19 @@
     z-index: 50;
 }
 
-.OptionContainer .WindowSection
-{
+.OptionContainer .WindowSection {
     position: relative;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: white;
+    background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(12, 53, 106, 1) 100%, rgba(1, 116, 190, 1) 100%);
     width: 600px;
     height: 300px;
     box-shadow: 0px 0px 25px 5px gray;
 }
 
-.OptionContainer .WindowSection .WindowSectionTitle
-{
+.OptionContainer .WindowSection .WindowSectionTitle {
     position: relative;
     display: flex;
     justify-content: center;
@@ -33,11 +30,10 @@
     height: 50px;
     font-size: 30px;
     font-weight: bold;
-    color: black;
+    color: white;
 }
 
-.OptionContainer .WindowSection .WindowSectionContent
-{
+.OptionContainer .WindowSection .WindowSectionContent {
     position: relative;
     display: flex;
     flex-direction: column;
@@ -47,8 +43,7 @@
     gap: 10px;
 }
 
-.OptionContainer .WindowSection .WindowSectionContent .WindowSectionContentText
-{
+.OptionContainer .WindowSection .WindowSectionContent .WindowSectionContentText {
     position: relative;
     display: flex;
     justify-content: center;
@@ -57,7 +52,7 @@
     height: 50px;
     font-size: 20px;
     font-weight: bold;
-    color: black;
+    color: white;
 }
 
 .OptionContainer .WindowSection .ErrorMsg {
@@ -72,7 +67,7 @@
     color: red;
 }
 
-.submitButton{
+.OptionContainer .WindowSection .WindowSectionContent .SubmitButton {
     color: white;
     font-weight: bold;
     padding: 5px;
@@ -82,7 +77,7 @@
     border-radius: 5px;
 }
 
-.cancelButton{
+.OptionContainer .WindowSection .WindowSectionContent .CancelButton {
     margin: 5px;
     color: white;
     font-weight: bold;

@@ -1,6 +1,5 @@
 /* MemberList.css */
-.member-list {
-  padding: 5px;
+.ChatMemberList {
   position: relative;
   width: 100%;
   height: 100%;
@@ -8,40 +7,92 @@
   color: white;
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  overflow-y: auto;
+  justify-content: center;
+  align-items: center;
 }
 
-.member-list .online-members h2,
-.member-list .offline-members h2 {
+.ChatMemberList .MemberListTitle {
   position: relative;
-  font-size: 22px;
+  width: 100%;
+  height: auto;
+  font-size: 33px;
   font-family: Arial, Helvetica, sans-serif;
   display: flex;
   justify-content: start;
+  pointer-events: none;
+  padding-left: 20px;
+}
+
+.ChatMemberList .HorizontalLine {
+  position: relative;
+  width: 95%;
   border-bottom: 1px solid white;
-  padding: 5px;
 }
 
-.member-list ul {
-  cursor: pointer;
-  list-style: none;
-  padding: 0;
+.ChatMemberList .MembersList {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  justify-content: start;
+  flex-direction: column;
+  margin-top: 15px;
 }
 
-.member-list li {
-  margin-top: 2px;
-  cursor: pointer;
+.ChatMemberList .MembersList .Members {
+  position: relative;
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  padding: 0px 15px !important;
+  gap: 10px;
+  overflow-y: auto;
+}
+
+.ChatMemberList .MembersList .Members li {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
   list-style: none;
-  padding: 5px;
   border-radius: 5px;
+  gap: 3px;
 }
 
-.member-list .online-members li:hover {
+.ChatMemberList .MembersList .Members li:hover {
   background-color: transparent;
 }
 
-.members {
-  position: relative;
-  margin: 5px;
+.ChatMemberList .MembersList .Members li .InputContainer {
+  display: none;
+  flex-direction: row;
+  gap: 5px;
+  width: 100%;
+  height: auto;
+  background-color: rgb(39, 38, 38);
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.ChatMemberList .MembersList .Members li .InputContainer input {
+  width: 80%;
+  height: 100%;
+  background-color: transparent;
+  outline: none;
+  color: white;
+  font-size: 15px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.ChatMemberList .MembersList .Members li .InputContainer button {
+  width: 20%;
+  height: 100%;
+  background-color: transparent;
+  outline: none;
+  color: white;
+  font-size: 15px;
+  font-family: Arial, Helvetica, sans-serif;
 }

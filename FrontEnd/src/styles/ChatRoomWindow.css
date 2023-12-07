@@ -1,3 +1,14 @@
+/*
+ * ChatRoomWindow.css
+    * ---------------------
+    * CSS file for the ChatRoomWindow component page.
+    * -----------------------------------------------
+    * Author: Mr. Tee Tsung (Jackson) Kao, Mr. Roland Fehr & Ravdeep Singh
+    * Date Created: 01/12/2023  
+    * Updated: 01/12/2023
+    * Version: 0.0.1
+*/
+
 .WindowContainer {
     position: relative;
     display: flex;
@@ -25,21 +36,24 @@
     padding-right: 5px;
     color: white;
     background-color: #0c356a;
+    width: 100%;
 }
 
 .WindowContainer .MsgContainer .ChatHeader h1 {
     margin: 5px;
+    width: 200px;
+    height: 100%;
+    font-weight: 500;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    height: 100%;
 }
 
 .WindowContainer .MsgContainer .ChatHeader a {
     border-radius: 5px;
     padding: 5px;
     width: auto;
-    height: auto; 
+    height: auto;
     color: black;
     font-weight: bold;
     text-decoration: none;
@@ -47,7 +61,7 @@
     cursor: pointer;
 }
 
-.WindowContainer .MsgContainer .ChatHeader a:hover{
+.WindowContainer .MsgContainer .ChatHeader a:hover {
     border-radius: 5px;
     padding: 5px;
     width: auto;
@@ -58,12 +72,14 @@
     background: #e6ab22;
     cursor: pointer;
 }
+
 .WindowContainer .MsgContainer .MsgSection {
     display: flex;
     flex-direction: column;
     height: 100%;
     width: 100%;
-    background-color: white;
+    background: rgb(219,219,219);
+    background: linear-gradient(0deg, rgba(219,219,219,1) 0%, rgba(200,200,200,1) 50%, rgba(219,219,219,1) 100%);
     overflow-y: auto;
 }
 

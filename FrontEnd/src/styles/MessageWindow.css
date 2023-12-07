@@ -1,5 +1,4 @@
-.MsgWindowContainer
-{
+.MsgWindowContainer {
     position: relative;
     width: 100%;
     height: 100%;
@@ -8,8 +7,7 @@
     overflow-y: auto;
 }
 
-.MsgWindowContainer .MsgSection
-{
+.MsgWindowContainer .MsgSection {
     position: relative;
     width: 100%;
     height: 90%;
@@ -19,10 +17,9 @@
     padding: 10px;
 }
 
-.MsgWindowContainer .InputSection
-{
+.MsgWindowContainer .InputSection {
     position: relative;
     width: 100%;
     display: flex;
-    background-color: white;
+    background-color: #dbdbdb;
 }

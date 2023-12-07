@@ -9,12 +9,13 @@
 */
 
 using Database.CollectionContracts;
+using Logic.Converters;
 using Logic.Data;
 using Logic.DTOs.Messages;
 using Logic.DTOs.User;
-using Logic.Helpers;
 using Logic.Services;
 using Microsoft.AspNetCore.SignalR;
+using System.Diagnostics;
 using System.Text;
 
 namespace Logic.Hubs
@@ -54,6 +55,7 @@ namespace Logic.Hubs
         {
             if (joinCode != null && userId != null && firstName != null)
             {
+                Debug.WriteLine($"{firstName} has joined chat room {joinCode}");
                 // get room for chatRoomCode
                 var foundChatRoom = await chatRoomService.GetRoomByJoinCode(joinCode);
 
@@ -178,6 +180,7 @@ namespace Logic.Hubs
                 // send message to chatroom saying a new brainstorming session has started
                 var msg = new MessageInfoJoinSession
                 {
+                    MessageId = Guid.NewGuid().ToString(),
                     ChatRoomId = chatRoomId,
                     Message = $"Join {title}",
                     FromUserInfo = creator,
@@ -237,14 +240,18 @@ namespace Logic.Hubs
         /// </summary>
         /// <param name="sessionId"></param>
         /// <param name="seconds"></param>
-        public async Task StartSession(string sessionId, int seconds)
+        public async Task StartSession(string sessionId, int seconds, string chatRoomId)
         {
-            if (sessionId != null)
+            if (sessionId != null && chatRoomId != null)
             {
+                Debug.WriteLine($"StartSession {sessionId}. Seconds = {seconds}. ChatRoomId = {chatRoomId}");
                 await brainstormService.StartSession(sessionId);
 
                 // let all users know that brainstorm session has started
                 Clients.Group(sessionId).SendAsync("BrainstormSessionStarted", sessionId, seconds);
+
+                // remove join message from chatroom
+                Clients.Group(chatRoomId).SendAsync("RemoveJoinBSMessage", chatRoomId, sessionId);
             }
         }
 
@@ -388,9 +395,15 @@ namespace Logic.Hubs
         {
             if (!string.IsNullOrEmpty(chatRoomId) && !string.IsNullOrEmpty(messageId))
             {
-                chatRoomService.RemoveMessage(chatRoomId, messageId);
+                Debug.WriteLine($"Remove ChatRoomMessage {chatRoomId} {messageId}");
+                await chatRoomService.RemoveMessage(chatRoomId, messageId);
                 Clients.Groups(chatRoomId).SendAsync("RemoveChatRoomMessage", chatRoomId, messageId);
             }
+        }
+
+        public async Task SendEditChatRoom(string chatRoomId, string title, string description)
+        {
+            Clients.Groups(chatRoomId).SendAsync("EditChatRoom", chatRoomId, title, description);
         }
     }
 }

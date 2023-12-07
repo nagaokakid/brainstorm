@@ -26,5 +26,8 @@ namespace Database.CollectionContracts
         Task AddDirectMessageHistoryToUser(string userId, string directMessageHistoryId);
         Task AddBrainstormResultToUser(string userId, string brainstormResultId);
         Task<Dictionary<string, User>> GetAll();
+        Task Edit(User existingUser);
+        Task DeleteUser(string id);
+        Task RemoveChatRoomId(string userId, string chatId);
     }
 }
