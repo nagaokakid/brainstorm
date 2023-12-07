@@ -18,6 +18,7 @@
     width: 100%;
     min-width: 1200px;
     height: 5%;
+    min-height: 50px;
 }
 
 .MainPage .MainPageBodyContainer {
@@ -25,6 +26,7 @@
     width: 100%;
     min-width: 1200px;
     height: 95%;
+    min-height: 800px;
     display: flex;
     flex-direction: row;
     background-color: rgba(2, 0, 36, 1);

@@ -137,6 +137,7 @@ function NavBarTabContent(props: ChatListProps) {
             if (type === 1 || type === 2) {
               const updateMsg = context[3];
               updateMsg(msgObject!);
+              setForceRender((prev) => !prev);
             } else if (type === 7) {
               const updateMsg = context[5];
               updateMsg(true);
