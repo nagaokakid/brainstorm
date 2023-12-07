@@ -277,6 +277,7 @@ function BrainStormPage() {
           roomDescription={sessionDescription}
           timer={timer}
           memberCount={memberCount}
+          creatorId={creatorId}
         />
       </div>
       <div className="BS_BodyContainer">

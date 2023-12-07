@@ -39,7 +39,7 @@ function MessageWindow(props: MessageWindowProps) {
                 setMessages(UserInfo.getMessageHistory(props.chatId, props.chatType));
             } else if ("chatRoomId" in msg && msg.chatRoomId === props.chatId) {
                 setMessages(prev => [...prev, msg]);
-            } else if ("fromUserId" in msg) {
+            } else if ("fromUserId" in msg && props.chatType === TabTypes.DiretMessage) {
                 setMessages(prev => [...prev, msg]);
             }
         }
