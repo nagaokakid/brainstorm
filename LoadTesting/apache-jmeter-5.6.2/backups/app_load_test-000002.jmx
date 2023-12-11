@@ -13,7 +13,7 @@
       <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Test Workflow" enabled="true">
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
-          <stringProp name="LoopController.loops">20</stringProp>
+          <stringProp name="LoopController.loops">30</stringProp>
           <boolProp name="LoopController.continue_forever">false</boolProp>
         </elementProp>
         <stringProp name="ThreadGroup.num_threads">20</stringProp>
@@ -161,7 +161,7 @@ Connect to 5s</stringProp>
           <stringProp name="dataFile"></stringProp>
         </eu.luminis.jmeter.wssampler.SingleWriteWebSocketSampler>
         <hashTree/>
-        <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Join 5 ChatRooms" enabled="true">
+        <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
           <stringProp name="LoopController.loops">5</stringProp>
         </LoopController>
         <hashTree>
