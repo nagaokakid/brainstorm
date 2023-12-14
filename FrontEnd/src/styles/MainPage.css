@@ -4,7 +4,7 @@
     padding: 0;
 }
 
-.MainPage {
+.main-page {
     position: absolute;
     width: 100%;
     height: 100%;
@@ -13,7 +13,7 @@
     overflow: auto !important;
 }
 
-.MainPage .HeaderNavContainer {
+.main-page .header-nav-container {
     position: relative;
     width: 100%;
     min-width: 1200px;
@@ -21,7 +21,7 @@
     min-height: 50px;
 }
 
-.MainPage .MainPageBodyContainer {
+.main-page .mainpage-body-container {
     position: relative;
     width: 100%;
     min-width: 1200px;
@@ -32,7 +32,7 @@
     background-color: rgba(2, 0, 36, 1);
 }
 
-.MainPage .NoticeClass {
+.main-page .notice-class {
     position: absolute;
     top: 0;
     left: 0;
@@ -43,7 +43,7 @@
     z-index: 100;
 }
 
-.MainPage .NoticeClass div {
+.main-page .notice-class div {
     position: absolute;
     top: 50%;
     left: 50%;
