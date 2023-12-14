@@ -10,8 +10,8 @@
     font-weight: bold !important;
 }
 
-.SignInTitle,
-.RegisterTitle {
+.signin-title,
+.register-title {
     margin-bottom: 20px;
     display: flex;
     justify-content: center;
@@ -30,7 +30,6 @@
     border-radius: 5px;
 }
 
-/* Login, Register and Guest join button */
 .ripple {
     border-radius: 0px 10px 0px 10px !important;
     font-size: 16px !important;
@@ -55,7 +54,7 @@
     color: white;
 }
 
-.ErrorMsg {
+.error-msg {
     color: red;
     font-size: 14px;
     margin-top: 5px;
@@ -64,7 +63,7 @@
     justify-content: center;
 }
 
-.LoginForm {
+.login-form {
     position: relative;
     width: 100%;
     display: flex;
@@ -73,7 +72,7 @@
     padding-bottom: 20px;
 }
 
-.RegisterForm {
+.register-form {
     position: relative;
     width: 100%;
     display: flex;
@@ -82,6 +81,6 @@
     padding-bottom: 20px;
 }
 
-.RegisterForm .mb-4 {
+.register-form .mb-4 {
     margin: 5px !important;
 }
