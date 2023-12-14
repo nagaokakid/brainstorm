@@ -1,11 +1,11 @@
-.GuestCodeContainer {
+.guest-code-container {
     display: flex;
     flex-direction: column;
     gap: 10px;
     padding: 20px;
 }
 
-.GuestCodeContainer .ErrorMsg {
+.guest-code-container .error-msg {
     color: red;
     font-size: 12px;
     margin-top: 10px;
