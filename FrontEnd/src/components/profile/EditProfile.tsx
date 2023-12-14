@@ -25,7 +25,7 @@ interface EditProfileProps {
 function EditProfile(props: EditProfileProps) {
     const navigate = useNavigate();
     const context = useDataContext();
-    const updateNameFunction = context[13]; // This is the function to update the user info UI
+    const updateNameFunction = context.updateNameFunction; // This is the function to update the user info UI
     const [style, setStyle] = useState(props.display); // Set the style of the component
     const [showError, setShowError] = useState(DisplayTypes.None); // Set the error display
     const [errorMsg, setErrorMsg] = useState(ErrorMessages.Empty); // Set the error message
