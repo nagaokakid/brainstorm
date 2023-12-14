@@ -1,17 +1,23 @@
-import FriendlyUser from '../models/FriendlyUser';
 import "../styles/UserProfile.css";
+import { useEffect, useState } from 'react';
+import UserInfo from '../services/UserInfo';
+import { useDataContext } from '../contexts/DataContext';
 
-interface Props {
-  user: FriendlyUser;
-}
+function UserProfile() {
+	const context = useDataContext();
+	const updateName = context[12];
+	const [userInfo, setUserInfo] = useState(UserInfo.getUserInfo()); // Set the user info
 
-function UserProfile(props: Props) {
-  return (
-    <div className='UserProfileContainer'>
-      <div className='UserProfileIcon'>{props.user.firstName[0]}{props.user.lastName[0]}</div>
-      <div className='UserProfileName'>{props.user.firstName} {props.user.lastName}</div>
-    </div>
-  )
+	useEffect(() => {
+		setUserInfo(UserInfo.getUserInfo());
+	}, [updateName]);
+
+	return (
+		<div className='user-profile-container'>
+			<div className='user-profile-icon'>{userInfo.firstName[0] + userInfo.lastName[0]}</div>
+			<div className='user-profile-name'>{userInfo.firstName + " " + userInfo.lastName}</div>
+		</div>
+	)
 }
 
 export default UserProfile
