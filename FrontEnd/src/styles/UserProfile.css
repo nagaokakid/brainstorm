@@ -1,4 +1,5 @@
-.UserProfileContainer {
+/*UserProfile.css*/
+.user-profile-container {
     padding: 5px;
     display: flex;
     gap: 5px;
@@ -9,7 +10,7 @@
     cursor: pointer;
 }
 
-.UserProfileContainer:hover {
+.user-profile-container:hover {
     padding: 5px;
     display: flex;
     gap: 5px;
@@ -20,7 +21,7 @@
     cursor: pointer;
 }
 
-.UserProfileContainer .UserProfileIcon {
+.user-profile-container .user-profile-icon {
     position: relative;
     padding: 5px;
     width: 30px;
@@ -33,7 +34,7 @@
     border-radius: 5px;
 }
 
-.UserProfileContainer .UserProfileName {
+.user-profile-container .user-profile-name {
     font-weight: bold;
     color: black;
     display: flex;
