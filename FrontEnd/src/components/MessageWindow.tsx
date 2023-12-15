@@ -8,31 +8,36 @@ import "../styles/MessageWindow.css";
 import MessageBox from "./MessageBox";
 import MessageInput from "./MessageInput";
 
-
 interface MessageWindowProps {
     chatId: string;
     chatType: TabTypes;
 }
 
 /**
-*  MessageWindow.tsx 
-* -------------------------
-*  This component is the message window of the chat room.
-*  It contains the messages of the chat room.
-*  -----------------------------------------------------------------------
-* Authors:  Mr. Yee Tsung (Jackson) Kao & Mr. Roland Fehr
-*/
+ *  MessageWindow.tsx 
+ * -------------------------
+ *  This component is the message window of the chat room.
+ *  It contains the messages of the chat room.
+ * -----------------------------------------------------------------------
+ *  Authors:  Mr. Yee Tsung (Jackson) Kao & Mr. Roland Fehr
+ */
 function MessageWindow(props: MessageWindowProps) {
     const context = useDataContext();
-    const msg = context[1];
-    const render = context[4];
+    const msg = context.updateMsg;
+    const updateDeleteMsg = context.updateDeleteMsg;
     const [trigger, setTrigger] = useState(false); // Trigger to re-render the component
     const [messages, setMessages] = useState([] as (chatRoomMessageObject | { fromUserId: string, messageId: string, message: string, timestamp: string })[]); // Set the message to the display
 
+    /**
+     * Get the message history of the chat room
+     */
     useEffect(() => {
         setMessages(UserInfo.getMessageHistory(props.chatId, props.chatType));
-    }, [props.chatId, render]);
+    }, [props.chatId, updateDeleteMsg]);
 
+    /**
+     * Add the new message to the message list
+     */
     useEffect(() => {
         if (trigger) {
             if (msg === undefined) {
@@ -57,8 +62,8 @@ function MessageWindow(props: MessageWindowProps) {
     }, [messages]);
 
     return (
-        <div className="MsgWindowContainer">
-            <div className="MsgSection" id="MsgSection">
+        <div className="msg-window-container">
+            <div className="msg-section" id="MsgSection">
                 {messages.map((e, index) => (
                     'brainstorm' in e ?
                         <MessageBox message={e.message} key={index} user={[e.fromUserInfo.userId, e.fromUserInfo.firstName]} isBrainstorm={true} bsId={e.brainstorm?.sessionId} chatId={props.chatId} msgId={e.messageId} chatType={props.chatType} /> :
@@ -67,7 +72,7 @@ function MessageWindow(props: MessageWindowProps) {
                             <MessageBox message={e.message} key={index} user={[e.fromUserId]} isBrainstorm={false} chatId={props.chatId} msgId={e.messageId} chatType={props.chatType} />
                 ))}
             </div>
-            <div className='InputSection'>
+            <div className='input-section'>
                 <MessageInput chatType={props.chatType} chatId={props.chatId} />
             </div>
         </div>
