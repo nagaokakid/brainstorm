@@ -1,4 +1,5 @@
-.DefaultChatRoomLayout {
+/*DefaultChatRoomLayout.css*/
+.default-chat-room-layout {
     position: relative;
     display: flex;
     flex-direction: column;
@@ -8,26 +9,26 @@
     height: 100%;
 }
 
-.DefaultChatRoomLayout .brainstormIcon {
+.default-chat-room-layout .brainstorm-icon {
     font-size: 250px;
     color: rgba(232, 232, 232, 0.6);
 }
 
-.DefaultChatRoomLayout h2 {    
+.default-chat-room-layout h2 {    
     margin-top: 50px;
     color: white;
 }
 
-.DefaultChatRoomLayout p {
+.default-chat-room-layout p {
     font-size: large;
     color: rgb(183, 181, 181);
 }
 
-.CreateChatRoomButton {
+.create-chat-room-button {
     margin-top: 30px;
 }
 
-.CreateChatRoomButton button {
+.create-chat-room-button button {
     border: none;
     height: 40px;
     min-height: 20px;
@@ -41,6 +42,6 @@
     padding: 0 20px;
 }
 
-.CreateChatRoomButton button:hover {
+.create-chat-room-button button:hover {
     background-color: #e6ab22;
 }
