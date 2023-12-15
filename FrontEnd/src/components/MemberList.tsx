@@ -6,20 +6,17 @@ import UserInfo from "../services/UserInfo";
 import "../styles/MemberList.css";
 import UserProfile from "./UserProfile";
 
-/*
+interface MemberListProps {
+    memberList: userInfoObject[] | null;
+}
+
+/**
  * MemberList.tsx
  * -------------------------
  * This component is the member list of the chat room.
  * -----------------------------------------------------------------------
  * Authors:  Ravdeep Singh
- * Date Created:  01/12/2023
- * Last Modified: 01/12/2023
- * Version: 1.0
  */
-interface MemberListProps {
-    memberList: userInfoObject[] | null;
-}
-
 function MemberList(props: MemberListProps) {
     const onlineMembers = props.memberList ?? [];
     const [input, setInput] = useState<string>(""); // The input of the user to send direct message
@@ -105,17 +102,17 @@ function MemberList(props: MemberListProps) {
     }, [props.memberList]);
 
     return (
-        <div className="ChatMemberList">
-            <h2 className="MemberListTitle">Members</h2>
-            <div className="HorizontalLine"></div>
-            <div className="MembersList">
-                <ul className="Members">
+        <div className="chat-member-list-container">
+            <h2 className="member-list-title">Members</h2>
+            <div className="horizontal-line"></div>
+            <div className="members-list">
+                <ul className="members">
                     {onlineMembers.map((member, index) => (
                         <li key={index} onClick={() => handleMemberClick(member, index)}>
                             <UserProfile user={member} />
-                            <div className="InputContainer" style={showInput == index ? { display: DisplayTypes.Flex } : { display: DisplayTypes.None }} onClick={handleChildClick}>
-                                <form className="DMInputForm" id="DMInputForm" onSubmit={(e) => e.preventDefault()}>
-                                    <input className="DMInput" type="text" id="DMInput" autoComplete="off" placeholder={`@ to ${member.firstName + member.lastName}`} value={input ?? ""} onChange={handleChanges} onKeyDown={handleKey} />
+                            <div className="input-container" style={showInput == index ? { display: DisplayTypes.Flex } : { display: DisplayTypes.None }} onClick={handleChildClick}>
+                                <form className="dm-input-form" id="DMInputForm" onSubmit={(e) => e.preventDefault()}>
+                                    <input className="dm-iInput" type="text" id="DMInput" autoComplete="off" placeholder={`@ to ${member.firstName + member.lastName}`} value={input ?? ""} onChange={handleChanges} onKeyDown={handleKey} />
                                 </form>
                                 <button onClick={() => handleSendDM(member)}>Send</button>
                             </div>
