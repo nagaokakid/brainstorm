@@ -2,15 +2,20 @@ import "../styles/UserProfile.css";
 import { useEffect, useState } from 'react';
 import UserInfo from '../services/UserInfo';
 import { useDataContext } from '../contexts/DataContext';
+import { userInfoObject } from "../models/TypesDefine";
 
-function UserProfile() {
+interface UserProfileProps {
+	user?: userInfoObject;
+}
+
+function UserProfile(props: UserProfileProps) {
 	const context = useDataContext();
-	const updateName = context[12];
-	const [userInfo, setUserInfo] = useState(UserInfo.getUserInfo()); // Set the user info
+	const updateName = context.updateName; // Trigger re-render when name is updated
+	const [userInfo, setUserInfo] = useState(props.user ?? UserInfo.getUserInfo()); // Set the user info
 
 	useEffect(() => {
-		setUserInfo(UserInfo.getUserInfo());
-	}, [updateName]);
+		setUserInfo(props.user ?? UserInfo.getUserInfo());
+	}, [props.user, updateName]);
 
 	return (
 		<div className='user-profile-container'>
