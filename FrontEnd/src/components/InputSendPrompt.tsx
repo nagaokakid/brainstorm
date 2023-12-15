@@ -19,7 +19,7 @@ function InputSendPrompt(props: InputSendPromptProps) {
      * Send the message
      */
     function handleSendClick() {
-        const input = document.querySelector('.InputSection') as HTMLInputElement;
+        const input = document.querySelector('.input-section') as HTMLInputElement;
         if (input.value === "") {
             return;
         }
