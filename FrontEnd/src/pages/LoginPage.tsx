@@ -15,28 +15,26 @@ function LoginPage() {
     localStorage.clear();
 
     return (
-        <>
-            <div className="PageContainer">
-                <div className="ContentContainer">
-                    <div className="TitleContainer">
-                        <h1 className="Title">Welcome to Brainstorm</h1>
-                    </div>
-                    <div className="Content">
-                        <div className="MemberContainer">
-                            <div className="FormContainer">
-                                <LoginForm />
-                            </div>
+        <div className="loginpage-container">
+            <div className="content-container">
+                <div className="title-container">
+                    <h1 className="title">Welcome to Brainstorm</h1>
+                </div>
+                <div className="content">
+                    <div className="member-form-container">
+                        <div className="form-content">
+                            <LoginForm />
                         </div>
-                        <div className="VerticalLine"></div>
-                        <div className="GuestContainer">
-                            <div className="GuestFormContainer">
-                                <GuestForm />
-                            </div>
+                    </div>
+                    <div className="vertical-line"></div>
+                    <div className="guest-form-container">
+                        <div className="form-content">
+                            <GuestForm />
                         </div>
                     </div>
                 </div>
             </div>
-        </>
+        </div>
     )
 }
 

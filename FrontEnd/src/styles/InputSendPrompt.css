@@ -1,4 +1,5 @@
-.InputSendContainer {
+/*InputSendPrompt.css*/
+.input-send-container {
     position: relative;
     display: flex;
     flex-direction: row;
@@ -6,7 +7,7 @@
     height: 40px;
 }
 
-.InputSendContainer .InputSection {
+.input-send-container .input-section {
     position: relative;
     border: none;
     padding: 5px;
@@ -24,7 +25,7 @@
     }
 }
 
-.InputSendContainer .SendSection {
+.input-send-container .send-section {
     position: relative;
     padding: 5px;
     height: 100%;
@@ -40,7 +41,7 @@
     border-radius: 5px;
 }
 
-.InputSendContainer .SendSection:hover{
+.input-send-container .send-section:hover{
     position: relative;
     padding: 5px;
     height: 100%;

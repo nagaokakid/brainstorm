@@ -1,84 +1,84 @@
 /* HeaderNavBar.css */
-.HeaderNavBar {
-  position: relative;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  background: rgb(2, 0, 36);
-  background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(12, 53, 106, 1) 100%, rgba(1, 116, 190, 1) 100%);
-  width: 100%;
-  height: 50px;
-  min-height: 50px;
-  padding: 0px 10px;
+.header-navbar {
+	position: relative;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	background: rgb(2, 0, 36);
+	background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(12, 53, 106, 1) 100%, rgba(1, 116, 190, 1) 100%);
+	width: 100%;
+	height: 50px;
+	min-height: 50px;
+	padding: 0px 10px;
 }
 
-.HeaderNavBar .HeaderTitle {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 200px;
-  height: 100%;
-  font-weight: bold;
-  font-size: 25px;
-  color: white;
-  pointer-events: none;
+.header-navbar .header-title {
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 200px;
+	height: 100%;
+	font-weight: bold;
+	font-size: 25px;
+	color: white;
+	pointer-events: none;
 }
 
-.HeaderNavBar .JoinCodeSection {
-  padding-left: 75px;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: auto;
-  height: 100%;
-  gap: 10px;
+.header-navbar .code-input-section {
+	padding-left: 75px;
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: auto;
+	height: 100%;
+	gap: 10px;
 }
 
-.HeaderNavBar .JoinCodeSection .mb-4 {
-  margin: 0 !important;
+.header-navbar .code-input-section .mb-4 {
+	margin: 0 !important;
 }
 
-.HeaderNavBar .JoinCodeSection .JoinCodeButton {
-  position: relative;
-  width: 50px;
-  height: 30px;
-  font-weight: bold;
-  background-color: #FFC436;
-  color: black;
-  border: none;
-  border-radius: 5px;
-  outline: none;
-  cursor: pointer;
-  transition: 0.2s;
+.header-navbar .code-input-section .join-code-button {
+	position: relative;
+	width: 50px;
+	height: 30px;
+	font-weight: bold;
+	background-color: #FFC436;
+	color: black;
+	border: none;
+	border-radius: 5px;
+	outline: none;
+	cursor: pointer;
+	transition: 0.2s;
 }
 
-.HeaderNavBar .JoinCodeSection .JoinCodeButton:hover {
-  background-color: #dfa82a;
-  color: black;
+.header-navbar .code-input-section .join-code-button:hover {
+	background-color: #dfa82a;
+	color: black;
 }
 
-.HeaderNavBar .JoinCodeSection .JoinCodeButton:active {
-  transition: 0s;
-  background-color: #cc0000;
-  color: white;
+.header-navbar .code-input-section .join-code-button:active {
+	transition: 0s;
+	background-color: #cc0000;
+	color: white;
 }
 
-.HeaderNavBar .JoinCodeSection .ErrorMsg {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: auto;
-  height: 100%;
-  color: #cc0000;
-  font-size: 16px;
+.header-navbar .code-input-section .error-msg {
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: auto;
+	height: 100%;
+	color: #cc0000;
+	font-size: 16px;
 }
 
-.HeaderNavBar .UserProfile {
-  position: absolute;
-  right: 0%;
-  color: white;
-  margin-right: 10px;
+.header-navbar .user-profile {
+	position: absolute;
+	right: 0%;
+	color: white;
+	margin-right: 10px;
 }
