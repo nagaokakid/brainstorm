@@ -13,6 +13,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useContext, useEffect, useRef, useState } from "react";
 import { DataContext } from "../contexts/DataContext";
 import exitIcon from "../assets/exitIcon.png"
+import { BSCallBackTypes } from "../models/EnumObjects";
 
 /**
 * BrainStormPage.tsx
@@ -212,18 +213,18 @@ function BrainStormPage() {
     if (context === undefined) {
       throw new Error("useDataContext must be used within a DataContext");
     } else {
-      setMemberCount(context[6]);
+      setMemberCount(context.updateCount);
     }
   }, [context]);
 
   useEffect(() => {
     if (sessionStorage.getItem("bs_callBack") === null) {
-      const callBackFunction = (type: number, ideas?: Idea[]) => {
-        if (type === 1) {
+      const callBackFunction = (type: BSCallBackTypes, ideas?: Idea[]) => {
+        if (type === BSCallBackTypes.ReceiveBSStart) {
           startTimer();
           setInput(false);
           showNotice("Session has started");
-        } else if (type === 2) {
+        } else if (type === BSCallBackTypes.ReceiveBSEnd) {
           setInput(true);
           clearInterval(interval.current);
           showNotice("Session has ended");
@@ -232,7 +233,7 @@ function BrainStormPage() {
             UserInfo.clearIdea();
             setLocalIdeaList(UserInfo.getLocalIdeas());
           });
-        } else if (type === 3) {
+        } else if (type === BSCallBackTypes.ReceiveBSIdeas) {
           sessionStorage.setItem("ideaList", JSON.stringify(ideas));
           UserInfo.updateIdeaList();
           setTimer(Number(location.timer));
@@ -240,12 +241,12 @@ function BrainStormPage() {
           setIdeaList(UserInfo.getIdeasList());
           setIsVoting(true);
           showNotice("Voting has started");
-        } else if (type === 4) {
+        } else if (type === BSCallBackTypes.ReceiveBSVoteResults) {
           sessionStorage.setItem("ideaList", JSON.stringify(ideas));
           UserInfo.updateIdeaList();
           setIdeaList(UserInfo.getIdeasList());
           showNotice("Here are the voting results");
-        } else if (type === 5) {
+        } else if (type === BSCallBackTypes.ReceiveBSVote) {
           clearInterval(interval.current);
           SignalRChatRoom.getInstance().then(async (instance) => {
             await instance.sendVotes(sessionId, UserInfo.getIdeasList());
