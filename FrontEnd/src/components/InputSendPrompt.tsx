@@ -1,21 +1,18 @@
 import '../styles/InputSendPrompt.css';
 import addIdeaIcon from "../assets/addIdeasIcon.png"
 
-/*
-    * InputSendPrompt.tsx 
-    * -------------------------
-    * This component is the input and send button of the brain storm page.
-    * -----------------------------------------------------------------------
-    * Author:  Mr. Yee Tsung (Jackson) Kao 
-    * Date Created:  01/12/2023
-    * Last Modified: 01/12/2023
-    * Version: 1.0
-*/
 interface InputSendPromptProps {
     sendFunction: (e: string) => void,
     input: boolean,
 }
 
+/**
+ * InputSendPrompt.tsx 
+ * -------------------------
+ * This component is the input and send button of the brain storm page.
+ * -----------------------------------------------------------------------
+ * Author:  Mr. Yee Tsung (Jackson) Kao
+ */
 function InputSendPrompt(props: InputSendPromptProps) {
 
     /**
@@ -41,9 +38,9 @@ function InputSendPrompt(props: InputSendPromptProps) {
     }
 
     return (
-        <div className="InputSendContainer">
-            <input className="InputSection" type="text" placeholder="Enter Ideas here..." onKeyDown={handleKeyDown} disabled={props.input}></input>
-            <button className="SendSection" onClick={handleSendClick} disabled={props.input}><img className='AddIdeaIcon_CSS' src={addIdeaIcon} width={60}/></button>
+        <div className="input-send-container">
+            <input className="input-section" type="text" placeholder="Enter Ideas here..." onKeyDown={handleKeyDown} disabled={props.input}></input>
+            <button className="send-section" onClick={handleSendClick} disabled={props.input}><img className='AddIdeaIcon_CSS' src={addIdeaIcon} width={60}/></button>
         </div>
     );
 }
