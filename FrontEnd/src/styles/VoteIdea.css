@@ -1,4 +1,5 @@
-.IdeaBox {
+/*VoteIdea.css*/
+.idea-box {
     height: auto;
     display: flex;
     flex-direction: column;
@@ -6,11 +7,12 @@
     margin-bottom: 10px;
     padding: 5px;
     color: white;
-    background: rgba(12,53,106,1);
+    background: rgba(12, 53, 106, 1);
     align-items: start;
     border-radius: 15px;
 }
-.IdeaThought {
+
+.idea-box .idea-thought {
     padding: 5px;
     width: 100%;
     height: auto;
@@ -18,7 +20,8 @@
     flex-direction: column;
     align-items: start;
 }
-.IdeaButton {
+
+.idea-box .idea-button {
     width: 100%;
     height: auto;
     display: flex;
@@ -26,7 +29,7 @@
     justify-content: start;
 }
 
-.LikeIdea{
+.idea-box .idea-button .like-idea {
     margin: 5px;
     background-color: green;
     border: none;
@@ -36,7 +39,7 @@
     width: fit-content;
 }
 
-.LikeIdea:hover{
+.like-idea:hover {
     margin: 5px;
     background-color: rgb(1, 78, 1);
     border: none;
@@ -45,7 +48,8 @@
     padding: 5px;
     width: fit-content;
 }
-.DislikeIdea{
+
+.idea-box .idea-button .dislike-idea {
     width: fit-content;
     border: none;
     border-radius: 5px;
@@ -54,7 +58,8 @@
     background-color: red;
     color: white;
 }
-.DislikeIdea:hover{
+
+.idea-box .idea-button .dislike-idea:hover {
     width: fit-content;
     border: none;
     border-radius: 5px;
