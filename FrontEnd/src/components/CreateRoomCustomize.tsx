@@ -2,23 +2,25 @@ import { MDBInput } from 'mdb-react-ui-kit';
 import 'mdb-react-ui-kit/dist/css/mdb.min.css';
 import { useEffect, useState } from 'react';
 import { DisplayTypes, ErrorMessages } from '../models/EnumObjects';
+import { useDataContext } from '../contexts/DataContext';
 import ApiService from '../services/ApiService';
 import '../styles/CreateRoomCustomize.css';
 
 interface CreateRoomCustomizeProps {
     style: { display: DisplayTypes },
-    render: React.Dispatch<React.SetStateAction<boolean>>,
 }
 
 /**
-*  CreateRoomCustomize.tsx 
-* -------------------------
-*  This component is the create room customize of the chat page.
-*  It contains the create room form.
-*  -----------------------------------------------------------------------
-* Authors:  Mr. Yee Tsung (Jackson) Kao & Mr. Roland Fehr
-*/
+ *  CreateRoomCustomize.tsx 
+ * -------------------------
+ *  This component is the create room customize of the chat page.
+ *  It contains the create room form.
+ * -----------------------------------------------------------------------
+ *  Authors:  Mr. Yee Tsung (Jackson) Kao & Mr. Roland Fehr
+ */
 function CreateRoomCustomize(props: CreateRoomCustomizeProps) {
+    const context = useDataContext();
+    const updateListFunction = context.updateListFunction; // Get the update list function
     const [chatRoomInfo, setChatRoomInfo] = useState({} as { chatRoomName: string, description: string }); // Set the chat room info
     const [style, setStyle] = useState({} as { display: DisplayTypes }); // Set the style of the component
     const [errorMsg, setErrorMsg] = useState(ErrorMessages.Empty); // Set the error message
@@ -39,11 +41,11 @@ function CreateRoomCustomize(props: CreateRoomCustomizeProps) {
         setErrorDisplay({ display: DisplayTypes.None });
         const button = document.getElementById('SubmitButton') as HTMLButtonElement;
 
-        if (chatRoomInfo.chatRoomName !== '' && chatRoomInfo.description !== '') {
+        if (chatRoomInfo.chatRoomName && chatRoomInfo.description) {
             button.disabled = true; // Disable the button to prevent multiple clicks
             await ApiService.CreateChatRoom(chatRoomInfo.chatRoomName, chatRoomInfo.description);
             handleCancelButton();
-            props.render(prev => !prev);
+            updateListFunction(true);
         } else {
             setErrorMsg(ErrorMessages.FormIncomplete);
             setErrorDisplay({ display: DisplayTypes.Block });
@@ -64,35 +66,36 @@ function CreateRoomCustomize(props: CreateRoomCustomizeProps) {
      * Handle the changed event
      * @param e 
      */
-    function handleChanged(e: React.ChangeEvent<HTMLInputElement>) {
+    function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
         const { id, value } = e.target;
-        setChatRoomInfo(prev => ({ ...prev, [id]: value }));
+        setChatRoomInfo(prev => ({ ...prev, [id]: value })); // Update the chat room info
     }
 
     useEffect(() => {
         setStyle(props.style);
+        setErrorDisplay({ display: DisplayTypes.None });
     }, [props.style]);
 
     return (
-        <div className='OptionContainer' style={style} onClick={() => setStyle({ display: DisplayTypes.None })}>
-            <div className='WindowSection' onClick={handleChildClick}>
-                <div className='WindowSectionTitle'>
-                    <h3 className='WindowSectionTitleText'>Create Chat Room</h3>
+        <div className='create-room-container' style={style} onClick={() => setStyle({ display: DisplayTypes.None })}>
+            <div className='create-room-section' onClick={handleChildClick}>
+                <div className='create-room-title-container'>
+                    <h3 className='title'>Create Chat Room</h3>
                 </div>
-                <div className='WindowSectionContent'>
-                    <div className='WindowSectionContentText'>
-                        <p className='WindowSectionContentText'>Create a chat room to chat with your friends!</p>
+                <div className='create-room-content-container'>
+                    <div className='create-room-content-title'>
+                        <p className='title'>Create a chat room to chat with your friends!</p>
                     </div>
                     <form id='CreateChatRoomForm'>
-                        <MDBInput wrapperClass='mb-4' label='Chat Room Name' id='chatRoomName' type='text' autoComplete='off' onChange={handleChanged} />
-                        <MDBInput wrapperClass='mb-4' label='Description' id='description' type='text' autoComplete='off' onChange={handleChanged} />
+                        <MDBInput wrapperClass='mb-4' label='Chat Room Name' id='chatRoomName' type='text' autoComplete='off' onChange={handleInputChange} />
+                        <MDBInput wrapperClass='mb-4' label='Description' id='description' type='text' autoComplete='off' onChange={handleInputChange} />
                     </form>
                     <div>
-                        <button className='CancelButton' onClick={handleCancelButton}>Cancel</button>
-                        <button className='SubmitButton' id='SubmitButton' onClick={handleCreateRoomButton}>Create</button>
+                        <button className='cancel-button' onClick={handleCancelButton}>Cancel</button>
+                        <button className='submit-button' id='SubmitButton' onClick={handleCreateRoomButton}>Create</button>
                     </div>
                 </div>
-                <h5 className='ErrorMsg' style={errorDisplay}>{errorMsg}</h5>
+                <h5 className='error-msg' style={errorDisplay}>{errorMsg}</h5>
             </div>
         </div>
     );
