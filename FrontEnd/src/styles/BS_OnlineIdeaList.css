@@ -1,15 +1,5 @@
-/* 
- * BS_OnlineIdeaList.css
-    * ---------------------
-    * CSS file for the OnlineIdeaList component page.
-    * -----------------------------------------------
-    * Authors: Mr. Tee Tsung (Jackson) Kao & Mr. Roland Fehr
-    * Date Created: 01/12/2023
-    * Updated: 01/12/2023
-    * Version: 0.0.1
-*/
-
-.OnlineIdeasContainer {
+/*BS_OnlineIdeaList.css*/
+.online-ideas-container {
     position: relative;
     width: 100%;
     height: 95%;
@@ -17,7 +7,7 @@
     overflow-y: auto;
 }
 
-.OnlineIdeasContainer .Idea {
+.online-ideas-container .Idea {
     position: relative;
     width: 100%;
     height: auto;
