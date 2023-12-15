@@ -5,7 +5,7 @@ import {
     newDirectMessageObject,
     chatRoomMessageObject,
     brainstormDTO,
-    user,
+    userObject,
 } from "../models/TypesDefine";
 
 /*
@@ -26,7 +26,7 @@ class UserInfo {
     static BaseURL = "http://localhost:5135/"
 
     // the object that contains the user info
-    static currentUser = {} as user;
+    static currentUser = {} as userObject;
     
 
     // the list of local ideas
@@ -39,7 +39,7 @@ class UserInfo {
      * Set the user info to the user object
      * @param user The user object that contains the user info
      */
-    static setCurrentUser(user: user) {
+    static setCurrentUser(user: userObject) {
         this.currentUser = user;
     }
 
@@ -466,7 +466,7 @@ class UserInfo {
      * Empty the user info
      */
     static clearAccount() {
-        this.currentUser = {} as user;
+        this.currentUser = {} as userObject;
         sessionStorage.removeItem("currentUser");
     }
 
