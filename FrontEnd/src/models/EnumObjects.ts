@@ -40,3 +40,24 @@ export enum KeyDown {
     Enter = "Enter",
     NumpadEnter = "NumpadEnter",
 }
+
+export enum CallBackTypes {
+    ReceiveDM,
+    ReceiveDMRemoved,
+    ReceiveChatRoomMsg,
+    ReceiveChatRoomInfo,
+    ReceiveChatRoomNewMember,
+    ReceiveChatRoomMsgRemoved,
+    ReceiveBSJoin,
+    ReceiveBSStarted,
+    ReceiveChatRoomEdit,
+    ReceiveBSMsgRemoved,
+}
+
+export enum BSCallBackTypes {
+    ReceiveBSStart,
+    ReceiveBSEnd,
+    ReceiveBSIdeas,
+    ReceiveBSVoteResults,
+    ReceiveBSVote,
+}
