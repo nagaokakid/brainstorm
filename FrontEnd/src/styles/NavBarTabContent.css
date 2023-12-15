@@ -131,7 +131,7 @@
 
 .navbar-tab-content-container .chat-window-container {
     position: relative;
-    width: 85%;
+    width: 100%;
     display: flex;
 }
 
