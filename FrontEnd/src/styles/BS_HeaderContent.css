@@ -55,7 +55,7 @@
     font-size: small;
 }
 
-.header-content .header-content-title .bs-timer {
+.header-content .bs-timer {
     display: flex;
     justify-content: center;
     align-items: center;
