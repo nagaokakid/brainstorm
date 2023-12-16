@@ -1,12 +1,12 @@
 import {
     MDBBtn,
     MDBContainer,
+    MDBInput,
     MDBTabs,
     MDBTabsContent,
     MDBTabsItem,
     MDBTabsLink,
-    MDBTabsPane,
-    MDBInput
+    MDBTabsPane
 } from 'mdb-react-ui-kit';
 import 'mdb-react-ui-kit/dist/css/mdb.min.css';
 import { useState } from 'react';
@@ -55,10 +55,10 @@ function LoginForm() {
      * This will keep track of the inputs and update the state
      * @param value
      */
-    function handleChanged(value: React.ChangeEvent<HTMLInputElement>) {
+    function handleInputChange(value: React.ChangeEvent<HTMLInputElement>) {
         const id = value.target.id;
         const info = value.target.value;
-        setInput((prev: typeof input) => { return { ...prev, [id]: info } });
+        setInput((prev: typeof input) => { return { ...prev, [id]: info } }); // Update the state
     }
 
     /**
@@ -67,7 +67,7 @@ function LoginForm() {
      */
     function handleKey(value: React.KeyboardEvent<HTMLInputElement>) {
         if (value.code === KeyDown.Enter || value.code === KeyDown.NumpadEnter) { // Detect if the key pressed is the enter key or the numpad enter key
-            if (justifyActive === TabTypes.LoginTab) {
+            if (justifyActive === TabTypes.LoginTab) { //Based on the tab, call the correct function
                 handleLogin();
             } else {
                 handleRegister();
@@ -81,9 +81,9 @@ function LoginForm() {
     function handleLogin() {
         setErrorDisplay(DisplayTypes.None); // Hide the error message
 
-        if (!input.Username || !input.Password) { // Check if the input is empty
-            setErrorMsg(ErrorMessages.FormIncomplete); // Apply the correct error message
-            setErrorDisplay(DisplayTypes.Block); // Display the error message
+        if (!input.username || !input.password) { // Check if the input is empty
+            setErrorMsg(ErrorMessages.FormIncomplete);
+            setErrorDisplay(DisplayTypes.Block);
         } else {
             const button = (document.getElementById('login') as HTMLButtonElement); // Get the button element
             button.disabled = true; // Disable the button to prevent multiple request
@@ -93,13 +93,14 @@ function LoginForm() {
 
                 if (resp) { // login success
                     navigate('/main');
+                    return;
                 } else if (resp === false) {
-                    setErrorMsg(ErrorMessages.AccountNotFound); // Apply the correct error message
-                    setErrorDisplay(DisplayTypes.Block); // Display the error message
-                } else {
-                    setErrorMsg(ErrorMessages.FailedToLogin); // Apply the correct error message
-                    setErrorDisplay(DisplayTypes.Block); // Display the error message
+                    setErrorMsg(ErrorMessages.AccountNotFound);
+                } else { // Only when the server is down
+                    setErrorMsg(ErrorMessages.FailedToLogin);
                 }
+
+                setErrorDisplay(DisplayTypes.Block); // Display the error message
             });
         }
     }
@@ -109,13 +110,11 @@ function LoginForm() {
      */
     function handleRegister() {
         setErrorDisplay(DisplayTypes.None); // Hide the error message
-        
-        if (!input.Username || !input.Password || !input.RePassword || !input.FirstName || !input.LastName) { // Check if the input is empty
-            setErrorMsg(ErrorMessages.FormIncomplete); // Apply the correct error message
-            setErrorDisplay(DisplayTypes.Block); // Display the error message
-        } else if (input.Password != input.RePassword) {
-            setErrorMsg(ErrorMessages.PasswordNotMatch); // Apply the correct error message
-            setErrorDisplay(DisplayTypes.Block); // Display the error message
+
+        if (!input.username || !input.password || !input.rePassword || !input.firstName || !input.lastName) { // Check if the input is empty
+            setErrorMsg(ErrorMessages.FormIncomplete);
+        } else if (input.password != input.rePassword) {
+            setErrorMsg(ErrorMessages.PasswordNotMatch);
         } else {
             const button = (document.getElementById('register') as HTMLButtonElement); // Get the button element
             button.disabled = true; // Disable the button to prevent multiple request
@@ -125,15 +124,16 @@ function LoginForm() {
 
                 if (resp) { // register success
                     navigate('/main');
+                    return;
                 } else if (resp === false) {
                     setErrorMsg(ErrorMessages.DuplicatedAccount); // Apply the correct error message
-                    setErrorDisplay(DisplayTypes.Block); // Display the error message
                 } else {
                     setErrorMsg(ErrorMessages.FailedToRegister); // Apply the correct error message
-                    setErrorDisplay(DisplayTypes.Block); // Display the error message
                 }
             });
         }
+
+        setErrorDisplay(DisplayTypes.Block); // Display the error message
     }
 
     return (
@@ -152,25 +152,25 @@ function LoginForm() {
             </MDBTabs>
             <MDBTabsContent>
                 <MDBTabsPane show={justifyActive === TabTypes.LoginTab}>
-                    <h3 className='SignInTitle'>Sign In:</h3>
-                    <form className='LoginForm' id='LoginForm'>
-                        <MDBInput wrapperClass='mb-4' label='Username' id='Username' type='text' autoComplete='off' onChange={handleChanged} />
-                        <MDBInput wrapperClass='mb-4' label='Password' id='Password' type='password' onChange={handleChanged} onKeyDown={handleKey} />
+                    <h3 className='signin-title'>Sign In:</h3>
+                    <form className='login-form' id='LoginForm'>
+                        <MDBInput wrapperClass='mb-4' label='Username' id='username' type='text' autoComplete='off' onChange={handleInputChange} />
+                        <MDBInput wrapperClass='mb-4' label='Password' id='password' type='password' onChange={handleInputChange} onKeyDown={handleKey} />
                     </form>
                     <MDBBtn className="mb-4 w-100" id='login' onClick={handleLogin}>Sign in</MDBBtn>
                 </MDBTabsPane>
                 <MDBTabsPane show={justifyActive === TabTypes.RegisterTab}>
-                    <h3 className='RegisterTitle'>Create Account:</h3>
-                    <form className='RegisterForm' id='RegisterForm'>
-                        <MDBInput wrapperClass='mb-4' label='Username' id='Username' type='text' autoComplete='off' onChange={handleChanged} />
-                        <MDBInput wrapperClass='mb-4' label='First name' id='FirstName' type='text' autoComplete='off' onChange={handleChanged} />
-                        <MDBInput wrapperClass='mb-4' label='Last name' id='LastName' type='text' autoComplete='off' onChange={handleChanged} />
-                        <MDBInput wrapperClass='mb-4' label='Password' id='Password' type='Password' onChange={handleChanged} />
-                        <MDBInput wrapperClass='mb-4' label='Repeat Password' id='RePassword' type='Password' onChange={handleChanged} onKeyDown={handleKey} />
+                    <h3 className='register-title'>Create Account:</h3>
+                    <form className='register-form' id='RegisterForm'>
+                        <MDBInput wrapperClass='mb-4' label='Username' id='username' type='text' autoComplete='off' onChange={handleInputChange} />
+                        <MDBInput wrapperClass='mb-4' label='First name' id='firstName' type='text' autoComplete='off' onChange={handleInputChange} />
+                        <MDBInput wrapperClass='mb-4' label='Last name' id='lastName' type='text' autoComplete='off' onChange={handleInputChange} />
+                        <MDBInput wrapperClass='mb-4' label='Password' id='password' type='Password' onChange={handleInputChange} />
+                        <MDBInput wrapperClass='mb-4' label='Repeat Password' id='rePassword' type='Password' onChange={handleInputChange} onKeyDown={handleKey} />
                     </form>
                     <MDBBtn className="mb-4 w-100" id='register' onClick={handleRegister}>Sign up</MDBBtn>
                 </MDBTabsPane>
-                <h5 className='ErrorMsg' style={{ display: errorDisplay }}>{errorMsg}</h5>
+                <h5 className='error-msg' style={{ display: errorDisplay }}>{errorMsg}</h5>
             </MDBTabsContent>
         </MDBContainer>
     )

@@ -1,98 +1,98 @@
 /* MemberList.css */
-.ChatMemberList {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  background-color: #0c356a;
-  color: white;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+.chat-member-list-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background-color: #0c356a;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
-.ChatMemberList .MemberListTitle {
-  position: relative;
-  width: 100%;
-  height: auto;
-  font-size: 33px;
-  font-family: Arial, Helvetica, sans-serif;
-  display: flex;
-  justify-content: start;
-  pointer-events: none;
-  padding-left: 20px;
+.chat-member-list-container .member-list-title {
+    position: relative;
+    width: 100%;
+    height: auto;
+    font-size: 33px;
+    font-family: Arial, Helvetica, sans-serif;
+    display: flex;
+    justify-content: start;
+    pointer-events: none;
+    padding-left: 20px;
 }
 
-.ChatMemberList .HorizontalLine {
-  position: relative;
-  width: 95%;
-  border-bottom: 1px solid white;
+.chat-member-list-container .horizontal-line {
+    position: relative;
+    width: 95%;
+    border-bottom: 1px solid white;
 }
 
-.ChatMemberList .MembersList {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  overflow-y: auto;
-  overflow-x: hidden;
-  display: flex;
-  justify-content: start;
-  flex-direction: column;
-  margin-top: 15px;
+.chat-member-list-container .members-list {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    display: flex;
+    justify-content: start;
+    flex-direction: column;
+    margin-top: 15px;
 }
 
-.ChatMemberList .MembersList .Members {
-  position: relative;
-  width: 100%;
-  height: auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: start;
-  padding: 0px 15px !important;
-  gap: 10px;
-  overflow-y: auto;
+.chat-member-list-container .members-list .members {
+    position: relative;
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    padding: 0px 15px !important;
+    gap: 10px;
+    overflow-y: auto;
 }
 
-.ChatMemberList .MembersList .Members li {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  list-style: none;
-  border-radius: 5px;
-  gap: 3px;
+.chat-member-list-container .members-list .members li {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    list-style: none;
+    border-radius: 5px;
+    gap: 3px;
 }
 
-.ChatMemberList .MembersList .Members li:hover {
-  background-color: transparent;
+.chat-member-list-container .members-list .members li:hover {
+    background-color: transparent;
 }
 
-.ChatMemberList .MembersList .Members li .InputContainer {
-  display: none;
-  flex-direction: row;
-  gap: 5px;
-  width: 100%;
-  height: auto;
-  background-color: rgb(39, 38, 38);
-  border-radius: 5px;
-  padding: 5px;
+.chat-member-list-container .members-list .members li .input-container {
+    display: none;
+    flex-direction: row;
+    gap: 5px;
+    width: 100%;
+    height: auto;
+    background-color: rgb(39, 38, 38);
+    border-radius: 5px;
+    padding: 5px;
 }
 
-.ChatMemberList .MembersList .Members li .InputContainer input {
-  width: 80%;
-  height: 100%;
-  background-color: transparent;
-  outline: none;
-  color: white;
-  font-size: 15px;
-  font-family: Arial, Helvetica, sans-serif;
+.chat-member-list-container .members-list .members li .input-container input {
+    width: 80%;
+    height: 100%;
+    background-color: transparent;
+    outline: none;
+    color: white;
+    font-size: 15px;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
-.ChatMemberList .MembersList .Members li .InputContainer button {
-  width: 20%;
-  height: 100%;
-  background-color: transparent;
-  outline: none;
-  color: white;
-  font-size: 15px;
-  font-family: Arial, Helvetica, sans-serif;
+.chat-member-list-container .members-list .members li .input-container button {
+    width: 20%;
+    height: 100%;
+    background-color: transparent;
+    outline: none;
+    color: white;
+    font-size: 15px;
+    font-family: Arial, Helvetica, sans-serif;
 }

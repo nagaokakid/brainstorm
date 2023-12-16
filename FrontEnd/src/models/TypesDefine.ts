@@ -1,17 +1,12 @@
-import { friendlyUser } from "./FriendlyUser"
-
-/* 
- * TypesDefine.ts
- * -----------------------------
- * This file is the model for the TypesDefine object.
- * ----------------------------------------------------------
- * Author:  Mr. Yee Tsuung (Jackson) Kao and Mr. Roland Fehr
- * Date Created:  01/12/2023
- * Last Modified: 01/12/2023
- * Version: 0.0.1
+/*
+* TypesDefine.ts
+* -----------------------------
+* This file is the model for the TypesDefine object.
+* ----------------------------------------------------------
+* Author:  Mr. Yee Tsuung (Jackson) Kao and Mr. Roland Fehr
 */
 
-export type user = {
+export type userObject = {
     userInfo: userInfoObject,
     token: string,
     chatRooms: chatRoomObject[],
@@ -19,11 +14,11 @@ export type user = {
 }
 
 export type loginObject = {
-    Username: string,
-    Password: string,
-    RePassword?: string,
-    FirstName?: string,
-    LastName?: string,
+    username: string,
+    password: string,
+    rePassword?: string,
+    firstName?: string,
+    lastName?: string,
 }
 
 export type userInfoObject = {
@@ -41,7 +36,7 @@ export type chatRoomObject = {
     joinCode: string,
     messages: chatRoomMessageObject[],
     members: userInfoObject[],
-    bs_session?: brainstormDTO[]
+    bs_session?: brainstormDTO[],
 }
 
 export type chatRoomMessageObject = {
@@ -51,13 +46,13 @@ export type chatRoomMessageObject = {
     chatRoomId: string,
     message: string,
     timestamp: string,
-    brainstorm?: brainstormDTO
+    brainstorm?: brainstormDTO,
 }
 
 export type directMessageObject = {
     user1: userInfoObject,
     user2: userInfoObject,
-    directMessages: {fromUserId:string, messageId:string, message: string, timestamp: string }[]
+    directMessages: { fromUserId: string, messageId: string, message: string, timestamp: string }[],
 }
 
 export type newDirectMessageObject = {
@@ -65,20 +60,20 @@ export type newDirectMessageObject = {
     fromUserInfo: userInfoObject,
     toUserInfo: userInfoObject,
     message: string,
-    timestamp: string
+    timestamp: string,
 }
 
 export type sendMessageObject = {
     user1: userInfoObject,
     user2: userInfoObject,
-    message: string
+    message: string,
 }
 
 export type brainstormDTO = {
-    sessionId: string;
-    title: string;
-    description: string;
-    timer: number; // to be received in seconds
-    creator: friendlyUser;
-    members: friendlyUser[];
+    sessionId: string,
+    title: string,
+    description: string,
+    timer: number,
+    creator: userInfoObject,
+    members: userInfoObject[],
 }

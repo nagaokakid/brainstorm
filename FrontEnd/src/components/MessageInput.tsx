@@ -6,21 +6,18 @@ import SignalRDirect from "../services/DirectMessageConnection";
 import UserInfo from "../services/UserInfo";
 import "../styles/MessageInput.css";
 
-/*
-    * MessageInput.tsx
-    * -------------------------
-    * This component is the message input field of the chat room.
-    * -----------------------------------------------------------------------
-    * Author:  Mr. Yee Tsung (Jackson) Kao 
-    * Date Created:  01/12/2023
-    * Last Modified: 01/12/2023
-    * Version: 1.0
-*/
 interface MsgInputFieldProps {
     chatType: TabTypes;
     chatId: string;
 }
 
+/**
+ * MessageInput.tsx
+ * -------------------------
+ * This component is the message input field of the chat room.
+ * -----------------------------------------------------------------------
+ * Author:  Mr. Yee Tsung (Jackson) Kao
+ */
 function MsgInputField(props: MsgInputFieldProps) {
     const [text, setText] = useState("" as string); // Set the default state of the text
 
@@ -68,12 +65,15 @@ function MsgInputField(props: MsgInputFieldProps) {
         }
     }
 
+    /**
+     * Clear the text when the chat room is changed
+     */
     useEffect(() => {
         setText("");
     }, [props.chatId]);
 
     return (
-        <div className="MsgInputContainer">
+        <div className="msg-input-container">
             <input
                 type="text"
                 id=""
@@ -82,7 +82,7 @@ function MsgInputField(props: MsgInputFieldProps) {
                 value={text}
                 onKeyDown={handleKey}
             />
-            <div className="Send">
+            <div className="msg-input-send">
                 <button onClick={handleSend}>
                     <img src={emailIcon} alt="Send" />
                 </button>

@@ -1,24 +1,34 @@
-/*
- *  BS_HeaderContent.css
- * ---------------------
- * CSS file for the HeaderContent component page.
- * -----------------------------------------------
- * Author: Mr. Tee Tsung (Jackson) Kao & Mr. Roland Fehr
-    * Date Created: 01/12/2023
-    * Updated: 01/12/2023
-    * Version: 0.0.1
-*/
-
-.HeaderContent {
+/*BS_HeaderContent.css*/
+.header-content {
     position: relative;
     width: 100%;
     height: 70px;
     display: flex;
     justify-content: center;
 }
-.HeaderContentTitle {
-    background: rgb(2,0,36);
-    background: linear-gradient(167deg, rgba(2,0,36,1) 0%, rgba(12,53,106,1) 51%, rgba(1,116,190,1) 100%);
+
+.header-content .bs_member-count {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    margin-right: 10px;
+    border-radius: 0 0 25px 25px;
+    background: rgb(2, 0, 36);
+    background: linear-gradient(167deg, rgba(2, 0, 36, 1) 0%, rgba(12, 53, 106, 1) 51%, rgba(1, 116, 190, 1) 100%);
+    color: white;
+    width: 150px;
+}
+
+.header-content .bs_member-count .joined-icon-bs {
+    width: 50px;
+    height: 50px;
+}
+
+.header-content .header-content-title {
+    background: rgb(2, 0, 36);
+    background: linear-gradient(167deg, rgba(2, 0, 36, 1) 0%, rgba(12, 53, 106, 1) 51%, rgba(1, 116, 190, 1) 100%);
     color: white;
     position: relative;
     min-width: 300px;
@@ -32,51 +42,33 @@
     align-items: center;
 }
 
-.BS_Title{
+.header-content .header-content-title .bs-title {
     font-size: larger;
     display: flex;
     justify-content: center;
 }
 
-.BS_Description{
+.header-content .header-content-title .bs-description {
     display: flex;
     color: darkgray;
     justify-content: center;
     font-size: small;
 }
 
-.BS_Timer{
+.header-content .bs-timer {
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 20px;
     margin-left: 10px;
     border-radius: 0 0 25px 25px;
-    background: rgb(2,0,36);
-    background: linear-gradient(167deg, rgba(2,0,36,1) 0%, rgba(12,53,106,1) 51%, rgba(1,116,190,1) 100%);
-    color: white;
-    width: 150px;
-}
-.BS_MemberCount{
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-    margin-right: 10px;
-    border-radius: 0 0 25px 25px;
-    background: rgb(2,0,36);
-    background: linear-gradient(167deg, rgba(2,0,36,1) 0%, rgba(12,53,106,1) 51%, rgba(1,116,190,1) 100%);
+    background: rgb(2, 0, 36);
+    background: linear-gradient(167deg, rgba(2, 0, 36, 1) 0%, rgba(12, 53, 106, 1) 51%, rgba(1, 116, 190, 1) 100%);
     color: white;
     width: 150px;
 }
 
-.JoinedIcon_BS{
-    width: 50px;
-    height: 50px;
-}
-
-.HeaderContent .Note{
+.header-content .Note {
     position: absolute;
     right: 0px;
     display: flex;
@@ -85,7 +77,7 @@
     width: auto;
 }
 
-.HeaderContent .Note p{
+.header-content .Note p {
     color: white;
     font-size: 50px;
 }

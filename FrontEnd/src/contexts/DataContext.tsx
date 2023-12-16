@@ -2,42 +2,40 @@
 import { ReactNode, createContext, useContext, useState } from 'react';
 import { chatRoomMessageObject } from '../models/TypesDefine';
 
-/* 
-    *  DataContext.tsx 
-    * -------------------------
-    *  This component is the data context of the chat page.
-    *  It contains the data that is shared between components.
-    *  -----------------------------------------------------------------------
-    * Authors:  Mr. Yee Tsung (Jackson) Kao & Mr. Roland Fehr
-    * Date Created:  01/12/2023
-    * Last Modified: 01/12/2023
-    * Version: 1.0
-*/
-
 type DataContextProviderProps = {
     children: ReactNode;
 };
 
-type DataContextType = [
-    boolean,
-    (chatRoomMessageObject | { fromUserId: string, messageId: string, message: string, timestamp: string }),
-    (newData: boolean) => void,
-    (newMsg: (chatRoomMessageObject | { fromUserId: string, messageId: string, message: string, timestamp: string })) => void,
-    boolean,
-    (newData: boolean) => void,
-    number,
-    (newData: number) => void,
-    boolean,
-    (newData: boolean) => void,
-    boolean,
-    (newData: boolean) => void,
-    boolean,
-    (newData: boolean) => void
-];
+type DataContextType = {
+    updateMember: boolean,
+    updateMemberFunction: (newData: boolean) => void,
+    updateMsg: (chatRoomMessageObject | { fromUserId: string, messageId: string, message: string, timestamp: string }),
+    updateMsgFunction: (newMsg: (chatRoomMessageObject | { fromUserId: string, messageId: string, message: string, timestamp: string })) => void,
+    updateDeleteMsg: boolean,
+    updateDeleteMsgFunction: (newData: boolean) => void,
+    updateCount: number,
+    updateCountFunction: (newData: number) => void,
+    updateHeader: boolean,
+    updateHeaderFunction: (newData: boolean) => void,
+    updateWindow: boolean,
+    updateWindowFunction: (newData: boolean) => void,
+    updateName: boolean,
+    updateNameFunction: (newData: boolean) => void,
+    updateList: boolean,
+    updateListFunction: (newData: boolean) => void,
+}
 
 // Create the context with an initial value
-export const DataContext = createContext<DataContextType | undefined>(undefined);
+export const DataContext = createContext({} as DataContextType);
 
+/**
+ *  DataContext.tsx 
+ * -------------------------
+ *  This component is the data context of the chat page.
+ *  It contains the data that is shared between components.
+ *  -----------------------------------------------------------------------
+ * Authors:  Mr. Yee Tsung (Jackson) Kao
+ */
 export function useDataContext() {
     const context = useContext(DataContext);
 
@@ -49,32 +47,33 @@ export function useDataContext() {
 }
 
 export function DataContextProvider({ children }: DataContextProviderProps) {
-
-    const [update, setUpdate] = useState(true);
-    const [newMsg, setNewMsg] = useState({} as (chatRoomMessageObject | { fromUserId: string, messageId: string, message: string, timestamp: string }));
-    const [updateAgain, setUpdateAgain] = useState(true);
+    const [updateMember, setUpdateMember] = useState(true);
+    const [updateMsg, setUpdateMsg] = useState({} as (chatRoomMessageObject | { fromUserId: string, messageId: string, message: string, timestamp: string }));
+    const [updateDeleteMsg, setUpdateDeleteMsg] = useState(true);
+    const [updateCount, setUpdateCount] = useState(0);
     const [updateHeader, setUpdateHeader] = useState(true);
     const [updateWindow, setUpdateWindow] = useState(true);
     const [updateName, setUpdateName] = useState(true);
-    const [count, setCount] = useState(0);
-    const updateData = (newData: boolean) => {
+    const [updateList, setUpdateList] = useState(true);
+
+    const updateMemberFunction = (newData: boolean) => {
         if (newData === true) {
-            setUpdate(update => !update);
+            setUpdateMember(update => !update);
         }
     };
 
-    const updateMsg = (newMsg: (chatRoomMessageObject | { fromUserId: string, messageId: string, message: string, timestamp: string })) => {
-        setNewMsg(newMsg);
+    const updateMsgFunction = (newMsg: (chatRoomMessageObject | { fromUserId: string, messageId: string, message: string, timestamp: string })) => {
+        setUpdateMsg(newMsg);
     };
 
-    const render = (newData: boolean) => {
+    const updateDeleteMsgFunction = (newData: boolean) => {
         if (newData === true) {
-            setUpdateAgain(update => !update);
+            setUpdateDeleteMsg(update => !update);
         }
     }
 
-    const updateCount = (newData: number) => {
-        setCount(newData);
+    const updateCountFunction = (newData: number) => {
+        setUpdateCount(newData);
     }
 
     const updateHeaderFunction = (newData: boolean) => {
@@ -95,8 +94,14 @@ export function DataContextProvider({ children }: DataContextProviderProps) {
         }
     }
 
+    const updateListFunction = (newData: boolean) => {
+        if (newData === true) {
+            setUpdateList(update => !update);
+        }
+    }
+
     return (
-        <DataContext.Provider value={[update, newMsg, updateData, updateMsg, updateAgain, render, count, updateCount, updateHeader, updateHeaderFunction, updateWindow, updateWindowFunction, updateName, updateNameFunction]}>
+        <DataContext.Provider value={{updateMember, updateMemberFunction, updateMsg, updateMsgFunction, updateDeleteMsg, updateDeleteMsgFunction, updateCount, updateCountFunction, updateHeader, updateHeaderFunction, updateWindow, updateWindowFunction, updateName, updateNameFunction, updateList, updateListFunction}}>
             {children}
         </DataContext.Provider>
     );

@@ -8,16 +8,16 @@ interface DefaultChatRoomProps {
 }
 
 function DefaultChatRoomWindow(props: DefaultChatRoomProps) {
-  return (
-    <div className="DefaultChatRoomLayout">
-        <FontAwesomeIcon icon={faBolt} title="brainstorm icon" className="brainstormIcon"/>
-        <h2>Welcome to Brainstorm</h2>
-        <p>Discuss and vote on ideas with other people</p>
-        <div className="CreateChatRoomButton" style={props.displayTab === "Direct Message List" ? { display: "none" } : { display: "flex" }}>
-          <button onClick={props.handleFunction}>Create Chat Room</button>
+    return (
+        <div className="default-chat-room-layout">
+            <FontAwesomeIcon icon={faBolt} title="brainstorm icon" className="brainstorm-icon" />
+            <h2>Welcome to Brainstorm</h2>
+            <p>Discuss and vote on ideas with other people</p>
+            <div className="create-chat-room-button" style={props.displayTab === "Direct Message List" ? { display: "none" } : { display: "flex" }}>
+                <button onClick={props.handleFunction}>Create Chat Room</button>
+            </div>
         </div>
-    </div>
-  );
+    );
 }
 
 export default DefaultChatRoomWindow;

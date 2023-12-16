@@ -8,7 +8,6 @@ This is for simulating acceptance testing for the login/register page:
 
 describe("Testing Login/Register Page", () => 
 {
-    
     // navigate to home page before each test
     beforeEach(() => 
     {
@@ -18,7 +17,7 @@ describe("Testing Login/Register Page", () =>
     // Test 1: register a new user (timestamp ensures username is unique every time it runs)
     it('register a new user', () => 
     {
-        const runTestCondition = Cypress.env('RUN_CONDITIONAL_TEST');
+        const runTestCondition = 'true'
 
         if (runTestCondition === 'true')
         {
@@ -28,11 +27,11 @@ describe("Testing Login/Register Page", () =>
             cy.contains('Register').should('exist').click()     // click "Register" button
     
             cy.get('.tab-pane.fade.show.active').invoke('show').should('be.visible');   // fill out form
-            cy.get('.tab-pane.fade.show.active').find('#Username').type(timestampStr)
-            cy.get('#FirstName').should('be.visible').type(timestampStr);
-            cy.get('#LastName').should('be.visible').type(timestampStr);
-            cy.get('.tab-pane.fade.show.active').find('#Password').type(timestampStr)
-            cy.get('#RePassword').should('be.visible').type(timestampStr);
+            cy.get('.tab-pane.fade.show.active').find('#username').type(timestampStr)
+            cy.get('#firstName').should('be.visible').type(timestampStr);
+            cy.get('#lastName').should('be.visible').type(timestampStr);
+            cy.get('.tab-pane.fade.show.active').find('#password').type(timestampStr)
+            cy.get('#rePassword').should('be.visible').type(timestampStr);
     
             cy.intercept('POST', '/api/users').as('fetchRequest'); // setup intercept for http response
     
@@ -57,11 +56,11 @@ describe("Testing Login/Register Page", () =>
         cy.contains('Register').should('exist').click()     // click "Register" button
 
         cy.get('.tab-pane.fade.show.active').invoke('show').should('be.visible');   // fill out form
-        cy.get('.tab-pane.fade.show.active').find('#Username').type('cypress')
-        cy.get('#FirstName').should('be.visible').type('cypress');
-        cy.get('#LastName').should('be.visible').type('cypress');
-        cy.get('.tab-pane.fade.show.active').find('#Password').type('cypress')
-        cy.get('#RePassword').should('be.visible').type('cypress');
+        cy.get('.tab-pane.fade.show.active').find('#username').type('cypress')
+        cy.get('#firstName').should('be.visible').type('cypress');
+        cy.get('#lastName').should('be.visible').type('cypress');
+        cy.get('.tab-pane.fade.show.active').find('#password').type('cypress')
+        cy.get('#rePassword').should('be.visible').type('cypress');
 
         cy.intercept('POST', '/api/users').as('fetchRequest'); // setup intercept for http response
 
@@ -79,11 +78,11 @@ describe("Testing Login/Register Page", () =>
         cy.contains('Register').should('exist').click()     // click "Register" button
 
         cy.get('.tab-pane.fade.show.active').invoke('show').should('be.visible');   // fill out form
-        cy.get('.tab-pane.fade.show.active').find('#Username').type('test')
-        cy.get('#FirstName').should('be.visible').type('test');
-        cy.get('#LastName').should('be.visible').type('test');
-        cy.get('.tab-pane.fade.show.active').find('#Password').type('p1')       // different passwords given
-        cy.get('#RePassword').should('be.visible').type('p2');
+        cy.get('.tab-pane.fade.show.active').find('#username').type('test')
+        cy.get('#firstName').should('be.visible').type('test');
+        cy.get('#lastName').should('be.visible').type('test');
+        cy.get('.tab-pane.fade.show.active').find('#password').type('p1')       // different passwords given
+        cy.get('#rePassword').should('be.visible').type('p2');
 
         cy.get('#register').should('be.visible').click();   // click "Sign Up" button
         cy.url().should('not.include', '/main')     // verify URL is same (no re-direction)
@@ -104,8 +103,8 @@ describe("Testing Login/Register Page", () =>
         cy.get('.nav-link.active').should('be.visible');
         cy.contains('Login').should('exist').click();
 
-        cy.get('.tab-pane.fade.show.active').find('#Username').type('cypress');     // fill in login credentials
-        cy.get('.tab-pane.fade.show.active').find('#Password').type('cypress');
+        cy.get('.tab-pane.fade.show.active').find('#username').type('cypress');     // fill in login credentials
+        cy.get('.tab-pane.fade.show.active').find('#password').type('cypress');
 
         cy.intercept('POST', '/api/users/login').as('fetchRequest1'); // setup intercepts for http responses
         cy.intercept('POST', '/chatroom/*').as('fetchRequest2');
@@ -127,8 +126,8 @@ describe("Testing Login/Register Page", () =>
         cy.get('.nav-link.active').should('be.visible');
         cy.contains('Login').should('exist').click();
     
-        cy.get('.tab-pane.fade.show.active').find('#Username').type('cypress');
-        cy.get('.tab-pane.fade.show.active').find('#Password').type('notThePassword'); // incorrect password
+        cy.get('.tab-pane.fade.show.active').find('#username').type('cypress');
+        cy.get('.tab-pane.fade.show.active').find('#password').type('notThePassword'); // incorrect password
     
         cy.intercept('POST', '/api/users/login').as('fetchRequest'); // setup intercept for http responses
     
@@ -146,8 +145,8 @@ describe("Testing Login/Register Page", () =>
         cy.get('.nav-link.active').should('be.visible');
         cy.contains('Login').should('exist').click();
     
-        cy.get('.tab-pane.fade.show.active').find('#Username').type('notAValidUsername');   // invalid username
-        cy.get('.tab-pane.fade.show.active').find('#Password').type('whatPassword?');
+        cy.get('.tab-pane.fade.show.active').find('#username').type('notAValidUsername');   // invalid username
+        cy.get('.tab-pane.fade.show.active').find('#password').type('whatPassword?');
     
         cy.intercept('POST', '/api/users/login').as('fetchRequest'); // setup intercept for http responses
     

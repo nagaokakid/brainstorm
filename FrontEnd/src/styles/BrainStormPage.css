@@ -1,33 +1,21 @@
-/* BrainStormPage.css
- * -----------------------------------------------------------------
- * This file contains the styling for the BrainStormPage component.
- * -----------------------------------------------------------------
- * Author: Mr. Tee Tsung (Jackson) Kao & Mr. Roland Fehr
-    * Date Created: 01/12/2023
-    * Updated: 01/12/2023
-    * Version: 0.0.1
-    * 
- */
-
-
-
+/*BrainStormPage.css*/
 * {
     padding: 0;
     margin: 0;
 }
 
-.BS_PageContainer {
+.bs-page-container {
     position: absolute;
     width: 100%;
     height: 100%;
     min-width: 1200px;
     display: flex;
     flex-direction: column;
-    background: rgb(0,0,0);
-background: linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(0,28,85,1) 50%, rgba(0,0,0,1) 100%);
+    background: rgb(0, 0, 0);
+    background: linear-gradient(0deg, rgba(0, 0, 0, 1) 0%, rgba(0, 28, 85, 1) 50%, rgba(0, 0, 0, 1) 100%);
 }
 
-.BS_PageContainer .BS_HeaderContainer {
+.bs-page-container .bs-header-container {
     position: relative;
     width: 100%;
     height: 80px;
@@ -35,7 +23,7 @@ background: linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(0,28,85,1) 50%, rgba(0,
     flex-direction: row;
 }
 
-.BS_PageContainer .BS_HeaderContainer .LeaveSessionButton {
+.bs-page-container .bs-header-container .leave-session-button {
     background: url(../assets/exitIcon.png);
     position: absolute;
     top: 5px;
@@ -47,7 +35,7 @@ background: linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(0,28,85,1) 50%, rgba(0,
     color: white;
 }
 
-.BS_PageContainer .BS_BodyContainer {
+.bs-page-container .bs-body-container {
     position: relative;
     width: 100%;
     height: 90%;
@@ -55,7 +43,7 @@ background: linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(0,28,85,1) 50%, rgba(0,
     flex-direction: row;
 }
 
-.BS_PageContainer .BS_BodyContainer .BS_ContentContainer {
+.bs-page-container .bs-body-container .bs-content-container {
     position: relative;
     width: 100%;
     height: 100%;
@@ -63,33 +51,27 @@ background: linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(0,28,85,1) 50%, rgba(0,
     flex-direction: column;
 }
 
-.BS_PageContainer .BS_BodyContainer .BS_ButtonContainer {
-    position: relative;
-    width: 300px;
-    height: 100%;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: start;
-    padding-left: 5px;
-}
-.BS_BottomRow{
+.bs-page-container .bs-body-container .bs-content-container .bs-bottom-row {
     padding: 5px;
     margin: 5px;
     display: flex;
     flex-direction: row;
 }
 
-.BS_PageContainer .BS_BodyContainer  .BS_ButtonContainer  {
+.bs-page-container .bs-body-container .bs-content-container .bs-bottom-row .bs-button-container {
     position: relative;
-    border: none;
+    width: 300px;
+    height: 100%;
     display: flex;
-    justify-content: center;
+    flex-direction: row;
     align-items: center;
+    justify-content: center;
+    padding-left: 5px;
     cursor: pointer;
+    border: none;
 }
 
-.StartSessionButton{
+.start-session-button {
     background-color: green;
     min-width: 50px;
     width: 100%;
@@ -101,11 +83,12 @@ background: linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(0,28,85,1) 50%, rgba(0,
     margin-right: 5px;
     display: flex;
     justify-content: center;
-    vertical-align:middle;
+    vertical-align: middle;
     align-items: center;
     color: white;
 }
-.EndSessionButton{
+
+.end-session-button {
     height: 100%;
     background-color: #FFC436;
     width: 100%;
@@ -116,38 +99,24 @@ background: linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(0,28,85,1) 50%, rgba(0,
     margin-right: 5px;
     display: flex;
     justify-content: center;
-    align-items: center;
-}
-.EndVoteButton{
-    height: 100%;
-    background-color: #FFC436;
-    border: none;
-    padding: 5px;
-    border-radius: 5px;
-    font-weight: bold;
-    margin-right: 5px;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.ExitButton{
-    height: 100%;
-    background-color: red;
-    padding: 5px;
-    border-radius: 5px;
-    font-weight: bold;
-    border: none;
-    margin-right: 5px;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    vertical-align:middle;
-    color: white;
     align-items: center;
 }
 
-.BS_PageContainer .NoticeClass {
+.end-vote-button {
+    height: 100%;
+    background-color: #FFC436;
+    border: none;
+    padding: 5px;
+    border-radius: 5px;
+    font-weight: bold;
+    margin-right: 5px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.bs-page-container .notice-class {
     position: absolute;
     top: 0;
     left: 0;
@@ -158,7 +127,7 @@ background: linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(0,28,85,1) 50%, rgba(0,
     z-index: 100;
 }
 
-.BS_PageContainer .NoticeClass div {
+.bs-page-container .notice-class div {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -173,9 +142,10 @@ background: linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(0,28,85,1) 50%, rgba(0,
     align-items: center;
 }
 
-.exitIcon_BS{
+.exit-icon-bs {
     height: 70px;
 }
-.exitIcon_BS:hover{
+
+.exit-icon-bs:hover {
     height: 80px;
 }

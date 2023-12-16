@@ -28,10 +28,10 @@ function GuestForm() {
      * This will keep track the input and update the state
      * @param value
      */
-    function handleChange(value: React.ChangeEvent<HTMLInputElement>) {
+    function handleInputChange(value: React.ChangeEvent<HTMLInputElement>) {
         const id = value.target.id;
         const code = value.target.value;
-        setInput((prev: typeof input) => { return { ...prev, [id]: code } });
+        setInput((prev: typeof input) => { return { ...prev, [id]: code } }); // Update the state
     }
 
     /**
@@ -73,6 +73,7 @@ function GuestForm() {
                     UserInfo.setCurrentUser(tempUser);
                     UserInfo.updateUser(true);
                     navigate('/main');
+                    return;
                 } else {
                     button.disabled = false;
                     setErrorMsg(ErrorMessages.InvalidCode);
@@ -86,10 +87,10 @@ function GuestForm() {
     }
 
     return (
-        <div className='GuestCodeContainer'>
-            <MDBInput wrapperClass='mb-4' label='Chat Room Code' id='ChatRoomCode' type='text' autoComplete='off' onChange={handleChange} onKeyDown={handleKey} />
+        <div className='guest-code-container'>
+            <MDBInput wrapperClass='mb-4' label='Chat Room Code' id='ChatRoomCode' type='text' autoComplete='off' onChange={handleInputChange} onKeyDown={handleKey} />
             <MDBBtn className="mb-4 w-100" id='join' onClick={handleGuestJoin}>Join Chat Room</MDBBtn>
-            <h5 className='ErrorMsg' style={{ display: errorDisplay }}>{errorMsg}</h5>
+            <h5 className='error-msg' style={{ display: errorDisplay }}>{errorMsg}</h5>
         </div>
     );
 }
